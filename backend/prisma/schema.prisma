@@ -1,0 +1,232 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id                Int      @id @default(autoincrement())
+  createdAt         DateTime @default(now())
+  name              String
+  profilePictureUrl String
+
+  consultant     Consultant?
+  salesperson    Salesperson?
+  customer       Customer?
+  roles          UserRole[]
+  skills         ConsultantSkill[]
+  employments    UserEmployment[]
+  projects       UserProject[]
+  userAttributes UserAttribute[]
+  pageSections   PageSection[]
+  comments       Comment[]
+}
+
+enum Visibility {
+  SALES /// self, admins, salespeople, customers
+  SALES_AND_CONSULTANTS /// self, admins, salespeople, customers, consultants
+}
+
+model UserRole {
+  id     Int  @id @default(autoincrement())
+  userId Int
+  role   Role
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, role])
+}
+
+enum Role {
+  CONSULTANT
+  SALESPERSON
+  CUSTOMER
+  ADMIN
+}
+
+/// For social networking URLs, phone numbers, etc.
+model UserAttribute {
+  id         Int        @id @default(autoincrement())
+  userId     Int
+  createdAt  DateTime   @default(now())
+  value      String
+  label      String
+  visibility Visibility @default(SALES_AND_CONSULTANTS)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, label])
+}
+
+model Consultant {
+  id          Int    @id @default(autoincrement())
+  userId      Int    @unique
+  description String
+
+  user                User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  salesListItems      SalesListItem[]
+  customerReviewItems CustomerReviewItem[]
+}
+
+model ConsultantSkill {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  createdAt   DateTime @default(now())
+  skillName   String
+  /// Proficiency is rated on a scale 1-5
+  proficiency Int
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skill Skill @relation(fields: [skillName], references: [name], onDelete: Cascade)
+
+  @@unique([userId, skillName])
+}
+
+model Skill {
+  id         Int    @id @default(autoincrement())
+  categoryid Int?
+  /// name should be stored in lowercase to prevent duplicates
+  name       String @unique
+
+  category         SkillCategory?    @relation(fields: [categoryid], references: [id])
+  consultantSkills ConsultantSkill[]
+}
+
+model SkillCategory {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  skills Skill[]
+}
+
+model UserEmployment {
+  id          Int        @id @default(autoincrement())
+  userId      Int
+  createdAt   DateTime   @default(now())
+  employer    String
+  jobTitle    String
+  description String
+  start       DateTime
+  end         DateTime?
+  visibility  Visibility @default(SALES_AND_CONSULTANTS)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model UserProject {
+  id          Int        @id @default(autoincrement())
+  userId      Int
+  createdAt   DateTime   @default(now())
+  projectName String
+  description String
+  workDays    Int        @default(0) // for calculating user's experience
+  visibility  Visibility @default(SALES_AND_CONSULTANTS)
+
+  projectLinks ProjectLink[]
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ProjectLink {
+  id        Int      @id @default(autoincrement())
+  projectId Int
+  createdAt DateTime @default(now())
+  url       String
+  urlLabel  String
+
+  project UserProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model Salesperson {
+  id     Int @id @default(autoincrement())
+  userId Int @unique
+
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  salesLists SalesList[]
+}
+
+model SalesList {
+  id            Int    @id @default(autoincrement())
+  salespersonId Int
+  listPosition  Int    @default(autoincrement())
+  notes         String
+
+  salesperson    Salesperson     @relation(fields: [salespersonId], references: [userId], onDelete: Cascade)
+  salesListItems SalesListItem[]
+
+  @@unique([salespersonId, listPosition])
+}
+
+model SalesListItem {
+  id           Int    @id @default(autoincrement())
+  consultantId Int
+  salesListId  Int
+  listPosition Int    @default(autoincrement())
+  notes        String
+
+  consultant Consultant @relation(fields: [consultantId], references: [userId], onDelete: Cascade)
+  salesList  SalesList  @relation(fields: [salesListId], references: [id], onDelete: Cascade)
+
+  @@unique([consultantId, salesListId])
+  @@unique([salesListId, listPosition])
+}
+
+model Customer {
+  id     Int @id @default(autoincrement())
+  userId Int @unique
+
+  user                User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  customerReviewItems CustomerReviewItem[]
+}
+
+model CustomerReviewItem {
+  id           Int    @id @default(autoincrement())
+  customerId   Int
+  consultantId Int?
+  notes        String
+
+  customer   Customer    @relation(fields: [customerId], references: [userId], onDelete: Cascade)
+  consultant Consultant? @relation(fields: [consultantId], references: [userId])
+}
+
+model PageSection {
+  id         Int             @id @default(autoincrement())
+  userId     Int
+  name       PageSectionName
+  visibility Visibility      @default(SALES_AND_CONSULTANTS)
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comments Comment[]
+
+  @@unique([userId, name])
+}
+
+enum PageSectionName {
+  GENERAL /// comments about the whole consultant page
+  NETWORKING_LINKS
+  DESCRIPTION
+  SKILLS
+  EMPLOYMENTS
+  PROJECTS
+}
+
+model Comment {
+  id            Int      @id @default(autoincrement())
+  pageSectionId Int
+  userId        Int /// user who leaves the comment
+  createdAt     DateTime @default(now())
+  listPosition  Int      @default(autoincrement())
+
+  pageSection PageSection @relation(fields: [pageSectionId], references: [id], onDelete: Cascade)
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([pageSectionId, listPosition])
+}
