@@ -23,11 +23,7 @@ model User {
   salesperson    Salesperson?
   customer       Customer?
   roles          UserRole[]
-  skills         ConsultantSkill[]
-  employments    UserEmployment[]
-  projects       UserProject[]
   userAttributes UserAttribute[]
-  pageSections   PageSection[]
   comments       Comment[]
 }
 
@@ -75,9 +71,13 @@ model Consultant {
   user                User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
   salesListItems      SalesListItem[]
   customerReviewItems CustomerReviewItem[]
+  employments         Employment[]
+  projects            Project[]
+  skills              Skill[]
+  pageSections        PageSection[]
 }
 
-model ConsultantSkill {
+model Skill {
   id          Int      @id @default(autoincrement())
   userId      Int
   createdAt   DateTime @default(now())
@@ -85,30 +85,30 @@ model ConsultantSkill {
   /// Proficiency is rated on a scale 1-5
   proficiency Int
 
-  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  skill Skill @relation(fields: [skillName], references: [name], onDelete: Cascade)
+  consultant Consultant @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  skill      SkillTag   @relation(fields: [skillName], references: [name], onDelete: Cascade)
 
   @@unique([userId, skillName])
 }
 
-model Skill {
+model SkillTag {
   id         Int    @id @default(autoincrement())
   categoryid Int?
   /// name should be stored in lowercase to prevent duplicates
   name       String @unique
 
-  category         SkillCategory?    @relation(fields: [categoryid], references: [id])
-  consultantSkills ConsultantSkill[]
+  category SkillCategory? @relation(fields: [categoryid], references: [id])
+  skills   Skill[]
 }
 
 model SkillCategory {
   id   Int    @id @default(autoincrement())
   name String @unique
 
-  skills Skill[]
+  skills SkillTag[]
 }
 
-model UserEmployment {
+model Employment {
   id          Int        @id @default(autoincrement())
   userId      Int
   createdAt   DateTime   @default(now())
@@ -119,10 +119,10 @@ model UserEmployment {
   end         DateTime?
   visibility  Visibility @default(SALES_AND_CONSULTANTS)
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  consultant Consultant @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }
 
-model UserProject {
+model Project {
   id          Int        @id @default(autoincrement())
   userId      Int
   createdAt   DateTime   @default(now())
@@ -132,7 +132,7 @@ model UserProject {
   visibility  Visibility @default(SALES_AND_CONSULTANTS)
 
   projectLinks ProjectLink[]
-  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  consultant   Consultant    @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }
 
 model ProjectLink {
@@ -142,7 +142,7 @@ model ProjectLink {
   url       String
   urlLabel  String
 
-  project UserProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
 
 model Salesperson {
@@ -203,8 +203,8 @@ model PageSection {
   name       PageSectionName
   visibility Visibility      @default(SALES_AND_CONSULTANTS)
 
-  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  comments Comment[]
+  consultant Consultant @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  comments   Comment[]
 
   @@unique([userId, name])
 }
@@ -221,7 +221,7 @@ enum PageSectionName {
 model Comment {
   id            Int      @id @default(autoincrement())
   pageSectionId Int
-  userId        Int /// user who leaves the comment
+  userId        Int /// user who creates the comment
   createdAt     DateTime @default(now())
   listPosition  Int      @default(autoincrement())
 
