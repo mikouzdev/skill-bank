@@ -212,6 +212,7 @@ model SalesListItem {
   listPosition Int     @default(autoincrement())
   isAccepted   Boolean @default(false)
   isHidden     Boolean @default(false)
+  salesNote    String
 
   consultant Consultant @relation(fields: [consultantId], references: [userId], onDelete: Cascade)
   salesList  SalesList  @relation(fields: [salesListId], references: [id], onDelete: Cascade)
