@@ -16,7 +16,10 @@ datasource db {
 model User {
   id                Int      @id @default(autoincrement())
   createdAt         DateTime @default(now())
+  updatedAt         DateTime @default(now())
   name              String
+  email             String   @unique
+  passwordHash      String
   profilePictureUrl String
 
   consultant     Consultant?
@@ -151,14 +154,15 @@ model Employment {
 }
 
 model Project {
-  id          Int        @id @default(autoincrement())
-  userId      Int
-  createdAt   DateTime   @default(now())
-  name        String
-  description String
-  start       DateTime
-  end         DateTime?
-  visibility  Visibility @default(SALES_AND_CONSULTANTS)
+  id               Int        @id @default(autoincrement())
+  userId           Int
+  createdAt        DateTime   @default(now())
+  name             String
+  description      String
+  shortDescription String
+  start            DateTime
+  end              DateTime?
+  visibility       Visibility @default(SALES_AND_CONSULTANTS)
 
   projectLinks  ProjectLink[]
   consultant    Consultant     @relation(fields: [userId], references: [userId], onDelete: Cascade)
@@ -251,9 +255,12 @@ model Comment {
   userId        Int /// user who creates the comment
   createdAt     DateTime @default(now())
   listPosition  Int      @default(autoincrement())
+  replyToId     Int
 
-  pageSection PageSection @relation(fields: [pageSectionId], references: [id], onDelete: Cascade)
-  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  pageSection   PageSection @relation(fields: [pageSectionId], references: [id], onDelete: Cascade)
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  directReplyTo Comment     @relation("reply", fields: [replyToId], references: [id])
+  directReplies Comment[]   @relation("reply")
 
   @@unique([pageSectionId, listPosition])
 }
