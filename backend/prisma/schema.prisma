@@ -154,15 +154,14 @@ model Employment {
 }
 
 model Project {
-  id               Int        @id @default(autoincrement())
-  userId           Int
-  createdAt        DateTime   @default(now())
-  name             String
-  description      String
-  shortDescription String
-  start            DateTime
-  end              DateTime?
-  visibility       Visibility @default(SALES_AND_CONSULTANTS)
+  id          Int        @id @default(autoincrement())
+  userId      Int
+  createdAt   DateTime   @default(now())
+  name        String
+  description String
+  start       DateTime
+  end         DateTime?
+  visibility  Visibility @default(SALES_AND_CONSULTANTS)
 
   projectLinks  ProjectLink[]
   consultant    Consultant     @relation(fields: [userId], references: [userId], onDelete: Cascade)
@@ -189,12 +188,13 @@ model Salesperson {
 
 /// Created by salespeople and viewable by customers.
 model SalesList {
-  id            Int     @id @default(autoincrement())
-  salespersonId Int
-  customerId    Int
-  listPosition  Int     @default(autoincrement())
-  description   String
-  isReviewDone  Boolean @default(false) /// Customer's review
+  id               Int     @id @default(autoincrement())
+  salespersonId    Int
+  customerId       Int
+  listPosition     Int     @default(autoincrement())
+  description      String
+  shortDescription String
+  isReviewDone     Boolean @default(false) /// Customer's review
 
   salesperson    Salesperson     @relation(fields: [salespersonId], references: [userId])
   customer       Customer        @relation(fields: [customerId], references: [userId], onDelete: Cascade)
