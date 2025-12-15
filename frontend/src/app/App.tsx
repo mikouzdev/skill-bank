@@ -1,9 +1,9 @@
-import { Typography } from "@mui/material";
+import ConsultantProfilePage from "../features/consultant/pages/ConsultantProfilePage";
 
 function App() {
   return (
     <>
-      <Typography variant="h5">Hello World!</Typography>
+      <ConsultantProfilePage />
     </>
   );
 }
