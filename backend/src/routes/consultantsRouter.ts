@@ -1,7 +1,7 @@
 import { Router, type Request, type Response } from "express";
 import fileUpload from "express-fileupload";
-import z from "zod";
 import { LocalStorageService } from "../storage/localStorage.js";
+import { GetConsultantSchema } from "../schemas/consultants.schema.js";
 
 export const consultantsRouter = Router();
 
@@ -10,18 +10,17 @@ consultantsRouter.put(
   fileUpload(),
   async (req: Request, res: Response) => {
     const profilepicture = req.files?.profilepicture;
-    if (profilepicture === undefined || Array.isArray(profilepicture)) {
-      res.status(400).send({ error: "Invalid inputs" });
-      return;
-    }
 
-    const storageService = new LocalStorageService();
+    // Try to add profile picture to local storage
+    if (profilepicture !== undefined && !Array.isArray(profilepicture)) {
+      const storageService = new LocalStorageService();
 
-    try {
-      await storageService.save(profilepicture.name, profilepicture.data);
-    } catch (err) {
-      if (err instanceof Error) {
-        res.status(500).send({ error: err });
+      try {
+        await storageService.save(profilepicture.name, profilepicture.data);
+      } catch (err) {
+        if (err instanceof Error) {
+          res.status(500).send({ error: err });
+        }
       }
     }
 
@@ -30,11 +29,7 @@ consultantsRouter.put(
 );
 
 consultantsRouter.get("/:consultantId", (req: Request, res: Response) => {
-  const ParamsSchema = z.object({
-    consultantId: z.number(),
-  });
-
-  const parsedParams = ParamsSchema.safeParse(req.params);
+  const parsedParams = GetConsultantSchema.safeParse(req.params);
   if (!parsedParams.success) {
     res.status(400).send({ error: "Invalid inputs" });
     return;
@@ -42,9 +37,7 @@ consultantsRouter.get("/:consultantId", (req: Request, res: Response) => {
 
   const id = parsedParams.data.consultantId;
 
-  // Temporary profile picture
-  const profilePictureUrl =
-    "https://gitlab.com/uploads/-/system/user/avatar/30356562/avatar.png";
+  const profilePictureUrl = `/static/${id}_profile_picture.jpg`;
 
   res.send({ id, profilePictureUrl });
 });

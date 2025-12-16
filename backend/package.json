@@ -34,6 +34,7 @@
     "vitest": "^4.0.14"
   },
   "dependencies": {
+    "@prisma/adapter-pg": "^7.1.0",
     "@prisma/client": "^6.19.0",
     "express": "^5.1.0",
     "express-fileupload": "^1.5.2",
