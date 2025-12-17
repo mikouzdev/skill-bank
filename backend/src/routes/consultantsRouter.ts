@@ -1,9 +1,29 @@
 import { Router, type Request, type Response } from "express";
 import fileUpload from "express-fileupload";
 import { LocalStorageService } from "../storage/localStorage.js";
-import { GetConsultantSchema } from "../schemas/consultants.schema.js";
+import { ConsultantIdParamsSchema } from "../schemas/consultants.schema.js";
 
 export const consultantsRouter = Router();
+
+consultantsRouter.get("/:consultantId", (req: Request, res: Response) => {
+  const parsedParams = ConsultantIdParamsSchema.safeParse(req.params);
+  if (!parsedParams.success) {
+    res.status(400).json(parsedParams.error);
+    return;
+  }
+
+  const consultantId = parsedParams.data.consultantId;
+  const profilePictureUrl = `/static/${consultantId}_profile_picture.jpg`;
+
+  // TODO: change temporary values into real ones
+  res.send({
+    consultantId,
+    userId: 1,
+    description: "Mock Description",
+    roleTitle: "Mock Developer",
+    profilePictureUrl,
+  });
+});
 
 consultantsRouter.put(
   "/me",
@@ -18,26 +38,11 @@ consultantsRouter.put(
       try {
         await storageService.save(profilepicture.name, profilepicture.data);
       } catch (err) {
-        if (err instanceof Error) {
-          res.status(500).send({ error: err });
-        }
+        res.status(500).send({ error: err });
+        return;
       }
     }
 
     res.send();
   }
 );
-
-consultantsRouter.get("/:consultantId", (req: Request, res: Response) => {
-  const parsedParams = GetConsultantSchema.safeParse(req.params);
-  if (!parsedParams.success) {
-    res.status(400).send({ error: "Invalid inputs" });
-    return;
-  }
-
-  const id = parsedParams.data.consultantId;
-
-  const profilePictureUrl = `/static/${id}_profile_picture.jpg`;
-
-  res.send({ id, profilePictureUrl });
-});
