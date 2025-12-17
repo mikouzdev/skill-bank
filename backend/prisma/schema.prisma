@@ -22,12 +22,11 @@ model User {
   email        String   @unique
   passwordHash String
 
-  consultant     Consultant?
-  salesperson    Salesperson?
-  customer       Customer?
-  roles          UserRole[]
-  userAttributes UserAttribute[]
-  comments       Comment[]
+  consultant  Consultant?
+  salesperson Salesperson?
+  customer    Customer?
+  roles       UserRole[]
+  comments    Comment[]
 }
 
 enum Visibility {
@@ -53,18 +52,18 @@ enum Role {
 }
 
 /// For social networking URLs, phone numbers, etc.
-model UserAttribute {
-  id         Int               @id @default(autoincrement())
-  userId     Int
-  createdAt  DateTime          @default(now())
-  value      String
-  label      String
-  type       UserAttributeType @default(TEXT)
-  visibility Visibility        @default(SALES_AND_CONSULTANTS)
+model ConsultantAttribute {
+  id           Int               @id @default(autoincrement())
+  consultantId Int
+  createdAt    DateTime          @default(now())
+  value        String
+  label        String
+  type         UserAttributeType @default(TEXT)
+  visibility   Visibility        @default(SALES_AND_CONSULTANTS)
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  consultant Consultant @relation(fields: [consultantId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, label])
+  @@unique([consultantId, label])
 }
 
 enum UserAttributeType {
@@ -79,12 +78,13 @@ model Consultant {
   roleTitle         String
   profilePictureUrl String
 
-  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  salesListItems SalesListItem[]
-  employments    Employment[]
-  projects       Project[]
-  userSkills     UserSkill[]
-  pageSections   PageSection[]
+  user                 User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  salesListItems       SalesListItem[]
+  employments          Employment[]
+  projects             Project[]
+  userSkills           UserSkill[]
+  pageSections         PageSection[]
+  consultantAttributes ConsultantAttribute[]
 }
 
 model UserSkill {
@@ -256,7 +256,9 @@ model Comment {
   id            Int      @id @default(autoincrement())
   pageSectionId Int
   userId        Int /// user who creates the comment
+  userRole      Role
   createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now())
   listPosition  Int      @default(autoincrement())
   replyToId     Int
 
