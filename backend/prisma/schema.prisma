@@ -5,8 +5,9 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "esm"
 }
 
 datasource db {
@@ -14,20 +15,18 @@ datasource db {
 }
 
 model User {
-  id                Int      @id @default(autoincrement())
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @default(now())
-  name              String
-  email             String   @unique
-  passwordHash      String
-  profilePictureUrl String
+  id           Int      @id @default(autoincrement())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
+  name         String
+  email        String   @unique
+  passwordHash String
 
-  consultant     Consultant?
-  salesperson    Salesperson?
-  customer       Customer?
-  roles          UserRole[]
-  userAttributes UserAttribute[]
-  comments       Comment[]
+  consultant  Consultant?
+  salesperson Salesperson?
+  customer    Customer?
+  roles       UserRole[]
+  comments    Comment[]
 }
 
 enum Visibility {
@@ -53,18 +52,18 @@ enum Role {
 }
 
 /// For social networking URLs, phone numbers, etc.
-model UserAttribute {
-  id         Int               @id @default(autoincrement())
-  userId     Int
-  createdAt  DateTime          @default(now())
-  value      String
-  label      String
-  type       UserAttributeType @default(TEXT)
-  visibility Visibility        @default(SALES_AND_CONSULTANTS)
+model ConsultantAttribute {
+  id           Int               @id @default(autoincrement())
+  consultantId Int
+  createdAt    DateTime          @default(now())
+  value        String
+  label        String
+  type         UserAttributeType @default(TEXT)
+  visibility   Visibility        @default(SALES_AND_CONSULTANTS)
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  consultant Consultant @relation(fields: [consultantId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, label])
+  @@unique([consultantId, label])
 }
 
 enum UserAttributeType {
@@ -73,31 +72,34 @@ enum UserAttributeType {
 }
 
 model Consultant {
-  id          Int    @id @default(autoincrement())
-  userId      Int    @unique
-  description String
+  id                Int    @id @default(autoincrement())
+  userId            Int    @unique
+  description       String
+  roleTitle         String
+  profilePictureUrl String
 
-  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  salesListItems SalesListItem[]
-  employments    Employment[]
-  projects       Project[]
-  userSkills     UserSkill[]
-  pageSections   PageSection[]
+  user                 User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  salesListItems       SalesListItem[]
+  employments          Employment[]
+  projects             Project[]
+  userSkills           UserSkill[]
+  pageSections         PageSection[]
+  consultantAttributes ConsultantAttribute[]
 }
 
 model UserSkill {
   id           Int      @id @default(autoincrement())
-  userId       Int
+  consultantId Int
   createdAt    DateTime @default(now())
   skillName    String
   /// Proficiency is rated on a scale 1-5
   proficiency  Int
   listPosition Int      @default(autoincrement())
 
-  consultant Consultant @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  consultant Consultant @relation(fields: [consultantId], references: [id], onDelete: Cascade)
   skillTag   SkillTag   @relation(fields: [skillName], references: [name], onDelete: Cascade)
 
-  @@unique([userId, skillName])
+  @@unique([consultantId, skillName])
 }
 
 model ProjectSkill {
@@ -139,32 +141,32 @@ model SkillCategory {
 }
 
 model Employment {
-  id          Int        @id @default(autoincrement())
-  userId      Int
-  createdAt   DateTime   @default(now())
-  employer    String
-  jobTitle    String
-  description String
-  start       DateTime
-  end         DateTime?
-  visibility  Visibility @default(SALES_AND_CONSULTANTS)
+  id           Int        @id @default(autoincrement())
+  consultantId Int
+  createdAt    DateTime   @default(now())
+  employer     String
+  jobTitle     String
+  description  String
+  start        DateTime
+  end          DateTime?
+  visibility   Visibility @default(SALES_AND_CONSULTANTS)
 
-  consultant       Consultant        @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  consultant       Consultant        @relation(fields: [consultantId], references: [id], onDelete: Cascade)
   employmentSkills EmploymentSkill[]
 }
 
 model Project {
-  id          Int        @id @default(autoincrement())
-  userId      Int
-  createdAt   DateTime   @default(now())
-  name        String
-  description String
-  start       DateTime
-  end         DateTime?
-  visibility  Visibility @default(SALES_AND_CONSULTANTS)
+  id           Int        @id @default(autoincrement())
+  consultantId Int
+  createdAt    DateTime   @default(now())
+  name         String
+  description  String
+  start        DateTime
+  end          DateTime?
+  visibility   Visibility @default(SALES_AND_CONSULTANTS)
 
   projectLinks  ProjectLink[]
-  consultant    Consultant     @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  consultant    Consultant     @relation(fields: [consultantId], references: [id], onDelete: Cascade)
   projectSkills ProjectSkill[]
 }
 
@@ -196,8 +198,8 @@ model SalesList {
   shortDescription String
   isReviewDone     Boolean @default(false) /// Customer's review
 
-  salesperson    Salesperson     @relation(fields: [salespersonId], references: [userId])
-  customer       Customer        @relation(fields: [customerId], references: [userId], onDelete: Cascade)
+  salesperson    Salesperson     @relation(fields: [salespersonId], references: [id])
+  customer       Customer        @relation(fields: [customerId], references: [id], onDelete: Cascade)
   salesListItems SalesListItem[]
 
   @@unique([salespersonId, listPosition])
@@ -214,7 +216,7 @@ model SalesListItem {
   isHidden     Boolean @default(false)
   salesNote    String
 
-  consultant Consultant @relation(fields: [consultantId], references: [userId], onDelete: Cascade)
+  consultant Consultant @relation(fields: [consultantId], references: [id], onDelete: Cascade)
   salesList  SalesList  @relation(fields: [salesListId], references: [id], onDelete: Cascade)
 
   @@unique([consultantId, salesListId])
@@ -230,15 +232,15 @@ model Customer {
 }
 
 model PageSection {
-  id         Int             @id @default(autoincrement())
-  userId     Int
-  name       PageSectionName
-  visibility Visibility      @default(SALES_AND_CONSULTANTS)
+  id           Int             @id @default(autoincrement())
+  consultantId Int
+  name         PageSectionName
+  visibility   Visibility      @default(SALES_AND_CONSULTANTS)
 
-  consultant Consultant @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  consultant Consultant @relation(fields: [consultantId], references: [id], onDelete: Cascade)
   comments   Comment[]
 
-  @@unique([userId, name])
+  @@unique([consultantId, name])
 }
 
 enum PageSectionName {
@@ -254,7 +256,9 @@ model Comment {
   id            Int      @id @default(autoincrement())
   pageSectionId Int
   userId        Int /// user who creates the comment
+  userRole      Role
   createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now())
   listPosition  Int      @default(autoincrement())
   replyToId     Int
 
