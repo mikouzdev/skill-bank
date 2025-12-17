@@ -12,5 +12,10 @@ export const ConsultantResponseSchema = z.object({
   profilePictureUrl: z.string(),
 });
 
+export const AllConsultantsResponseSchema = z.array(ConsultantResponseSchema);
+
 export type ConsultantIdParams = z.infer<typeof ConsultantIdParamsSchema>;
 export type ConsultantResponse = z.infer<typeof ConsultantResponseSchema>;
+export type AllConsultantsResponse = z.infer<
+  typeof AllConsultantsResponseSchema
+>;
