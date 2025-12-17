@@ -2,8 +2,20 @@ import { Router, type Request, type Response } from "express";
 import fileUpload from "express-fileupload";
 import { LocalStorageService } from "../storage/localStorage.js";
 import { ConsultantIdParamsSchema } from "../schemas/consultants.schema.js";
+import { prisma } from "../db/prismaClient.js";
 
 export const consultantsRouter = Router();
+
+consultantsRouter.get("/", async (req: Request, res: Response) => {
+  try {
+    const consultants = await prisma.consultant.findMany();
+    res.send(consultants);
+    return;
+  } catch (err) {
+    res.status(500).json(err);
+    return;
+  }
+});
 
 consultantsRouter.get("/:consultantId", (req: Request, res: Response) => {
   const parsedParams = ConsultantIdParamsSchema.safeParse(req.params);
@@ -16,7 +28,7 @@ consultantsRouter.get("/:consultantId", (req: Request, res: Response) => {
   const profilePictureUrl = `/static/${consultantId}_profile_picture.jpg`;
 
   // TODO: change temporary values into real ones
-  res.send({
+  res.json({
     consultantId,
     userId: 1,
     description: "Mock Description",
@@ -38,7 +50,7 @@ consultantsRouter.put(
       try {
         await storageService.save(profilepicture.name, profilepicture.data);
       } catch (err) {
-        res.status(500).send({ error: err });
+        res.status(500).json(err);
         return;
       }
     }

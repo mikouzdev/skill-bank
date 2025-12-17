@@ -1,9 +1,25 @@
 import {
   ConsultantIdParamsSchema,
   ConsultantResponseSchema,
+  AllConsultantsResponseSchema,
 } from "../schemas/consultants.schema.js";
 
 export const consultantPaths = {
+  "/consultants": {
+    get: {
+      summary: "Get all consultants",
+      tags: ["Consultants"],
+      responses: {
+        200: {
+          description: "Retrieval successful",
+          content: {
+            "application/json": { schema: AllConsultantsResponseSchema },
+          },
+        },
+        500: { description: "Server error" },
+      },
+    },
+  },
   "/consultants/{consultantId}": {
     get: {
       summary: "Get a single consultant",
