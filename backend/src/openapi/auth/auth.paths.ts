@@ -2,7 +2,7 @@ import {
   LoginSchema,
   AuthResponseSchema,
   LogoutResponseSchema,
-} from "../schemas/auth.schema.js";
+} from "../../schemas/auth/auth.schema.js";
 
 export const authPaths = {
   "/auth/login": {
