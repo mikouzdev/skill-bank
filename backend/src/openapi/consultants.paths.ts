@@ -1,10 +1,9 @@
 import {
-  ConsultantIdParamsSchema,
   ConsultantResponseSchema,
   AllConsultantsResponseSchema,
 } from "../schemas/consultants.schema.js";
 
-export const consultantPaths = {
+export const consultantsPaths = {
   "/consultants": {
     get: {
       summary: "Get all consultants",
@@ -27,9 +26,10 @@ export const consultantPaths = {
       parameters: [
         {
           name: "consultantId",
-          in: "path",
+          in: "path" as const,
           required: true,
-          schema: ConsultantIdParamsSchema,
+          // TODO: use ConsultantIdParamsSchema
+          schema: { type: "integer" as const },
         },
       ],
       responses: {
