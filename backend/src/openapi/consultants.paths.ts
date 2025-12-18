@@ -1,10 +1,9 @@
 import {
-  ConsultantIdParamsSchema,
   ConsultantResponseSchema,
   AllConsultantsResponseSchema,
 } from "../schemas/consultants.schema.js";
 
-export const consultantPaths = {
+export const consultantsPaths = {
   "/consultants": {
     get: {
       summary: "Get all consultants",
@@ -27,9 +26,10 @@ export const consultantPaths = {
       parameters: [
         {
           name: "consultantId",
-          in: "path",
+          in: "path" as const,
           required: true,
-          schema: ConsultantIdParamsSchema,
+          // TODO: use ConsultantIdParamsSchema
+          schema: { type: "integer" as const },
         },
       ],
       responses: {
@@ -40,6 +40,8 @@ export const consultantPaths = {
           },
         },
         400: { description: "Invalid consultant id" },
+        404: { description: "Consultant with that id was not found" },
+        500: { description: "Internal server error" },
       },
     },
   },
@@ -51,7 +53,7 @@ export const consultantPaths = {
         200: {
           description: "Data change successful",
         },
-        500: { description: "Server error" },
+        500: { description: "Internal server error" },
       },
     },
   },
