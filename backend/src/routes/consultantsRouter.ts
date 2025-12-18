@@ -17,24 +17,29 @@ consultantsRouter.get("/", async (req: Request, res: Response) => {
   }
 });
 
-consultantsRouter.get("/:consultantId", (req: Request, res: Response) => {
+consultantsRouter.get("/:consultantId", async (req: Request, res: Response) => {
   const parsedParams = ConsultantIdParamsSchema.safeParse(req.params);
   if (!parsedParams.success) {
     res.status(400).json(parsedParams.error);
     return;
   }
-
   const consultantId = parsedParams.data.consultantId;
-  const profilePictureUrl = `/static/${consultantId}_profile_picture.jpg`;
 
-  // TODO: change temporary values into real ones
-  res.json({
-    consultantId,
-    userId: 1,
-    description: "Mock Description",
-    roleTitle: "Mock Developer",
-    profilePictureUrl,
-  });
+  let consultant = null;
+  try {
+    consultant = await prisma.consultant.findFirst({
+      where: { id: consultantId },
+    });
+  } catch (err) {
+    res.status(500).json(err);
+    return;
+  }
+
+  if (consultant === null) {
+    res.status(404).json({ error: "Not found" });
+    return;
+  }
+  res.json(consultant);
 });
 
 consultantsRouter.put(

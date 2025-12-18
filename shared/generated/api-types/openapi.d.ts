@@ -143,7 +143,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    consultantId: Record<string, never>;
+                    consultantId: number;
                 };
                 cookie?: never;
             };
@@ -160,6 +160,20 @@ export interface paths {
                 };
                 /** @description Invalid consultant id */
                 400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Consultant with that id was not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
                     headers: {
                         [name: string]: unknown;
                     };
@@ -200,7 +214,7 @@ export interface paths {
                     };
                     content?: never;
                 };
-                /** @description Server error */
+                /** @description Internal server error */
                 500: {
                     headers: {
                         [name: string]: unknown;
@@ -243,10 +257,15 @@ export interface components {
         };
         AllConsultantsResponse: components["schemas"]["ConsultantResponse"][];
         ConsultantResponse: {
+            /** @example 1 */
             consultantId: number;
+            /** @example 1 */
             userId: number;
+            /** @example I'm something of a fullstack developer myself. */
             description: string;
+            /** @example Fullstack Developer */
             roleTitle: string;
+            /** @example /static/1_profile_picture.jpg */
             profilePictureUrl: string;
         };
     };

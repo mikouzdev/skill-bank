@@ -40,6 +40,8 @@ export const consultantsPaths = {
           },
         },
         400: { description: "Invalid consultant id" },
+        404: { description: "Consultant with that id was not found" },
+        500: { description: "Internal server error" },
       },
     },
   },
@@ -51,7 +53,7 @@ export const consultantsPaths = {
         200: {
           description: "Data change successful",
         },
-        500: { description: "Server error" },
+        500: { description: "Internal server error" },
       },
     },
   },
