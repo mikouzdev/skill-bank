@@ -25,6 +25,6 @@ export class LocalStorageService implements StorageService {
 
   async delete(filename: string) {
     const filePath = path.join(UPLOAD_DIR, filename);
-    await fs.unlink(filePath).catch(() => {});
+    await fs.unlink(filePath);
   }
 }

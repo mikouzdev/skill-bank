@@ -1,8 +1,19 @@
 import { Router, type Request, type Response } from "express";
-import fileUpload from "express-fileupload";
 import { LocalStorageService } from "../../storage/localStorage.js";
-import { ConsultantIdParamsSchema } from "../../schemas/consultants/consultants.schema.js";
+import {
+  ConsultantIdParamsSchema,
+  UpdateConsultantSchema,
+} from "../../schemas/consultants/consultants.schema.js";
 import { prisma } from "../../db/prismaClient.js";
+import { fileTypeFromBuffer } from "file-type";
+import { uploadFile } from "../../middlewares/file.js";
+
+// TODO: Check all env variables in a single place
+const PROFILE_PICTURE_PREFIX =
+  process.env.PROFILE_PICTURE_PREFIX ??
+  (() => {
+    throw new Error("Env missing: PROFILE_PICTURE_PREFIX");
+  })();
 
 export const consultantsRouter = Router();
 
@@ -29,6 +40,13 @@ consultantsRouter.get("/:consultantId", async (req: Request, res: Response) => {
   try {
     consultant = await prisma.consultant.findFirst({
       where: { id: consultantId },
+      include: {
+        user: {
+          select: {
+            name: true,
+          },
+        },
+      },
     });
   } catch (err) {
     res.status(500).json(err);
@@ -36,7 +54,7 @@ consultantsRouter.get("/:consultantId", async (req: Request, res: Response) => {
   }
 
   if (consultant === null) {
-    res.status(404).json({ error: "Not found" });
+    res.status(404).json({ message: "Not found" });
     return;
   }
   res.json(consultant);
@@ -44,22 +62,98 @@ consultantsRouter.get("/:consultantId", async (req: Request, res: Response) => {
 
 consultantsRouter.put(
   "/me",
-  fileUpload(),
+  uploadFile("profilePicture"),
   async (req: Request, res: Response) => {
-    const profilepicture = req.files?.profilepicture;
+    const parsedBody = UpdateConsultantSchema.safeParse(req.body);
+    if (!parsedBody.success) {
+      res.status(400).json(parsedBody.error);
+      return;
+    }
+    const { description, roleTitle, user } = parsedBody.data;
+    const profilePicture = req.file;
+    let profilePictureUrl;
 
-    // Try to add profile picture to local storage
-    if (profilepicture !== undefined && !Array.isArray(profilepicture)) {
+    // TODO: use real data instead of the seeded mock data
+    const consultantId = 1;
+
+    if (profilePicture !== undefined) {
+      const imageType = await fileTypeFromBuffer(profilePicture.buffer);
+
+      if (imageType === undefined) {
+        return res.status(400).json({ message: "Unknown file type" });
+      }
+
+      const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+      if (!allowedTypes.includes(imageType.mime)) {
+        return res.status(400).json({ message: "Unsupported image type" });
+      }
+
+      // Get the URL of the previous image
+      let consultant = null;
+      try {
+        consultant = await prisma.consultant.findFirst({
+          where: { id: consultantId },
+        });
+      } catch (err) {
+        res.status(500).json(err);
+        return;
+      }
+      if (consultant === null) {
+        res.status(404).json({ message: "Consultant id not found" });
+        return;
+      }
+
+      // Delete the previous image
       const storageService = new LocalStorageService();
+      const previousFilename = new URL(consultant.profilePictureUrl).pathname
+        .split("/")
+        .pop();
+
+      if (previousFilename !== undefined) {
+        try {
+          await storageService.delete(previousFilename);
+        } catch (err) {
+          res.status(500).json(err);
+          return;
+        }
+      }
+
+      // Add a new picture
+      const profilePictureFileName = `${consultantId}_pp${new Date().getTime()}.${
+        imageType.ext
+      }`;
+      profilePictureUrl = `${PROFILE_PICTURE_PREFIX}/${profilePictureFileName}`;
 
       try {
-        await storageService.save(profilepicture.name, profilepicture.data);
+        await storageService.save(
+          profilePictureFileName,
+          profilePicture.buffer
+        );
       } catch (err) {
         res.status(500).json(err);
         return;
       }
     }
 
-    res.send();
+    try {
+      await prisma.consultant.update({
+        where: { id: consultantId },
+        data: {
+          ...(description !== undefined ? { description } : {}),
+          ...(roleTitle !== undefined ? { roleTitle } : {}),
+          ...(profilePictureUrl !== undefined ? { profilePictureUrl } : {}),
+          user: {
+            update: {
+              ...(user?.name !== undefined ? { name: user.name } : {}),
+            },
+          },
+        },
+      });
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
+
+    res.status(204).json();
   }
 );

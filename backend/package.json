@@ -23,7 +23,7 @@
     "@dotenvx/dotenvx": "^1.51.1",
     "@eslint/js": "^9.39.1",
     "@types/express": "^5.0.5",
-    "@types/express-fileupload": "^1.5.1",
+    "@types/multer": "^2.0.0",
     "@types/node": "^24.10.1",
     "@types/swagger-ui-express": "^4.1.8",
     "eslint": "^9.39.1",
@@ -41,7 +41,8 @@
     "@prisma/adapter-pg": "^7.1.0",
     "@prisma/client": "^7.1.0",
     "express": "^5.1.0",
-    "express-fileupload": "^1.5.2",
+    "file-type": "^21.1.1",
+    "multer": "^2.0.2",
     "swagger-ui-express": "^5.0.1",
     "zod": "^4.1.13",
     "zod-openapi": "^5.4.5"
