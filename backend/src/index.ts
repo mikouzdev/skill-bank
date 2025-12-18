@@ -1,16 +1,17 @@
 import app from "./app.js";
 import swaggerUi from "swagger-ui-express";
 import { openApiDoc } from "./openapi/openapi.js";
-
+import { skillsRouter } from "./routes/skillsRouter.js";
 
 const PORT = Number(process.env.PORT) || 3000;
 
-app.get("/openapi.json", (req, res) => { 
+app.get("/openapi.json", (req, res) => {
   res.json(openApiDoc);
-})
+});
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(openApiDoc));
+app.use("/skill", skillsRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is listening to port ${PORT}`);

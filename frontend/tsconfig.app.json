@@ -25,7 +25,7 @@
     "noUncheckedSideEffectImports": true,
     "paths": {
       "@api-types/*": ["../shared/generated/api-types/*"]
-    },
+    }
   },
   "include": ["src"]
 }

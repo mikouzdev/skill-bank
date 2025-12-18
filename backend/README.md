@@ -1,6 +1,5 @@
 Documentation: [[Backend]]
 
-
 This backend uses **Zod + zod-openapi** to generate OpenAPI documentation and
 shared TypeScript types **directly from code**.
 
@@ -12,15 +11,18 @@ shared TypeScript types **directly from code**.
 
 This JSON is the **only OpenAPI source of truth**.
 
-Quick instructions: 
+Quick instructions:
+
 1. Start backend
-Run server: 
+   Run server:
+
 - pnpmn run dev
-Verify in browser: 
+  Verify in browser:
 - http://localhost:3000/openapi.json
 
 2. Generate shared API types
-While server running:
+   While server running:
+
 - pnpm generate:api-types
 - this will create in the project root shared/generated/api-types/openapi.d.ts
 - commit this file, no manual editing
