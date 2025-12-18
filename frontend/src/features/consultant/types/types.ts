@@ -11,3 +11,13 @@ export interface UserAttribute {
   label: string;
   type: "TEXT" | "LINK";
 }
+
+export interface ConsultantProfessionalExperienceItem {
+  id: number;
+  employer: string;
+  jobTitle: string;
+  description: string;
+  start: string;
+  end?: string;
+  employmentSkills: string[];
+}
