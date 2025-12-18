@@ -13,6 +13,9 @@ export const ConsultantResponseSchema = z.object({
 });
 
 export const AllConsultantsResponseSchema = z.array(ConsultantResponseSchema);
+export const UserSkill = z.object({
+  skillName: z.string(),
+});
 
 export type ConsultantIdParams = z.infer<typeof ConsultantIdParamsSchema>;
 export type ConsultantResponse = z.infer<typeof ConsultantResponseSchema>;
