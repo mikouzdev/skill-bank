@@ -1,7 +1,7 @@
 import {
   ConsultantResponseSchema,
   AllConsultantsResponseSchema,
-} from "../schemas/consultants.schema.js";
+} from "../../schemas/consultants/consultants.schema.js";
 
 export const consultantsPaths = {
   "/consultants": {

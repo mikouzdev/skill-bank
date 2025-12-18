@@ -1,8 +1,8 @@
 import { Router, type Request, type Response } from "express";
 import fileUpload from "express-fileupload";
-import { LocalStorageService } from "../storage/localStorage.js";
-import { ConsultantIdParamsSchema } from "../schemas/consultants.schema.js";
-import { prisma } from "../db/prismaClient.js";
+import { LocalStorageService } from "../../storage/localStorage.js";
+import { ConsultantIdParamsSchema } from "../../schemas/consultants/consultants.schema.js";
+import { prisma } from "../../db/prismaClient.js";
 
 export const consultantsRouter = Router();
 

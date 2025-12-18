@@ -1,7 +1,7 @@
 import app from "./app.js";
 import swaggerUi from "swagger-ui-express";
 import { openApiDoc } from "./openapi/openapi.js";
-import { skillsRouter } from "./routes/skillsRouter.js";
+import { skillsRouter } from "./routes/consultants/skillsRouter.js";
 
 const PORT = Number(process.env.PORT) || 3000;
 
