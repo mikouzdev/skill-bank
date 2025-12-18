@@ -74,6 +74,83 @@ async function main() {
 
   console.log("🛠️ Skills created");
 
+  // ===========================================
+  // Projects
+  // ===========================================
+
+  const data = [
+    {
+      consultantId: consultant.id,
+      name: "Projektien projekti",
+      description: "Projektien projekti on tosi iso projekti.",
+      visibility: "PUBLIC" as const,
+      start: new Date("2024-02-20"),
+      projectLinks: [
+        {
+          url: "https://example.com",
+          label: "Github",
+        },
+        {
+          url: "https://example.com",
+          label: "Another link",
+        },
+      ],
+    },
+    {
+      consultantId: consultant.id,
+      name: "Piiloniekka",
+      description:
+        "Peli, jossa piiloniekka piilottaa projekteja konsultanteilta.",
+      visibility: "LIMITED" as const,
+      start: new Date("2025-03-20"),
+      end: new Date("2025-03-27"),
+      projectLinks: [
+        {
+          url: "https://example.com",
+          label: "Gitlab",
+        },
+      ],
+    },
+    {
+      consultantId: consultant.id,
+      name: "Lorem Ipsum",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+      visibility: "PUBLIC" as const,
+      start: new Date("2025-05-20"),
+      end: new Date("2025-08-20"),
+      projectLinks: [
+        {
+          url: "https://example.com",
+          label: "Lorem ipsum",
+        },
+      ],
+    },
+  ];
+
+  await prisma.$transaction(
+    data.map((project) =>
+      prisma.project.create({
+        data: {
+          consultantId: project.consultantId,
+          name: project.name,
+          description: project.description,
+          visibility: project.visibility,
+          start: project.start,
+          end: project.end,
+          projectLinks: {
+            create: project.projectLinks.map((link) => ({
+              url: link.url,
+              label: link.label,
+            })),
+          },
+        },
+      })
+    )
+  );
+
+  console.log("🛠️ Projects created");
+
   console.log("🎉 Seed complete!");
 }
 

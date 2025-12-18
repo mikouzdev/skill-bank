@@ -5,12 +5,11 @@
   "main": "index.js",
   "scripts": {
     "env": "dotenvx run -f .env.defaults -f .env --overload",
-    "env:quiet": "dotenvx run --quiet -f .env.defaults -f .env --overload",
     "dev": "pnpm run env -- tsx --watch ./src/index.ts",
     "test": "vitest",
     "lint": "eslint .",
     "db:generate": "pnpm run env -- prisma generate",
-    "db:generate:init-tables": "pnpm --silent run env:quiet -- pnpx prisma migrate diff --from-empty --to-schema ./prisma/schema.prisma --script > ../database/init/01-tables.sql",
+    "db:seed": "pnpm run env -- prisma db seed",
     "db:migrate": "pnpm run env -- prisma migrate dev",
     "generate:api-types": "openapi-typescript http://localhost:3000/openapi.json -o ../shared/generated/api-types/openapi.d.ts"
   },

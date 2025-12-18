@@ -302,6 +302,90 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/consultants/{consultantId}/projects": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all projects of a consultant */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    consultantId: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Retrieval successful */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example 1 */
+                            id: number;
+                            /** @example A small project done over a weekend. */
+                            description: string;
+                            /** @example 1 */
+                            consultantId: number;
+                            /** @example Smol Project */
+                            name: string;
+                            /** @example 2025-12-19T14:01:24.308Z */
+                            createdAt: string;
+                            /** @example 2025-12-19T14:01:24.308Z */
+                            start: string;
+                            /** @example 2025-12-19T14:01:24.308Z */
+                            end: string | null;
+                            /**
+                             * @example PUBLIC
+                             * @enum {string}
+                             */
+                            visibility: "LIMITED" | "PUBLIC";
+                            projectLinks: {
+                                /** @example 1 */
+                                id: number;
+                                /** @example 1 */
+                                projectId: number;
+                                /** @example 2025-12-19T14:01:24.308Z */
+                                createdAt: string;
+                                /** @example https://example.com */
+                                url: string;
+                                /** @example Github */
+                                label: string;
+                            }[];
+                        }[];
+                    };
+                };
+                /** @description Invalid consultant id */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -339,6 +423,10 @@ export interface components {
             roleTitle: string;
             /** @example /static/1_profile_picture.jpg */
             profilePictureUrl: string;
+            user: {
+                /** @example John Lee */
+                name: string;
+            };
         };
         EmploymentListResponse: {
             /** @example 1 */
