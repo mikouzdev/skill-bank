@@ -31,7 +31,7 @@ export default function Skills() {
   }
 
   return (
-    <Box sx={{ p: 2, border: 1 }}>
+    <Box sx={{ p: 2 }}>
       <Typography>
         Skills
         <Button>Add new Skill</Button>
