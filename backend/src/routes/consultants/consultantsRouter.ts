@@ -74,10 +74,16 @@ consultantsRouter.put(
     let profilePictureUrl;
 
     // TODO: use real data instead of the seeded mock data
-    const consultantId = 1;
+    const consultantId = 4;
 
     if (profilePicture !== undefined) {
-      const imageType = await fileTypeFromBuffer(profilePicture.buffer);
+      let imageType;
+      try {
+        imageType = await fileTypeFromBuffer(profilePicture.buffer);
+      } catch (err) {
+        res.status(400).json(err);
+        return;
+      }
 
       if (imageType === undefined) {
         return res.status(400).json({ message: "Unknown file type" });
