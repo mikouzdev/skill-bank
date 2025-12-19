@@ -73,8 +73,20 @@ consultantsRouter.put(
     const profilePicture = req.file;
     let profilePictureUrl;
 
-    // TODO: use real data instead of the seeded mock data
-    const consultantId = 4;
+    // TODO: use consultantId from a JWT token instead of getting the first
+    //       entry from the database
+    let consultantId;
+    try {
+      const consultant = await prisma.consultant.findFirst();
+      if (consultant === null) {
+        res.status(404).json({ message: "No mock data found" });
+        return;
+      }
+      consultantId = consultant.id;
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
 
     if (profilePicture !== undefined) {
       let imageType;
