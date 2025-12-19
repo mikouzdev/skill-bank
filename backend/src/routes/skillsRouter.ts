@@ -61,7 +61,7 @@ skillsRouter.post("/:consultantId", async (req: Request, res: Response) => {
     proficiency: number;
   };
 
-  if (skill || proficiency === undefined) {
+  if (!skill || proficiency === undefined) {
     return res.status(400).json({
       error: "skill and proficiency are required",
     });
