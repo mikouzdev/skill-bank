@@ -24,10 +24,6 @@ export const AllConsultantsResponseSchema = z
   .array(ConsultantResponseSchema)
   .meta({ id: "AllConsultantsResponse" });
 
-export const UserSkill = z.object({
-  SkillName: z.string().meta({ example: "Java" }),
-});
-
 export type ConsultantIdParams = z.infer<typeof ConsultantIdParamsSchema>;
 export type ConsultantResponse = z.infer<typeof ConsultantResponseSchema>;
 export type AllConsultantsResponse = z.infer<
