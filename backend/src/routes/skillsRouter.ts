@@ -98,3 +98,22 @@ skillsRouter.post("/:consultantId", async (req: Request, res: Response) => {
     return;
   }
 });
+
+/**
+ * Deletes a skill by ID
+ * @body {id: {skill's id}}
+ * @route DELETE /skill/
+ */
+skillsRouter.delete("/", async (req: Request, res: Response) => {
+  const { id } = req.body as {
+    id: number;
+  };
+  const skill = await prisma.userSkill.findFirst({ where: { id: id } });
+  try {
+    await prisma.userSkill.delete({ where: { id: id } });
+    res.status(200).json(`Skill ${skill?.skillName} deleted`);
+    return;
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
