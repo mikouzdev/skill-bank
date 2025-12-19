@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Container, Divider } from "@mui/material";
 import ProfileHeader from "../components/ProfileHeader/ProfileHeader";
 import Skills from "../components/Skills/SkillsSection";
 import PersonalProjects from "../components/PersonalProjects/PersonalProjectsSection";
@@ -33,13 +33,21 @@ export default function ConsultantProfilePage() {
   };
 
   return (
-    <Box
-      sx={{ p: 2, border: 1, display: "flex", flexDirection: "column", gap: 1 }}
+    <Container
+      sx={{
+        p: 2,
+        display: "flex",
+        flexDirection: "column",
+        gap: 1,
+      }}
     >
       <ProfileHeader data={mockupData} />
+      <Divider />
       <Skills />
+      <Divider />
       <ProfessionalExperience />
+      <Divider />
       <PersonalProjects />
-    </Box>
+    </Container>
   );
 }

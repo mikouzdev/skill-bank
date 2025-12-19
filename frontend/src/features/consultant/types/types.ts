@@ -1,3 +1,5 @@
+// TODO: change to use shared types
+
 export interface ConsultantProfileHeader {
   name: string;
   description: string;
@@ -20,4 +22,20 @@ export interface ConsultantProfessionalExperienceItem {
   start: string;
   end?: string;
   employmentSkills: string[];
+}
+
+export interface ConsultantProfileProjectItem {
+  id: number;
+  name: string;
+  description: string;
+  start: string;
+  end?: string;
+  projectSkills: string[];
+  projectLinks?: ProjectLink[];
+}
+
+export interface ProjectLink {
+  id: number;
+  url: string;
+  label: string;
 }
