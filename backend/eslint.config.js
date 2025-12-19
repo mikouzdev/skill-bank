@@ -8,7 +8,7 @@ export default defineConfig([
     ignores: ["*.config.*", "dist/**", "node_modules/**"],
   },
   {
-    files: ["**/*.{js,mjs,cjs,ts,mts,cts}"],
+    files: ["**/*.ts"],
     languageOptions: {
       globals: {
         ...globals.node,
