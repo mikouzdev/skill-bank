@@ -1,9 +1,55 @@
 import { Router, type Request, type Response } from "express";
 import { ConsultantIdParamsSchema } from "../../schemas/consultants/consultants.schema.js";
-import { ProjectIdParamsSchema } from "../../schemas/consultants/projects.schema.js";
+import {
+  ProjectIdParamsSchema,
+  ProjectBodySchema,
+} from "../../schemas/consultants/projects.schema.js";
 import { prisma } from "../../db/prismaClient.js";
 
 export const projectsRouter = Router();
+
+projectsRouter.post("/me/projects", async (req: Request, res: Response) => {
+  const parsedBody = ProjectBodySchema.safeParse(req.body);
+  if (!parsedBody.success) {
+    res.status(400).json(parsedBody.error);
+    return;
+  }
+  const { description, name, start, end, visibility } = parsedBody.data;
+
+  // TODO: use consultantId from a JWT token instead of getting the first
+  //       entry from the database
+  let consultantId;
+  try {
+    const consultant = await prisma.consultant.findFirst();
+    if (consultant === null) {
+      res.status(404).json({ message: "No mock data found" });
+      return;
+    }
+    consultantId = consultant.id;
+  } catch (err) {
+    res.status(500).json(err);
+    return;
+  }
+
+  let project = null;
+  try {
+    project = await prisma.project.create({
+      data: {
+        consultantId,
+        description,
+        name,
+        start,
+        ...(end !== undefined ? { end } : {}),
+        visibility,
+      },
+    });
+  } catch (err) {
+    res.status(500).json(err);
+    return;
+  }
+
+  res.json(project);
+});
 
 projectsRouter.get(
   "/:consultantId/projects",
@@ -13,7 +59,7 @@ projectsRouter.get(
       res.status(400).json(parsedParams.error);
       return;
     }
-    const consultantId = parsedParams.data.consultantId;
+    const { consultantId } = parsedParams.data;
 
     let projects = null;
     try {
