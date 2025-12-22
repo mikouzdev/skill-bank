@@ -24,5 +24,24 @@ export const projectsPaths = {
         500: { description: "Server error" },
       },
     },
+    delete: {
+      summary: "Delete a project",
+      tags: ["Consultants", "Projects"],
+      parameters: [
+        {
+          name: "projectId",
+          in: "path" as const,
+          required: true,
+          schema: { type: "integer" as const },
+        },
+      ],
+      responses: {
+        204: {
+          description: "Deletion successful",
+        },
+        400: { description: "Invalid project id" },
+        500: { description: "Server error" },
+      },
+    },
   },
 };
