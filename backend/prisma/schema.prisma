@@ -29,8 +29,8 @@ model User {
 }
 
 enum Visibility {
-  SALES /// self, admins, salespeople, customers
-  SALES_AND_CONSULTANTS /// self, admins, salespeople, customers, consultants
+  LIMITED /// self, admins, salespeople, customers
+  PUBLIC
 }
 
 model UserRole {
@@ -58,7 +58,7 @@ model ConsultantAttribute {
   value        String
   label        String
   type         UserAttributeType @default(TEXT)
-  visibility   Visibility        @default(SALES_AND_CONSULTANTS)
+  visibility   Visibility        @default(PUBLIC)
 
   consultant Consultant @relation(fields: [consultantId], references: [id], onDelete: Cascade)
 
@@ -148,7 +148,7 @@ model Employment {
   description  String
   start        DateTime
   end          DateTime?
-  visibility   Visibility @default(SALES_AND_CONSULTANTS)
+  visibility   Visibility @default(PUBLIC)
 
   consultant       Consultant        @relation(fields: [consultantId], references: [id], onDelete: Cascade)
   employmentSkills EmploymentSkill[]
@@ -162,7 +162,7 @@ model Project {
   description  String
   start        DateTime
   end          DateTime?
-  visibility   Visibility @default(SALES_AND_CONSULTANTS)
+  visibility   Visibility @default(PUBLIC)
 
   projectLinks  ProjectLink[]
   consultant    Consultant     @relation(fields: [consultantId], references: [id], onDelete: Cascade)
@@ -234,7 +234,7 @@ model PageSection {
   id           Int             @id @default(autoincrement())
   consultantId Int
   name         PageSectionName
-  visibility   Visibility      @default(SALES_AND_CONSULTANTS)
+  visibility   Visibility      @default(PUBLIC)
 
   consultant Consultant @relation(fields: [consultantId], references: [id], onDelete: Cascade)
   comments   Comment[]
@@ -268,4 +268,3 @@ model Comment {
 
   @@unique([pageSectionId, listPosition])
 }
-
