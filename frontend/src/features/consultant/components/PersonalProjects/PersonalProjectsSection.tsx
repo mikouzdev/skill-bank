@@ -20,7 +20,7 @@ export default function PersonalProjects({ data }: Props) {
         <Typography variant="h5">Personal Projects</Typography>
         <Stack spacing={1}>
           {data.map((item) => (
-            <PersonalProjectItem item={item} />
+            <PersonalProjectItem key={item.id} item={item} />
           ))}
         </Stack>
       </Stack>

@@ -39,3 +39,12 @@ export interface ProjectLink {
   url: string;
   label: string;
 }
+
+export type SkillsResponse = {
+  id: number;
+  consultantId: number;
+  createdAt: string;
+  skillName: string;
+  proficiency: number;
+  listPosition: number;
+}[];

@@ -6,11 +6,11 @@ import ProfessionalExperience from "../components/ProfessionalExperience/Profess
 import { useConsultantDetails } from "../hooks/useConsultantDetails";
 
 export default function ConsultantProfilePage() {
-  const { consultant, employments, projects, loading } =
-    useConsultantDetails(2);
+  const { consultant, skills, employments, projects, loading } =
+    useConsultantDetails(6);
 
   if (loading) return <Typography>Loading...</Typography>;
-  if (!employments || !consultant || !projects)
+  if (!employments || !consultant || !projects || !skills)
     return <Typography>Error while fetching data.</Typography>;
 
   return (
@@ -24,7 +24,7 @@ export default function ConsultantProfilePage() {
     >
       <ProfileHeader data={consultant} />
       <Divider />
-      <Skills />
+      <Skills data={skills} />
       <Divider />
       <ProfessionalExperience data={employments} />
       <Divider />
