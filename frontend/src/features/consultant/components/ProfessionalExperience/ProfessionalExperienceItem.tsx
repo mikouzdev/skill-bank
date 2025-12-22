@@ -1,5 +1,6 @@
 import { Box, Typography, Stack, Chip, Paper } from "@mui/material";
 import type { components } from "@api-types/openapi";
+import dayjs from "dayjs";
 
 type ConsultantEmploymentItem =
   components["schemas"]["EmploymentListResponse"][number];
@@ -7,6 +8,8 @@ type ConsultantEmploymentItem =
 type Props = {
   item: ConsultantEmploymentItem;
 };
+
+const DATE_FORMAT = "MM/YYYY";
 
 export default function ProfessionalExperienceItem({ item }: Props) {
   const skills = item.skills.map((skill, i) => (
@@ -25,8 +28,8 @@ export default function ProfessionalExperienceItem({ item }: Props) {
     >
       <Stack direction={"row"} spacing={"auto"}>
         <Typography variant="h6">{`${item.employer}, ${item.jobTitle}`}</Typography>
-        <Typography variant="h6">{`${item.start} - ${
-          item.end ?? ""
+        <Typography variant="h6">{`${dayjs(item.start).format(DATE_FORMAT)} - ${
+          item.end ? dayjs(item.end).format(DATE_FORMAT) : ""
         }`}</Typography>
       </Stack>
       <Box>
