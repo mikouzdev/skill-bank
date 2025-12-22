@@ -1,6 +1,6 @@
 import { Router, type Request, type Response } from "express";
-import { UserSkillSchema } from "../schemas/skills.schema.js";
-import { prisma } from "../db/prismaClient.js";
+import { UserSkillSchema } from "../../schemas/consultants/skills.schema.js";
+import { prisma } from "../../db/prismaClient.js";
 
 export const skillsRouter = Router();
 
