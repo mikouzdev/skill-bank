@@ -64,7 +64,7 @@ projectsRouter.get(
     let projects = null;
     try {
       projects = await prisma.project.findMany({
-        where: { consultantId: consultantId },
+        where: { consultantId },
         include: {
           projectLinks: true,
         },
@@ -75,6 +75,44 @@ projectsRouter.get(
     }
 
     res.json(projects);
+  }
+);
+
+projectsRouter.put(
+  "/me/projects/:projectId",
+  async (req: Request, res: Response) => {
+    const parsedParams = ProjectIdParamsSchema.safeParse(req.params);
+    if (!parsedParams.success) {
+      res.status(400).json(parsedParams.error);
+      return;
+    }
+    const { projectId } = parsedParams.data;
+
+    const parsedBody = ProjectBodySchema.safeParse(req.body);
+    if (!parsedBody.success) {
+      res.status(400).json(parsedBody.error);
+      return;
+    }
+    const { description, name, start, end, visibility } = parsedBody.data;
+
+    let project = null;
+    try {
+      project = await prisma.project.update({
+        where: { id: projectId },
+        data: {
+          description,
+          name,
+          start,
+          ...(end !== undefined ? { end } : {}),
+          visibility,
+        },
+      });
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
+
+    res.json(project);
   }
 );
 
