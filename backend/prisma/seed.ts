@@ -1,4 +1,4 @@
-import { PrismaClient, Role } from "../src/generated/prisma/client.js";
+import { PrismaClient, Role, Visibility } from "../src/generated/prisma/client.js";
 import { PrismaPg } from "@prisma/adapter-pg";
 import "dotenv/config";
 
@@ -12,6 +12,8 @@ async function main() {
   // CLEAN DATABASE
   // ===========================================
 
+  await prisma.employmentSkill.deleteMany();
+  await prisma.employment.deleteMany();
   await prisma.userSkill.deleteMany();
   await prisma.user.deleteMany();
   await prisma.consultant.deleteMany();
@@ -19,6 +21,10 @@ async function main() {
   await prisma.userRole.deleteMany();
 
   console.log("🧹 Database cleared");
+
+  // ===========================================
+  // User & Consultant
+  // ===========================================
 
   const consultantUser = await prisma.user.create({
     data: {
@@ -53,19 +59,20 @@ async function main() {
   // ===========================================
 
   const skilltags = await prisma.skillTag.createMany({
-    data: [{ name: "Java" }, { name: "C#" }, { name: "Python" }],
+    data: [{ name: "java" }, { name: "csharp" }, { name: "python" }],
   });
 
   const skills = await prisma.userSkill.createMany({
     data: [
-      { skillName: "Java", proficiency: 4, consultantId: consultant.id },
+      { skillName: "java", proficiency: 4, consultantId: consultant.id },
       {
-        skillName: "C#",
+        skillName: "csharp",
+
         proficiency: 3,
         consultantId: consultant.id,
       },
       {
-        skillName: "Python",
+        skillName: "python",
         proficiency: 2,
         consultantId: consultant.id,
       },
@@ -150,9 +157,38 @@ async function main() {
   );
 
   console.log("🛠️ Projects created");
+  // Employment + Employment skills
+  // ===========================================
+  
+  const employment = await prisma.employment.create({
+    data: {
+      consultantId: consultant.id,
+      employer: "Oy Pulju Ab",
+      jobTitle: "Fullstack developer",
+      description: "A bit of this and a bit of that",
+      start: new Date("2020-03-01"),
+      end: new Date("2020-06-20"),
+      visibility: Visibility.SALES_AND_CONSULTANTS
+    }
+  });
+
+  console.log("Employment created");
+
+  await prisma.employmentSkill.createMany({
+    data: [
+      { employmentId: employment.id, 
+        skillTagName: "java"
+      }, 
+      { employmentId: employment.id,
+        skillTagName: "python"
+      }
+    ]
+  })
+  
+  console.log("Employment skills created")
 
   console.log("🎉 Seed complete!");
-}
+}  
 
 main()
   .catch((e) => {
