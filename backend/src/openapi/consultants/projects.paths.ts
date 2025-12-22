@@ -47,6 +47,32 @@ export const projectsPaths = {
     },
   },
   "/consultants/me/projects/{projectId}": {
+    put: {
+      summary: "Update a project",
+      tags: ["Consultants", "Projects"],
+      parameters: [
+        {
+          name: "projectId",
+          in: "path" as const,
+          required: true,
+          schema: { type: "integer" as const },
+        },
+      ],
+      requestBody: {
+        required: true,
+        content: { schema: ProjectBodySchema },
+      },
+      responses: {
+        200: {
+          description: "Update successful",
+          content: {
+            "application/json": { schema: ProjectSchema },
+          },
+        },
+        400: { description: "Invalid request body" },
+        500: { description: "Server error" },
+      },
+    },
     delete: {
       summary: "Delete a project",
       tags: ["Consultants", "Projects"],
