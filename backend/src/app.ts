@@ -1,6 +1,6 @@
 import express from "express";
 import { consultantsRootRouter } from "./routes/consultants/consultantsRootRouter.js";
-import { skillsRouter } from "./routes/skillsRouter.js";
+import { skillsRouter } from "./routes/consultants/skillsRouter.js";
 
 const app = express();
 app.use(express.json());
