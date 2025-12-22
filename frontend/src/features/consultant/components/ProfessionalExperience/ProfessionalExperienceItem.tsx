@@ -1,13 +1,16 @@
 import { Box, Typography, Stack, Chip, Paper } from "@mui/material";
-import { type ConsultantProfessionalExperienceItem } from "../../types/types";
+import type { components } from "@api-types/openapi";
+
+type ConsultantEmploymentItem =
+  components["schemas"]["EmploymentListResponse"][number];
 
 type Props = {
-  item: ConsultantProfessionalExperienceItem;
+  item: ConsultantEmploymentItem;
 };
 
 export default function ProfessionalExperienceItem({ item }: Props) {
-  const skills = item.employmentSkills.map((skill, i) => (
-    <Chip key={i} label={skill} color="primary" size="small" />
+  const skills = item.skills.map((skill, i) => (
+    <Chip key={i} label={skill.name} color="primary" size="small" />
   ));
 
   return (
