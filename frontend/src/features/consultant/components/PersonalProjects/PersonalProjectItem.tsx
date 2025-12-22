@@ -1,13 +1,30 @@
 import { Box, Typography, Stack, Chip, Paper } from "@mui/material";
-import type { ConsultantProfileProjectItem } from "../../types/types";
+import dayjs from "dayjs";
+
+import type { components } from "@api-types/openapi";
+
+type ConsultantProject =
+  components["schemas"]["GetProjectsResponseSchema"][number];
 
 type Props = {
-  item: ConsultantProfileProjectItem;
+  item: ConsultantProject;
 };
 
+// in what format are the start and end times shown
+const DATE_FORMAT = "MM/YYYY";
+
 export default function PersonalProjectItem({ item }: Props) {
-  const skills = item.projectSkills.map((skill, i) => (
-    <Chip key={i} label={skill} color="primary" size="small" />
+  const projectLinks = item.projectLinks.map((link, i) => (
+    <Chip
+      key={i}
+      label={link.label}
+      color="primary"
+      size="small"
+      clickable
+      component="a"
+      href={link.url}
+      target="_blank"
+    />
   ));
 
   return (
@@ -22,15 +39,15 @@ export default function PersonalProjectItem({ item }: Props) {
     >
       <Stack direction={"row"} spacing={"auto"}>
         <Typography variant="h6">{`${item.name}`}</Typography>
-        <Typography variant="h6">{`${item.start} - ${
-          item.end ?? ""
+        <Typography variant="h6">{`${dayjs(item.start).format(DATE_FORMAT)} - ${
+          item.end ? dayjs(item.end).format(DATE_FORMAT) : ""
         }`}</Typography>
       </Stack>
       <Box>
         <Typography>{item.description}</Typography>
       </Box>
       <Stack direction={"row"} spacing={1}>
-        {skills}
+        {projectLinks}
       </Stack>
     </Paper>
   );

@@ -1,23 +1,22 @@
 import { useEffect, useState } from "react";
-import { getConsultant } from "../api/consultants.api";
+import { getProjects } from "../api/consultants.api";
 import type { components } from "@api-types/openapi";
 
-type ConsultantResponse = components["schemas"]["ConsultantResponse"];
+type ProjectsResponse = components["schemas"]["GetProjectsResponseSchema"];
 
-export function useConsultant(id: number) {
-  const [data, setData] = useState<ConsultantResponse | null>(null);
+export function useConsultantProjects(id: number) {
+  const [data, setData] = useState<ProjectsResponse | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<unknown>(null);
 
   useEffect(() => {
     if (!id) return;
-
-    async function fetchConsultant() {
+    async function fetchProjects() {
       try {
         setLoading(true);
         setError(null);
 
-        const response = await getConsultant(id);
+        const response = await getProjects(id);
         setData(response.data);
       } catch (error) {
         setError(error);
@@ -25,8 +24,7 @@ export function useConsultant(id: number) {
         setLoading(false);
       }
     }
-
-    void fetchConsultant();
+    void fetchProjects();
   }, [id]);
 
   return {

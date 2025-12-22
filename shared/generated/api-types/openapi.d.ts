@@ -327,39 +327,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            /** @example 1 */
-                            id: number;
-                            /** @example A small project done over a weekend. */
-                            description: string;
-                            /** @example 1 */
-                            consultantId: number;
-                            /** @example Smol Project */
-                            name: string;
-                            /** @example 2025-12-19T14:01:24.308Z */
-                            createdAt: string;
-                            /** @example 2025-12-19T14:01:24.308Z */
-                            start: string;
-                            /** @example 2025-12-19T14:01:24.308Z */
-                            end: string | null;
-                            /**
-                             * @example PUBLIC
-                             * @enum {string}
-                             */
-                            visibility: "LIMITED" | "PUBLIC";
-                            projectLinks: {
-                                /** @example 1 */
-                                id: number;
-                                /** @example 1 */
-                                projectId: number;
-                                /** @example 2025-12-19T14:01:24.308Z */
-                                createdAt: string;
-                                /** @example https://example.com */
-                                url: string;
-                                /** @example Github */
-                                label: string;
-                            }[];
-                        }[];
+                        "application/json": components["schemas"]["GetProjectsResponseSchema"];
                     };
                 };
                 /** @description Invalid consultant id */
@@ -480,6 +448,39 @@ export interface components {
                 name: string;
                 /** @example frontend */
                 category: string | null;
+            }[];
+        }[];
+        GetProjectsResponseSchema: {
+            /** @example 1 */
+            id: number;
+            /** @example A small project done over a weekend. */
+            description: string;
+            /** @example 1 */
+            consultantId: number;
+            /** @example Smol Project */
+            name: string;
+            /** @example 2025-12-19T14:01:24.308Z */
+            createdAt: string;
+            /** @example 2025-12-19T14:01:24.308Z */
+            start: string;
+            /** @example 2025-12-19T14:01:24.308Z */
+            end: string | null;
+            /**
+             * @example PUBLIC
+             * @enum {string}
+             */
+            visibility: "LIMITED" | "PUBLIC";
+            projectLinks: {
+                /** @example 1 */
+                id: number;
+                /** @example 1 */
+                projectId: number;
+                /** @example 2025-12-19T14:01:24.308Z */
+                createdAt: string;
+                /** @example https://example.com */
+                url: string;
+                /** @example Github */
+                label: string;
             }[];
         }[];
     };

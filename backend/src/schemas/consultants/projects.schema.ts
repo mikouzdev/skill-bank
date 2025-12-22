@@ -21,12 +21,14 @@ const ProjectLinkSchema = z.object({
   label: z.string().meta({ example: "Github" }),
 });
 
-export const GetProjectsResponseSchema = z.array(
-  ProjectSchema.extend({
-    projectLinks: z.array(ProjectLinkSchema),
-  })
-);
-
 export const ProjectIdParamsSchema = z.object({
   projectId: z.coerce.number().meta({ example: "1" }),
 });
+
+export const GetProjectsResponseSchema = z
+  .array(
+    ProjectSchema.extend({
+      projectLinks: z.array(ProjectLinkSchema),
+    })
+  )
+  .meta({ id: "GetProjectsResponseSchema" });

@@ -1,66 +1,47 @@
-import {
-  Avatar,
-  Box,
-  Divider,
-  IconButton,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Avatar, Box, IconButton, Stack, Typography } from "@mui/material";
 
 import { SiGitlab, SiGithub, SiLinkedin } from "react-icons/si";
 import { MdEmail } from "react-icons/md";
-import type { ConsultantProfileHeader } from "../../types/types";
+import type { components } from "@api-types/openapi";
+
+type Consultant = components["schemas"]["ConsultantResponse"];
 
 type Props = {
-  data: ConsultantProfileHeader;
+  data: Consultant;
 };
 
 export default function ProfileHeader({ data }: Props) {
-  // attributes that have a existing icon.
-  const linkedin = data.attributes.find((a) => a.label === "linkedin");
-  const github = data.attributes.find((a) => a.label === "github");
-  const gitlab = data.attributes.find((a) => a.label === "gitlab");
-  const email = data.attributes.find((a) => a.label === "email");
-  const phone = data.attributes.find((a) => a.label === "phone");
-
+  // TODO: fetch links for icons.
   const ICON_SIZE = 30;
   const iconLinkStack = (
     <Stack direction="row" spacing={2} alignItems={"center"}>
-      {linkedin && (
-        <IconButton
-          href={linkedin.value}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <SiLinkedin size={ICON_SIZE} />
-        </IconButton>
-      )}
+      <IconButton
+        href="http://linkedin.com"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <SiLinkedin size={ICON_SIZE} />
+      </IconButton>
 
-      {github && (
-        <IconButton
-          href={github.value}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <SiGithub size={ICON_SIZE} />
-        </IconButton>
-      )}
+      <IconButton
+        href="http://github.com"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <SiGithub size={ICON_SIZE} />
+      </IconButton>
 
-      {gitlab && (
-        <IconButton
-          href={gitlab.value}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <SiGitlab size={ICON_SIZE} />
-        </IconButton>
-      )}
+      <IconButton
+        href="http://gitlab.com"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <SiGitlab size={ICON_SIZE} />
+      </IconButton>
 
-      {email && (
-        <IconButton href={`mailto:${email.value}`}>
-          <MdEmail size={ICON_SIZE} />
-        </IconButton>
-      )}
+      <IconButton href="emailto:">
+        <MdEmail size={ICON_SIZE} />
+      </IconButton>
     </Stack>
   );
 
@@ -74,9 +55,8 @@ export default function ProfileHeader({ data }: Props) {
       }}
     >
       <Stack>
-        <Typography variant="h4">{data.name}</Typography>
-        {/* TODO: add consultant profile title from available data */}
-        {/* <Typography variant="h6">Full-stack Developer</Typography> */}
+        <Typography variant="h4">{data.user.name}</Typography>
+        <Typography variant="h6">{data.roleTitle}</Typography>
       </Stack>
       {iconLinkStack}
     </Box>
@@ -86,7 +66,7 @@ export default function ProfileHeader({ data }: Props) {
   const profilePicture = (
     <Box sx={{ display: "flex", alignItems: "center" }}>
       <Avatar
-        alt={data.name}
+        alt={data.user.name}
         src={data.profilePictureUrl}
         sx={{ width: PROFILE_PICTURE_SIZE, height: PROFILE_PICTURE_SIZE }}
       />
@@ -109,8 +89,6 @@ export default function ProfileHeader({ data }: Props) {
         {headerTitle}
 
         <Typography>{data.description}</Typography>
-        <Divider />
-        {phone && <Typography>Phone: {phone.value}</Typography>}
       </Stack>
     </Box>
   );
