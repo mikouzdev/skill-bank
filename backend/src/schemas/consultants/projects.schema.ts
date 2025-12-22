@@ -26,3 +26,7 @@ export const GetProjectsResponseSchema = z.array(
     projectLinks: z.array(ProjectLinkSchema),
   })
 );
+
+export const ProjectIdParamsSchema = z.object({
+  projectId: z.coerce.number().meta({ example: "1" }),
+});
