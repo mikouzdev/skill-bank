@@ -117,3 +117,28 @@ skillsRouter.delete("/", async (req: Request, res: Response) => {
     res.status(500).json(err);
   }
 });
+
+skillsRouter.put("/:consultantId", async (req: Request, res: Response) => {
+  const { id, proficiency, skill } = req.body as {
+    id: number;
+    proficiency: number;
+    skill: string;
+  };
+
+  try {
+    if (!(await prisma.skillTag.findFirst({ where: { name: skill } }))) {
+      await prisma.skillTag.create({
+        data: { name: skill },
+      });
+    }
+    await prisma.userSkill.update({
+      where: { id: id },
+      data: { proficiency: proficiency, skillName: skill },
+    });
+
+    res.status(200).json(`Skill updated`);
+    return;
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
