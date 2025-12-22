@@ -1,6 +1,27 @@
-import { GetProjectsResponseSchema } from "../../schemas/consultants/projects.schema.js";
+import {
+  GetProjectsResponseSchema,
+  ProjectSchema,
+  ProjectBodySchema,
+} from "../../schemas/consultants/projects.schema.js";
 
 export const projectsPaths = {
+  "/consultants/me/projects": {
+    post: {
+      summary: "Create a new project",
+      tags: ["Consultants", "Projects"],
+      requestBody: { required: true, content: { schema: ProjectBodySchema } },
+      responses: {
+        200: {
+          description: "Creation successful",
+          content: {
+            "application/json": { schema: ProjectSchema },
+          },
+        },
+        400: { description: "Invalid request body" },
+        500: { description: "Server error" },
+      },
+    },
+  },
   "/consultants/{consultantId}/projects": {
     get: {
       summary: "Get all projects of a consultant",
@@ -24,6 +45,8 @@ export const projectsPaths = {
         500: { description: "Server error" },
       },
     },
+  },
+  "/consultants/me/projects/{projectId}": {
     delete: {
       summary: "Delete a project",
       tags: ["Consultants", "Projects"],

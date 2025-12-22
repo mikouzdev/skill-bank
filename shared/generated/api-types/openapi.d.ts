@@ -302,6 +302,80 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/consultants/me/projects": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create a new project */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    schema: unknown;
+                };
+            };
+            responses: {
+                /** @description Creation successful */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example 1 */
+                            id: number;
+                            /** @example A small project done over a weekend. */
+                            description: string;
+                            /** @example 1 */
+                            consultantId: number;
+                            /** @example Smol Project */
+                            name: string;
+                            /** @example 2025-12-19T14:01:24.308Z */
+                            createdAt: string;
+                            /** @example 2025-12-19T14:01:24.308Z */
+                            start: string;
+                            /** @example 2025-12-19T14:01:24.308Z */
+                            end: string | null;
+                            /**
+                             * @example PUBLIC
+                             * @enum {string}
+                             */
+                            visibility: "LIMITED" | "PUBLIC";
+                        };
+                    };
+                };
+                /** @description Invalid request body */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/consultants/{consultantId}/projects": {
         parameters: {
             query?: never;
@@ -346,6 +420,22 @@ export interface paths {
                 };
             };
         };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/consultants/me/projects/{projectId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
         put?: never;
         post?: never;
         /** Delete a project */

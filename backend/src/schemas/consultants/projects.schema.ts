@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const ProjectSchema = z.object({
+export const ProjectSchema = z.object({
   id: z.number().meta({ example: "1" }),
   description: z
     .string()
@@ -32,3 +32,17 @@ export const GetProjectsResponseSchema = z
     })
   )
   .meta({ id: "GetProjectsResponseSchema" });
+
+export const ProjectBodySchema = ProjectSchema.omit({
+  id: true,
+  consultantId: true,
+  createdAt: true,
+})
+  .extend({
+    start: z.coerce.date(),
+    end: z.coerce.date().nullable().optional(),
+  })
+  .refine((project) => (project.end ? project.start <= project.end : true), {
+    message: "End date must be a later or equal date to start date",
+    path: ["end"],
+  });
