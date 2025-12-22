@@ -1,11 +1,14 @@
-import { Container, Divider } from "@mui/material";
+import { Divider, Typography, Container } from "@mui/material";
 import ProfileHeader from "../components/ProfileHeader/ProfileHeader";
 import Skills from "../components/Skills/SkillsSection";
 import PersonalProjects from "../components/PersonalProjects/PersonalProjectsSection";
 import ProfessionalExperience from "../components/ProfessionalExperience/ProfessionalExperienceSection";
 import type { ConsultantProfileHeader } from "../types/types";
+import { useConsultantDetails } from "../hooks/useConsultantDetails";
 
 export default function ConsultantProfilePage() {
+  const { employments, loading } = useConsultantDetails(1);
+
   const mockupData: ConsultantProfileHeader = {
     profilePictureUrl: "https://placehold.co/320x320",
     name: "John Doe",
@@ -32,6 +35,8 @@ export default function ConsultantProfilePage() {
     ],
   };
 
+  if (loading || !employments) return <Typography>Loading...</Typography>;
+
   return (
     <Container
       sx={{
@@ -45,7 +50,7 @@ export default function ConsultantProfilePage() {
       <Divider />
       <Skills />
       <Divider />
-      <ProfessionalExperience />
+      <ProfessionalExperience data={employments} />
       <Divider />
       <PersonalProjects />
     </Container>
