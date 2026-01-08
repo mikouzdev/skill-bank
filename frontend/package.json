@@ -4,11 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "env": "dotenvx run -f .env.defaults -f .env --overload",
+    "dev": "pnpm run env -- vite",
+    "build": "pnpm run env -- tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "pnpm run env -- vite preview"
   },
+  "packageManager": "pnpm@10.27.0",
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
@@ -23,6 +25,7 @@
     "react-router-dom": "^7.10.1"
   },
   "devDependencies": {
+    "@dotenvx/dotenvx": "^1.51.4",
     "@eslint/js": "^9.39.1",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.5",
