@@ -1,11 +1,8 @@
 import { Divider, Typography, Container } from "@mui/material";
-import ProfileHeader from "../components/ProfileHeader/ProfileHeader";
-import Skills from "../components/Skills/SkillsSection";
-import PersonalProjects from "../components/PersonalProjects/PersonalProjectsSection";
-import ProfessionalExperience from "../components/ProfessionalExperience/ProfessionalExperienceSection";
+import EditableProfileHeader from "../components/ProfileHeader/EditableProfileHeader";
 import { useConsultantDetails } from "../hooks/useConsultantDetails";
 
-export default function ConsultantProfilePage() {
+export default function ConsultantProfileSettings() {
   const { consultant, skills, employments, projects, loading } =
     useConsultantDetails(7);
 
@@ -22,13 +19,11 @@ export default function ConsultantProfilePage() {
         gap: 1,
       }}
     >
-      <ProfileHeader data={consultant} />
+      <EditableProfileHeader data={consultant} />
       <Divider />
-      <Skills data={skills} />
-      <Divider />
-      <ProfessionalExperience data={employments} />
-      <Divider />
-      <PersonalProjects data={projects} />
+      {/* todo: editable skills section */}
+      {/* todo: editable professional experience section */}
+      {/* todo: editable personal projects section */}
     </Container>
   );
 }

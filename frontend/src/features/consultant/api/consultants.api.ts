@@ -5,6 +5,9 @@ type ConsultantResponse = components["schemas"]["ConsultantResponse"];
 type EmploymentListResponse = components["schemas"]["EmploymentListResponse"];
 type ProjectListResponse = components["schemas"]["GetProjectsResponseSchema"];
 
+// type used for the updating of consultant profile details
+export type UpdateConsultantData = Partial<ConsultantResponse>;
+
 // temp workaround, todo: use shared type
 import { type SkillsResponse } from "../types/types";
 
@@ -22,4 +25,8 @@ export const getProjects = (id: number) => {
 
 export const getSkills = (id: number) => {
   return api.get<SkillsResponse>(`/skill/${id}`);
+};
+
+export const updateProfile = (formData: UpdateConsultantData | FormData) => {
+  return api.put("/consultants/me", formData);
 };
