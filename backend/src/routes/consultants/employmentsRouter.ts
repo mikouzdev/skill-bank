@@ -1,7 +1,12 @@
 import { Router, type Request, type Response } from "express";
 import { ConsultantIdParamsSchema } from "../../schemas/consultants/consultants.schema.js";
 import { Visibility } from "../../generated/prisma/enums.js";
-import { getEmploymentsForConsultant } from "../../services/employmentService.js";
+import {
+  createEmploymentForConsultant,
+  getEmploymentsForConsultant,
+} from "../../services/employmentService.js";
+import { EmploymentCreateSchema } from "../../schemas/consultants/employment.schema.js";
+import { prisma } from "../../db/prismaClient.js";
 
 export const employmentsRouter = Router();
 
@@ -29,6 +34,36 @@ employmentsRouter.get(
       res.status(500).json({
         message: "Internal server error",
       });
+    }
+  }
+);
+
+employmentsRouter.post(
+  "/me/employments",
+  async (req: Request, res: Response) => {
+    try {
+      const parsedBody = EmploymentCreateSchema.safeParse(req.body);
+      if (!parsedBody.success) {
+        res.status(400).json(parsedBody.error);
+        return;
+      }
+      const userId = 1; // Hard coded now to match the seed, waiting for auth middleware implementation
+      const consultant = await prisma.consultant.findUnique({
+        where: { userId },
+      });
+
+      if (!consultant) {
+        res.status(404).json({ message: "Consultant profile not found" });
+        return;
+      }
+
+      const createdEmployment = await createEmploymentForConsultant(
+        consultant.id,
+        parsedBody.data
+      );
+      res.status(201).json(createdEmployment);
+    } catch (error) {
+      console.error("Failed at: POST /consultants/me/employment");
     }
   }
 );
