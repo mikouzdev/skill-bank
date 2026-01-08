@@ -249,6 +249,7 @@ export interface paths {
       };
       requestBody?: never;
       responses: {
+                /** @description Success */
         200: {
           headers: {
             [name: string]: unknown;
@@ -302,6 +303,87 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+    "/consultants/me/employments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create consultant employment */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /** @example Oy Firma Ab */
+                        employer: string;
+                        /** @example Fullstack developer */
+                        jobTitle: string;
+                        /** @example Description text of the role and responsibilites */
+                        description: string;
+                        /** @example 2020-03-01 */
+                        start: string;
+                        /** @example 2021-06-20 */
+                        end: string | null;
+                        /** @enum {string} */
+                        visibility: "PUBLIC" | "LIMITED";
+                        /**
+                         * @example [
+                         *       "java",
+                         *       "python"
+                         *     ]
+                         */
+                        skills: string[];
+                    };
+                };
+            };
+            responses: {
+                /** @description Employment created */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["EmploymentResponse"];
+                    };
+                };
+                /** @description Invalid input */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
   "/consultants/me/projects": {
     parameters: {
       query?: never;
@@ -580,7 +662,8 @@ export interface components {
         name: string;
       };
     };
-    EmploymentListResponse: {
+    EmploymentListResponse: components["schemas"]["EmploymentResponse"][];
+        EmploymentResponse: {
       /** @example 1 */
       id: number;
       /** @example Oy Firma Ab */
@@ -599,7 +682,7 @@ export interface components {
         /** @example frontend */
         category: string | null;
       }[];
-    }[];
+    };
     GetProjectsResponseSchema: {
       /** @example 1 */
       id: number;

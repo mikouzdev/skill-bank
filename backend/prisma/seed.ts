@@ -1,4 +1,8 @@
-import { PrismaClient, Role, Visibility } from "../src/generated/prisma/client.js";
+import {
+  PrismaClient,
+  Role,
+  Visibility,
+} from "../src/generated/prisma/client.js";
 import { PrismaPg } from "@prisma/adapter-pg";
 import "dotenv/config";
 
@@ -159,7 +163,7 @@ async function main() {
   console.log("🛠️ Projects created");
   // Employment + Employment skills
   // ===========================================
-  
+
   const employment = await prisma.employment.create({
     data: {
       consultantId: consultant.id,
@@ -168,27 +172,23 @@ async function main() {
       description: "A bit of this and a bit of that",
       start: new Date("2020-03-01"),
       end: new Date("2020-06-20"),
-      visibility: Visibility.SALES_AND_CONSULTANTS
-    }
+      visibility: Visibility.PUBLIC,
+    },
   });
 
   console.log("Employment created");
 
   await prisma.employmentSkill.createMany({
     data: [
-      { employmentId: employment.id, 
-        skillTagName: "java"
-      }, 
-      { employmentId: employment.id,
-        skillTagName: "python"
-      }
-    ]
-  })
-  
-  console.log("Employment skills created")
+      { employmentId: employment.id, skillTagName: "java" },
+      { employmentId: employment.id, skillTagName: "python" },
+    ],
+  });
+
+  console.log("Employment skills created");
 
   console.log("🎉 Seed complete!");
-}  
+}
 
 main()
   .catch((e) => {
