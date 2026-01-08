@@ -26,7 +26,24 @@ services:
       - db
     volumes:
       - pgadmin-data:/var/lib/pgadmin
+    configs:
+      - source: pgadmin_passfile
+        target: /var/lib/pgadmin/storage/pgpass
+        uid: "5050"
+        gid: "0"
+        mode: 0600
+      - source: pgadmin_server_json
+        target: /pgadmin4/servers.json
+        uid: "5050"
+        gid: "0"
+        mode: 0600
 
 volumes:
   db-data:
   pgadmin-data:
+
+configs:
+  pgadmin_passfile:
+    content: "db:5432:*:${POSTGRES_USER:-pguser}:${POSTGRES_PASSWORD:-pgpass}\n"
+  pgadmin_server_json:
+    content: "{\"Servers\":{\"1\":{\"Name\":\"${POSTGRES_DB:-spankki}\",\"Group\":\"Servers\",\"Host\":\"db\",\"Port\":5432,\"MaintenanceDB\":\"postgres\",\"Username\":\"${POSTGRES_USER:-pguser}\",\"DBRestrictionType\":\"databases\",\"UseSSHTunnel\":0,\"TunnelPort\":\"22\",\"TunnelAuthentication\":0,\"TunnelPromptPassword\":0,\"TunnelKeepAlive\":0,\"KerberosAuthentication\":false,\"ConnectionParameters\":{\"sslmode\":\"prefer\",\"connect_timeout\":10,\"passfile\":\"/var/lib/pgadmin/storage/pgpass\"},\"Tags\":[]}}}\n"
