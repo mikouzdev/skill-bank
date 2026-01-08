@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "env": "dotenvx run -f .env.defaults -f .env --overload",
+    "env": "dotenvx run -f .env.example -f .env --overload",
     "dev": "pnpm run env -- vite",
     "build": "pnpm run env -- tsc -b && vite build",
     "lint": "eslint .",

@@ -5,7 +5,7 @@
   "description": "Backend for Spankki (name pending)",
   "main": "index.js",
   "scripts": {
-    "env": "dotenvx run -f .env.defaults -f .env --overload",
+    "env": "dotenvx run -f ../.env.example -f ../.env -f .env.example -f .env --overload",
     "dev": "pnpm run env -- tsx --watch ./src/index.ts",
     "test": "vitest",
     "lint": "eslint .",

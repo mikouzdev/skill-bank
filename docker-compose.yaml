@@ -6,20 +6,20 @@ services:
     container_name: spankki-db
     restart: always
     env_file:
-      - ./backend/.env.defaults
-      - ./backend/.env
+      - .env.example
+      - .env
     ports:
       - "5432:5432"
     volumes:
-      - ./database/data:/var/lib/postgresql
+      - db-data:/var/lib/postgresql
 
   pgadmin:
     image: dpage/pgadmin4
     container_name: spankki-pgadmin
     restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-example@example.com}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-example}
+    env_file:
+      - .env.example
+      - .env
     ports:
       - "5050:80"
     depends_on:
