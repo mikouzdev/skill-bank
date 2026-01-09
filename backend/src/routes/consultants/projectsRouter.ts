@@ -3,6 +3,8 @@ import { ConsultantIdParamsSchema } from "../../schemas/consultants/consultants.
 import {
   ProjectIdParamsSchema,
   ProjectBodySchema,
+  PostProjectLinkBodySchema,
+  DeleteProjectLinkParamsSchema,
 } from "../../schemas/consultants/projects.schema.js";
 import { prisma } from "../../db/prismaClient.js";
 
@@ -67,6 +69,7 @@ projectsRouter.get(
         where: { consultantId },
         include: {
           projectLinks: true,
+          projectSkills: true,
         },
       });
     } catch (err) {
@@ -129,6 +132,65 @@ projectsRouter.delete(
     try {
       await prisma.project.delete({
         where: { id: projectId },
+      });
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
+
+    res.status(204).send();
+  }
+);
+
+projectsRouter.post(
+  "/me/projects/:projectId/links",
+  async (req: Request, res: Response) => {
+    const parsedParams = ProjectIdParamsSchema.safeParse(req.params);
+    const parsedBody = PostProjectLinkBodySchema.safeParse(req.body);
+
+    if (!parsedParams.success) {
+      res.status(400).json(parsedParams.error);
+      return;
+    }
+    if (!parsedBody.success) {
+      res.status(400).json(parsedBody.error);
+      return;
+    }
+
+    const { projectId } = parsedParams.data;
+    const { url, label } = parsedBody.data;
+
+    let projectLink = null;
+    try {
+      projectLink = await prisma.projectLink.create({
+        data: {
+          projectId,
+          url,
+          label,
+        },
+      });
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
+
+    res.json(projectLink);
+  }
+);
+
+projectsRouter.delete(
+  "/me/projects/:projectId/links/:linkId",
+  async (req: Request, res: Response) => {
+    const parsedParams = DeleteProjectLinkParamsSchema.safeParse(req.params);
+    if (!parsedParams.success) {
+      res.status(400).json(parsedParams.error);
+      return;
+    }
+    const { projectId, linkId } = parsedParams.data;
+
+    try {
+      await prisma.projectLink.delete({
+        where: { id: linkId, projectId },
       });
     } catch (err) {
       res.status(500).json(err);

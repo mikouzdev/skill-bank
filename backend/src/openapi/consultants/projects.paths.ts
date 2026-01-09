@@ -2,6 +2,8 @@ import {
   GetProjectsResponseSchema,
   ProjectSchema,
   ProjectBodySchema,
+  PostProjectLinkBodySchema,
+  ProjectLinkSchema,
 } from "../../schemas/consultants/projects.schema.js";
 
 export const projectsPaths = {
@@ -89,6 +91,64 @@ export const projectsPaths = {
           description: "Deletion successful",
         },
         400: { description: "Invalid project id" },
+        500: { description: "Server error" },
+      },
+    },
+  },
+  "/consultants/me/projects/{projectId}/links": {
+    post: {
+      summary: "Create a new project link",
+      tags: ["Consultants", "Projects"],
+      parameters: [
+        {
+          name: "projectId",
+          in: "path" as const,
+          required: true,
+          schema: { type: "integer" as const },
+        },
+      ],
+      requestBody: {
+        required: true,
+        content: { schema: PostProjectLinkBodySchema },
+      },
+      responses: {
+        200: {
+          description: "Creation successful",
+          content: {
+            "application/json": { schema: ProjectLinkSchema },
+          },
+        },
+        400: { description: "Invalid request body" },
+        500: { description: "Server error" },
+      },
+    },
+  },
+  "/consultants/me/projects/{projectId}/links/{linkId}": {
+    delete: {
+      summary: "Delete a project link",
+      tags: ["Consultants", "Projects"],
+      parameters: [
+        {
+          name: "projectId",
+          in: "path" as const,
+          required: true,
+          schema: { type: "integer" as const },
+        },
+        {
+          name: "linkId",
+          in: "path" as const,
+          required: true,
+          schema: { type: "integer" as const },
+        },
+      ],
+      responses: {
+        204: {
+          description: "Deletion successful",
+          content: {
+            "application/json": { schema: ProjectSchema },
+          },
+        },
+        400: { description: "Invalid request" },
         500: { description: "Server error" },
       },
     },

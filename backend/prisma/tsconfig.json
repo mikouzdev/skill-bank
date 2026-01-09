@@ -1,0 +1,9 @@
+// Fixes some warnings and errors caused by the prisma directory not being
+// inside "src"
+
+{
+  "compilerOptions": {
+    "types": ["node"]
+  },
+  "include": ["."]
+}

@@ -81,12 +81,12 @@ model Consultant {
   salesListItems       SalesListItem[]
   employments          Employment[]
   projects             Project[]
-  userSkills           UserSkill[]
+  consultantSkills     ConsultantSkill[]
   pageSections         PageSection[]
   consultantAttributes ConsultantAttribute[]
 }
 
-model UserSkill {
+model ConsultantSkill {
   id           Int      @id @default(autoincrement())
   consultantId Int
   createdAt    DateTime @default(now())
@@ -127,7 +127,7 @@ model SkillTag {
   name       String @unique
 
   category         SkillCategory?    @relation(fields: [categoryid], references: [id])
-  userSkills       UserSkill[]
+  consultantSkills ConsultantSkill[]
   projectSkills    ProjectSkill[]
   employmentSkills EmploymentSkill[]
 }

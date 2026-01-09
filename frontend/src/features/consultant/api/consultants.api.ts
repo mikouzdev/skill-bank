@@ -3,7 +3,7 @@ import type { components } from "@api-types/openapi";
 
 type ConsultantResponse = components["schemas"]["ConsultantResponse"];
 type EmploymentListResponse = components["schemas"]["EmploymentListResponse"];
-type ProjectListResponse = components["schemas"]["GetProjectsResponseSchema"];
+type ProjectListResponse = components["schemas"]["GetProjectsResponse"];
 
 // type used for the updating of consultant profile details
 export type UpdateConsultantData = Partial<ConsultantResponse>;
@@ -28,7 +28,7 @@ export const postProjects = (formData: ProjectListResponse) => {
 };
 
 export const getSkills = (id: number) => {
-  return api.get<SkillsResponse>(`/skill/${id}`);
+  return api.get<SkillsResponse>(`/consultants/skills/${id}`);
 };
 
 export const updateProfile = (formData: UpdateConsultantData | FormData) => {
