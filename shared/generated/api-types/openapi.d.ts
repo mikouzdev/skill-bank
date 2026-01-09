@@ -403,7 +403,19 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    schema: unknown;
+                    "application/json": {
+                        /** @example A small project done over a weekend. */
+                        description: string;
+                        /** @example Smol Project */
+                        name: string;
+                        start: string;
+                        end?: string | null;
+                        /**
+                         * @example PUBLIC
+                         * @enum {string}
+                         */
+                        visibility: "LIMITED" | "PUBLIC";
+                    };
                 };
             };
             responses: {
@@ -413,27 +425,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            /** @example 1 */
-                            id: number;
-                            /** @example A small project done over a weekend. */
-                            description: string;
-                            /** @example 1 */
-                            consultantId: number;
-                            /** @example Smol Project */
-                            name: string;
-                            /** @example 2025-12-19T14:01:24.308Z */
-                            createdAt: string;
-                            /** @example 2025-12-19T14:01:24.308Z */
-                            start: string;
-                            /** @example 2025-12-19T14:01:24.308Z */
-                            end: string | null;
-                            /**
-                             * @example PUBLIC
-                             * @enum {string}
-                             */
-                            visibility: "LIMITED" | "PUBLIC";
-                        };
+                        "application/json": components["schemas"]["Project"];
                     };
                 };
                 /** @description Invalid request body */
@@ -530,7 +522,19 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    schema: unknown;
+                    "application/json": {
+                        /** @example A small project done over a weekend. */
+                        description: string;
+                        /** @example Smol Project */
+                        name: string;
+                        start: string;
+                        end?: string | null;
+                        /**
+                         * @example PUBLIC
+                         * @enum {string}
+                         */
+                        visibility: "LIMITED" | "PUBLIC";
+                    };
                 };
             };
             responses: {
@@ -540,27 +544,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            /** @example 1 */
-                            id: number;
-                            /** @example A small project done over a weekend. */
-                            description: string;
-                            /** @example 1 */
-                            consultantId: number;
-                            /** @example Smol Project */
-                            name: string;
-                            /** @example 2025-12-19T14:01:24.308Z */
-                            createdAt: string;
-                            /** @example 2025-12-19T14:01:24.308Z */
-                            start: string;
-                            /** @example 2025-12-19T14:01:24.308Z */
-                            end: string | null;
-                            /**
-                             * @example PUBLIC
-                             * @enum {string}
-                             */
-                            visibility: "LIMITED" | "PUBLIC";
-                        };
+                        "application/json": components["schemas"]["Project"];
                     };
                 };
                 /** @description Invalid request body */
@@ -641,7 +625,12 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    schema: unknown;
+                    "application/json": {
+                        /** @example https://example.com */
+                        url: string;
+                        /** @example Github */
+                        label: string;
+                    };
                 };
             };
             responses: {
@@ -651,21 +640,10 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
-                            /** @example 1 */
-                            id: number;
-                            /** @example 1 */
-                            projectId: number;
-                            /** @example 2025-12-19T14:01:24.308Z */
-                            createdAt: string;
-                            /** @example https://example.com */
-                            url: string;
-                            /** @example Github */
-                            label: string;
-                        };
+                        "application/json": components["schemas"]["ProjectLink"];
                     };
                 };
-                /** @description Invalid request body */
+                /** @description Invalid request */
                 400: {
                     headers: {
                         [name: string]: unknown;
@@ -715,29 +693,371 @@ export interface paths {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content: {
-                        "application/json": {
-                            /** @example 1 */
-                            id: number;
-                            /** @example A small project done over a weekend. */
-                            description: string;
-                            /** @example 1 */
-                            consultantId: number;
-                            /** @example Smol Project */
-                            name: string;
-                            /** @example 2025-12-19T14:01:24.308Z */
-                            createdAt: string;
-                            /** @example 2025-12-19T14:01:24.308Z */
-                            start: string;
-                            /** @example 2025-12-19T14:01:24.308Z */
-                            end: string | null;
-                            /**
-                             * @example PUBLIC
-                             * @enum {string}
-                             */
-                            visibility: "LIMITED" | "PUBLIC";
-                        };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
                     };
+                    content?: never;
+                };
+                /** @description Server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/consultants/me/projects/{projectId}/skills": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create a new project skill */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    projectId: number;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /** @example https://example.com */
+                        url: string;
+                        /** @example Github */
+                        label: string;
+                    };
+                };
+            };
+            responses: {
+                /** @description Creation successful */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ProjectSkill"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/consultants/me/projects/{projectId}/skills/{projectSkillId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete a project skill */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    projectId: number;
+                    projectSkillId: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Deletion successful */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/consultants/skills": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all skills of all consultants */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Retrieval successful */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ConsultantSkill"][];
+                    };
+                };
+                /** @description Server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/consultants/skills/{consultantId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all skills of a consultant */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    consultantId: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Retrieval successful */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ConsultantSkill"][];
+                    };
+                };
+                /** @description Invalid request body */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/consultants/skills/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create a new skill */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /** @example Python */
+                        skillName: string;
+                        /** @example 5 */
+                        proficiency: number;
+                    };
+                };
+            };
+            responses: {
+                /** @description Creation successful */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ConsultantSkill"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/consultants/skills/me/{skillId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Update a skill */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    skillId: number;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /** @example 5 */
+                        proficiency: number;
+                    };
+                };
+            };
+            responses: {
+                /** @description Update successful */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        post?: never;
+        /** Delete a skill */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    skillId: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Deletion successful */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
                 };
                 /** @description Invalid request */
                 400: {
@@ -816,12 +1136,34 @@ export interface components {
             start: string;
             /** @example 2021-06-20 */
             end: string | null;
-            skills: {
-                /** @example react */
-                name: string;
-                /** @example frontend */
-                category: string | null;
-            }[];
+            skills: components["schemas"]["EmploymentSkill"][];
+        };
+        EmploymentSkill: {
+            /** @example react */
+            name: string;
+            /** @example frontend */
+            category: string | null;
+        };
+        Project: {
+            /** @example 1 */
+            id: number;
+            /** @example A small project done over a weekend. */
+            description: string;
+            /** @example 1 */
+            consultantId: number;
+            /** @example Smol Project */
+            name: string;
+            /** @example 2025-12-19T14:01:24.308Z */
+            createdAt: string;
+            /** @example 2025-12-19T14:01:24.308Z */
+            start: string;
+            /** @example 2025-12-19T14:01:24.308Z */
+            end: string | null;
+            /**
+             * @example PUBLIC
+             * @enum {string}
+             */
+            visibility: "LIMITED" | "PUBLIC";
         };
         GetProjectsResponse: {
             /** @example 1 */
@@ -843,19 +1185,42 @@ export interface components {
              * @enum {string}
              */
             visibility: "LIMITED" | "PUBLIC";
-            projectLinks: {
-                /** @example 1 */
-                id: number;
-                /** @example 1 */
-                projectId: number;
-                /** @example 2025-12-19T14:01:24.308Z */
-                createdAt: string;
-                /** @example https://example.com */
-                url: string;
-                /** @example Github */
-                label: string;
-            }[];
+            projectLinks: components["schemas"]["ProjectLink"][];
         }[];
+        ProjectLink: {
+            /** @example 1 */
+            id: number;
+            /** @example 1 */
+            projectId: number;
+            /** @example 2025-12-19T14:01:24.308Z */
+            createdAt: string;
+            /** @example https://example.com */
+            url: string;
+            /** @example Github */
+            label: string;
+        };
+        ProjectSkill: {
+            /** @example 1 */
+            id: number;
+            /** @example 2 */
+            projectId: number;
+            /** @example Python */
+            skillTagName: string;
+        };
+        ConsultantSkill: {
+            /** @example 1 */
+            id: number;
+            /** @example 2 */
+            consultantId: number;
+            /** @example 2025-12-19T14:01:24.308Z */
+            createdAt: string;
+            /** @example Python */
+            skillName: string;
+            /** @example 5 */
+            proficiency: number;
+            /** @example 1 */
+            listPosition: number;
+        };
     };
     responses: never;
     parameters: never;

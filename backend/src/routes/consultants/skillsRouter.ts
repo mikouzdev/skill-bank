@@ -14,7 +14,7 @@ export const skillsRouter = Router();
  * @route GET /consultants/skills
  * @returns [skills]
  */
-skillsRouter.get("/skills", async (req: Request, res: Response) => {
+skillsRouter.get("/", async (req: Request, res: Response) => {
   try {
     const skills = await prisma.consultantSkill.findMany();
     res.send(skills);
@@ -26,7 +26,7 @@ skillsRouter.get("/skills", async (req: Request, res: Response) => {
 });
 
 /**
- * Get skills of a consultants
+ * Get skills of a consultant
  * @route GET /consultants/skills/{consultantId}
  * @returns Skillbody
  */
@@ -59,21 +59,32 @@ skillsRouter.get("/:consultantId", async (req: Request, res: Response) => {
  * @route : POST /consultants/skills/me
  * @body : {skill: string, proficiency: number}
  */
-skillsRouter.post("/:consultantId", async (req: Request, res: Response) => {
-  const parsedParams = ConsultantIdParamsSchema.safeParse(req.params);
+skillsRouter.post("/me", async (req: Request, res: Response) => {
   const parsedBody = PostSkillBodySchema.safeParse(req.body);
 
-  if (!parsedParams.success) {
-    res.status(400).json(parsedParams.error);
-    return;
-  }
   if (!parsedBody.success) {
     res.status(400).json(parsedBody.error);
     return;
   }
 
-  const { consultantId } = parsedParams.data;
   const { skillName, proficiency } = parsedBody.data;
+
+  // TODO: use consultantId from a JWT token instead of getting the first
+  //       entry from the database
+  let consultantId;
+  try {
+    const consultant = await prisma.consultant.findFirst();
+    if (consultant === null) {
+      res
+        .status(400)
+        .json({ message: "No mock data found; create some first" });
+      return;
+    }
+    consultantId = consultant.id;
+  } catch (err) {
+    res.status(500).json(err);
+    return;
+  }
 
   try {
     if (!(await prisma.skillTag.findFirst({ where: { name: skillName } }))) {
@@ -115,15 +126,14 @@ skillsRouter.delete("/me/:skillId", async (req: Request, res: Response) => {
 
   const { skillId } = parsedParams.data;
 
-  let skill;
   try {
-    skill = await prisma.consultantSkill.delete({ where: { id: skillId } });
+    await prisma.consultantSkill.delete({ where: { id: skillId } });
   } catch (err) {
     res.status(500).json(err);
     return;
   }
 
-  res.status(200).json(`Skill ${skill.skillName} deleted`);
+  res.status(204).json();
 });
 
 /**
@@ -157,5 +167,5 @@ skillsRouter.put("/me/:skillId", async (req: Request, res: Response) => {
     return;
   }
 
-  res.status(200).json(`Skill updated`);
+  res.json();
 });

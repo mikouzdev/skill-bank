@@ -1,9 +1,11 @@
 import z from "zod";
 
-export const EmploymentSkillSchema = z.object({
-  name: z.string().meta({ example: "react" }),
-  category: z.string().nullable().meta({ example: "frontend" }),
-});
+export const EmploymentSkillSchema = z
+  .object({
+    name: z.string().meta({ example: "react" }),
+    category: z.string().nullable().meta({ example: "frontend" }),
+  })
+  .meta({ id: "EmploymentSkill" });
 
 export const EmploymentResponseSchema = z
   .object({
