@@ -32,13 +32,7 @@ return (
             <Box sx={{display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
               <Button
                 type="submit"
-                variant="contained"
-                sx={{
-                  color:"text.primary",
-                  backgroundColor: "white",
-                  borderRadius: "999px",
-                  width: "fit-content",
-                }}
+                
                 >Sign in</Button>
               <Link>Forgot password?</Link>
             </Box>
