@@ -1,0 +1,49 @@
+name: spankki
+
+services:
+  db:
+    image: postgres:18
+    container_name: spankki-db
+    restart: always
+    env_file:
+      - .env.example
+      - .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: spankki-pgadmin
+    restart: always
+    env_file:
+      - .env.example
+      - .env
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    configs:
+      - source: pgadmin_passfile
+        target: /var/lib/pgadmin/storage/pgpass
+        uid: "5050"
+        gid: "0"
+        mode: 0600
+      - source: pgadmin_server_json
+        target: /pgadmin4/servers.json
+        uid: "5050"
+        gid: "0"
+        mode: 0600
+
+volumes:
+  db-data:
+  pgadmin-data:
+
+configs:
+  pgadmin_passfile:
+    content: "db:5432:*:${POSTGRES_USER:-pguser}:${POSTGRES_PASSWORD:-pgpass}\n"
+  pgadmin_server_json:
+    content: "{\"Servers\":{\"1\":{\"Name\":\"${POSTGRES_DB:-spankki}\",\"Group\":\"Servers\",\"Host\":\"db\",\"Port\":5432,\"MaintenanceDB\":\"postgres\",\"Username\":\"${POSTGRES_USER:-pguser}\",\"DBRestrictionType\":\"databases\",\"UseSSHTunnel\":0,\"TunnelPort\":\"22\",\"TunnelAuthentication\":0,\"TunnelPromptPassword\":0,\"TunnelKeepAlive\":0,\"KerberosAuthentication\":false,\"ConnectionParameters\":{\"sslmode\":\"prefer\",\"connect_timeout\":10,\"passfile\":\"/var/lib/pgadmin/storage/pgpass\"},\"Tags\":[]}}}\n"
