@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getProjects } from "../api/consultants.api";
 import type { components } from "@api-types/openapi";
 
-type ProjectsResponse = components["schemas"]["GetProjectsResponseSchema"];
+type ProjectsResponse = components["schemas"]["GetProjectsResponse"];
 
 export function useConsultantProjects(id: number) {
   const [data, setData] = useState<ProjectsResponse | null>(null);

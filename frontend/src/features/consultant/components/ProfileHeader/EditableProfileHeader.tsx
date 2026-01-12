@@ -148,7 +148,7 @@ export default function EditableProfileHeader({ data }: Props) {
           <Button
             variant="contained"
             size="small"
-            onClick={handleSubmitEdits}
+            onClick={() => handleSubmitEdits}
             loading={loading}
           >
             Apply edits

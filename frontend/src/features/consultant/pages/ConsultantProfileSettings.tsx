@@ -1,10 +1,11 @@
 import { Divider, Typography, Container } from "@mui/material";
 import EditableProfileHeader from "../components/ProfileHeader/EditableProfileHeader";
 import { useConsultantDetails } from "../hooks/useConsultantDetails";
+import PersonalProjects from "../components/PersonalProjects/PersonalProjectsSection";
 
 export default function ConsultantProfileSettings() {
   const { consultant, skills, employments, projects, loading } =
-    useConsultantDetails(7);
+    useConsultantDetails(1);
 
   if (loading) return <Typography>Loading...</Typography>;
   if (!employments || !consultant || !projects || !skills)
@@ -23,7 +24,7 @@ export default function ConsultantProfileSettings() {
       <Divider />
       {/* todo: editable skills section */}
       {/* todo: editable professional experience section */}
-      {/* todo: editable personal projects section */}
+      <PersonalProjects skillData={skills} data={projects} editable />
     </Container>
   );
 }

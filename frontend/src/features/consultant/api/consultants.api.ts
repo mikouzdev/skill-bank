@@ -4,6 +4,7 @@ import type { components } from "@api-types/openapi";
 type ConsultantResponse = components["schemas"]["ConsultantResponse"];
 type EmploymentListResponse = components["schemas"]["EmploymentListResponse"];
 type ProjectListResponse = components["schemas"]["GetProjectsResponse"];
+type ProjectRequest = Partial<components["schemas"]["Project"]>;
 
 // type used for the updating of consultant profile details
 export type UpdateConsultantData = Partial<ConsultantResponse>;
@@ -21,6 +22,17 @@ export const getEmployments = (id: number) => {
 
 export const getProjects = (id: number) => {
   return api.get<ProjectListResponse>(`/consultants/${id}/projects`);
+};
+
+export const updateProject = (projectData: ProjectRequest) => {
+  return api.put<ProjectListResponse[number]>(
+    `/consultants/me/projects/${projectData.id}`,
+    projectData
+  );
+};
+
+export const deleteProject = (id: number) => {
+  return api.delete(`/consultants/me/projects/${id}`);
 };
 
 export const postProjects = (formData: ProjectListResponse) => {
