@@ -2,6 +2,9 @@ import {
   GetProjectsResponseSchema,
   ProjectSchema,
   ProjectBodySchema,
+  PostProjectLinkBodySchema,
+  ProjectLinkSchema,
+  ProjectSkillSchema,
 } from "../../schemas/consultants/projects.schema.js";
 
 export const projectsPaths = {
@@ -9,7 +12,10 @@ export const projectsPaths = {
     post: {
       summary: "Create a new project",
       tags: ["Consultants", "Projects"],
-      requestBody: { required: true, content: { schema: ProjectBodySchema } },
+      requestBody: {
+        required: true,
+        content: { "application/json": { schema: ProjectBodySchema } },
+      },
       responses: {
         200: {
           description: "Creation successful",
@@ -60,7 +66,7 @@ export const projectsPaths = {
       ],
       requestBody: {
         required: true,
-        content: { schema: ProjectBodySchema },
+        content: { "application/json": { schema: ProjectBodySchema } },
       },
       responses: {
         200: {
@@ -89,6 +95,112 @@ export const projectsPaths = {
           description: "Deletion successful",
         },
         400: { description: "Invalid project id" },
+        500: { description: "Server error" },
+      },
+    },
+  },
+  "/consultants/me/projects/{projectId}/links": {
+    post: {
+      summary: "Create a new project link",
+      tags: ["Consultants", "Projects"],
+      parameters: [
+        {
+          name: "projectId",
+          in: "path" as const,
+          required: true,
+          schema: { type: "integer" as const },
+        },
+      ],
+      requestBody: {
+        required: true,
+        content: { "application/json": { schema: PostProjectLinkBodySchema } },
+      },
+      responses: {
+        200: {
+          description: "Creation successful",
+          content: {
+            "application/json": { schema: ProjectLinkSchema },
+          },
+        },
+        400: { description: "Invalid request" },
+        500: { description: "Server error" },
+      },
+    },
+  },
+  "/consultants/me/projects/{projectId}/links/{linkId}": {
+    delete: {
+      summary: "Delete a project link",
+      tags: ["Consultants", "Projects"],
+      parameters: [
+        {
+          name: "projectId",
+          in: "path" as const,
+          required: true,
+          schema: { type: "integer" as const },
+        },
+        {
+          name: "linkId",
+          in: "path" as const,
+          required: true,
+          schema: { type: "integer" as const },
+        },
+      ],
+      responses: {
+        204: { description: "Deletion successful" },
+        400: { description: "Invalid request" },
+        500: { description: "Server error" },
+      },
+    },
+  },
+  "/consultants/me/projects/{projectId}/skills": {
+    post: {
+      summary: "Create a new project skill",
+      tags: ["Consultants", "Projects"],
+      parameters: [
+        {
+          name: "projectId",
+          in: "path" as const,
+          required: true,
+          schema: { type: "integer" as const },
+        },
+      ],
+      requestBody: {
+        required: true,
+        content: { "application/json": { schema: PostProjectLinkBodySchema } },
+      },
+      responses: {
+        200: {
+          description: "Creation successful",
+          content: {
+            "application/json": { schema: ProjectSkillSchema },
+          },
+        },
+        400: { description: "Invalid request" },
+        500: { description: "Server error" },
+      },
+    },
+  },
+  "/consultants/me/projects/{projectId}/skills/{projectSkillId}": {
+    delete: {
+      summary: "Delete a project skill",
+      tags: ["Consultants", "Projects"],
+      parameters: [
+        {
+          name: "projectId",
+          in: "path" as const,
+          required: true,
+          schema: { type: "integer" as const },
+        },
+        {
+          name: "projectSkillId",
+          in: "path" as const,
+          required: true,
+          schema: { type: "integer" as const },
+        },
+      ],
+      responses: {
+        204: { description: "Deletion successful" },
+        400: { description: "Invalid request" },
         500: { description: "Server error" },
       },
     },

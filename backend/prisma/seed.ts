@@ -4,7 +4,6 @@ import {
   Visibility,
 } from "../src/generated/prisma/client.js";
 import { PrismaPg } from "@prisma/adapter-pg";
-import "dotenv/config";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
@@ -18,7 +17,7 @@ async function main() {
 
   await prisma.employmentSkill.deleteMany();
   await prisma.employment.deleteMany();
-  await prisma.userSkill.deleteMany();
+  await prisma.consultantSkill.deleteMany();
   await prisma.user.deleteMany();
   await prisma.consultant.deleteMany();
   await prisma.skillTag.deleteMany();
@@ -66,7 +65,7 @@ async function main() {
     data: [{ name: "java" }, { name: "csharp" }, { name: "python" }],
   });
 
-  const skills = await prisma.userSkill.createMany({
+  const skills = await prisma.consultantSkill.createMany({
     data: [
       { skillName: "java", proficiency: 4, consultantId: consultant.id },
       {

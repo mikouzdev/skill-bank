@@ -1,10 +1,8 @@
 import { z } from "zod";
 
-export const ConsultantIdParamsSchema = z
-  .object({
-    consultantId: z.coerce.number().meta({ example: "1" }),
-  })
-  .meta({ id: "ConsultantIdParams" });
+export const ConsultantIdParamsSchema = z.object({
+  consultantId: z.coerce.number().meta({ example: "1" }),
+});
 
 export const ConsultantResponseSchema = z
   .object({
@@ -26,10 +24,6 @@ export const ConsultantResponseSchema = z
 export const AllConsultantsResponseSchema = z
   .array(ConsultantResponseSchema)
   .meta({ id: "AllConsultantsResponse" });
-
-export const UserSkill = z.object({
-  SkillName: z.string().meta({ example: "Java" }),
-});
 
 export const UpdateConsultantSchema = ConsultantResponseSchema.omit({
   consultantId: true,

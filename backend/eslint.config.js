@@ -14,7 +14,7 @@ export default defineConfig([
         ...globals.node,
       },
       parserOptions: {
-        project: "./tsconfig.json",
+        project: ["./tsconfig.json", "prisma/tsconfig.json"],
         tsconfigRootDir: import.meta.dirname,
       },
     },

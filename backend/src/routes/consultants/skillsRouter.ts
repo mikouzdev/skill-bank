@@ -1,17 +1,22 @@
 import { Router, type Request, type Response } from "express";
-import { UserSkillSchema } from "../../schemas/consultants/skills.schema.js";
+import { ConsultantIdParamsSchema } from "../../schemas/consultants/consultants.schema.js";
 import { prisma } from "../../db/prismaClient.js";
+import {
+  SkillIdParamsSchema,
+  PostSkillBodySchema,
+  SkillProficiencyBodySchema,
+} from "../../schemas/consultants/skills.schema.js";
 
 export const skillsRouter = Router();
 
 /**
  * Gets all skills in the database
- * @route GET /skill/
+ * @route GET /consultants/skills
  * @returns [skills]
  */
 skillsRouter.get("/", async (req: Request, res: Response) => {
   try {
-    const skills = await prisma.userSkill.findMany();
+    const skills = await prisma.consultantSkill.findMany();
     res.send(skills);
     return;
   } catch (err) {
@@ -21,12 +26,12 @@ skillsRouter.get("/", async (req: Request, res: Response) => {
 });
 
 /**
- * Get skills of a consultants
- * @route GET /skill/{consultantId}
+ * Get skills of a consultant
+ * @route GET /consultants/skills/{consultantId}
  * @returns Skillbody
  */
 skillsRouter.get("/:consultantId", async (req: Request, res: Response) => {
-  const parsedParams = UserSkillSchema.safeParse(req.params);
+  const parsedParams = ConsultantIdParamsSchema.safeParse(req.params);
   if (!parsedParams.success) {
     res.status(400).json(parsedParams.error);
     return;
@@ -35,7 +40,7 @@ skillsRouter.get("/:consultantId", async (req: Request, res: Response) => {
   let getSkill = null;
 
   try {
-    getSkill = await prisma.userSkill.findMany({
+    getSkill = await prisma.consultantSkill.findMany({
       where: { consultantId: consultant },
     });
   } catch (err) {
@@ -51,47 +56,55 @@ skillsRouter.get("/:consultantId", async (req: Request, res: Response) => {
 
 /**
  * Creates a skill for consultant
- * @route : POST /skill/{consultantId}
+ * @route : POST /consultants/skills/me
  * @body : {skill: string, proficiency: number}
  */
-skillsRouter.post("/:consultantId", async (req: Request, res: Response) => {
-  const parsedParams = UserSkillSchema.safeParse(req.params);
-  const { skill, proficiency } = req.body as {
-    skill: string;
-    proficiency: number;
-  };
+skillsRouter.post("/me", async (req: Request, res: Response) => {
+  const parsedBody = PostSkillBodySchema.safeParse(req.body);
 
-  if (!skill || proficiency === undefined) {
-    return res.status(400).json({
-      error: "skill and proficiency are required",
-    });
-  }
-
-  if (!parsedParams.success) {
-    res.status(400).json(parsedParams.error);
+  if (!parsedBody.success) {
+    res.status(400).json(parsedBody.error);
     return;
   }
-  const consultantId = parsedParams.data.consultantId;
+
+  const { skillName, proficiency } = parsedBody.data;
+
+  // TODO: use consultantId from a JWT token instead of getting the first
+  //       entry from the database
+  let consultantId;
+  try {
+    const consultant = await prisma.consultant.findFirst();
+    if (consultant === null) {
+      res
+        .status(400)
+        .json({ message: "No mock data found; create some first" });
+      return;
+    }
+    consultantId = consultant.id;
+  } catch (err) {
+    res.status(500).json(err);
+    return;
+  }
 
   try {
-    if (!(await prisma.skillTag.findFirst({ where: { name: skill } }))) {
+    if (!(await prisma.skillTag.findFirst({ where: { name: skillName } }))) {
       await prisma.skillTag.create({
         data: {
-          name: skill,
+          name: skillName,
         },
       });
-      await prisma.userSkill.create({
+      await prisma.consultantSkill.create({
         data: {
-          skillName: skill,
+          skillName,
           proficiency: proficiency,
           consultantId: consultantId,
         },
       });
       const user = await prisma.user.findFirst({ where: { id: consultantId } });
-      res.status(200).json(`Skill ${skill} added to ${user?.name}`);
+      res.status(200).json(`Skill ${skillName} added to ${user?.name}`);
       return;
     } else {
-      res.status(500).json(`Skill ${skill} already exists`);
+      res.status(500).json(`Skill ${skillName} already exists`);
     }
   } catch (err) {
     res.status(500).json(err);
@@ -101,44 +114,58 @@ skillsRouter.post("/:consultantId", async (req: Request, res: Response) => {
 
 /**
  * Deletes a skill by ID
- * @body {id: {skill's id}}
- * @route DELETE /skill/
+ * @route DELETE /consultants/skills/me/{skillId}
  */
-skillsRouter.delete("/", async (req: Request, res: Response) => {
-  const { id } = req.body as {
-    id: number;
-  };
-  const skill = await prisma.userSkill.findFirst({ where: { id: id } });
-  try {
-    await prisma.userSkill.delete({ where: { id: id } });
-    res.status(200).json(`Skill ${skill?.skillName} deleted`);
+skillsRouter.delete("/me/:skillId", async (req: Request, res: Response) => {
+  const parsedParams = SkillIdParamsSchema.safeParse(req.params);
+
+  if (!parsedParams.success) {
+    res.status(400).json(parsedParams.error);
     return;
+  }
+
+  const { skillId } = parsedParams.data;
+
+  try {
+    await prisma.consultantSkill.delete({ where: { id: skillId } });
   } catch (err) {
     res.status(500).json(err);
+    return;
   }
+
+  res.status(204).json();
 });
 
-skillsRouter.put("/:consultantId", async (req: Request, res: Response) => {
-  const { id, proficiency, skill } = req.body as {
-    id: number;
-    proficiency: number;
-    skill: string;
-  };
+/**
+ * Edit the proficiency of a skill
+ * @body {proficiency: {skill's proficiency}}
+ * @route PUT /consultants/skills/me/{skillId}
+ */
+skillsRouter.put("/me/:skillId", async (req: Request, res: Response) => {
+  const parsedParams = SkillIdParamsSchema.safeParse(req.params);
+  const parsedBody = SkillProficiencyBodySchema.safeParse(req.body);
+
+  if (!parsedParams.success) {
+    res.status(400).json(parsedParams.error);
+    return;
+  }
+  if (!parsedBody.success) {
+    res.status(400).json(parsedBody.error);
+    return;
+  }
+
+  const { skillId } = parsedParams.data;
+  const { proficiency } = parsedBody.data;
 
   try {
-    if (!(await prisma.skillTag.findFirst({ where: { name: skill } }))) {
-      await prisma.skillTag.create({
-        data: { name: skill },
-      });
-    }
-    await prisma.userSkill.update({
-      where: { id: id },
-      data: { proficiency: proficiency, skillName: skill },
+    await prisma.consultantSkill.update({
+      where: { id: skillId },
+      data: { proficiency },
     });
-
-    res.status(200).json(`Skill updated`);
-    return;
   } catch (err) {
     res.status(500).json(err);
+    return;
   }
+
+  res.json();
 });
