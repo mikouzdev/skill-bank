@@ -11,6 +11,7 @@ import { type SkillsResponse } from "../../types/types";
 type Props = {
   data: ConsultantProjectList;
   skillData: SkillsResponse;
+  editable?: boolean;
 };
 
 export interface FormedData {
@@ -21,7 +22,7 @@ export interface FormedData {
   visibility: string;
 }
 
-export default function PersonalProjects({ data, skillData }: Props) {
+export default function PersonalProjects({ data, skillData, editable }: Props) {
   async function addProject(formData: FormedData) {
     try {
       await postProjects({
@@ -30,12 +31,39 @@ export default function PersonalProjects({ data, skillData }: Props) {
         start: formData.start,
         end: formData.end,
         visibility: formData.visibility,
-        projectLinks: [],
       });
     } catch {
       return;
     }
   }
+
+  const defaultSection = (
+    <>
+      <Typography variant="h5">Personal Projects</Typography>
+      <Stack spacing={1}>
+        {data.map((item) => (
+          <PersonalProjectItem key={item.id} item={item} />
+        ))}
+      </Stack>
+    </>
+  );
+
+  const editableSection = (
+    <>
+      <Stack direction={"row"} gap={2}>
+        <Typography variant="h5">Personal Projects</Typography>
+        <AddNewProject
+          update={addProject}
+          skilldata={skillData}
+        ></AddNewProject>
+      </Stack>
+      <Stack spacing={1}>
+        {data.map((item) => (
+          <PersonalProjectItem key={item.id} item={item} editable />
+        ))}
+      </Stack>
+    </>
+  );
 
   return (
     <Box
@@ -43,20 +71,7 @@ export default function PersonalProjects({ data, skillData }: Props) {
         p: 2,
       }}
     >
-      <Stack spacing={1} sx={{ maxWidth: 1200 }}>
-        <Typography variant="h5">
-          Personal Projects{" "}
-          <AddNewProject
-            update={addProject}
-            skilldata={skillData}
-          ></AddNewProject>
-        </Typography>
-        <Stack spacing={1}>
-          {data.map((item) => (
-            <PersonalProjectItem key={item.id} item={item} />
-          ))}
-        </Stack>
-      </Stack>
+      {editable ? editableSection : defaultSection}
     </Box>
   );
 }

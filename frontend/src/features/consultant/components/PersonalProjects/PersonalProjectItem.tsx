@@ -2,18 +2,19 @@ import { Box, Typography, Stack, Chip, Paper } from "@mui/material";
 import dayjs from "dayjs";
 
 import type { components } from "@api-types/openapi";
+import PersonalProjectEdit from "./PersonalProjectEdit";
 
-type ConsultantProject =
-  components["schemas"]["GetProjectsResponseSchema"][number];
+type ConsultantProject = components["schemas"]["GetProjectsResponse"][number];
 
 type Props = {
   item: ConsultantProject;
+  editable?: boolean;
 };
 
 // in what format are the start and end times shown
 const DATE_FORMAT = "MM/YYYY";
 
-export default function PersonalProjectItem({ item }: Props) {
+export default function PersonalProjectItem({ item, editable }: Props) {
   const projectLinks = item.projectLinks.map((link, i) => (
     <Chip
       key={i}
@@ -26,6 +27,12 @@ export default function PersonalProjectItem({ item }: Props) {
       target="_blank"
     />
   ));
+
+  const editOnlyButtons = editable && (
+    <Stack direction={"row"} spacing={1}>
+      <PersonalProjectEdit projectData={item} />
+    </Stack>
+  );
 
   return (
     <Paper
@@ -46,8 +53,11 @@ export default function PersonalProjectItem({ item }: Props) {
       <Box>
         <Typography>{item.description}</Typography>
       </Box>
-      <Stack direction={"row"} spacing={1}>
-        {projectLinks}
+      <Stack direction={"row"} spacing={"auto"}>
+        <Stack spacing={1} direction={"row"}>
+          {projectLinks}
+        </Stack>
+        {editOnlyButtons}
       </Stack>
     </Paper>
   );

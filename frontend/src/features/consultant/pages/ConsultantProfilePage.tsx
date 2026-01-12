@@ -7,7 +7,7 @@ import { useConsultantDetails } from "../hooks/useConsultantDetails";
 
 export default function ConsultantProfilePage() {
   const { consultant, skills, employments, projects, loading } =
-    useConsultantDetails(7);
+    useConsultantDetails(1);
 
   if (loading) return <Typography>Loading...</Typography>;
   if (!employments || !consultant || !projects || !skills)
