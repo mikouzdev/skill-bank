@@ -26,7 +26,7 @@ export default function ConsultantProfilePage() {
       <Divider />
       <Skills data={skills} />
       <Divider />
-      <ProfessionalExperience data={employments} />
+      <ProfessionalExperience data={employments} skillData={skills} />
       <Divider />
       <PersonalProjects data={projects} skillData={skills} />
     </Container>

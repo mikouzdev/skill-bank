@@ -27,6 +27,13 @@ export const postProjects = (formData: ProjectListResponse) => {
   return api.post<ProjectListResponse>(`/consultants/me/projects`, formData);
 };
 
+export const postWorkExperience = (formData: EmploymentListResponse) => {
+  return api.post<EmploymentListResponse>(
+    `/consultants/me/employments`,
+    formData
+  );
+};
+
 export const getSkills = (id: number) => {
   return api.get<SkillsResponse>(`/consultants/skills/${id}`);
 };

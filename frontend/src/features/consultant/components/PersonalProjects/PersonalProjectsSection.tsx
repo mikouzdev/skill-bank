@@ -5,7 +5,7 @@ import { AddNewProject } from "./PersonalProjectAdd";
 
 import type { components } from "@api-types/openapi";
 
-type ConsultantProjectList = components["schemas"]["GetProjectsResponseSchema"];
+type ConsultantProjectList = components["schemas"]["GetProjectsResponse"];
 import { type SkillsResponse } from "../../types/types";
 
 type Props = {
