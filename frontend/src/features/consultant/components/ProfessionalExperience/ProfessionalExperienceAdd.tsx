@@ -60,10 +60,10 @@ export function AddNewExperience({ update, skilldata }: Props) {
         }}
         onClick={handleOpen}
       >
-        Add project
+        Add Profession Experience
       </Button>
       <Dialog open={!!showForm}>
-        <DialogTitle>Add a new project</DialogTitle>
+        <DialogTitle>Add a new Profession Experience</DialogTitle>
         {
           <div className="overlay">
             <div className="form-container">
