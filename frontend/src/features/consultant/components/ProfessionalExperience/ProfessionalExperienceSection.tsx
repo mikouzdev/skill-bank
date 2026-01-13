@@ -48,7 +48,7 @@ export default function ProfessionalExperience({ data, skillData }: Props) {
       <Stack spacing={1} sx={{ maxWidth: 1200 }}>
         <Typography variant="h5">Professional Experience</Typography>
         <AddNewExperience
-          update={AddNewWorkExperience}
+          update={(formData) => void AddNewWorkExperience(formData)}
           skilldata={skillData}
         ></AddNewExperience>
         <Stack spacing={1}>

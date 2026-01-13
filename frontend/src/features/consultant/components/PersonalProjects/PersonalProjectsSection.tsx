@@ -53,7 +53,9 @@ export default function PersonalProjects({ data, skillData, editable }: Props) {
       <Stack direction={"row"} gap={2}>
         <Typography variant="h5">Personal Projects</Typography>
         <AddNewProject
-          update={addProject}
+          update={(formData) => {
+            void addProject(formData);
+          }}
           skilldata={skillData}
         ></AddNewProject>
       </Stack>
