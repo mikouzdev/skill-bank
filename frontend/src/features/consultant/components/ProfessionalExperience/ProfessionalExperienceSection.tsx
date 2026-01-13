@@ -5,21 +5,12 @@ import AddNewExperience from "./ProfessionalExperienceAdd";
 import { postWorkExperience } from "../../api/consultants.api";
 
 type ConsultantEmploymentList = components["schemas"]["EmploymentListResponse"];
-import { type SkillsResponse } from "../../types/types";
+import { type FormedWorkData, type SkillsResponse } from "../../types/types";
 
 type Props = {
   data: ConsultantEmploymentList;
   skillData: SkillsResponse;
 };
-
-export interface FormedWorkData {
-  companyName: string;
-  description: string;
-  start: string;
-  end: string;
-  visibility: string;
-  jobTitle: string;
-}
 
 export default function ProfessionalExperience({ data, skillData }: Props) {
   async function AddNewWorkExperience(formData: FormedWorkData) {

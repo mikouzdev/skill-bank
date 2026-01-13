@@ -6,7 +6,7 @@ import { AddNewProject } from "./PersonalProjectAdd";
 import type { components } from "@api-types/openapi";
 
 type ConsultantProjectList = components["schemas"]["GetProjectsResponse"];
-import { type SkillsResponse } from "../../types/types";
+import { type FormedProjectData, type SkillsResponse } from "../../types/types";
 
 type Props = {
   data: ConsultantProjectList;
@@ -14,16 +14,8 @@ type Props = {
   editable?: boolean;
 };
 
-export interface FormedData {
-  name: string;
-  description: string;
-  start: string;
-  end: string;
-  visibility: string;
-}
-
 export default function PersonalProjects({ data, skillData, editable }: Props) {
-  async function addProject(formData: FormedData) {
+  async function addProject(formData: FormedProjectData) {
     try {
       await postProjects({
         name: formData.name,
@@ -31,6 +23,7 @@ export default function PersonalProjects({ data, skillData, editable }: Props) {
         start: formData.start,
         end: formData.end,
         visibility: formData.visibility,
+        projectLinks: [],
       });
     } catch {
       return;

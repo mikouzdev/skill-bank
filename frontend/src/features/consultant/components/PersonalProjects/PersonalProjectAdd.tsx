@@ -9,12 +9,11 @@ import {
   Stack,
   ButtonGroup,
 } from "@mui/material";
-import type { FormedData } from "./PersonalProjectsSection";
 
-import { type SkillsResponse } from "../../types/types";
+import { type FormedProjectData, type SkillsResponse } from "../../types/types";
 
 interface Props {
-  update: (formData: FormedData) => void;
+  update: (formData: FormedProjectData) => void;
   skilldata: SkillsResponse;
 }
 

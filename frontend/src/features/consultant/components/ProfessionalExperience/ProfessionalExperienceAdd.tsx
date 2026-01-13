@@ -10,8 +10,7 @@ import {
   ButtonGroup,
 } from "@mui/material";
 
-import { type SkillsResponse } from "../../types/types";
-import type { FormedWorkData } from "./ProfessionalExperienceSection";
+import { type FormedWorkData, type SkillsResponse } from "../../types/types";
 
 interface Props {
   update: (formData: FormedWorkData) => void;
