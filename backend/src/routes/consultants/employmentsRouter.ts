@@ -22,7 +22,8 @@ employmentsRouter.get(
 
       const { consultantId } = parsedParams.data;
       // Visibility for now, auth based later
-      const allowedVisibilities = [Visibility.LIMITED, Visibility.PUBLIC];
+      //Visibility.LIMITED
+      const allowedVisibilities = [Visibility.PUBLIC];
       const employments = await getEmploymentsForConsultant(
         consultantId,
         allowedVisibilities
