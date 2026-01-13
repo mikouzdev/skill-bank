@@ -2,6 +2,7 @@ import { Divider, Typography, Container } from "@mui/material";
 import EditableProfileHeader from "../components/ProfileHeader/EditableProfileHeader";
 import { useConsultantDetails } from "../hooks/useConsultantDetails";
 import PersonalProjects from "../components/PersonalProjects/PersonalProjectsSection";
+import Skills from "../components/Skills/SkillsSection";
 
 export default function ConsultantProfileSettings() {
   const { consultant, skills, employments, projects, loading } =
@@ -23,6 +24,7 @@ export default function ConsultantProfileSettings() {
       <EditableProfileHeader data={consultant} />
       <Divider />
       {/* todo: editable skills section */}
+      <Skills data={skills} editable />
       {/* todo: editable professional experience section */}
       <PersonalProjects skillData={skills} data={projects} editable />
     </Container>
