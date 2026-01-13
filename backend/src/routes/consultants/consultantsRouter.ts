@@ -60,6 +60,37 @@ consultantsRouter.get("/:consultantId", async (req: Request, res: Response) => {
   res.json(consultant);
 });
 
+//Endpoint for if personal info of consultant is private or not
+consultantsRouter.get("/:consultantId/info", async (req: Request, res: Response) => {
+  const parsedParams = ConsultantIdParamsSchema.safeParse(req.params);
+  if (!parsedParams.success) {
+    res.status(400).json(parsedParams.error);
+    return;
+  }
+  const consultantId = parsedParams.data.consultantId;
+
+  let consultantAttributes = null;
+  try {
+    consultantAttributes = await prisma.consultantAttribute.findFirst({
+      where: { consultantId: consultantId }
+    });
+  } catch (err) {
+    res.status(500).json(err);
+    return;
+  }
+
+  if (consultantAttributes === null) {
+    res.status(404).json({ message: "Not found" });
+    return;
+  }
+  else if (consultantAttributes.visibility == "LIMITED" ) {
+    res.send("Profile visibility is limited");
+  }
+  else {
+    res.send("Profile visibility is not limited");
+  }
+});
+
 consultantsRouter.put(
   "/me",
   uploadFile("profilePicture"),
