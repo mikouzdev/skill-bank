@@ -3,6 +3,7 @@ import EditableProfileHeader from "../components/ProfileHeader/EditableProfileHe
 import { useConsultantDetails } from "../hooks/useConsultantDetails";
 import PersonalProjects from "../components/PersonalProjects/PersonalProjectsSection";
 import Skills from "../components/Skills/SkillsSection";
+import EditableExternalLinks from "../components/ExternalLinks/EditableExternalLinks";
 
 export default function ConsultantProfileSettings() {
   const { consultant, skills, employments, projects, loading } =
@@ -22,6 +23,11 @@ export default function ConsultantProfileSettings() {
       }}
     >
       <EditableProfileHeader data={consultant} />
+      <Divider />
+      {/* todo: external links */}
+      {/* Consultant has no external links yet. */}
+      {/* Placeholder. */}
+      <EditableExternalLinks links={[""]}></EditableExternalLinks>
       <Divider />
       {/* todo: editable skills section */}
       <Skills data={skills} editable />
