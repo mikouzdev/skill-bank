@@ -8,6 +8,7 @@ import {
   DeleteProjectSkillParamsSchema,
   PostProjectSkillBodySchema,
 } from "../../schemas/consultants/projects.schema.js";
+import { Visibility } from "../../generated/prisma/enums.js";
 import { prisma } from "../../db/prismaClient.js";
 
 export const projectsRouter = Router();
@@ -64,11 +65,18 @@ projectsRouter.get(
       return;
     }
     const { consultantId } = parsedParams.data;
-
+    // Visibility for now, auth based later
+    //Visibility.LIMITED
+    const allowedVisibilities = [Visibility.PUBLIC];
     let projects = null;
     try {
       projects = await prisma.project.findMany({
-        where: { consultantId },
+        where: {
+          consultantId,
+          visibility: {
+            in: allowedVisibilities,
+          },
+        },
         include: {
           projectLinks: true,
           projectSkills: true,
