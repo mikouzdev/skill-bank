@@ -8,6 +8,8 @@ import {
   MenuItem,
   Stack,
   ButtonGroup,
+  FormControlLabel,
+  Switch,
 } from "@mui/material";
 
 import { type FormedWorkData, type SkillsResponse } from "../../types/types";
@@ -60,10 +62,17 @@ export function AddNewExperience({ update, skilldata }: Props) {
         }}
         onClick={handleOpen}
       >
-        Add Profession Experience
+        Add professional experience
       </Button>
+      {/* Move to Professional exp edit file when ready */}
+      <FormControlLabel
+        control={<Switch defaultChecked />}
+        label="Visible to others"
+        labelPlacement="start"
+      />{" "}
+      {/* Move to Professional exp edit file when ready */}
       <Dialog open={!!showForm}>
-        <DialogTitle>Add a new Profession Experience</DialogTitle>
+        <DialogTitle>Add professional experience</DialogTitle>
         {
           <div className="overlay">
             <div className="form-container">

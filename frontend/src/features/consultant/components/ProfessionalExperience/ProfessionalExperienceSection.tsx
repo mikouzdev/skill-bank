@@ -37,14 +37,17 @@ export default function ProfessionalExperience({ data, skillData }: Props) {
       }}
     >
       <Stack spacing={1} sx={{ maxWidth: 1200 }}>
-        <Typography variant="h5">Professional Experience</Typography>
-        <AddNewExperience
-          update={(formData) => void AddNewWorkExperience(formData)}
-          skilldata={skillData}
-        ></AddNewExperience>
+        <Stack direction={"row"} spacing={2}>
+          <Typography variant="h5">Professional Experience</Typography>
+          <AddNewExperience
+            update={(formData) => void AddNewWorkExperience(formData)}
+            skilldata={skillData}
+          ></AddNewExperience>
+        </Stack>
+
         <Stack spacing={1}>
           {data.map((item, i) => (
-            <ProfessionalExperienceItem key={i} item={item} />
+            <ProfessionalExperienceItem key={i} item={item} editable />
           ))}
         </Stack>
       </Stack>

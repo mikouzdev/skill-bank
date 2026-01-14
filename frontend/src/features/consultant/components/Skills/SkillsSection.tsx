@@ -1,11 +1,4 @@
-import {
-  Box,
-  Typography,
-  Rating,
-  Button,
-  IconButton,
-  Stack,
-} from "@mui/material";
+import { Box, Typography, Rating, IconButton, Stack } from "@mui/material";
 import Circle from "@mui/icons-material/Circle";
 import CircleIcon from "@mui/icons-material/Circle";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -14,11 +7,10 @@ import { type SkillsResponse } from "../../types/types";
 import { useState } from "react";
 import { deleteSkill, updateSkill } from "../../api/consultants.api";
 import type { components } from "@api-types/openapi";
+import AddSkillDialog from "./AddSkillDialog";
+import { useSkills } from "../../hooks/useSkills";
 
-type SkillRequest = Pick<
-  components["schemas"]["ConsultantSkill"],
-  "proficiency"
->;
+type SkillRequest = Partial<components["schemas"]["ConsultantSkill"]>;
 
 type Props = {
   data: SkillsResponse;
@@ -26,7 +18,9 @@ type Props = {
 };
 
 export default function Skills({ data, editable }: Props) {
-  const [skills, setSkills] = useState<SkillsResponse>(data);
+  const [skills, setSkills] = useState<SkillsResponse>(data); // consultant skills
+
+  const { skillPool } = useSkills(); // all available skills that consultant can use
 
   async function handleUpdateSkill(id: number, newProficiency: number | null) {
     if (newProficiency === null) return;
@@ -67,12 +61,23 @@ export default function Skills({ data, editable }: Props) {
     </IconButton>
   );
 
+  function handleSkillAdded(
+    newSkill: components["schemas"]["ConsultantSkill"]
+  ) {
+    setSkills((prev) => [...prev, newSkill]);
+  }
+
   return (
     <Box sx={{ p: 2 }}>
-      <Typography variant="h5">
-        Skills
-        <Button>Add new Skill</Button>
-      </Typography>
+      <Stack direction={"row"} spacing={2}>
+        <Typography variant="h5">Skills</Typography>
+        {skillPool && (
+          <AddSkillDialog
+            skillData={skillPool}
+            onSkillAdded={handleSkillAdded}
+          />
+        )}
+      </Stack>
 
       <Box
         sx={{

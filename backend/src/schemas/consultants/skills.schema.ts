@@ -26,4 +26,16 @@ export const SkillIdParamsSchema = z.object({
   skillId: z.coerce.number().meta({ example: "1" }),
 });
 
+export const SkillTagSchema = z
+  .object({
+    id: z.number().meta({ example: 1 }),
+    categoryid: z.number().nullable().meta({ example: null }),
+    name: z.string().meta({ example: "Typescript" }),
+  })
+  .meta({ id: "SkillTag" });
+
+export const SkillTagsSchema = z
+  .array(SkillTagSchema)
+  .meta({ id: "SkillTagList" });
+
 export type ConsultantSkill = z.infer<typeof ConsultantSkillSchema>;

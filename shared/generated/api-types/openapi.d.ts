@@ -828,14 +828,14 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/consultants/skills": {
+    "/consultants/skills/all": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Get all skills of all consultants */
+        /** Get all available skills for consultant */
         get: {
             parameters: {
                 query?: never;
@@ -851,7 +851,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["ConsultantSkill"][];
+                        "application/json": components["schemas"]["SkillTagList"];
                     };
                 };
                 /** @description Server error */
@@ -1206,6 +1206,15 @@ export interface components {
             projectId: number;
             /** @example Python */
             skillTagName: string;
+        };
+        SkillTagList: components["schemas"]["SkillTag"][];
+        SkillTag: {
+            /** @example 1 */
+            id: number;
+            /** @example null */
+            categoryid: number | null;
+            /** @example Typescript */
+            name: string;
         };
         ConsultantSkill: {
             /** @example 1 */
