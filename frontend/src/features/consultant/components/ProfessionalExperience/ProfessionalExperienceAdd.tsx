@@ -10,8 +10,7 @@ import {
   ButtonGroup,
 } from "@mui/material";
 
-import { type SkillsResponse } from "../../types/types";
-import type { FormedWorkData } from "./ProfessionalExperienceSection";
+import { type FormedWorkData, type SkillsResponse } from "../../types/types";
 
 interface Props {
   update: (formData: FormedWorkData) => void;
@@ -61,10 +60,10 @@ export function AddNewExperience({ update, skilldata }: Props) {
         }}
         onClick={handleOpen}
       >
-        Add project
+        Add Profession Experience
       </Button>
       <Dialog open={!!showForm}>
-        <DialogTitle>Add a new project</DialogTitle>
+        <DialogTitle>Add a new Profession Experience</DialogTitle>
         {
           <div className="overlay">
             <div className="form-container">

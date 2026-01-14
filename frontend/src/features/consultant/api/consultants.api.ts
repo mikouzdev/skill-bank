@@ -5,6 +5,10 @@ type ConsultantResponse = components["schemas"]["ConsultantResponse"];
 type EmploymentListResponse = components["schemas"]["EmploymentListResponse"];
 type ProjectListResponse = components["schemas"]["GetProjectsResponse"];
 type ProjectRequest = Partial<components["schemas"]["Project"]>;
+type SkillRequest = Pick<
+  components["schemas"]["ConsultantSkill"],
+  "proficiency"
+>;
 
 // type used for the updating of consultant profile details
 export type UpdateConsultantData = Partial<ConsultantResponse>;
@@ -54,6 +58,14 @@ export const postWorkExperience = (formData: EmploymentListResponse) => {
 
 export const getSkills = (id: number) => {
   return api.get<SkillsResponse>(`/consultants/skills/${id}`);
+};
+
+export const updateSkill = (id: number, profiency: SkillRequest) => {
+  return api.put(`/consultants/skills/me/${id}`, profiency);
+};
+
+export const deleteSkill = (id: number) => {
+  return api.delete(`/consultants/skills/me/${id}`);
 };
 
 export const updateProfile = (formData: UpdateConsultantData | FormData) => {
