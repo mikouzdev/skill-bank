@@ -20,6 +20,12 @@ export const getConsultant = (id: number) => {
   return api.get<ConsultantResponse>(`/consultants/${id}`);
 };
 
+export const getConsultants = () => {
+  return api.get<ConsultantResponse[]>(`/consultants/`);
+};
+
+
+
 export const getEmployments = (id: number) => {
   return api.get<EmploymentListResponse>(`/consultants/${id}/employments`);
 };

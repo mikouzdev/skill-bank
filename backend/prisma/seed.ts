@@ -57,12 +57,75 @@ async function main() {
     },
   });
   console.log("🧑‍💼 Consultant created");
+
+  //=============================================
+
+
+  const consultantUser2 = await prisma.user.create({
+    data: {
+      name: "Bob Consultant",
+      email: "bob@demo.com",
+      passwordHash: "hashed-password",
+      roles: {
+        create: [{ role: Role.CONSULTANT }],
+      },
+    },
+  });
+
+  const consultant2 = await prisma.consultant.create({
+    data: {
+      userId: consultantUser2.id,
+      description: "Senior frontend developer",
+      roleTitle: "Senior Frontend Engineer",
+      profilePictureUrl: "https://picsum.photos/200",
+      consultantAttributes: {
+        create: [
+          {
+            label: "LinkedIn",
+            value: "https://linkedin.com/in/bob",
+          },
+        ],
+      },
+    },
+  });
+  console.log("🧑‍💼 Consultant Bob created");
+
+  //===========================================
+
+  const consultantUser3 = await prisma.user.create({
+    data: {
+      name: "Carol Consultant",
+      email: "Carol@demo.com",
+      passwordHash: "hashed-password",
+      roles: {
+        create: [{ role: Role.CONSULTANT }],
+      },
+    },
+  });
+
+  const consultant3 = await prisma.consultant.create({
+    data: {
+      userId: consultantUser3.id,
+      description: "Junior backend developer",
+      roleTitle: "Junior Backend Engineer",
+      profilePictureUrl: "https://picsum.photos/200",
+      consultantAttributes: {
+        create: [
+          {
+            label: "LinkedIn",
+            value: "https://linkedin.com/in/carol",
+          },
+        ],
+      },
+    },
+  });
+  console.log("🧑‍💼 Consultant Carol created");
   // ===========================================
   // Skills
   // ===========================================
 
   const skilltags = await prisma.skillTag.createMany({
-    data: [{ name: "java" }, { name: "csharp" }, { name: "python" }],
+    data: [{ name: "java" }, { name: "csharp" }, { name: "python" }, {name: "kotlin"}, {name: "rust"}],
   });
 
   const skills = await prisma.consultantSkill.createMany({
@@ -79,8 +142,46 @@ async function main() {
         proficiency: 2,
         consultantId: consultant.id,
       },
+      {
+        skillName: "python",
+        proficiency: 1,
+        consultantId: consultant3.id,
+      },
+      {
+        skillName: "kotlin",
+        proficiency: 1,
+        consultantId: consultant2.id,
+      },
+      {
+        skillName: "rust",
+        proficiency: 1,
+        consultantId: consultant2.id,
+      },
+      {
+        skillName: "java",
+        proficiency: 1,
+        consultantId: consultant2.id,
+      },
+      {
+        skillName: "python",
+        proficiency: 1,
+        consultantId: consultant2.id,
+      },
+      {
+        skillName: "csharp",
+        proficiency: 1,
+        consultantId: consultant2.id,
+      },
+      {
+        skillName: "csharp",
+        proficiency: 1,
+        consultantId: consultant3.id,
+      },
+
     ],
   });
+
+  //================================================
 
   console.log("🛠️ Skills created");
 
