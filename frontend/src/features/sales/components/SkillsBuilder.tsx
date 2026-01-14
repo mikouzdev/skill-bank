@@ -36,6 +36,7 @@ export default function SkillsBuilder({ data }: Props) {
         
 
         <Rating
+          readOnly
           name={`skill-${skill.id}`}
           value={skill.proficiency}
           precision={1}
@@ -45,8 +46,10 @@ export default function SkillsBuilder({ data }: Props) {
             color: "rgba(34, 130, 255, 1)",
             "& .MuiRating-icon": {
             fontSize: 10, 
-            },
+          },           
           }}
+          
+
         />
           </Box>
         ))}
