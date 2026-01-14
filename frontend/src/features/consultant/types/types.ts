@@ -48,3 +48,20 @@ export type SkillsResponse = {
   proficiency: number;
   listPosition: number;
 }[];
+
+export interface FormedProjectData {
+  name: string;
+  description: string;
+  start: string;
+  end: string;
+  visibility: string;
+}
+
+export interface FormedWorkData {
+  companyName: string;
+  description: string;
+  start: string;
+  end: string;
+  visibility: string;
+  jobTitle: string;
+}
