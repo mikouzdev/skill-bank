@@ -7,4 +7,23 @@ export const theme = createTheme({
       paper: "#EEEEEE",
     },
   },
+  
+  //
+  components: {
+    MuiButton: {
+    styleOverrides: {
+        root: {
+          borderRadius: "999px",
+          backgroundColor: "#0079c4",
+          width: "fit-content",
+          color: "white", //"text.primary",
+          variant: "contained",
+          "&:hover": {
+            backgroundColor: "#006aa9",
+          },
+        },
+      },
+    },
+  },
+  //
 });
