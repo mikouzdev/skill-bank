@@ -47,7 +47,7 @@ export default function ProfessionalExperience({ data, skillData }: Props) {
 
         <Stack spacing={1}>
           {data.map((item, i) => (
-            <ProfessionalExperienceItem key={i} item={item} />
+            <ProfessionalExperienceItem key={i} item={item} editable />
           ))}
         </Stack>
       </Stack>

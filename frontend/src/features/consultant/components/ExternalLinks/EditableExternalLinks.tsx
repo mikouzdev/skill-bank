@@ -1,4 +1,12 @@
-import { Stack, Box, TextField, Button, Typography } from "@mui/material";
+import {
+  Stack,
+  Box,
+  TextField,
+  Button,
+  Typography,
+  Switch,
+  FormControlLabel,
+} from "@mui/material";
 import { useState } from "react";
 import { SiGitlab, SiGithub, SiLinkedin } from "react-icons/si";
 
@@ -34,6 +42,10 @@ export default function EditableExternalLinks({ links }: Props) {
       >
         <Stack gap={2} width={"100%"}>
           <Stack direction={"column"} gap={2} width={"40%"}>
+            <FormControlLabel
+              control={<Switch defaultChecked />}
+              label="Section is visible to ohter consultants"
+            />{" "}
             <Stack direction={"row"} gap={2} width={"100%"} alignItems="center">
               <SiLinkedin size={ICON_SIZE} />
               <TextField
@@ -42,7 +54,11 @@ export default function EditableExternalLinks({ links }: Props) {
                 onChange={handleLinkedInChange}
                 variant="outlined"
                 type="text"
-              />
+              />{" "}
+              <FormControlLabel
+                control={<Switch defaultChecked />}
+                label="is visible to ohter consultants"
+              />{" "}
             </Stack>
             <Stack direction={"row"} gap={2} width={"100%"} alignItems="center">
               <SiGithub size={ICON_SIZE} />
@@ -53,8 +69,11 @@ export default function EditableExternalLinks({ links }: Props) {
                 variant="outlined"
                 type="text"
               />{" "}
+              <FormControlLabel
+                control={<Switch defaultChecked />}
+                label="is visible to ohter consultants"
+              />{" "}
             </Stack>
-
             <Stack direction={"row"} gap={2} width={"100%"} alignItems="center">
               <SiGitlab size={ICON_SIZE} />
               <TextField
@@ -63,6 +82,10 @@ export default function EditableExternalLinks({ links }: Props) {
                 onChange={handleGitLabChange}
                 variant="outlined"
                 type="text"
+              />{" "}
+              <FormControlLabel
+                control={<Switch defaultChecked />}
+                label="is visible to ohter consultants"
               />{" "}
             </Stack>
           </Stack>{" "}

@@ -1,4 +1,12 @@
-import { Box, Typography, Stack, Chip, Paper } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Stack,
+  Chip,
+  Paper,
+  FormControlLabel,
+  Switch,
+} from "@mui/material";
 import type { components } from "@api-types/openapi";
 import dayjs from "dayjs";
 
@@ -7,11 +15,22 @@ type ConsultantEmploymentItem =
 
 type Props = {
   item: ConsultantEmploymentItem;
+  editable: boolean;
 };
 
 const DATE_FORMAT = "MM/YYYY";
 
-export default function ProfessionalExperienceItem({ item }: Props) {
+export default function ProfessionalExperienceItem({ item, editable }: Props) {
+  const editOnlyButtons = editable && (
+    <Stack direction={"row"} spacing={1}>
+      <FormControlLabel
+        control={<Switch defaultChecked />}
+        label="Visible to others"
+        labelPlacement="start"
+      />
+    </Stack>
+  );
+
   const skills = item.skills.map((skill, i) => (
     <Chip key={i} label={skill.name} color="primary" size="small" />
   ));
@@ -37,6 +56,9 @@ export default function ProfessionalExperienceItem({ item }: Props) {
       </Box>
       <Stack direction={"row"} spacing={1}>
         {skills}
+        <Stack direction={"row"} spacing={1}>
+          {editOnlyButtons}
+        </Stack>
       </Stack>
     </Paper>
   );
