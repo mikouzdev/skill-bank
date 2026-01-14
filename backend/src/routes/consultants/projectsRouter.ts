@@ -66,6 +66,7 @@ projectsRouter.get(
     }
     const { consultantId } = parsedParams.data;
     // Visibility for now, auth based later
+    //Sales/admin can see everyone, consult gets only public
     //Visibility.LIMITED
     const allowedVisibilities = [Visibility.PUBLIC];
     let projects = null;
