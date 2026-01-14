@@ -1,4 +1,10 @@
-import { Box, Typography, Stack } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Stack,
+  FormControlLabel,
+  Switch,
+} from "@mui/material";
 import PersonalProjectItem from "./PersonalProjectItem";
 import { postProjects } from "../../api/consultants.api";
 import { AddNewProject } from "./PersonalProjectAdd";
@@ -59,10 +65,16 @@ export default function PersonalProjects({ data, skillData, editable }: Props) {
           }}
           skilldata={skillData}
         ></AddNewProject>
+        <FormControlLabel
+          control={<Switch defaultChecked />}
+          label="Section is visible to ohter consultants"
+        />{" "}
       </Stack>
       <Stack spacing={1}>
         {data.map((item) => (
-          <PersonalProjectItem key={item.id} item={item} editable />
+          <>
+            <PersonalProjectItem key={item.id} item={item} editable />
+          </>
         ))}
       </Stack>
     </>
