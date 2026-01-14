@@ -9,8 +9,8 @@ import { pageSectionsRouter } from "./pageSectionsRouter.js";
 export const consultantsRootRouter = Router();
 
 consultantsRootRouter.use("/", consultantsRouter);
-consultantsRootRouter.use("/employments", employmentsRouter);
-consultantsRootRouter.use("/projects", projectsRouter);
+consultantsRootRouter.use("/", employmentsRouter); // /employments
+consultantsRootRouter.use("/", projectsRouter); // /projects
 consultantsRootRouter.use("/attributes", attributesRouter);
 consultantsRootRouter.use("/skills", skillsRouter);
 consultantsRootRouter.use("/sections", pageSectionsRouter);
