@@ -3,18 +3,19 @@ import {
   ConsultantSkillsSchema,
   PostSkillBodySchema,
   SkillProficiencyBodySchema,
+  SkillTagsSchema,
 } from "../../schemas/consultants/skills.schema.js";
 
 export const skillsPaths = {
-  "/consultants/skills": {
+  "/consultants/skills/all": {
     get: {
-      summary: "Get all skills of all consultants",
+      summary: "Get all available skills for consultant",
       tags: ["Consultants", "Skills"],
       responses: {
         200: {
           description: "Retrieval successful",
           content: {
-            "application/json": { schema: ConsultantSkillsSchema },
+            "application/json": { schema: SkillTagsSchema },
           },
         },
         500: { description: "Server error" },
