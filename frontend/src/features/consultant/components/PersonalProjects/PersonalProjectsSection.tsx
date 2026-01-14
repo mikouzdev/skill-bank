@@ -32,7 +32,15 @@ export default function PersonalProjects({ data, skillData, editable }: Props) {
 
   const defaultSection = (
     <>
-      <Typography variant="h5">Personal Projects</Typography>
+      <Stack direction={"row"} gap={2}>
+        <Typography variant="h5">Personal Projects</Typography>
+        <AddNewProject
+          update={(formData) => {
+            void addProject(formData);
+          }}
+          skilldata={skillData}
+        ></AddNewProject>
+      </Stack>
       <Stack spacing={1}>
         {data.map((item) => (
           <PersonalProjectItem key={item.id} item={item} />

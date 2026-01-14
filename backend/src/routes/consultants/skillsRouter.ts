@@ -11,12 +11,12 @@ export const skillsRouter = Router();
 
 /**
  * Gets all skills in the database
- * @route GET /consultants/skills
+ * @route GET /consultants/skills/all
  * @returns [skills]
  */
-skillsRouter.get("/", async (req: Request, res: Response) => {
+skillsRouter.get("/all", async (req: Request, res: Response) => {
   try {
-    const skills = await prisma.consultantSkill.findMany();
+    const skills = await prisma.skillTag.findMany();
     res.send(skills);
     return;
   } catch (err) {
@@ -87,25 +87,39 @@ skillsRouter.post("/me", async (req: Request, res: Response) => {
   }
 
   try {
-    if (!(await prisma.skillTag.findFirst({ where: { name: skillName } }))) {
-      await prisma.skillTag.create({
-        data: {
-          name: skillName,
-        },
-      });
-      await prisma.consultantSkill.create({
-        data: {
-          skillName,
-          proficiency: proficiency,
-          consultantId: consultantId,
-        },
-      });
-      const user = await prisma.user.findFirst({ where: { id: consultantId } });
-      res.status(200).json(`Skill ${skillName} added to ${user?.name}`);
+    // make sure the skill exists in skilltags
+    const skillExists = await prisma.skillTag.findFirst({
+      where: { name: skillName },
+    });
+    if (!skillExists) {
+      res.status(400).json(`skill ${skillName} doesnt exist in the skill pool`);
       return;
-    } else {
-      res.status(500).json(`Skill ${skillName} already exists`);
     }
+
+    // check if consultant already has this skill
+    const consultantHasSkill = await prisma.consultantSkill.findFirst({
+      where: {
+        consultantId: consultantId,
+        skillName: skillName,
+      },
+    });
+
+    if (consultantHasSkill) {
+      res.status(400).json(`consultant already has skill ${skillName}`);
+      return;
+    }
+
+    // add the skill to the consultant
+    const createdSkill = await prisma.consultantSkill.create({
+      data: {
+        skillName,
+        proficiency: proficiency,
+        consultantId: consultantId,
+      },
+    });
+
+    res.status(200).json(createdSkill);
+    return;
   } catch (err) {
     res.status(500).json(err);
     return;

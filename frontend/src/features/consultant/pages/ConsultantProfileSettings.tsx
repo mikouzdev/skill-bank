@@ -1,9 +1,10 @@
+import { useConsultantDetails } from "../hooks/useConsultantDetails";
 import { Divider, Typography, Container } from "@mui/material";
 import EditableProfileHeader from "../components/ProfileHeader/EditableProfileHeader";
-import { useConsultantDetails } from "../hooks/useConsultantDetails";
 import PersonalProjects from "../components/PersonalProjects/PersonalProjectsSection";
 import Skills from "../components/Skills/SkillsSection";
 import EditableExternalLinks from "../components/ExternalLinks/EditableExternalLinks";
+import ProfessionalExperience from "../components/ProfessionalExperience/ProfessionalExperienceSection";
 
 export default function ConsultantProfileSettings() {
   const { consultant, skills, employments, projects, loading } =
@@ -31,7 +32,7 @@ export default function ConsultantProfileSettings() {
       <Divider />
       {/* todo: editable skills section */}
       <Skills data={skills} editable />
-      {/* todo: editable professional experience section */}
+      <ProfessionalExperience data={employments} skillData={skills} />
       <PersonalProjects skillData={skills} data={projects} editable />
     </Container>
   );
