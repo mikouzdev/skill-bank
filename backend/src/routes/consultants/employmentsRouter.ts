@@ -1,8 +1,10 @@
 import { Router, type Request, type Response } from "express";
 import { ConsultantIdParamsSchema } from "../../schemas/consultants/consultants.schema.js";
 import {
+  DeleteEmploymentSkillParamsSchema,
   EmploymentBodySchema,
   EmploymentIdParamsSchema,
+  PostEmploymentSkillBodySchema,
 } from "../../schemas/consultants/employment.schema.js";
 import { prisma } from "../../db/prismaClient.js";
 
@@ -141,6 +143,66 @@ employmentsRouter.delete(
     try {
       await prisma.employment.delete({
         where: { id: employmentId },
+      });
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
+
+    res.status(204).send();
+  }
+);
+
+employmentsRouter.post(
+  "/me/employments/:employmentId/skills",
+  async (req: Request, res: Response) => {
+    const parsedParams = EmploymentIdParamsSchema.safeParse(req.params);
+    const parsedBody = PostEmploymentSkillBodySchema.safeParse(req.body);
+
+    if (!parsedParams.success) {
+      res.status(400).json(parsedParams.error);
+      return;
+    }
+    if (!parsedBody.success) {
+      res.status(400).json(parsedBody.error);
+      return;
+    }
+
+    const { employmentId } = parsedParams.data;
+    const { skillTagName } = parsedBody.data;
+
+    let employmentSkill = null;
+    try {
+      employmentSkill = await prisma.employmentSkill.create({
+        data: {
+          employmentId,
+          skillTagName,
+        },
+      });
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
+
+    res.json(employmentSkill);
+  }
+);
+
+employmentsRouter.delete(
+  "/me/employments/:employmentId/skills/:employmentSkillId",
+  async (req: Request, res: Response) => {
+    const parsedParams = DeleteEmploymentSkillParamsSchema.safeParse(
+      req.params
+    );
+    if (!parsedParams.success) {
+      res.status(400).json(parsedParams.error);
+      return;
+    }
+    const { employmentId, employmentSkillId } = parsedParams.data;
+
+    try {
+      await prisma.employmentSkill.delete({
+        where: { id: employmentSkillId, employmentId },
       });
     } catch (err) {
       res.status(500).json(err);
