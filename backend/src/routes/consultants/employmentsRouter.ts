@@ -1,11 +1,9 @@
 import { Router, type Request, type Response } from "express";
 import { ConsultantIdParamsSchema } from "../../schemas/consultants/consultants.schema.js";
-import { Visibility } from "../../generated/prisma/enums.js";
 import {
-  createEmploymentForConsultant,
-  getEmploymentsForConsultant,
-} from "../../services/employmentService.js";
-import { EmploymentCreateSchema } from "../../schemas/consultants/employment.schema.js";
+  EmploymentBodySchema,
+  EmploymentIdParamsSchema,
+} from "../../schemas/consultants/employment.schema.js";
 import { prisma } from "../../db/prismaClient.js";
 
 export const employmentsRouter = Router();
@@ -21,12 +19,13 @@ employmentsRouter.get(
       }
 
       const { consultantId } = parsedParams.data;
-      // Visibility for now, auth based later
-      const allowedVisibilities = [Visibility.LIMITED, Visibility.PUBLIC];
-      const employments = await getEmploymentsForConsultant(
-        consultantId,
-        allowedVisibilities
-      );
+
+      const employments = await prisma.employment.findMany({
+        where: { consultantId },
+        include: {
+          employmentSkills: true,
+        },
+      });
 
       res.status(200).json(employments);
     } catch (error) {
@@ -41,29 +40,90 @@ employmentsRouter.get(
 employmentsRouter.post(
   "/me/employments",
   async (req: Request, res: Response) => {
-    try {
-      const parsedBody = EmploymentCreateSchema.safeParse(req.body);
-      if (!parsedBody.success) {
-        res.status(400).json(parsedBody.error);
-        return;
-      }
-      const userId = 1; // Hard coded now to match the seed, waiting for auth middleware implementation
-      const consultant = await prisma.consultant.findUnique({
-        where: { userId },
-      });
+    console.log("Found consultant");
 
-      if (!consultant) {
-        res.status(404).json({ message: "Consultant profile not found" });
-        return;
-      }
+    const parsedBody = EmploymentBodySchema.safeParse(req.body);
 
-      const createdEmployment = await createEmploymentForConsultant(
-        consultant.id,
-        parsedBody.data
-      );
-      res.status(201).json(createdEmployment);
-    } catch (error) {
-      console.error("Failed at: POST /consultants/me/employment");
+    if (!parsedBody.success) {
+      res.status(400).json(parsedBody.error);
+      return;
     }
+    const { description, jobTitle, start, end, visibility, employer } =
+      parsedBody.data;
+
+    // TODO: use consultantId from a JWT token instead of getting the first
+    //       entry from the database
+    let consultantId;
+    try {
+      const consultant = await prisma.consultant.findFirst();
+      if (consultant === null) {
+        res.status(404).json({ message: "No mock data found" });
+        return;
+      }
+      consultantId = consultant.id;
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
+
+    let createdEmployment = null;
+    try {
+      createdEmployment = await prisma.employment.create({
+        data: {
+          consultantId,
+          employer,
+          description,
+          jobTitle,
+          start,
+          ...(end !== undefined ? { end } : {}),
+          visibility,
+        },
+      });
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
+
+    res.status(201).json(createdEmployment);
+  }
+);
+
+employmentsRouter.put(
+  "/me/employments/:employmentId",
+  async (req: Request, res: Response) => {
+    const parsedParams = EmploymentIdParamsSchema.safeParse(req.params);
+    if (!parsedParams.success) {
+      res.status(400).json(parsedParams.error);
+      return;
+    }
+    const { employmentId } = parsedParams.data;
+
+    const parsedBody = EmploymentBodySchema.safeParse(req.body);
+    if (!parsedBody.success) {
+      res.status(400).json(parsedBody.error);
+      return;
+    }
+    const { description, jobTitle, start, end, visibility, employer } =
+      parsedBody.data;
+
+    let employment = null;
+    try {
+      employment = await prisma.employment.update({
+        where: { id: employmentId },
+        data: {
+          description,
+          employer,
+          jobTitle,
+          start,
+          ...(end !== undefined ? { end } : {}),
+          visibility,
+        },
+      });
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
+
+    res.json(employment);
   }
 );

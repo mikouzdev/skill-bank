@@ -2,8 +2,9 @@ import z from "zod";
 
 export const EmploymentSkillSchema = z
   .object({
-    name: z.string().meta({ example: "react" }),
-    category: z.string().nullable().meta({ example: "frontend" }),
+    skillTagName: z.string().meta({ example: "react" }),
+    //employmentId: z.number().int().meta({ example: 1 }),
+    //category: z.string().nullable().meta({ example: "frontend" }),
   })
   .meta({ id: "EmploymentSkill" });
 
@@ -12,12 +13,15 @@ export const EmploymentResponseSchema = z
     id: z.number().int().meta({ example: 1 }),
     employer: z.string().meta({ example: "Oy Firma Ab" }),
     jobTitle: z.string().meta({ example: "Fullstack developer" }),
+    consultantId: z.number().int().meta({ example: 1 }),
+    createdAt: z.date().meta({ example: "2025-12-19T14:01:24.308Z" }),
     description: z
       .string()
       .meta({ example: "Description text of the role and responsibilites" }),
     start: z.string().meta({ example: "2020-03-01" }),
     end: z.string().nullable().meta({ example: "2021-06-20" }),
     skills: z.array(EmploymentSkillSchema),
+    visibility: z.enum(["LIMITED", "PUBLIC"]).meta({ example: "PUBLIC" }),
   })
   .meta({ id: "EmploymentResponse" });
 
@@ -30,6 +34,24 @@ export const EmploymentListResponseSchema = z
 export type EmploymentListResponse = z.infer<
   typeof EmploymentListResponseSchema
 >;
+
+export const EmploymentIdParamsSchema = z.object({
+  employmentId: z.coerce.number().meta({ example: "1" }),
+});
+
+export const EmploymentBodySchema = EmploymentResponseSchema.omit({
+  id: true,
+  consultantId: true,
+  createdAt: true,
+})
+  .extend({
+    start: z.coerce.date(),
+    end: z.coerce.date().nullable().optional(),
+  })
+  .refine((project) => (project.end ? project.start <= project.end : true), {
+    message: "End date must be a later or equal date to start date",
+    path: ["end"],
+  });
 
 export const EmploymentCreateSchema = EmploymentResponseSchema.omit({
   id: true,

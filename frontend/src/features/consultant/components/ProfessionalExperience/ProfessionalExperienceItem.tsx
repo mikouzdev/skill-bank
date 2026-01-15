@@ -31,9 +31,10 @@ export default function ProfessionalExperienceItem({ item, editable }: Props) {
     </Stack>
   );
 
-  const skills = item.skills.map((skill, i) => (
-    <Chip key={i} label={skill.name} color="primary" size="small" />
-  ));
+  //Edited out until employment skills have been sorted
+  /*const skills = item.skills.map((skill, i) => (
+    <Chip key={i} label={skill.skillTagName} color="primary" size="small" />
+  ));*/
 
   return (
     <Paper
@@ -55,7 +56,7 @@ export default function ProfessionalExperienceItem({ item, editable }: Props) {
         <Typography>{item.description}</Typography>
       </Box>
       <Stack direction={"row"} spacing={1}>
-        {skills}
+        {/*skills*/}
         <Stack direction={"row"} spacing={1}>
           {editOnlyButtons}
         </Stack>
