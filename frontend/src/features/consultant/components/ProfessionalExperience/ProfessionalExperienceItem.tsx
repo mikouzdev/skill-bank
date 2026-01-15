@@ -1,21 +1,14 @@
-import {
-  Box,
-  Typography,
-  Stack,
-  Chip,
-  Paper,
-  FormControlLabel,
-  Switch,
-} from "@mui/material";
+import { Box, Typography, Stack, Chip, Paper } from "@mui/material";
 import type { components } from "@api-types/openapi";
 import dayjs from "dayjs";
+import ProfessionalExperienceEdit from "./ProfessionalExperienceEdit";
 
 type ConsultantEmploymentItem =
   components["schemas"]["EmploymentListResponse"][number];
 
 type Props = {
   item: ConsultantEmploymentItem;
-  editable: boolean;
+  editable?: boolean;
 };
 
 const DATE_FORMAT = "MM/YYYY";
@@ -23,11 +16,7 @@ const DATE_FORMAT = "MM/YYYY";
 export default function ProfessionalExperienceItem({ item, editable }: Props) {
   const editOnlyButtons = editable && (
     <Stack direction={"row"} spacing={1}>
-      <FormControlLabel
-        control={<Switch defaultChecked />}
-        label="Visible to others"
-        labelPlacement="start"
-      />
+      <ProfessionalExperienceEdit employmentData={item} />
     </Stack>
   );
 
@@ -55,9 +44,23 @@ export default function ProfessionalExperienceItem({ item, editable }: Props) {
       <Box>
         <Typography>{item.description}</Typography>
       </Box>
-      <Stack direction={"row"} spacing={1}>
-        {/*skills*/}
-        <Stack direction={"row"} spacing={1}>
+      <Stack direction={"row"} width={"100%"}>
+        {/* bottom left container */}
+        <Stack
+          flex={1}
+          direction={"row"}
+          justifyContent={"flex-start"}
+          alignItems={"center"}
+        >
+          {/* skills */}
+        </Stack>
+        {/* bottom right container */}
+        <Stack
+          flex={1}
+          direction={"row"}
+          justifyContent={"flex-end"}
+          alignItems={"center"}
+        >
           {editOnlyButtons}
         </Stack>
       </Stack>

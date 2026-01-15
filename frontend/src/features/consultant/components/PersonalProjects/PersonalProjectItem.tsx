@@ -1,12 +1,4 @@
-import {
-  Box,
-  Typography,
-  Stack,
-  Chip,
-  Paper,
-  Switch,
-  FormControlLabel,
-} from "@mui/material";
+import { Box, Typography, Stack, Chip, Paper } from "@mui/material";
 import dayjs from "dayjs";
 
 import type { components } from "@api-types/openapi";
@@ -38,12 +30,7 @@ export default function PersonalProjectItem({ item, editable }: Props) {
 
   const editOnlyButtons = editable && (
     <Stack direction={"row"} spacing={1}>
-      <FormControlLabel
-        control={<Switch defaultChecked />}
-        label="Visible to others"
-        labelPlacement="start"
-      />{" "}
-      <PersonalProjectEdit projectData={item} />{" "}
+      <PersonalProjectEdit projectData={item} />
     </Stack>
   );
 
@@ -66,11 +53,26 @@ export default function PersonalProjectItem({ item, editable }: Props) {
       <Box>
         <Typography>{item.description}</Typography>
       </Box>
-      <Stack direction={"row"} spacing={"auto"}>
-        <Stack spacing={1} direction={"row"}>
+      <Stack direction={"row"} width={"100%"}>
+        {/* bottom left container */}
+        <Stack
+          spacing={1}
+          direction={"row"}
+          flex={1}
+          justifyContent={"flex-start"}
+          alignItems={"center"}
+        >
           {projectLinks}
         </Stack>
-        {editOnlyButtons}
+        {/* bottom right container */}
+        <Stack
+          flex={1}
+          direction={"row"}
+          justifyContent={"flex-end"}
+          alignItems={"center"}
+        >
+          {editOnlyButtons}
+        </Stack>
       </Stack>
     </Paper>
   );
