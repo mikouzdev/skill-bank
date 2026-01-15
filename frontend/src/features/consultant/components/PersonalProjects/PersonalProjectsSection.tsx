@@ -12,25 +12,19 @@ import { AddNewProject } from "./PersonalProjectAdd";
 import type { components } from "@api-types/openapi";
 
 type ConsultantProjectList = components["schemas"]["GetProjectsResponse"];
-import { type FormedProjectData, type SkillsResponse } from "../../types/types";
+type Project = Partial<components["schemas"]["Project"]>;
+type SkillsResponse = components["schemas"]["ConsultantSkill"];
 
 type Props = {
   data: ConsultantProjectList;
-  skillData: SkillsResponse;
+  skillData: SkillsResponse[];
   editable?: boolean;
 };
 
 export default function PersonalProjects({ data, skillData, editable }: Props) {
-  async function addProject(formData: FormedProjectData) {
+  async function addProject(formData: Project) {
     try {
-      await postProjects({
-        name: formData.name,
-        description: formData.description,
-        start: formData.start,
-        end: formData.end,
-        visibility: formData.visibility,
-        projectLinks: [],
-      });
+      await postProjects(formData);
     } catch {
       return;
     }
@@ -44,7 +38,7 @@ export default function PersonalProjects({ data, skillData, editable }: Props) {
           update={(formData) => {
             void addProject(formData);
           }}
-          skilldata={skillData}
+          skillData={skillData}
         ></AddNewProject>
       </Stack>
       <Stack spacing={1}>
@@ -63,7 +57,7 @@ export default function PersonalProjects({ data, skillData, editable }: Props) {
           update={(formData) => {
             void addProject(formData);
           }}
-          skilldata={skillData}
+          skillData={skillData}
         ></AddNewProject>
         <FormControlLabel
           control={<Switch defaultChecked />}
