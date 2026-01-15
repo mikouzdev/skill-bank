@@ -53,7 +53,7 @@ employmentsRouter.post(
 
     // TODO: use consultantId from a JWT token instead of getting the first
     //       entry from the database
-    let consultantId = 1;
+    let consultantId;
     try {
       const consultant = await prisma.consultant.findFirst();
       if (consultant === null) {
