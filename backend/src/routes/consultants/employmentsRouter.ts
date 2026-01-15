@@ -103,14 +103,16 @@ employmentsRouter.put(
       res.status(400).json(parsedBody.error);
       return;
     }
-    const { description, jobTitle, start, end, visibility } = parsedBody.data;
+    const { description, jobTitle, start, end, visibility, employer } =
+      parsedBody.data;
 
-    let project = null;
+    let employment = null;
     try {
-      project = await prisma.employment.update({
+      employment = await prisma.employment.update({
         where: { id: employmentId },
         data: {
           description,
+          employer,
           jobTitle,
           start,
           ...(end !== undefined ? { end } : {}),
@@ -122,6 +124,6 @@ employmentsRouter.put(
       return;
     }
 
-    res.json(project);
+    res.json(employment);
   }
 );
