@@ -3,7 +3,7 @@ import z from "zod";
 export const EmploymentSkillSchema = z
   .object({
     skillTagName: z.string().meta({ example: "react" }),
-    //employmentId: z.number().int().meta({ example: 1 }),
+    employmentId: z.number().int().meta({ example: 1 }),
     //category: z.string().nullable().meta({ example: "frontend" }),
   })
   .meta({ id: "EmploymentSkill" });
@@ -62,6 +62,23 @@ export const EmploymentCreateSchema = EmploymentResponseSchema.omit({
     .array(z.string())
     .min(1)
     .meta({ example: ["java", "python"] }),
+});
+
+export const PostEmploymentSkillBodySchema = EmploymentSkillSchema.pick({
+  skillTagName: true,
+});
+
+export const GetEmploymentSkillResponseSchema = z
+  .array(
+    EmploymentResponseSchema.extend({
+      projectLinks: z.array(EmploymentSkillSchema),
+    })
+  )
+  .meta({ id: "GetEmploymentsResponse" });
+
+export const DeleteEmploymentSkillParamsSchema = z.object({
+  employmentId: z.coerce.number().meta({ example: "2" }),
+  employmentSkillId: z.coerce.number().meta({ example: "1" }),
 });
 
 export type EmploymentCreateInput = z.infer<typeof EmploymentCreateSchema>;

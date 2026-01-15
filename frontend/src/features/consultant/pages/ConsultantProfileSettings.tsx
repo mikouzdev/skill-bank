@@ -32,7 +32,7 @@ export default function ConsultantProfileSettings() {
       <Divider />
       {/* todo: editable skills section */}
       <Skills data={skills} editable />
-      <ProfessionalExperience data={employments} skillData={skills} />
+      <ProfessionalExperience data={employments} skillData={skills} editable />
       <PersonalProjects skillData={skills} data={projects} editable />
     </Container>
   );
