@@ -68,7 +68,7 @@ export default function PersonalProjects({ data, skillData, editable }: Props) {
         <FormControlLabel
           control={<Switch defaultChecked />}
           label="Section is visible to ohter consultants"
-        />{" "}
+        />
       </Stack>
       <Stack spacing={1}>
         {data.map((item) => (
