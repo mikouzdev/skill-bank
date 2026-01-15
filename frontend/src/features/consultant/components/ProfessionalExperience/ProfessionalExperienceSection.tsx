@@ -23,7 +23,12 @@ export default function ProfessionalExperience({ data, skillData }: Props) {
         projectLinks: [],
         employer: formData.companyName,
         jobTitle: formData.jobTitle,
-        skills: ["testing"],
+        skills: [
+          {
+            employmentId: 1,
+            skillTagName: "java",
+          },
+        ],
       });
     } catch {
       return;
