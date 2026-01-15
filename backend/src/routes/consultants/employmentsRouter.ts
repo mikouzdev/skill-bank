@@ -127,3 +127,26 @@ employmentsRouter.put(
     res.json(employment);
   }
 );
+
+employmentsRouter.delete(
+  "/me/employments/:employmentId",
+  async (req: Request, res: Response) => {
+    const parsedParams = EmploymentIdParamsSchema.safeParse(req.params);
+    if (!parsedParams.success) {
+      res.status(400).json(parsedParams.error);
+      return;
+    }
+    const { employmentId } = parsedParams.data;
+
+    try {
+      await prisma.employment.delete({
+        where: { id: employmentId },
+      });
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
+
+    res.status(204).send();
+  }
+);
