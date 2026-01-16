@@ -24,6 +24,24 @@ export const theme = createTheme({
         },
       },
     },
+
+    MuiDialog:{
+      styleOverrides:{
+        root: {
+          '& button[type="submit"]': {
+            backgroundColor: "#1f9d1f",
+            color: "#fff",
+          },
+          '& button[type="submit"]:hover': {
+            backgroundColor: "#178217",
+          },
+          
+        },
+      },
+    },
+
+
+
   },
   //
 });
