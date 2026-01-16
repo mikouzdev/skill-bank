@@ -2,6 +2,8 @@ import {
   EmploymentListResponseSchema,
   EmploymentResponseSchema,
   EmploymentCreateSchema,
+  EmploymentBodySchema,
+  PostEmploymentSkillBodySchema,
 } from "../../schemas/consultants/employment.schema.js";
 
 export const employmentPaths = {
@@ -58,6 +60,110 @@ export const employmentPaths = {
         400: { description: "Invalid input" },
         401: { description: "Unauthorized" },
         500: { description: "Internal server error" },
+      },
+    },
+  },
+  "/consultants/me/employments/{employmentId}": {
+    put: {
+      summary: "Edits consultant's employment",
+      tags: ["Consultants", "Employments"],
+      parameters: [
+        {
+          name: "employmentId",
+          in: "path" as const,
+          required: true,
+          schema: { type: "integer" as const },
+        },
+      ],
+      requestBody: {
+        required: true,
+        content: { "application/json": { schema: EmploymentBodySchema } },
+      },
+      responses: {
+        200: {
+          description: "Creation successful",
+          content: {
+            "application/json": { schema: EmploymentCreateSchema },
+          },
+        },
+        400: { description: "Invalid request" },
+        500: { description: "Server error" },
+      },
+    },
+    delete: {
+      summary: "Deletes a consultant's employment",
+      tags: ["Consultants", "Employments"],
+      parameters: [
+        {
+          name: "employmentId",
+          in: "path" as const,
+          required: true,
+          schema: { type: "integer" as const },
+        },
+      ],
+      responses: {
+        204: { description: "Deletion successful" },
+        400: { description: "Invalid request" },
+        500: { description: "Server error" },
+      },
+    },
+  },
+  "/consultants/me/employments/{employmentId}/skills": {
+    post: {
+      summary: "Adds a skill toconsultant's employment",
+      tags: ["Consultants", "Employments", "Skills"],
+      parameters: [
+        {
+          name: "employmentId",
+          in: "path" as const,
+          required: true,
+          schema: { type: "integer" as const },
+        },
+      ],
+      requestBody: {
+        required: true,
+        content: {
+          "application/json": { schema: PostEmploymentSkillBodySchema },
+        },
+      },
+      responses: {
+        201: {
+          description: "Employment created",
+          content: {
+            "application/json": {
+              schema: PostEmploymentSkillBodySchema,
+            },
+          },
+        },
+        400: { description: "Invalid input" },
+        401: { description: "Unauthorized" },
+        500: { description: "Internal server error" },
+      },
+    },
+  },
+  "/consultants/me/employments/{employmentId}/skills/{skillId}": {
+    delete: {
+      summary: "Delete a employment skill",
+      tags: ["Consultants", "Employments", "Skills"],
+      parameters: [
+        {
+          name: "employmentId",
+          in: "path" as const,
+          required: true,
+          schema: { type: "integer" as const },
+        },
+        {
+          name: "skillId",
+          in: "path" as const,
+          required: true,
+          schema: { type: "integer" as const },
+        },
+      ],
+
+      responses: {
+        204: { description: "Deletion successful" },
+        400: { description: "Invalid request" },
+        500: { description: "Server error" },
       },
     },
   },
