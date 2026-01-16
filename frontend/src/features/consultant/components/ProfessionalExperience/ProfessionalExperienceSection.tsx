@@ -6,16 +6,17 @@ import {
   Switch,
 } from "@mui/material";
 import ProfessionalExperienceItem from "./ProfessionalExperienceItem";
-import type { components } from "@api-types/openapi";
 import AddNewExperience from "./ProfessionalExperienceAdd";
 import { postWorkExperience } from "../../api/consultants.api";
 
+import type { components } from "@api-types/openapi";
 type ConsultantEmploymentList = components["schemas"]["EmploymentListResponse"];
-import { type FormedWorkData, type SkillsResponse } from "../../types/types";
+type SkillsResponse = components["schemas"]["ConsultantSkill"];
+type Employment = Partial<components["schemas"]["EmploymentResponse"]>;
 
 type Props = {
   data: ConsultantEmploymentList;
-  skillData: SkillsResponse;
+  skillData: SkillsResponse[];
   editable?: boolean;
 };
 
@@ -24,19 +25,17 @@ export default function ProfessionalExperience({
   skillData,
   editable,
 }: Props) {
-  async function AddNewWorkExperience(formData: FormedWorkData) {
+  async function AddNewWorkExperience(formData: Employment) {
     try {
       await postWorkExperience({
         description: formData.description,
         start: formData.start,
         end: formData.end,
         visibility: formData.visibility,
-        projectLinks: [],
-        employer: formData.companyName,
+        employer: formData.employer,
         jobTitle: formData.jobTitle,
         skills: [
           {
-            employmentId: 1,
             skillTagName: "java",
           },
         ],
@@ -52,7 +51,7 @@ export default function ProfessionalExperience({
         <Typography variant="h5">Professional Experience</Typography>
         <AddNewExperience
           update={(formData) => void AddNewWorkExperience(formData)}
-          skilldata={skillData}
+          skillData={skillData}
         ></AddNewExperience>
       </Stack>
 
@@ -70,7 +69,7 @@ export default function ProfessionalExperience({
         <Typography variant="h5">Professional Experience</Typography>
         <AddNewExperience
           update={(formData) => void AddNewWorkExperience(formData)}
-          skilldata={skillData}
+          skillData={skillData}
         ></AddNewExperience>
         <FormControlLabel
           control={<Switch defaultChecked />}
