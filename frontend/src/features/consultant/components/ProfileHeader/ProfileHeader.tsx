@@ -79,7 +79,7 @@ export default function ProfileHeader({ data }: Props) {
         p: 2,
         display: "flex",
         flexDirection: "row",
-        justifyContent: "center",
+        justifyContent: "flex-start",
         gap: 3,
       }}
     >

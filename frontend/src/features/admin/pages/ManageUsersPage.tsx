@@ -2,6 +2,7 @@ import { Paper, Box } from "@mui/material"
 import { useEffect, useState } from "react";
 import { getConsultants } from "../../consultant/api/consultants.api";
 import { UserCard } from "../components/UserCard";
+import { AddUserDialog } from "../components/AddUserDialog";
 
 
 export const ManageUsersPage = () => {
@@ -26,12 +27,12 @@ export const ManageUsersPage = () => {
     <Paper sx={{  border: 1, margin: "16px", background: "#efefef"}}>
                 
       {ids.map((id) => (
-        <Box key={id} sx={{ m: 3, border: 1, background: "white" }}>
+        <Box key={id} sx={{ m: 3, background: "white" }}>
           <UserCard consultantID={id} />
         </Box>
       ))}
- 
-     </Paper>
+      </Paper>
+       <AddUserDialog />
   </>
 )
 }
