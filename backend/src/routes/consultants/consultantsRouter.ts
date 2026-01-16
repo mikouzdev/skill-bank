@@ -7,6 +7,7 @@ import {
 import { prisma } from "../../db/prismaClient.js";
 import { fileTypeFromBuffer } from "file-type";
 import { uploadFile } from "../../middlewares/file.js";
+import { getConsultantsByName } from "../../middlewares/search.js";
 
 // TODO: Check all env variables in a single place
 const PROFILE_PICTURE_PREFIX =
@@ -21,6 +22,20 @@ consultantsRouter.get("/", async (req: Request, res: Response) => {
   try {
     const consultants = await prisma.consultant.findMany();
     res.send(consultants);
+    return;
+  } catch (err) {
+    res.status(500).json(err);
+    return;
+  }
+});
+
+consultantsRouter.get("/search", async (req: Request, res: Response) => {
+  try {
+    const { consultantName } = req.query;
+    const foundConsultants = await getConsultantsByName(
+      consultantName as string
+    );
+    res.send(foundConsultants);
     return;
   } catch (err) {
     res.status(500).json(err);

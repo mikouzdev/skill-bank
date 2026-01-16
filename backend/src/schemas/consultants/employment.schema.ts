@@ -61,7 +61,12 @@ export const EmploymentCreateSchema = EmploymentResponseSchema.omit({
   skills: z
     .array(z.string())
     .min(1)
-    .meta({ example: ["java", "python"] }),
+    .meta({
+      example: [
+        { employmentId: 1, skillTagName: "java" },
+        { employmentId: 1, skillTagName: "python" },
+      ],
+    }),
 });
 
 export const PostEmploymentSkillBodySchema = EmploymentSkillSchema.pick({
