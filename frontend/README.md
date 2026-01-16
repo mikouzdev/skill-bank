@@ -33,24 +33,44 @@ shared/generated/api-types/openapi.d.ts
 
 - Do not edit this manually
 
-Usage example:
-import type { paths } from "@api-types/openapi";
+## Usage example
 
-type LoginRequest =
-paths["/auth/login"]["post"]["requestBody"]["content"]["application/json"];
+#### Import
 
-type LoginResponse =
-paths["/auth/login"]["post"]["responses"]["200"]["content"]["application/json"];
+```ts
+import type { components } from "@api-types/openapi";
+```
 
-example call:
-async function login(data: LoginRequest): Promise<LoginResponse> {
-const res = await fetch("/api/auth/login", {
-method: "POST",
-headers: { "Content-Type": "application/json" },
-body: JSON.stringify(data),
-});
+#### Declare types (optional)
 
-return res.json();
-}
+doing this is just for better readability.
+
+```ts
+type ConsultantResponse = components["schemas"]["ConsultantResponse"];
+
+type EmploymentListResponse = components["schemas"]["EmploymentListResponse"];
+
+type ProjectListResponse = components["schemas"]["GetProjectsResponse"];
+```
+
+#### Example api calls
+
+```ts
+export const getConsultant = (id: number) => {
+  return api.get<ConsultantResponse>(`/consultants/${id}`);
+};
+```
+
+```ts
+export const getEmployments = (id: number) => {
+  return api.get<EmploymentListResponse>(`/consultants/${id}/employments`);
+};
+```
+
+```ts
+export const getProjects = (id: number) => {
+  return api.get<ProjectListResponse>(`/consultants/${id}/projects`);
+};
+```
 
 This is just for ensuring that the calls are in right format, the validation will be dealt in backend however. So whether to use types is up to you.
