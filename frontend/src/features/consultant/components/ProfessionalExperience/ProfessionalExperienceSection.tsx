@@ -34,11 +34,7 @@ export default function ProfessionalExperience({
         visibility: formData.visibility,
         employer: formData.employer,
         jobTitle: formData.jobTitle,
-        skills: [
-          {
-            skillTagName: "java",
-          },
-        ],
+        skills: [],
       });
     } catch {
       return;

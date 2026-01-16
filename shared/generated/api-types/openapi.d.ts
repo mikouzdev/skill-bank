@@ -341,8 +341,14 @@ export interface paths {
                         visibility: "PUBLIC" | "LIMITED";
                         /**
                          * @example [
-                         *       "java",
-                         *       "python"
+                         *       {
+                         *         "employmentId": 1,
+                         *         "skillTagName": "java"
+                         *       },
+                         *       {
+                         *         "employmentId": 1,
+                         *         "skillTagName": "python"
+                         *       }
                          *     ]
                          */
                         skills: string[];
@@ -383,6 +389,261 @@ export interface paths {
             };
         };
         delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/consultants/me/employments/{employmentId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Edits consultant's employment */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    employmentId: number;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /** @example Oy Firma Ab */
+                        employer: string;
+                        /** @example Fullstack developer */
+                        jobTitle: string;
+                        /** @example Description text of the role and responsibilites */
+                        description: string;
+                        start: string;
+                        end?: string | null;
+                        skills: components["schemas"]["EmploymentSkill"][];
+                        /**
+                         * @example PUBLIC
+                         * @enum {string}
+                         */
+                        visibility: "LIMITED" | "PUBLIC";
+                    };
+                };
+            };
+            responses: {
+                /** @description Creation successful */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example Oy Firma Ab */
+                            employer: string;
+                            /** @example Fullstack developer */
+                            jobTitle: string;
+                            /** @example 1 */
+                            consultantId: number;
+                            /** @example 2025-12-19T14:01:24.308Z */
+                            createdAt: string;
+                            /** @example Description text of the role and responsibilites */
+                            description: string;
+                            /** @example 2020-03-01 */
+                            start: string;
+                            /** @example 2021-06-20 */
+                            end: string | null;
+                            /** @enum {string} */
+                            visibility: "PUBLIC" | "LIMITED";
+                            /**
+                             * @example [
+                             *       {
+                             *         "employmentId": 1,
+                             *         "skillTagName": "java"
+                             *       },
+                             *       {
+                             *         "employmentId": 1,
+                             *         "skillTagName": "python"
+                             *       }
+                             *     ]
+                             */
+                            skills: string[];
+                        };
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        post?: never;
+        /** Deletes a consultant's employment */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    employmentId: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Deletion successful */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/consultants/me/employments/{employmentId}/skills": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Adds a skill toconsultant's employment */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    employmentId: number;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /** @example react */
+                        skillTagName: string;
+                    };
+                };
+            };
+            responses: {
+                /** @description Employment created */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example react */
+                            skillTagName: string;
+                        };
+                    };
+                };
+                /** @description Invalid input */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/consultants/me/employments/{employmentId}/skills/{skillId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete a employment skill */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    employmentId: number;
+                    skillId: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Deletion successful */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
         options?: never;
         head?: never;
         patch?: never;
@@ -1097,6 +1358,12 @@ export interface components {
             /** @example Password */
             password: string;
         };
+        EmploymentSkill: {
+            /** @example react */
+            skillTagName: string;
+            /** @example 1 */
+            employmentId: number;
+        };
         AuthResponse: {
             /** @example jwt.token */
             token: string;
@@ -1144,16 +1411,12 @@ export interface components {
             start: string;
             /** @example 2021-06-20 */
             end: string | null;
-            skills: components["schemas"]["EmploymentSkill"][];
+            skills: components["schemas"]["EmploymentSkillOutput"][];
             /**
              * @example PUBLIC
              * @enum {string}
              */
             visibility: "LIMITED" | "PUBLIC";
-        };
-        EmploymentSkill: {
-            /** @example react */
-            skillTagName: string;
         };
         Project: {
             /** @example 1 */
@@ -1240,6 +1503,12 @@ export interface components {
             proficiency: number;
             /** @example 1 */
             listPosition: number;
+        };
+        EmploymentSkillOutput: {
+            /** @example react */
+            skillTagName: string;
+            /** @example 1 */
+            employmentId: number;
         };
     };
     responses: never;
