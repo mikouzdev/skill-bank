@@ -57,4 +57,24 @@ export const consultantsPaths = {
       },
     },
   },
+  "/consultants/search": {
+    get: {
+      summary: "Search consultant by name",
+      tags: ["Consultants"],
+      parameters: [
+        {
+          name: "consultantName",
+          in: "query" as const,
+          required: true,
+          schema: { type: "string" as const },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Some consultant found",
+        },
+        500: { description: "Internal server error" },
+      },
+    },
+  },
 };
