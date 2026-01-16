@@ -8,12 +8,11 @@ type ProjectRequest = Partial<components["schemas"]["Project"]>;
 type SkillRequest = Partial<components["schemas"]["ConsultantSkill"]>;
 type SkillResponse = components["schemas"]["ConsultantSkill"];
 type SkillTagResponse = components["schemas"]["SkillTagList"];
+type Employment = Partial<EmploymentListResponse[number]>;
+type Project = Partial<components["schemas"]["Project"]>;
 
 // type used for the updating of consultant profile details
 export type UpdateConsultantData = Partial<ConsultantResponse>;
-
-// temp workaround, todo: use shared type
-import { type SkillsResponse } from "../types/types";
 
 export const getConsultant = (id: number) => {
   return api.get<ConsultantResponse>(`/consultants/${id}`);
@@ -42,15 +41,26 @@ export const deleteProject = (id: number) => {
   return api.delete(`/consultants/me/projects/${id}`);
 };
 
-export const postProjects = (formData: ProjectListResponse) => {
+export const postProjects = (formData: Project) => {
   return api.post<ProjectListResponse>(`/consultants/me/projects`, formData);
 };
 
-export const postWorkExperience = (formData: EmploymentListResponse) => {
+export const postWorkExperience = (formData: Employment) => {
   return api.post<EmploymentListResponse>(
     `/consultants/me/employments`,
     formData
   );
+};
+
+export const updateEmployment = (employmentData: Employment) => {
+  return api.put<EmploymentListResponse[number]>(
+    `/consultants/me/employments/${employmentData.id}`,
+    employmentData
+  );
+};
+
+export const deleteEmployment = (id: number) => {
+  return api.delete(`/consultants/me/employments/${id}`);
 };
 
 // all available skills for consultant to use
@@ -59,7 +69,7 @@ export const getSkillTags = () => {
 };
 
 export const getSkills = (id: number) => {
-  return api.get<SkillsResponse>(`/consultants/skills/${id}`);
+  return api.get<SkillResponse[]>(`/consultants/skills/${id}`);
 };
 
 export const addSkill = (skill: SkillRequest) => {

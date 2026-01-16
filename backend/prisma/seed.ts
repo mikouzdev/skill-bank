@@ -29,11 +29,12 @@ async function main() {
   // User & Consultant
   // ===========================================
 
+  //password is hashed-password
   const consultantUser = await prisma.user.create({
     data: {
       name: "Alice Consultant",
       email: "alice@demo.com",
-      passwordHash: "hashed-password",
+      passwordHash: "$argon2i$v=19$m=16,t=2,p=1$aXNuVjNDZmlWdVdSUG9KYQ$k0KvnEBaLJHBQ9y3rHwQUQ",
       roles: {
         create: [{ role: Role.CONSULTANT }],
       },
@@ -56,16 +57,16 @@ async function main() {
       },
     },
   });
-  console.log("🧑‍💼 Consultant created");
+  console.log("🧑‍💼 Consultant Alice created");
 
   //=============================================
 
-
+  //password is hashed-password
   const consultantUser2 = await prisma.user.create({
     data: {
       name: "Bob Consultant",
       email: "bob@demo.com",
-      passwordHash: "hashed-password",
+      passwordHash: "$argon2i$v=19$m=16,t=2,p=1$dnczbXJHT1NwcmFLV1QxTQ$YECDcgXPulRTa5tdTH4/Gg",
       roles: {
         create: [{ role: Role.CONSULTANT }],
       },
@@ -92,11 +93,12 @@ async function main() {
 
   //===========================================
 
+  //password is hashed-password
   const consultantUser3 = await prisma.user.create({
     data: {
       name: "Carol Consultant",
       email: "Carol@demo.com",
-      passwordHash: "hashed-password",
+      passwordHash: "$argon2i$v=19$m=16,t=2,p=1$MVJ6ZnpNeXNtOGtQaHlpVw$fP95KVM9JdBQXOFyKRPsfQ",
       roles: {
         create: [{ role: Role.CONSULTANT }],
       },

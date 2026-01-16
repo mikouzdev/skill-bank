@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getSkills } from "../api/consultants.api";
-import { type SkillsResponse } from "../types/types";
+import type { components } from "@api-types/openapi";
+type SkillsResponse = components["schemas"]["ConsultantSkill"][];
 
 export function useConsultantSkills(id: number) {
   const [data, setData] = useState<SkillsResponse | null>(null);

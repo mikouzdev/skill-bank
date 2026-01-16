@@ -327,6 +327,10 @@ export interface paths {
                         employer: string;
                         /** @example Fullstack developer */
                         jobTitle: string;
+                        /** @example 1 */
+                        consultantId: number;
+                        /** @example 2025-12-19T14:01:24.308Z */
+                        createdAt: string;
                         /** @example Description text of the role and responsibilites */
                         description: string;
                         /** @example 2020-03-01 */
@@ -1130,6 +1134,10 @@ export interface components {
             employer: string;
             /** @example Fullstack developer */
             jobTitle: string;
+            /** @example 1 */
+            consultantId: number;
+            /** @example 2025-12-19T14:01:24.308Z */
+            createdAt: string;
             /** @example Description text of the role and responsibilites */
             description: string;
             /** @example 2020-03-01 */
@@ -1137,12 +1145,15 @@ export interface components {
             /** @example 2021-06-20 */
             end: string | null;
             skills: components["schemas"]["EmploymentSkill"][];
+            /**
+             * @example PUBLIC
+             * @enum {string}
+             */
+            visibility: "LIMITED" | "PUBLIC";
         };
         EmploymentSkill: {
             /** @example react */
-            name: string;
-            /** @example frontend */
-            category: string | null;
+            skillTagName: string;
         };
         Project: {
             /** @example 1 */
