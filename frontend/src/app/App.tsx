@@ -7,6 +7,7 @@ import LoginPage from "../features/Login/LoginPage";
 import ConsultantProfileSettings from "../features/consultant/pages/ConsultantProfileSettings";
 import ConsultantProfilePage from "../features/consultant/pages/ConsultantProfilePage";
 import { ConsultantListView } from "../features/sales/pages/ConsultantListView";
+import { ManageUsersPage } from "../features/admin/pages/ManageUsersPage";
 import { ConsultantListConsultants } from "../features/consultant/pages/ConsultantListConsultants";
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path="/me/edit" element={<ConsultantProfileSettings />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/sales" element={<ConsultantListView />} />
+        <Route path="/adminManageUsers" element={<ManageUsersPage />} />
         <Route path="/listConsultants" element={<ConsultantListConsultants />} />
       </Routes>
     </ThemeProvider>
