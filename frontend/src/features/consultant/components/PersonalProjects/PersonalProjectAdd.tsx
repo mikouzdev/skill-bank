@@ -10,21 +10,23 @@ import {
   ButtonGroup,
 } from "@mui/material";
 
-import { type FormedProjectData, type SkillsResponse } from "../../types/types";
+import type { components } from "@api-types/openapi";
+type Project = Partial<components["schemas"]["Project"]>;
+type SkillsResponse = components["schemas"]["ConsultantSkill"];
 
 interface Props {
-  update: (formData: FormedProjectData) => void;
-  skilldata: SkillsResponse;
+  update: (formData: Project) => void;
+  skillData: SkillsResponse[];
 }
 
-export function AddNewProject({ update, skilldata }: Props) {
+export function AddNewProject({ update, skillData }: Props) {
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
     start: "",
     end: "",
-    visibility: "PUBLIC",
+    visibility: "PUBLIC" as "PUBLIC" | "LIMITED",
   });
 
   const handleOpen = () => setShowForm(true);
@@ -38,13 +40,16 @@ export function AddNewProject({ update, skilldata }: Props) {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (
-    event: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    update(formData);
+
+    // set end date to NULL if its not set
+    const formPayload: Project = {
+      ...formData,
+      end: formData.end ? formData.end : null,
+    };
+
+    update(formPayload);
     setShowForm(false);
   };
 
@@ -131,7 +136,7 @@ export function AddNewProject({ update, skilldata }: Props) {
                       },
                     }}
                   >
-                    {skilldata.map((el) => {
+                    {skillData.map((el) => {
                       return (
                         <Button
                           style={{

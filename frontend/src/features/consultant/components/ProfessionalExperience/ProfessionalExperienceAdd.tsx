@@ -8,26 +8,27 @@ import {
   MenuItem,
   Stack,
   ButtonGroup,
-  FormControlLabel,
-  Switch,
 } from "@mui/material";
 
-import { type FormedWorkData, type SkillsResponse } from "../../types/types";
+import type { components } from "@api-types/openapi";
+type Employment = Partial<components["schemas"]["EmploymentResponse"]>;
+type SkillsResponse = components["schemas"]["ConsultantSkill"];
 
 interface Props {
-  update: (formData: FormedWorkData) => void;
-  skilldata: SkillsResponse;
+  update: (formData: Employment) => void;
+  skillData: SkillsResponse[];
 }
 
-export function AddNewExperience({ update, skilldata }: Props) {
+export function AddNewExperience({ update, skillData }: Props) {
   const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState({
-    companyName: "",
+  const [formData, setFormData] = useState<Employment>({
+    employer: "",
     description: "",
     start: "",
     end: "",
     jobTitle: "",
     visibility: "PUBLIC",
+    skills: [],
   });
 
   const handleOpen = () => setShowForm(true);
@@ -41,13 +42,16 @@ export function AddNewExperience({ update, skilldata }: Props) {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (
-    event: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    update(formData);
+
+    // set end date to NULL if its not set
+    const formPayload: Employment = {
+      ...formData,
+      end: formData.end ? formData.end : null,
+    };
+
+    update(formPayload);
     setShowForm(false);
   };
 
@@ -64,21 +68,15 @@ export function AddNewExperience({ update, skilldata }: Props) {
       >
         Add professional experience
       </Button>
-      {/* Move to Professional exp edit file when ready */}
-      <FormControlLabel
-        control={<Switch defaultChecked />}
-        label="Visible to others"
-        labelPlacement="start"
-      />{" "}
-      {/* Move to Professional exp edit file when ready */}
-      <Dialog open={!!showForm}>
+
+      <Dialog open={showForm}>
         <DialogTitle>Add professional experience</DialogTitle>
         {
           <div className="overlay">
             <div className="form-container">
               <Box
                 component="form"
-                onSubmit={handleSubmit}
+                onSubmit={(e) => handleSubmit(e)}
                 sx={{
                   maxWidth: 9000,
                   minWidth: 500,
@@ -93,8 +91,8 @@ export function AddNewExperience({ update, skilldata }: Props) {
                   <b>Company name</b>
                   <TextField
                     label="Name"
-                    name="companyName"
-                    value={formData.companyName}
+                    name="employer"
+                    value={formData.employer}
                     onChange={handleChange}
                     required
                     fullWidth
@@ -141,9 +139,10 @@ export function AddNewExperience({ update, skilldata }: Props) {
                       },
                     }}
                   >
-                    {skilldata.map((el) => {
+                    {skillData.map((skill) => {
                       return (
                         <Button
+                          key={skill.id}
                           style={{
                             backgroundColor: "white",
                             color: "black",
@@ -151,7 +150,7 @@ export function AddNewExperience({ update, skilldata }: Props) {
                             height: 32,
                           }}
                         >
-                          {el.skillName}
+                          {skill.skillName}
                         </Button>
                       );
                     })}{" "}
