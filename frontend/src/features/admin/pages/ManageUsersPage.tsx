@@ -2,6 +2,7 @@ import { Paper, Box } from "@mui/material"
 import { useEffect, useState } from "react";
 import { getConsultants } from "../../consultant/api/consultants.api";
 import { UserCard } from "../components/UserCard";
+import { AddUserDialog } from "../components/AddUserDialog";
 
 
 export const ManageUsersPage = () => {
@@ -30,9 +31,8 @@ export const ManageUsersPage = () => {
           <UserCard consultantID={id} />
         </Box>
       ))}
- 
-      
-     </Paper>
+      </Paper>
+       <AddUserDialog />
   </>
 )
 }
