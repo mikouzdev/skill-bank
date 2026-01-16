@@ -6,6 +6,7 @@ import {
   EmploymentIdParamsSchema,
   PostEmploymentSkillBodySchema,
 } from "../../schemas/consultants/employment.schema.js";
+import { Visibility } from "../../generated/prisma/enums.js";
 import { prisma } from "../../db/prismaClient.js";
 
 export const employmentsRouter = Router();
@@ -21,9 +22,17 @@ employmentsRouter.get(
       }
 
       const { consultantId } = parsedParams.data;
-
+      // Visibility for now, auth based later
+      //Sales/admin can see everyone, consult gets only public
+      //Visibility.LIMITED
+      const allowedVisibilities = [Visibility.PUBLIC];
       const employments = await prisma.employment.findMany({
-        where: { consultantId },
+        where: {
+          consultantId,
+          visibility: {
+            in: allowedVisibilities,
+          },
+        },
         include: {
           employmentSkills: true,
         },
