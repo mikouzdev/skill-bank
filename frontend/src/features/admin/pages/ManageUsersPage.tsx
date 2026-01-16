@@ -26,11 +26,12 @@ export const ManageUsersPage = () => {
     <Paper sx={{  border: 1, margin: "16px", background: "#efefef"}}>
                 
       {ids.map((id) => (
-        <Box key={id} sx={{ m: 3, border: 1, background: "white" }}>
+        <Box key={id} sx={{ m: 3, background: "white" }}>
           <UserCard consultantID={id} />
         </Box>
       ))}
  
+      
      </Paper>
   </>
 )
