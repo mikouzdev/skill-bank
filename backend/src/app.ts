@@ -1,6 +1,7 @@
 import express from "express";
 import { consultantsRootRouter } from "./routes/consultants/consultantsRootRouter.js";
 import { usersRouter } from "./routes/auth/usersRouter.js";
+import { adminRouter } from "./routes/admin/adminRouter.js";
 
 const app = express();
 app.use(express.json());
@@ -10,5 +11,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/static", express.static("uploads/profile_pictures"));
 app.use("/consultants", consultantsRootRouter);
 app.use("/auth", usersRouter);
+app.use("/admin", adminRouter);
 
 export default app;
