@@ -41,4 +41,18 @@ export const authPaths = {
       },
     },
   },
+  "/auth/me": {
+    get: {
+      summary: "Get decoded token",
+      tags: ["Auth"],
+      responses: {
+        "200": {
+          description: "Token received",
+          content: {
+            "application/json": { schema: AuthResponseSchema },
+          },
+        },
+      },
+    },
+  },
 };
