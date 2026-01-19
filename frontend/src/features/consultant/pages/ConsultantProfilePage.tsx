@@ -4,10 +4,12 @@ import Skills from "../components/Skills/SkillsSection";
 import PersonalProjects from "../components/PersonalProjects/PersonalProjectsSection";
 import ProfessionalExperience from "../components/ProfessionalExperience/ProfessionalExperienceSection";
 import { useConsultantDetails } from "../hooks/useConsultantDetails";
+import { useSkills } from "../hooks/useSkills";
 
 export default function ConsultantProfilePage() {
   const { consultant, skills, employments, projects, loading } =
     useConsultantDetails(1);
+  const { skillPool } = useSkills();
 
   if (loading) return <Typography>Loading...</Typography>;
   if (!employments || !consultant || !projects || !skills)
@@ -26,7 +28,7 @@ export default function ConsultantProfilePage() {
       <Divider />
       <Skills data={skills} />
       <Divider />
-      <ProfessionalExperience data={employments} skillData={skills} />
+      <ProfessionalExperience data={employments} skillData={skillPool} />
       <Divider />
       <PersonalProjects data={projects} skillData={skills} />
     </Container>

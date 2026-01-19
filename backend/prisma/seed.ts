@@ -34,7 +34,8 @@ async function main() {
     data: {
       name: "Alice Consultant",
       email: "alice@demo.com",
-      passwordHash: "$argon2i$v=19$m=16,t=2,p=1$aXNuVjNDZmlWdVdSUG9KYQ$k0KvnEBaLJHBQ9y3rHwQUQ",
+      passwordHash:
+        "$argon2i$v=19$m=16,t=2,p=1$aXNuVjNDZmlWdVdSUG9KYQ$k0KvnEBaLJHBQ9y3rHwQUQ",
       roles: {
         create: [{ role: Role.CONSULTANT }],
       },
@@ -66,7 +67,8 @@ async function main() {
     data: {
       name: "Bob Consultant",
       email: "bob@demo.com",
-      passwordHash: "$argon2i$v=19$m=16,t=2,p=1$dnczbXJHT1NwcmFLV1QxTQ$YECDcgXPulRTa5tdTH4/Gg",
+      passwordHash:
+        "$argon2i$v=19$m=16,t=2,p=1$dnczbXJHT1NwcmFLV1QxTQ$YECDcgXPulRTa5tdTH4/Gg",
       roles: {
         create: [{ role: Role.CONSULTANT }],
       },
@@ -98,7 +100,8 @@ async function main() {
     data: {
       name: "Carol Consultant",
       email: "Carol@demo.com",
-      passwordHash: "$argon2i$v=19$m=16,t=2,p=1$MVJ6ZnpNeXNtOGtQaHlpVw$fP95KVM9JdBQXOFyKRPsfQ",
+      passwordHash:
+        "$argon2i$v=19$m=16,t=2,p=1$MVJ6ZnpNeXNtOGtQaHlpVw$fP95KVM9JdBQXOFyKRPsfQ",
       roles: {
         create: [{ role: Role.CONSULTANT }],
       },
@@ -127,7 +130,38 @@ async function main() {
   // ===========================================
 
   const skilltags = await prisma.skillTag.createMany({
-    data: [{ name: "java" }, { name: "csharp" }, { name: "python" }, {name: "kotlin"}, {name: "rust"}],
+    data: [
+      { name: "java" },
+      { name: "csharp" },
+      { name: "python" },
+      { name: "kotlin" },
+      { name: "rust" },
+      { name: "javascript" },
+      { name: "typescript" },
+      { name: "go" },
+      { name: "php" },
+      { name: "ruby" },
+      { name: "swift" },
+      { name: "scala" },
+      { name: "perl" },
+      { name: "dart" },
+      { name: "elixir" },
+      { name: "haskell" },
+      { name: "clojure" },
+      { name: "objective-c" },
+      { name: "sql" },
+      { name: "graphql" },
+      { name: "html" },
+      { name: "css" },
+      { name: "react" },
+      { name: "vue" },
+      { name: "angular" },
+      { name: "svelte" },
+      { name: "docker" },
+      { name: "kubernetes" },
+      { name: "aws" },
+      { name: "azure" },
+    ],
   });
 
   const skills = await prisma.consultantSkill.createMany({
@@ -179,7 +213,6 @@ async function main() {
         proficiency: 1,
         consultantId: consultant3.id,
       },
-
     ],
   });
 
