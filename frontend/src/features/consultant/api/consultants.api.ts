@@ -46,10 +46,7 @@ export const postProjects = (formData: Project) => {
 };
 
 export const postWorkExperience = (formData: Employment) => {
-  return api.post<EmploymentListResponse>(
-    `/consultants/me/employments`,
-    formData
-  );
+  return api.post<Employment>(`/consultants/me/employments`, formData);
 };
 
 export const updateEmployment = (employmentData: Employment) => {
@@ -61,6 +58,21 @@ export const updateEmployment = (employmentData: Employment) => {
 
 export const deleteEmployment = (id: number) => {
   return api.delete(`/consultants/me/employments/${id}`);
+};
+
+export const addEmploymentSkill = (id: number, skillName: string) => {
+  return api.post(`/consultants/me/employments/${id}/skills`, {
+    skillTagName: skillName,
+  });
+};
+
+export const deleteEmploymentSkill = (
+  employmentId: number,
+  employmentSkillId: number
+) => {
+  return api.delete(
+    `/consultants/me/employments/${employmentId}/skills/${employmentSkillId}`
+  );
 };
 
 // all available skills for consultant to use
