@@ -466,7 +466,7 @@ export interface paths {
                         description: string;
                         start: string;
                         end?: string | null;
-                        skills: components["schemas"]["EmploymentSkill"][];
+                        employmentSkills: components["schemas"]["EmploymentSkill"][];
                         /**
                          * @example PUBLIC
                          * @enum {string}
@@ -1454,7 +1454,7 @@ export interface components {
             start: string;
             /** @example 2021-06-20 */
             end: string | null;
-            skills: components["schemas"]["EmploymentSkillOutput"][];
+            employmentSkills: components["schemas"]["EmploymentSkillOutput"][];
             /**
              * @example PUBLIC
              * @enum {string}

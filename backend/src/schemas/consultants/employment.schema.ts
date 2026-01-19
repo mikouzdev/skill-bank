@@ -20,7 +20,7 @@ export const EmploymentResponseSchema = z
       .meta({ example: "Description text of the role and responsibilites" }),
     start: z.string().meta({ example: "2020-03-01" }),
     end: z.string().nullable().meta({ example: "2021-06-20" }),
-    skills: z.array(EmploymentSkillSchema),
+    employmentSkills: z.array(EmploymentSkillSchema),
     visibility: z.enum(["LIMITED", "PUBLIC"]).meta({ example: "PUBLIC" }),
   })
   .meta({ id: "EmploymentResponse" });
@@ -55,7 +55,7 @@ export const EmploymentBodySchema = EmploymentResponseSchema.omit({
 
 export const EmploymentCreateSchema = EmploymentResponseSchema.omit({
   id: true,
-  skills: true,
+  employmentSkills: true,
 }).extend({
   visibility: z.enum(["PUBLIC", "LIMITED"]),
   skills: z
