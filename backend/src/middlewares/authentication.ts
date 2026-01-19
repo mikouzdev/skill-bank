@@ -1,5 +1,6 @@
 import { type Request, type Response, type NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import { prisma } from "../db/prismaClient.js";
 
 //TODO: roles
 interface AuthenticatedRequest extends Request {
@@ -11,7 +12,7 @@ if (secret === undefined) {
     throw new Error("SECRET environment variable is not set");
 }
 
-export const authenticate = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+export const authenticate = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const auth = req.get("Authorization");
     if (!auth?.startsWith("Bearer ")) {
         res.status(401).send("Invalid token");
@@ -19,6 +20,13 @@ export const authenticate = (req: AuthenticatedRequest, res: Response, next: Nex
     }
 
     const token = auth.substring(7);
+    //Check if JWT is expired (blacklisted)
+    const checkIfBlacklisted = await prisma.blacklistedTokens.findFirst({ where: { token: token } });
+
+    if (checkIfBlacklisted) {
+        res.status(401).send("Invalid token");
+    }
+    //Verify JWT
     try {
         const decodedToken = jwt.verify(token, secret) as { email: string };
         req.user = decodedToken;
