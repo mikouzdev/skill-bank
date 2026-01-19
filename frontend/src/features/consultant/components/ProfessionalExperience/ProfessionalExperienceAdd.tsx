@@ -7,16 +7,20 @@ import {
   TextField,
   MenuItem,
   Stack,
-  ButtonGroup,
+  Chip,
+  Typography,
 } from "@mui/material";
+
+import AddIcon from "@mui/icons-material/Add";
 
 import type { components } from "@api-types/openapi";
 type Employment = Partial<components["schemas"]["EmploymentResponse"]>;
-type SkillsResponse = components["schemas"]["ConsultantSkill"];
+type SkillsResponse = components["schemas"]["SkillTagList"];
+type EmploymentSkill = components["schemas"]["EmploymentSkill"];
 
 interface Props {
   update: (formData: Employment) => void;
-  skillData: SkillsResponse[];
+  skillData: SkillsResponse;
 }
 
 export function AddNewExperience({ update, skillData }: Props) {
@@ -27,9 +31,10 @@ export function AddNewExperience({ update, skillData }: Props) {
     start: "",
     end: "",
     jobTitle: "",
+    employmentSkills: [],
     visibility: "PUBLIC",
-    skills: [],
   });
+  const [addedSkills, setAddedSkills] = useState<EmploymentSkill[]>([]);
 
   const handleOpen = () => setShowForm(true);
   const handleClose = () => setShowForm(false);
@@ -42,18 +47,57 @@ export function AddNewExperience({ update, skillData }: Props) {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleAddSkill = (skillName: string) => {
+    // check if skill already added
+    if (addedSkills.some((skill) => skill.skillTagName === skillName)) return;
+
+    setAddedSkills((prev) => [
+      ...prev,
+      { skillTagName: skillName, employmentId: 0 }, // 0 used as placeholder
+    ]);
+  };
+
+  const handleRemoveSkill = (skillName: string) => {
+    setAddedSkills(
+      addedSkills.filter((skill) => skill.skillTagName !== skillName)
+    );
+  };
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // set end date to NULL if its not set
     const formPayload: Employment = {
       ...formData,
-      end: formData.end ? formData.end : null,
+      employmentSkills: addedSkills,
+      end: formData.end ? formData.end : null, // set end date to NULL if its not set
     };
 
     update(formPayload);
     setShowForm(false);
   };
+
+  const availableSkillChips = skillData.map((skill) => {
+    return (
+      <Chip
+        icon={<AddIcon />}
+        key={skill.id}
+        color="primary"
+        onClick={() => handleAddSkill(skill.name)}
+        label={skill.name}
+      />
+    );
+  });
+
+  const addedSkillChips = addedSkills.map((skill) => {
+    return (
+      <Chip
+        key={skill.skillTagName}
+        color="secondary"
+        onDelete={() => handleRemoveSkill(skill.skillTagName)}
+        label={skill.skillTagName}
+      />
+    );
+  });
 
   return (
     <div>
@@ -129,44 +173,33 @@ export function AddNewExperience({ update, skillData }: Props) {
                     <MenuItem value="LIMITED">Limited</MenuItem>
                   </TextField>{" "}
                   <b>Skills</b>
-                  <ButtonGroup
-                    orientation="horizontal"
+                  <Stack
+                    direction="row"
+                    flexWrap="wrap"
+                    rowGap={1}
+                    columnGap={1}
                     sx={{
-                      "& .MuiButtonGroup-grouped": {
-                        marginRight: "4px",
-                        borderRadius: 1,
-                        border: "1px solid",
-                      },
+                      p: 1,
+                      maxHeight: 150,
+                      overflowY: "scroll",
                     }}
                   >
-                    {skillData.map((skill) => {
-                      return (
-                        <Button
-                          key={skill.id}
-                          style={{
-                            backgroundColor: "white",
-                            color: "black",
-                            borderRadius: 38,
-                            height: 32,
-                          }}
-                        >
-                          {skill.skillName}
-                        </Button>
-                      );
-                    })}{" "}
-                    <Button
-                      style={{
-                        backgroundColor: "cream",
-                        color: "navy",
-                        borderRadius: 38,
-                        height: 32,
-                      }}
-                    >
-                      + Add skill
-                    </Button>
-                  </ButtonGroup>
-                  <b>Added Skills</b>
-                  <div>Not yet implemented</div>
+                    {availableSkillChips}
+                  </Stack>
+                  <Typography>Added Skills</Typography>
+                  <Stack
+                    direction="row"
+                    flexWrap="wrap"
+                    rowGap={1}
+                    columnGap={1}
+                    sx={{
+                      p: 1,
+                      maxHeight: 150,
+                      overflowY: "scroll",
+                    }}
+                  >
+                    {addedSkillChips}
+                  </Stack>
                   <b>Project length:</b>
                   <div>
                     <TextField

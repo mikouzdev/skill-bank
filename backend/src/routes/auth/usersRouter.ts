@@ -84,3 +84,29 @@ usersRouter.post("/logout", async (req: Request, res: Response) => {
         res.status(400).send({ error: "Logout failed" });
     }
 });
+
+usersRouter.get("/me", async (req: Request, res: Response) => {
+    const auth = req.get("Authorization");
+    if (!auth?.startsWith("Bearer ")) {
+        res.status(401).send("Invalid token");
+        return;
+    }
+    const token = auth.substring(7);
+    if (token != null || token != undefined) {
+        //Check if token already expired
+        const checkIfBlacklisted = await prisma.blacklistedTokens.findFirst({ where: { token: token } });
+    
+        if (checkIfBlacklisted) return res.sendStatus(204);
+
+        try {
+            const decoded = jwt.verify(token, secret);
+            //return decoded token
+            res.status(200).json({ success: true, token: decoded });
+        } catch (err) {
+            return res.status(401).send("Invalid token, this is the error message:" + err);
+        }
+    }
+    else{
+        res.status(400).send({ error: "Failed to get token" });
+    }
+});

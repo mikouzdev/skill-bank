@@ -5,10 +5,13 @@ import PersonalProjects from "../components/PersonalProjects/PersonalProjectsSec
 import Skills from "../components/Skills/SkillsSection";
 import EditableExternalLinks from "../components/ExternalLinks/EditableExternalLinks";
 import ProfessionalExperience from "../components/ProfessionalExperience/ProfessionalExperienceSection";
+import { useSkills } from "../hooks/useSkills";
 
 export default function ConsultantProfileSettings() {
   const { consultant, skills, employments, projects, loading } =
     useConsultantDetails(1);
+
+  const { skillPool } = useSkills();
 
   if (loading) return <Typography>Loading...</Typography>;
   if (!employments || !consultant || !projects || !skills)
@@ -30,9 +33,12 @@ export default function ConsultantProfileSettings() {
       {/* Placeholder. */}
       <EditableExternalLinks links={[""]}></EditableExternalLinks>
       <Divider />
-      {/* todo: editable skills section */}
       <Skills data={skills} editable />
-      <ProfessionalExperience data={employments} skillData={skills} editable />
+      <ProfessionalExperience
+        data={employments}
+        skillData={skillPool}
+        editable
+      />
       <PersonalProjects skillData={skills} data={projects} editable />
     </Container>
   );
