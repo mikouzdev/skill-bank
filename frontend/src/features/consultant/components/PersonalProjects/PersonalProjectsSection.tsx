@@ -50,7 +50,7 @@ export default function PersonalProjects({ data, skillData, editable }: Props) {
             void addProject(formData, skills);
           }}
           skillData={skillData}
-        ></AddNewProject>
+        />
       </Stack>
       <Stack spacing={1}>
         {data.map((item) => (
