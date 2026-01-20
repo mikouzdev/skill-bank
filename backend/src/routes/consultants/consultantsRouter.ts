@@ -38,10 +38,6 @@ consultantsRouter.get("/search", async (req: Request, res: Response) => {
     const foundConsultants = await getConsultantsByName(
       consultantName as string
     );
-    if (foundConsultants.length === 0) {
-      res.status(404).json("no results");
-      return;
-    }
     res.send(foundConsultants.map((el) => el));
     return;
   } catch (err) {
@@ -54,10 +50,6 @@ consultantsRouter.get("/filter", async (req: Request, res: Response) => {
   try {
     const { freeText } = req.query;
     const foundConsultants = await getConsultantsByFilter(freeText as string);
-    if (foundConsultants.length === 0) {
-      res.status(404).json("no results");
-      return;
-    }
     res.send(foundConsultants.map((el) => el));
 
     return;

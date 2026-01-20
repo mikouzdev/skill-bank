@@ -22,6 +22,12 @@ export const getConsultants = () => {
   return api.get<ConsultantResponse[]>(`/consultants/`);
 };
 
+export const searchConsultants = (freeText: string) => {
+  return api.get<ConsultantResponse[]>(
+    `/consultants/filter?freeText=${freeText}`
+  );
+};
+
 export const getEmployments = (id: number) => {
   return api.get<EmploymentListResponse>(`/consultants/${id}/employments`);
 };
