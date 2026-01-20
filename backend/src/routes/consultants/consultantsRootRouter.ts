@@ -13,4 +13,4 @@ consultantsRootRouter.use("/", employmentsRouter); // /employments
 consultantsRootRouter.use("/", projectsRouter); // /projects
 consultantsRootRouter.use("/attributes", attributesRouter);
 consultantsRootRouter.use("/skills", skillsRouter);
-consultantsRootRouter.use("/sections", pageSectionsRouter);
+consultantsRootRouter.use("/", pageSectionsRouter); //sections

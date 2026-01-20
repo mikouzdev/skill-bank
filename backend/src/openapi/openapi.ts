@@ -6,6 +6,7 @@ import { employmentPaths } from "./consultants/employments.paths.js";
 import { projectsPaths } from "./consultants/projects.paths.js";
 import { skillsPaths } from "./consultants/skills.paths.js";
 import { adminPaths } from "./admin/admin.paths.js";
+import { pageSectionsPaths } from "./consultants/pageSections.paths.js";
 
 export const openApiDoc: OpenAPIV3_1.Document = createDocument({
   openapi: "3.1.0",
@@ -36,5 +37,6 @@ export const openApiDoc: OpenAPIV3_1.Document = createDocument({
     ...projectsPaths,
     ...skillsPaths,
     ...adminPaths,
+    ...pageSectionsPaths,
   },
 }) as unknown as OpenAPIV3_1.Document; // workaround to have TS accept a mismatch between zod-openapi and openapi-types.

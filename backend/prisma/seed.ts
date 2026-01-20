@@ -322,6 +322,21 @@ async function main() {
 
   console.log("Employment skills created");
 
+  // ===========================================
+  // Page sections
+  // ===========================================
+  const pageSections = await prisma.pageSection.createMany({
+    data: [
+      { 
+        consultantId: consultant.id,
+        name: "GENERAL" as const,
+        visibility: "PUBLIC" as const,
+      },
+      
+    ],
+  });
+  console.log("Page sections created");
+
   console.log("🎉 Seed complete!");
 }
 
