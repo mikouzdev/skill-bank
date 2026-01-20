@@ -59,8 +59,15 @@ employmentsRouter.post(
       res.status(400).json(parsedBody.error);
       return;
     }
-    const { description, jobTitle, start, end, visibility, employer } =
-      parsedBody.data;
+    const {
+      description,
+      jobTitle,
+      start,
+      end,
+      visibility,
+      employer,
+      employmentSkills,
+    } = parsedBody.data;
 
     // TODO: use consultantId from a JWT token instead of getting the first
     //       entry from the database
@@ -88,6 +95,11 @@ employmentsRouter.post(
           start,
           ...(end !== undefined ? { end } : {}),
           visibility,
+          employmentSkills: {
+            create: employmentSkills.map((skill) => ({
+              skillTagName: skill.skillTagName,
+            })),
+          },
         },
       });
     } catch (err) {
@@ -114,8 +126,15 @@ employmentsRouter.put(
       res.status(400).json(parsedBody.error);
       return;
     }
-    const { description, jobTitle, start, end, visibility, employer } =
-      parsedBody.data;
+    const {
+      description,
+      jobTitle,
+      start,
+      end,
+      visibility,
+      employer,
+      employmentSkills,
+    } = parsedBody.data;
 
     let employment = null;
     try {
@@ -128,6 +147,12 @@ employmentsRouter.put(
           start,
           ...(end !== undefined ? { end } : {}),
           visibility,
+          employmentSkills: {
+            update: employmentSkills.map((skill) => ({
+              where: { id: skill.employmentId },
+              data: { skillTagName: skill.skillTagName },
+            })),
+          },
         },
       });
     } catch (err) {
