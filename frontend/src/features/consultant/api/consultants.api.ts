@@ -22,7 +22,13 @@ export const getConsultants = () => {
   return api.get<ConsultantResponse[]>(`/consultants/`);
 };
 
-export const searchConsultants = (freeText: string) => {
+export const searchConsultants = (consultantName: string) => {
+  return api.get<ConsultantResponse[]>(
+    `/consultants/search?consultantName=${consultantName}`
+  );
+};
+
+export const filterConsultants = (freeText: string) => {
   return api.get<ConsultantResponse[]>(
     `/consultants/filter?freeText=${freeText}`
   );
