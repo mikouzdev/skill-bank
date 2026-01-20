@@ -39,7 +39,7 @@ export default function ConsultantProfileSettings() {
         skillData={skillPool}
         editable
       />
-      <PersonalProjects skillData={skills} data={projects} editable />
+      <PersonalProjects skillData={skillPool} data={projects} editable />
     </Container>
   );
 }
