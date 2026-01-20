@@ -6,3 +6,4 @@ database/data/
 .vscode/*
 !.vscode/settings.json
 !.vscode/extensions.json
+shared/generated

@@ -7,7 +7,10 @@ import {
 import { prisma } from "../../db/prismaClient.js";
 import { fileTypeFromBuffer } from "file-type";
 import { uploadFile } from "../../middlewares/file.js";
-import { getConsultantsByName } from "../../middlewares/search.js";
+import {
+  getConsultantsByFilter,
+  getConsultantsByName,
+} from "../../middlewares/search.js";
 
 // TODO: Check all env variables in a single place
 const PROFILE_PICTURE_PREFIX =
@@ -35,7 +38,11 @@ consultantsRouter.get("/search", async (req: Request, res: Response) => {
     const foundConsultants = await getConsultantsByName(
       consultantName as string
     );
-    res.send(foundConsultants);
+    if (foundConsultants.length === 0) {
+      res.status(404).json("no results");
+      return;
+    }
+    res.send(foundConsultants.map((el) => el));
     return;
   } catch (err) {
     res.status(500).json(err);
@@ -43,6 +50,22 @@ consultantsRouter.get("/search", async (req: Request, res: Response) => {
   }
 });
 
+consultantsRouter.get("/filter", async (req: Request, res: Response) => {
+  try {
+    const { freeText } = req.query;
+    const foundConsultants = await getConsultantsByFilter(freeText as string);
+    if (foundConsultants.length === 0) {
+      res.status(404).json("no results");
+      return;
+    }
+    res.send(foundConsultants.map((el) => el));
+
+    return;
+  } catch (err) {
+    res.status(500).json(err);
+    return;
+  }
+});
 consultantsRouter.get("/:consultantId", async (req: Request, res: Response) => {
   const parsedParams = ConsultantIdParamsSchema.safeParse(req.params);
   if (!parsedParams.success) {
