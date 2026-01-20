@@ -51,6 +51,7 @@ export const GetProjectsResponseSchema = z
   .array(
     ProjectSchema.extend({
       projectLinks: z.array(ProjectLinkSchema),
+      projectSkills: z.array(ProjectSkillSchema),
     })
   )
   .meta({ id: "GetProjectsResponse" });

@@ -19,12 +19,23 @@ export default function PersonalProjectItem({ item, editable }: Props) {
     <Chip
       key={i}
       label={link.label}
-      color="primary"
+      color="secondary"
       size="small"
       clickable
       component="a"
       href={link.url}
       target="_blank"
+      variant="outlined"
+    />
+  ));
+
+  const projectSkills = item.projectSkills.map((skill, i) => (
+    <Chip
+      key={i}
+      label={skill.skillTagName}
+      color="primary"
+      variant="outlined"
+      size="small"
     />
   ));
 
@@ -53,23 +64,40 @@ export default function PersonalProjectItem({ item, editable }: Props) {
       <Box>
         <Typography>{item.description}</Typography>
       </Box>
-      <Stack direction={"row"} width={"100%"}>
+      <Stack direction="row">
         {/* bottom left container */}
         <Stack
+          direction="column"
+          width="100%"
+          alignItems="flex-start"
           spacing={1}
-          direction={"row"}
-          flex={1}
-          justifyContent={"flex-start"}
-          alignItems={"center"}
         >
-          {projectLinks}
+          <Stack
+            spacing={1}
+            direction="row"
+            flex={1}
+            justifyContent="flex-start"
+            alignItems="flex-end"
+          >
+            {projectLinks}
+          </Stack>
+
+          <Stack
+            spacing={1}
+            direction="row"
+            flex={1}
+            justifyContent="flex-start"
+            alignItems="flex-end"
+          >
+            {projectSkills}
+          </Stack>
         </Stack>
         {/* bottom right container */}
         <Stack
           flex={1}
-          direction={"row"}
-          justifyContent={"flex-end"}
-          alignItems={"center"}
+          direction="row"
+          justifyContent="flex-end"
+          alignItems="flex-start"
         >
           {editOnlyButtons}
         </Stack>
