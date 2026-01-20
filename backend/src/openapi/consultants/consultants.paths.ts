@@ -73,6 +73,32 @@ export const consultantsPaths = {
         200: {
           description: "Some consultant found",
         },
+        404: {
+          description: "no results",
+        },
+        500: { description: "Internal server error" },
+      },
+    },
+  },
+  "/consultants/filter": {
+    get: {
+      summary: "Filter consultant by freetext",
+      tags: ["Consultants"],
+      parameters: [
+        {
+          name: "freeText",
+          in: "query" as const,
+          required: true,
+          schema: { type: "string" as const },
+        },
+      ],
+      responses: {
+        200: {
+          description: "Some consultant found",
+        },
+        404: {
+          description: "no results",
+        },
         500: { description: "Internal server error" },
       },
     },
