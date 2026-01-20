@@ -73,9 +73,6 @@ export const consultantsPaths = {
         200: {
           description: "Some consultant found",
         },
-        404: {
-          description: "no results",
-        },
         500: { description: "Internal server error" },
       },
     },
@@ -95,9 +92,6 @@ export const consultantsPaths = {
       responses: {
         200: {
           description: "Some consultant found",
-        },
-        404: {
-          description: "no results",
         },
         500: { description: "Internal server error" },
       },

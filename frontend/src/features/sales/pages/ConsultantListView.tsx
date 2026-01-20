@@ -1,12 +1,15 @@
-import { Paper, Box } from "@mui/material"
-import { ConsultantCard } from "../components/ConsultantCard"
+import { Paper, Box } from "@mui/material";
+import { ConsultantCard } from "../components/ConsultantCard";
 import { useEffect, useState } from "react";
-import { getConsultants } from "../../consultant/api/consultants.api";
-
+import {
+  getConsultants,
+  searchConsultants,
+} from "../../consultant/api/consultants.api";
+import SearchBar from "../components/Search";
 
 export const ConsultantListView = () => {
-
   const [ids, setIds] = useState<number[]>([]);
+  const [search, setSearch] = useState<string>("");
 
   useEffect(() => {
     const load = async () => {
@@ -18,20 +21,32 @@ export const ConsultantListView = () => {
         console.error("Failed to load consultants", err);
       }
     };
-    load();
+    load().catch(console.error);
   }, []);
 
-  return(
-  <>
-    <Paper sx={{  border: 1, margin: "16px", background: "#efefef"}}>
-                
-      {ids.map((id) => (
-        <Box key={id} sx={{ m: 3, border: 1, background: "white" }}>
-          <ConsultantCard consultantID={id} />
-        </Box>
-      ))}
- 
-     </Paper>
-  </>
-)
-}
+  const loadConsultants = async () => {
+    try {
+      const response = await searchConsultants(search);
+      const consultants = response.data;
+      setIds(consultants.map((c) => c.userId));
+    } catch (err) {
+      console.error("Failed to load consultants", err);
+    }
+  };
+
+  return (
+    <>
+      <Paper sx={{ border: 1, margin: "16px", background: "#efefef" }}>
+        <SearchBar
+          getText={setSearch}
+          loadConsultants={() => void loadConsultants()}
+        />
+        {ids.map((id) => (
+          <Box key={id} sx={{ m: 3, border: 1, background: "white" }}>
+            <ConsultantCard consultantID={id} />
+          </Box>
+        ))}
+      </Paper>
+    </>
+  );
+};
