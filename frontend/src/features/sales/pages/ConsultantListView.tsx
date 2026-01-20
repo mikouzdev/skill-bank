@@ -2,10 +2,10 @@ import { Paper, Box } from "@mui/material";
 import { ConsultantCard } from "../components/ConsultantCard";
 import { useEffect, useState } from "react";
 import {
+  filterConsultants,
   getConsultants,
-  searchConsultants,
 } from "../../consultant/api/consultants.api";
-import SearchBar from "../components/Search";
+import SearchBar from "../../../shared/components/Search";
 
 export const ConsultantListView = () => {
   const [ids, setIds] = useState<number[]>([]);
@@ -26,7 +26,7 @@ export const ConsultantListView = () => {
 
   const loadConsultants = async () => {
     try {
-      const response = await searchConsultants(search);
+      const response = await filterConsultants(search);
       const consultants = response.data;
       setIds(consultants.map((c) => c.userId));
     } catch (err) {
