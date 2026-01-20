@@ -42,7 +42,16 @@ export const deleteProject = (id: number) => {
 };
 
 export const postProjects = (formData: Project) => {
-  return api.post<ProjectListResponse>(`/consultants/me/projects`, formData);
+  return api.post<ProjectListResponse[number]>(
+    `/consultants/me/projects`,
+    formData
+  );
+};
+
+export const addProjectSkill = (id: number, skill: string) => {
+  return api.post(`/consultants/me/projects/${id}/skills`, {
+    skillTagName: skill,
+  });
 };
 
 export const postWorkExperience = (formData: Employment) => {

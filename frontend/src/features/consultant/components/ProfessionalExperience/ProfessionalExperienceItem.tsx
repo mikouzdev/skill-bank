@@ -20,8 +20,6 @@ export default function ProfessionalExperienceItem({ item, editable }: Props) {
     </Stack>
   );
 
-  console.log(item);
-
   const skills = item.employmentSkills.map((skill, i) => (
     <Chip
       variant="outlined"

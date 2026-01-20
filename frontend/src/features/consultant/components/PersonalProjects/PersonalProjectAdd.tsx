@@ -7,16 +7,20 @@ import {
   TextField,
   MenuItem,
   Stack,
-  ButtonGroup,
+  Chip,
+  Typography,
 } from "@mui/material";
+
+import AddIcon from "@mui/icons-material/Add";
 
 import type { components } from "@api-types/openapi";
 type Project = Partial<components["schemas"]["Project"]>;
-type SkillsResponse = components["schemas"]["ConsultantSkill"];
+type SkillsResponse = components["schemas"]["SkillTagList"];
+type ProjectSkill = Pick<components["schemas"]["ProjectSkill"], "skillTagName">;
 
 interface Props {
-  update: (formData: Project) => void;
-  skillData: SkillsResponse[];
+  update: (formData: Project, skills: ProjectSkill[]) => void;
+  skillData: SkillsResponse;
 }
 
 export function AddNewProject({ update, skillData }: Props) {
@@ -28,6 +32,7 @@ export function AddNewProject({ update, skillData }: Props) {
     end: "",
     visibility: "PUBLIC" as "PUBLIC" | "LIMITED",
   });
+  const [addedSkills, setAddedSkills] = useState<ProjectSkill[]>([]);
 
   const handleOpen = () => setShowForm(true);
   const handleClose = () => setShowForm(false);
@@ -40,6 +45,19 @@ export function AddNewProject({ update, skillData }: Props) {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleAddSkill = (skillName: string) => {
+    // check if skill already added
+    if (addedSkills.some((skill) => skill.skillTagName === skillName)) return;
+
+    setAddedSkills((prev) => [...prev, { skillTagName: skillName }]);
+  };
+
+  const handleRemoveSkill = (skillName: string) => {
+    setAddedSkills(
+      addedSkills.filter((skill) => skill.skillTagName !== skillName)
+    );
+  };
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -49,9 +67,32 @@ export function AddNewProject({ update, skillData }: Props) {
       end: formData.end ? formData.end : null,
     };
 
-    update(formPayload);
+    update(formPayload, addedSkills);
     setShowForm(false);
   };
+
+  const availableSkillChips = skillData.map((skill) => {
+    return (
+      <Chip
+        icon={<AddIcon />}
+        key={skill.id}
+        color="primary"
+        onClick={() => handleAddSkill(skill.name)}
+        label={skill.name}
+      />
+    );
+  });
+
+  const addedSkillChips = addedSkills.map((skill) => {
+    return (
+      <Chip
+        key={skill.skillTagName}
+        color="secondary"
+        onDelete={() => handleRemoveSkill(skill.skillTagName)}
+        label={skill.skillTagName}
+      />
+    );
+  });
 
   return (
     <div>
@@ -124,45 +165,35 @@ export function AddNewProject({ update, skillData }: Props) {
                   >
                     <MenuItem value="PUBLIC">Public</MenuItem>
                     <MenuItem value="LIMITED">Limited</MenuItem>
-                  </TextField>{" "}
-                  <b>Skills</b>
-                  <ButtonGroup
-                    orientation="horizontal"
+                  </TextField>
+                  <Typography>Skills</Typography>
+                  <Stack
+                    direction="row"
+                    flexWrap="wrap"
+                    rowGap={1}
+                    columnGap={1}
                     sx={{
-                      "& .MuiButtonGroup-grouped": {
-                        marginRight: "4px",
-                        borderRadius: 1,
-                        border: "1px solid",
-                      },
+                      p: 1,
+                      maxHeight: 150,
+                      overflowY: "scroll",
                     }}
                   >
-                    {skillData.map((el) => {
-                      return (
-                        <Button
-                          style={{
-                            backgroundColor: "white",
-                            color: "black",
-                            borderRadius: 38,
-                            height: 32,
-                          }}
-                        >
-                          {el.skillName}
-                        </Button>
-                      );
-                    })}{" "}
-                    <Button
-                      style={{
-                        backgroundColor: "cream",
-                        color: "navy",
-                        borderRadius: 38,
-                        height: 32,
-                      }}
-                    >
-                      + Add skill
-                    </Button>
-                  </ButtonGroup>
-                  <b>Added Skills</b>
-                  <div>Not yet implemented</div>
+                    {availableSkillChips}
+                  </Stack>
+                  <Typography>Added Skills</Typography>
+                  <Stack
+                    direction="row"
+                    flexWrap="wrap"
+                    rowGap={1}
+                    columnGap={1}
+                    sx={{
+                      p: 1,
+                      maxHeight: 150,
+                      overflowY: "scroll",
+                    }}
+                  >
+                    {addedSkillChips}
+                  </Stack>
                   <b>Project length:</b>
                   <div>
                     <TextField
@@ -174,7 +205,6 @@ export function AddNewProject({ update, skillData }: Props) {
                       required
                       InputLabelProps={{ shrink: true }}
                     />
-
                     <TextField
                       label="End Date"
                       type="date"
@@ -197,7 +227,7 @@ export function AddNewProject({ update, skillData }: Props) {
               </Box>
             </div>
           </div>
-        }{" "}
+        }
       </Dialog>
     </div>
   );

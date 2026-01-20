@@ -30,7 +30,7 @@ export default function ConsultantProfilePage() {
       <Divider />
       <ProfessionalExperience data={employments} skillData={skillPool} />
       <Divider />
-      <PersonalProjects data={projects} skillData={skills} />
+      <PersonalProjects data={projects} skillData={skillPool} />
     </Container>
   );
 }

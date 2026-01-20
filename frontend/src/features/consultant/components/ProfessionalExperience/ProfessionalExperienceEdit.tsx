@@ -41,7 +41,7 @@ export default function ProfessionalExperienceEdit({ employmentData }: Props) {
     start: employmentData.start,
     end: employmentData.end,
     visibility: employmentData.visibility,
-    skills: employmentData.skills,
+    employmentSkills: employmentData.employmentSkills,
   });
 
   async function handleSubmitEdit(event: React.FormEvent<HTMLFormElement>) {
@@ -58,7 +58,7 @@ export default function ProfessionalExperienceEdit({ employmentData }: Props) {
         start: formData.start,
         end: isOngoing ? null : formData.end,
         visibility: formData.visibility,
-        skills: formData.skills || [],
+        employmentSkills: formData.employmentSkills || [],
       };
 
       await updateEmployment(updatedEmployment);
