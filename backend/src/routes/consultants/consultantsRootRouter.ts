@@ -11,6 +11,6 @@ export const consultantsRootRouter = Router();
 consultantsRootRouter.use("/", consultantsRouter);
 consultantsRootRouter.use("/", employmentsRouter); // /employments
 consultantsRootRouter.use("/", projectsRouter); // /projects
-consultantsRootRouter.use("/attributes", attributesRouter);
-consultantsRootRouter.use("/skills", skillsRouter);
+consultantsRootRouter.use("/", attributesRouter); //attributes
+consultantsRootRouter.use("/", skillsRouter); //skills
 consultantsRootRouter.use("/", pageSectionsRouter); //sections
