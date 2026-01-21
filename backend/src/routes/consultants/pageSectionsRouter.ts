@@ -5,6 +5,11 @@ import { prisma } from "../../db/prismaClient.js";
 
 export const pageSectionsRouter = Router();
 
+/**
+ * Get a consultant's page sections
+ * @route GET /consultants/{consultantId}/sections
+ * @returns [sections]
+ */
 pageSectionsRouter.get(
   "/:consultantId/sections",
   async (req: Request, res: Response) => {

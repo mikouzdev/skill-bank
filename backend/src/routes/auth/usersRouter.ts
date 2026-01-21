@@ -18,6 +18,11 @@ if (secret === undefined) {
 
 const options: jwt.SignOptions = { expiresIn: "1h"};
 
+/**
+ * Post a login request and get JWT response
+ * @route POST /auth/login
+ * @returns [jwt]
+ */
 usersRouter.post("/login", async (req: Request, res: Response) => {
     //Get login info from req body
     const parsedBody = LoginSchema.safeParse(req.body);
@@ -53,6 +58,11 @@ usersRouter.post("/login", async (req: Request, res: Response) => {
     res.status(200).send({ token, success });
 });
 
+/**
+ * Post a logout request
+ * @route POST /auth/logout
+ * @returns json message
+ */
 usersRouter.post("/logout", async (req: Request, res: Response) => {
     const auth = req.get("Authorization");
     if (!auth?.startsWith("Bearer ")) {
@@ -85,6 +95,11 @@ usersRouter.post("/logout", async (req: Request, res: Response) => {
     }
 });
 
+/**
+ * Get the current user's JWT
+ * @route GET /auth/me
+ * @returns jwt
+ */
 usersRouter.get("/me", async (req: Request, res: Response) => {
     const auth = req.get("Authorization");
     if (!auth?.startsWith("Bearer ")) {
