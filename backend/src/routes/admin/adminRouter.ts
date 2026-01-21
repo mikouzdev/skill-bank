@@ -4,6 +4,11 @@ import { prisma } from "../../db/prismaClient.js";
 
 export const adminRouter = Router();
 
+/**
+ * Gets all users in the database
+ * @route GET /admin/users
+ * @returns [users]
+ */
 //Add this once it is made functional (checks for user admin role correctly)
 //adminOnly,
 adminRouter.get("/users", authenticate, async (req: Request, res: Response) => {
