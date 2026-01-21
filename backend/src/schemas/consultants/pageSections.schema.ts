@@ -29,3 +29,9 @@ export const GetPageSectionsResponseSchema = z
     })
   )
   .meta({ id: "GetPageSectionsResponse" });
+
+  export const ConsultantIdSectionNameParamsSchema = z.object({
+    consultantId: z.coerce.number().meta({ example: "1" }),
+    sectionName: z.enum(["GENERAL", "NETWORKING_LINKS", "DESCRIPTION", "SKILLS", "EMPLOYMENTS", "PROJECTS"]).meta({ example: "GENERAL" }),
+  }).meta({ id: "GetConsultantIdSectionNameParams" });
+  
