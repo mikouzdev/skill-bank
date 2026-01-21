@@ -1,17 +1,23 @@
 import { Avatar, Box, Stack, Typography, Button, Checkbox } from "@mui/material"
 import { useConsultantDetails } from "../../consultant/hooks/useConsultantDetails";
 
+
+type SelectedUser = { id: number; name: string };
+
+
 type Props = {
   consultantID: number;
+  selected: boolean;
+  onToggle: (user: SelectedUser) => void;
 };
 
-export const UserCard = ({consultantID}: Props) => {
+export const UserCard = ({consultantID, selected, onToggle}: Props) => {
 
-const { consultant, skills, employments, projects, loading } =
+const { consultant, loading } =
     useConsultantDetails(consultantID);
 
   if (loading) return <Typography>Loading...</Typography>;
-  if (!employments || !consultant || !projects || !skills)
+  if ( !consultant )
     return <Typography>Error while fetching data.</Typography>;  
 
 
@@ -20,7 +26,14 @@ const { consultant, skills, employments, projects, loading } =
       <Box sx={{p: "12px", textWrap: "nowrap"}}> 
         <Stack direction="row" spacing={2} >
           <Box >
-          <Checkbox />
+          <Checkbox 
+          checked={selected}
+          onChange={() => onToggle({
+            id: consultantID,
+            name: consultant.user.name,
+            }
+          )}
+          />
           </Box>
           <Box>
           <Avatar alt={consultant.user.name} src={consultant.profilePictureUrl} />

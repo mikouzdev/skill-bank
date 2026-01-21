@@ -1,4 +1,4 @@
-import { Paper, Box } from "@mui/material";
+import { Paper, Box, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import {
   getConsultants,
@@ -7,10 +7,27 @@ import {
 import { UserCard } from "../components/UserCard";
 import { AddUserDialog } from "../components/AddUserDialog";
 import SearchBar from "../../../shared/components/Search";
+import { DeleteUsersDialog } from "../components/DeleteUsersDialog";
+
+
+type SelectedUser = {
+  id: number;
+  name: string;
+}
 
 export const ManageUsersPage = () => {
+
   const [ids, setIds] = useState<number[]>([]);
+  const [selectedUsers, setSelectedUsers] = useState<SelectedUser[]>([]);
   const [search, setSearch] = useState<string>("");
+
+  const toggleSelected = (user: SelectedUser) => {
+  setSelectedUsers(prev =>
+    prev.some(u => u.id === user.id)
+      ? prev.filter(u => u.id !== user.id)
+      : [...prev, user]
+    );
+  };
 
   useEffect(() => {
     const load = async () => {
@@ -43,12 +60,30 @@ export const ManageUsersPage = () => {
           loadConsultants={() => void loadConsultants()}
         />
         {ids.map((id) => (
-          <Box key={id} sx={{ m: 3, background: "white" }}>
-            <UserCard consultantID={id} />
+          <Box key={id} sx={{ m: 3, background: "white" } }>
+            <UserCard
+              consultantID={id}
+              selected={selectedUsers.some(u => u.id === id)}
+              onToggle={toggleSelected}
+             />
           </Box>
         ))}
+        
       </Paper>
-      <AddUserDialog />
+      <Stack 
+        direction="row"
+        spacing={2}
+        sx={{ mt: 1 }}
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <Box>
+          <AddUserDialog />
+        </Box>
+        <Box >
+          <DeleteUsersDialog selectedUsers={selectedUsers} />
+        </Box>
+      </Stack>      
     </>
   );
 };
