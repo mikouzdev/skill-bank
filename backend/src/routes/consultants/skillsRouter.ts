@@ -14,7 +14,7 @@ export const skillsRouter = Router();
  * @route GET /consultants/skills/all
  * @returns [skills]
  */
-skillsRouter.get("/all", async (req: Request, res: Response) => {
+skillsRouter.get("/skills/all", async (req: Request, res: Response) => {
   try {
     const skills = await prisma.skillTag.findMany();
     res.send(skills);
@@ -30,36 +30,39 @@ skillsRouter.get("/all", async (req: Request, res: Response) => {
  * @route GET /consultants/skills/{consultantId}
  * @returns Skillbody
  */
-skillsRouter.get("/:consultantId", async (req: Request, res: Response) => {
-  const parsedParams = ConsultantIdParamsSchema.safeParse(req.params);
-  if (!parsedParams.success) {
-    res.status(400).json(parsedParams.error);
-    return;
-  }
-  const consultant = parsedParams.data.consultantId;
-  let getSkill = null;
+skillsRouter.get(
+  "/skills/:consultantId",
+  async (req: Request, res: Response) => {
+    const parsedParams = ConsultantIdParamsSchema.safeParse(req.params);
+    if (!parsedParams.success) {
+      res.status(400).json(parsedParams.error);
+      return;
+    }
+    const consultant = parsedParams.data.consultantId;
+    let getSkill = null;
 
-  try {
-    getSkill = await prisma.consultantSkill.findMany({
-      where: { consultantId: consultant },
-    });
-  } catch (err) {
-    res.status(500).json(err);
-    return;
+    try {
+      getSkill = await prisma.consultantSkill.findMany({
+        where: { consultantId: consultant },
+      });
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
+    if (consultant === null) {
+      res.status(404).json({ error: "Not found" });
+      return;
+    }
+    res.json(getSkill);
   }
-  if (consultant === null) {
-    res.status(404).json({ error: "Not found" });
-    return;
-  }
-  res.json(getSkill);
-});
+);
 
 /**
  * Creates a skill for consultant
  * @route : POST /consultants/skills/me
  * @body : {skill: string, proficiency: number}
  */
-skillsRouter.post("/me", async (req: Request, res: Response) => {
+skillsRouter.post("/skills/me", async (req: Request, res: Response) => {
   const parsedBody = PostSkillBodySchema.safeParse(req.body);
 
   if (!parsedBody.success) {
@@ -130,32 +133,35 @@ skillsRouter.post("/me", async (req: Request, res: Response) => {
  * Deletes a skill by ID
  * @route DELETE /consultants/skills/me/{skillId}
  */
-skillsRouter.delete("/me/:skillId", async (req: Request, res: Response) => {
-  const parsedParams = SkillIdParamsSchema.safeParse(req.params);
+skillsRouter.delete(
+  "/skills/me/:skillId",
+  async (req: Request, res: Response) => {
+    const parsedParams = SkillIdParamsSchema.safeParse(req.params);
 
-  if (!parsedParams.success) {
-    res.status(400).json(parsedParams.error);
-    return;
+    if (!parsedParams.success) {
+      res.status(400).json(parsedParams.error);
+      return;
+    }
+
+    const { skillId } = parsedParams.data;
+
+    try {
+      await prisma.consultantSkill.delete({ where: { id: skillId } });
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
+
+    res.status(204).json();
   }
-
-  const { skillId } = parsedParams.data;
-
-  try {
-    await prisma.consultantSkill.delete({ where: { id: skillId } });
-  } catch (err) {
-    res.status(500).json(err);
-    return;
-  }
-
-  res.status(204).json();
-});
+);
 
 /**
  * Edit the proficiency of a skill
  * @body {proficiency: {skill's proficiency}}
  * @route PUT /consultants/skills/me/{skillId}
  */
-skillsRouter.put("/me/:skillId", async (req: Request, res: Response) => {
+skillsRouter.put("/skills/me/:skillId", async (req: Request, res: Response) => {
   const parsedParams = SkillIdParamsSchema.safeParse(req.params);
   const parsedBody = SkillProficiencyBodySchema.safeParse(req.body);
 

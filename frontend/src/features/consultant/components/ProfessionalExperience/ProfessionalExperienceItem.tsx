@@ -5,18 +5,24 @@ import ProfessionalExperienceEdit from "./ProfessionalExperienceEdit";
 
 type ConsultantEmploymentItem =
   components["schemas"]["EmploymentListResponse"][number];
+type SkillsResponse = components["schemas"]["SkillTagList"];
 
 type Props = {
   item: ConsultantEmploymentItem;
   editable?: boolean;
+  skillData: SkillsResponse;
 };
 
 const DATE_FORMAT = "MM/YYYY";
 
-export default function ProfessionalExperienceItem({ item, editable }: Props) {
+export default function ProfessionalExperienceItem({
+  item,
+  skillData,
+  editable,
+}: Props) {
   const editOnlyButtons = editable && (
     <Stack direction={"row"} spacing={1}>
-      <ProfessionalExperienceEdit employmentData={item} />
+      <ProfessionalExperienceEdit employmentData={item} skillData={skillData} />
     </Stack>
   );
 

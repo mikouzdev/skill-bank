@@ -14,7 +14,12 @@ import {
   Switch,
   FormGroup,
   FormControlLabel,
+  Chip,
+  Divider,
 } from "@mui/material";
+
+import AddIcon from "@mui/icons-material/Add";
+
 import { useState } from "react";
 import { deleteEmployment, updateEmployment } from "../../api/consultants.api";
 import type { components } from "@api-types/openapi";
@@ -24,12 +29,18 @@ import type { components } from "@api-types/openapi";
 ///
 
 type Employment = Partial<components["schemas"]["EmploymentResponse"]>;
+type SkillsResponse = components["schemas"]["SkillTagList"];
+type EmploymentSkill = components["schemas"]["EmploymentSkill"];
 
 type Props = {
   employmentData: Employment;
+  skillData: SkillsResponse;
 };
 
-export default function ProfessionalExperienceEdit({ employmentData }: Props) {
+export default function ProfessionalExperienceEdit({
+  employmentData,
+  skillData,
+}: Props) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOngoing, setIsOngoing] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -43,6 +54,9 @@ export default function ProfessionalExperienceEdit({ employmentData }: Props) {
     visibility: employmentData.visibility,
     employmentSkills: employmentData.employmentSkills,
   });
+  const [addedSkills, setAddedSkills] = useState<EmploymentSkill[]>(
+    employmentData.employmentSkills || []
+  );
 
   async function handleSubmitEdit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -58,7 +72,7 @@ export default function ProfessionalExperienceEdit({ employmentData }: Props) {
         start: formData.start,
         end: isOngoing ? null : formData.end,
         visibility: formData.visibility,
-        employmentSkills: formData.employmentSkills || [],
+        employmentSkills: addedSkills || [],
       };
 
       await updateEmployment(updatedEmployment);
@@ -95,6 +109,27 @@ export default function ProfessionalExperienceEdit({ employmentData }: Props) {
     }
   }
 
+  const handleAddSkill = (skillName: string) => {
+    // check if skill already added
+    if (addedSkills.some((skill) => skill.skillTagName === skillName)) return;
+
+    if (employmentData.id === undefined) {
+      console.log("employment id is undefined, unable to add skill");
+      return;
+    }
+
+    const employmentId = employmentData.id;
+    const skillTagName = skillName;
+
+    setAddedSkills((prev) => [...prev, { skillTagName, employmentId }]);
+  };
+
+  const handleRemoveSkill = (skillName: string) => {
+    setAddedSkills(
+      addedSkills.filter((skill) => skill.skillTagName !== skillName)
+    );
+  };
+
   const ongoingSwitch = (
     <FormGroup>
       <FormControlLabel
@@ -108,6 +143,29 @@ export default function ProfessionalExperienceEdit({ employmentData }: Props) {
       />
     </FormGroup>
   );
+
+  const availableSkillChips = skillData.map((skill) => {
+    return (
+      <Chip
+        icon={<AddIcon />}
+        key={skill.id}
+        color="primary"
+        onClick={() => handleAddSkill(skill.name)}
+        label={skill.name}
+      />
+    );
+  });
+
+  const addedSkillChips = addedSkills.map((skill) => {
+    return (
+      <Chip
+        key={skill.skillTagName}
+        color="secondary"
+        onDelete={() => handleRemoveSkill(skill.skillTagName)}
+        label={skill.skillTagName}
+      />
+    );
+  });
 
   return (
     <>
@@ -188,6 +246,42 @@ export default function ProfessionalExperienceEdit({ employmentData }: Props) {
                   />
                 )}
               </Stack>
+
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                <Stack direction="column">
+                  <Divider textAlign="left">Select Skills</Divider>
+                  <Stack
+                    direction="row"
+                    flexWrap="wrap"
+                    rowGap={1}
+                    columnGap={1}
+                    sx={{
+                      p: 1,
+                      maxHeight: 150,
+                      overflowY: "scroll",
+                    }}
+                  >
+                    {availableSkillChips}
+                  </Stack>
+                </Stack>
+
+                <Stack direction="column">
+                  <Divider textAlign="left">Added Skills</Divider>
+                  <Stack
+                    direction="row"
+                    flexWrap="wrap"
+                    rowGap={1}
+                    columnGap={1}
+                    sx={{
+                      p: 1,
+                      maxHeight: 150,
+                      overflowY: "scroll",
+                    }}
+                  >
+                    {addedSkillChips}
+                  </Stack>
+                </Stack>
+              </Box>
 
               <Stack direction={"row"} spacing={2}>
                 <Button

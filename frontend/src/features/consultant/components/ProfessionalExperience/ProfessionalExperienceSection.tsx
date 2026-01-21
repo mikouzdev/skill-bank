@@ -72,7 +72,11 @@ export default function ProfessionalExperience({
 
       <Stack spacing={1}>
         {data.map((item, i) => (
-          <ProfessionalExperienceItem key={i} item={item} />
+          <ProfessionalExperienceItem
+            key={i}
+            item={item}
+            skillData={skillData}
+          />
         ))}
       </Stack>
     </Stack>
@@ -95,7 +99,12 @@ export default function ProfessionalExperience({
 
       <Stack spacing={1}>
         {data.map((item, i) => (
-          <ProfessionalExperienceItem key={i} item={item} editable={editable} />
+          <ProfessionalExperienceItem
+            key={i}
+            item={item}
+            skillData={skillData}
+            editable={editable}
+          />
         ))}
       </Stack>
     </Stack>
