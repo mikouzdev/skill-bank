@@ -1,5 +1,6 @@
 import { Avatar, Box, Stack, Typography, Button, Checkbox } from "@mui/material"
 import { useConsultantDetails } from "../../consultant/hooks/useConsultantDetails";
+import { ChangeUserRole } from "./ChangeUserRole";
 
 
 type SelectedUser = { id: number; name: string };
@@ -46,9 +47,10 @@ const { consultant, loading } =
           <Box>123 Days ago</Box>
           
           
-            <Box sx={{ width: "100%", display: "flex", justifyContent: "flex-end" }}>
-            <Button type="submit">Change role</Button>  
-              <Button type="submit">View profile</Button>  
+          <Box sx={{ width: "100%", display: "flex", justifyContent: "flex-end" }}>
+            {/* <Button type="submit">Change role</Button>   */}
+            <ChangeUserRole id={consultant.userId} name={consultant.user.name} />
+            <Button type="submit">View profile</Button>  
           </Box>
           
         </Stack>
