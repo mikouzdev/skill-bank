@@ -2,7 +2,7 @@ import {
   SkillTagsSchema,
 } from "../../schemas/consultants/skills.schema.js";
 
-export const skillsPaths2 = {
+export const allSkillsPaths = {
   "/skills": {
     get: {
       summary: "Get all available skills",
