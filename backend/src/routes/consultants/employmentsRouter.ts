@@ -148,9 +148,10 @@ employmentsRouter.put(
           ...(end !== undefined ? { end } : {}),
           visibility,
           employmentSkills: {
-            update: employmentSkills.map((skill) => ({
-              where: { id: skill.employmentId },
-              data: { skillTagName: skill.skillTagName },
+            deleteMany: {}, // delete skills of the employment
+            // create incoming skills, ( it errors if the skill doesnt exist in SkillTag )
+            create: employmentSkills.map((skill) => ({
+              skillTagName: skill.skillTagName,
             })),
           },
         },
