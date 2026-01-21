@@ -1,7 +1,9 @@
 import { Router, type Request, type Response } from "express";
 import { ConsultantIdParamsSchema } from "../../schemas/consultants/consultants.schema.js";
+import { ConsultantIdSectionNameParamsSchema } from "../../schemas/consultants/pageSections.schema.js";
 import { Visibility } from "../../generated/prisma/enums.js";
 import { prisma } from "../../db/prismaClient.js";
+import { authenticate } from "../../middlewares/authentication.js";
 
 export const pageSectionsRouter = Router();
 
@@ -43,7 +45,48 @@ pageSectionsRouter.get(
 
     res.json(sections);
 });
+/**
+ * Get a consultant's page section by name
+ * @route GET /consultants/{consultantId}/sections/{sectionName}
+ * @returns page section
+ */
+//TODO: make this only available for sales and admin roles
+pageSectionsRouter.get(
+  "/:consultantId/sections/:sectionName", authenticate,
+  async (req: Request, res: Response) => {
+    const parsedParams = ConsultantIdSectionNameParamsSchema.safeParse(
+      req.params
+    );
+    if (!parsedParams.success) {
+      res.status(400).json(parsedParams.error);
+      return;
+    }
+    const { consultantId, sectionName } = parsedParams.data;
+    
+    let pageSection = null;
+    try {
+      pageSection = await prisma.pageSection.findFirst({
+        where: { 
+          name: sectionName,
+          consultantId: consultantId
+        },
+        include: {
+          comments: {
+
+          },
+        },
+      });
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
+
+    if (pageSection === null) {
+      res.status(404).json({ message: "Not found" });
+      return;
+    }
+    res.json(pageSection);
+  });
 
 //TODO: page section endpoints
-//GET /consultants/{consultantId}/sections/{sectionName}
 //PUT /consultants/me/sections/{sectionName}
