@@ -14,7 +14,7 @@ stages:
 install:
   stage: install
   script:
-c
+    - npm install -g pnpm
     - cd backend
     - pnpm install
     - cd ..
