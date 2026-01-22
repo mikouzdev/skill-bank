@@ -52,12 +52,12 @@ build:
   stage: build
   script:
     - cd backend
-    - npm run build
+    - tsc
     - cd ../frontend
-    - npm run build
+    - tsc
 
 deploy:
   stage: deploy
   script:
     - cd backend
-    - npm run start
+    - node ./dist/index.js
