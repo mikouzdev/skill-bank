@@ -1,6 +1,7 @@
 import { Router, type Request, type Response } from "express";
 import {
   UserBodySchema,
+  UserIdParamsSchema,
 } from "../../schemas/admin/admin.schema.js";
 import { adminOnly, authenticate } from "../../middlewares/authentication.js";
 import { prisma } from "../../db/prismaClient.js";
@@ -18,8 +19,7 @@ adminRouter.get("/users", authenticate, async (req: Request, res: Response) => {
   try {
     const users = await prisma.user.findMany({
         omit: {
-            passwordHash: true,
-            id: true
+            passwordHash: true
         }});
     res.send(users);
     return;
@@ -77,4 +77,25 @@ adminRouter.post("/users", authenticate, async (req: Request, res: Response) => 
   }
 
   res.status(201).json(createdUser);
+});
+
+//Add this once it is made functional (checks for user admin role correctly)
+//adminOnly,
+adminRouter.delete("/users/:userId", authenticate, async (req: Request, res: Response) => {
+  const parsedParams = UserIdParamsSchema.safeParse(req.params);
+  if (!parsedParams.success) {
+    res.status(400).json(parsedParams.error);
+    return;
+  }
+  const { userId } = parsedParams.data;
+  try {
+      await prisma.user.delete({
+        where: { id: userId },
+      });
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
+
+    res.status(204).send();
 });
