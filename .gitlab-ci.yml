@@ -25,4 +25,9 @@ cache:
   paths:
     - node_modules/
 
-
+clear:
+  script: 
+    - cd backend
+    - pnpm install
+    - pnpm run db:migrate (database has to be running)
+    - pnpm run db:seed
