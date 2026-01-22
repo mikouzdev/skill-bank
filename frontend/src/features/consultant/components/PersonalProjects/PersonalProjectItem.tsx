@@ -5,16 +5,22 @@ import type { components } from "@api-types/openapi";
 import PersonalProjectEdit from "./PersonalProjectEdit";
 
 type ConsultantProject = components["schemas"]["GetProjectsResponse"][number];
+type SkillsResponse = components["schemas"]["SkillTagList"];
 
 type Props = {
   item: ConsultantProject;
   editable?: boolean;
+  skillData: SkillsResponse;
 };
 
 // in what format are the start and end times shown
 const DATE_FORMAT = "MM/YYYY";
 
-export default function PersonalProjectItem({ item, editable }: Props) {
+export default function PersonalProjectItem({
+  item,
+  skillData,
+  editable,
+}: Props) {
   const projectLinks = item.projectLinks.map((link, i) => (
     <Chip
       key={i}
@@ -41,7 +47,7 @@ export default function PersonalProjectItem({ item, editable }: Props) {
 
   const editOnlyButtons = editable && (
     <Stack direction={"row"} spacing={1}>
-      <PersonalProjectEdit projectData={item} />
+      <PersonalProjectEdit projectData={item} skillData={skillData} />
     </Stack>
   );
 

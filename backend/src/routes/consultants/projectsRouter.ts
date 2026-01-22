@@ -107,7 +107,8 @@ projectsRouter.put(
       res.status(400).json(parsedBody.error);
       return;
     }
-    const { description, name, start, end, visibility } = parsedBody.data;
+    const { description, name, start, end, visibility, projectSkills } =
+      parsedBody.data;
 
     let project = null;
     try {
@@ -119,6 +120,13 @@ projectsRouter.put(
           start,
           ...(end !== undefined ? { end } : {}),
           visibility,
+          projectSkills: {
+            deleteMany: {}, // delete skills of the project
+            // create incoming skills, ( it errors if the skill doesnt exist in SkillTag )
+            create: projectSkills.map((skill) => ({
+              skillTagName: skill.skillTagName,
+            })),
+          },
         },
       });
     } catch (err) {
