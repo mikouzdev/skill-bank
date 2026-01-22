@@ -56,3 +56,8 @@ build:
     - cd ../frontend
     - npm run build
 
+deploy:
+  stage: deploy
+  script:
+    - cd backend
+    - npm run start
