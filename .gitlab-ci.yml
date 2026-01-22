@@ -14,7 +14,7 @@ stages:
 install:
   stage: install
   script:
-    - npm install -g pnpm
+c
     - cd backend
     - pnpm install
     - cd ..
@@ -27,6 +27,7 @@ install:
 lint:
   stage: lint
   script:
+    - npm install -g pnpm
     - pnpm run lint
     - cd ..
     - cd backend
