@@ -52,8 +52,10 @@ build:
   stage: build
   script:
     - cd backend
+    - npm install -g typescript
     - tsc
     - cd ../frontend
+    - npm install -g typescript
     - tsc
 
 deploy:
