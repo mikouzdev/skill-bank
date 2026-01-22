@@ -48,3 +48,9 @@ lint_frontend:
     - pnpm install
     - npm run lint
 
+build:
+  stage: build
+  script:
+    - cd backend
+    - npm run build
+
