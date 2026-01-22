@@ -17,8 +17,8 @@ install:
     - npm install -g pnpm
     - cd backend
     - pnpm install
-    - pnpm run db:migrate (database has to be running)
-    - pnpm run db:seed
+    #- pnpm run db:migrate (database has to be running)
+    #- pnpm run db:seed
 
 lint:
   stage: lint
