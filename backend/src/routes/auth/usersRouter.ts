@@ -37,9 +37,10 @@ usersRouter.post("/login", async (req: Request, res: Response) => {
     }
     //Find user in DB
     const user = await prisma.user.findFirst({
-        where: { email: email },
+        where: { 
+            email: email },
         include: {
-          
+          roles: {}
         },
     });
     if (!user) {
@@ -52,8 +53,10 @@ usersRouter.post("/login", async (req: Request, res: Response) => {
         res.status(401).send({ error: "Invalid email or password" });
         return;
     }
+    const roles = user.roles;
+    const name = user.name;
     //Return new JWT
-    const token = jwt.sign({ email }, secret, options);
+    const token = jwt.sign({ name, email, roles }, secret, options);
     const success = true;
     res.status(200).send({ token, success });
 });
