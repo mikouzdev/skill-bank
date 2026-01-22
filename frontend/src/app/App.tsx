@@ -3,6 +3,7 @@ import { theme } from "../styles/theme";
 import { Routes, Route } from "react-router-dom";
 
 import LoginPage from "../features/Login/LoginPage";
+import { LoginRolePage } from "../features/Login/LoginRolePage";
 import ConsultantProfileSettings from "../features/consultant/pages/ConsultantProfileSettings";
 import ConsultantProfilePage from "../features/consultant/pages/ConsultantProfilePage";
 import { ConsultantListView } from "../features/sales/pages/ConsultantListView";
@@ -17,6 +18,7 @@ function App() {
 
       <Routes>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/loginRole" element={<LoginRolePage />} />
 
         <Route element={<SidebarLayout />}>
           <Route path="/me" element={<ConsultantProfilePage />} />
