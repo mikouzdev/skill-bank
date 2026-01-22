@@ -23,14 +23,22 @@ install:
   #- pnpm run db:migrate (database has to be running)
     #- pnpm run db:seed
 
-lint:
+lint_backend:
   stage: lint
   script:
-    - cd frontend
+    - cd backend
     - npm install -g pnpm
     - pnpm install
     - npm run lint
-    - cd ..
+
+lint_frontend:
+  stage: lint
     - cd backend
+    - npm install -g pnpm
+    - pnpm install
+    - pnpm run generate:apitypes
+    - cd ..
+    - cd frontend
+    - pnpm install
     - npm run lint
 
