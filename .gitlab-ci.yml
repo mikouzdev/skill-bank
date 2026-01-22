@@ -29,6 +29,7 @@ lint_backend:
     - cd backend
     - npm install -g pnpm
     - pnpm install
+    - npm run dev
     - npm run generate:api-types
     - npm run lint
 
@@ -38,6 +39,7 @@ lint_frontend:
     - cd backend
     - npm install -g pnpm
     - pnpm install
+    - npm run dev
     - npm run generate:api-types
     - cd ..
     - cd frontend
