@@ -28,8 +28,10 @@ lint:
   script:
     - npm install -g pnpm
     - cd frontend
+    - pnmp install
     - pnpm run lint
     - cd ..
     - cd backend
+    - pnmp install
     - pnpm run lint
 
