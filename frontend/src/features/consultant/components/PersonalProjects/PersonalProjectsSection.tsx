@@ -54,7 +54,11 @@ export default function PersonalProjects({ data, skillData, editable }: Props) {
       </Stack>
       <Stack spacing={1}>
         {data.map((item) => (
-          <PersonalProjectItem key={item.id} item={item} />
+          <PersonalProjectItem
+            key={item.id}
+            item={item}
+            skillData={skillData}
+          />
         ))}
       </Stack>
     </>
@@ -78,7 +82,12 @@ export default function PersonalProjects({ data, skillData, editable }: Props) {
       <Stack spacing={1}>
         {data.map((item) => (
           <>
-            <PersonalProjectItem key={item.id} item={item} editable />
+            <PersonalProjectItem
+              key={item.id}
+              item={item}
+              skillData={skillData}
+              editable
+            />
           </>
         ))}
       </Stack>

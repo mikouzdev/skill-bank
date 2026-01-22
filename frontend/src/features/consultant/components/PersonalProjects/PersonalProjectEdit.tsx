@@ -14,7 +14,12 @@ import {
   Switch,
   FormGroup,
   FormControlLabel,
+  Chip,
+  Divider,
 } from "@mui/material";
+
+import AddIcon from "@mui/icons-material/Add";
+
 import { useState } from "react";
 import { deleteProject, updateProject } from "../../api/consultants.api";
 import type { components } from "@api-types/openapi";
@@ -23,13 +28,16 @@ import type { components } from "@api-types/openapi";
 // component for the edit button and dialog window for editing a personal project.
 ///
 
-type Project = Partial<components["schemas"]["Project"]>;
+type Project = Partial<components["schemas"]["GetProjectsResponse"][number]>;
+type SkillsResponse = components["schemas"]["SkillTagList"];
+type ProjectSkill = components["schemas"]["ProjectSkill"];
 
 type Props = {
   projectData: Project;
+  skillData: SkillsResponse;
 };
 
-export default function PersonalProjectEdit({ projectData }: Props) {
+export default function PersonalProjectEdit({ projectData, skillData }: Props) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOngoing, setIsOngoing] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -40,7 +48,11 @@ export default function PersonalProjectEdit({ projectData }: Props) {
     start: projectData.start,
     end: projectData.end,
     visibility: projectData.visibility,
+    projectSkills: projectData.projectSkills,
   });
+  const [addedSkills, setAddedSkills] = useState<ProjectSkill[]>(
+    projectData.projectSkills || []
+  );
 
   async function handleSubmitEdit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -51,6 +63,7 @@ export default function PersonalProjectEdit({ projectData }: Props) {
       const updatedProject: Project = {
         ...formData,
         end: isOngoing ? null : formData.end,
+        projectSkills: addedSkills,
       };
 
       await updateProject(updatedProject);
@@ -87,6 +100,27 @@ export default function PersonalProjectEdit({ projectData }: Props) {
     }
   }
 
+  const handleAddSkill = (skillName: string) => {
+    // check if skill already added
+    if (addedSkills.some((skill) => skill.skillTagName === skillName)) return;
+
+    if (projectData.id === undefined) {
+      console.log("project id is undefined, unable to add skill");
+      return;
+    }
+
+    const projectId = projectData.id;
+    const skillTagName = skillName;
+
+    setAddedSkills((prev) => [...prev, { id: 0, skillTagName, projectId }]);
+  };
+
+  const handleRemoveSkill = (skillName: string) => {
+    setAddedSkills(
+      addedSkills.filter((skill) => skill.skillTagName !== skillName)
+    );
+  };
+
   const ongoingSwitch = (
     <FormGroup>
       <FormControlLabel
@@ -100,6 +134,29 @@ export default function PersonalProjectEdit({ projectData }: Props) {
       />
     </FormGroup>
   );
+
+  const availableSkillChips = skillData.map((skill) => {
+    return (
+      <Chip
+        icon={<AddIcon />}
+        key={skill.id}
+        color="primary"
+        onClick={() => handleAddSkill(skill.name)}
+        label={skill.name}
+      />
+    );
+  });
+
+  const addedSkillChips = addedSkills.map((skill) => {
+    return (
+      <Chip
+        key={skill.skillTagName}
+        color="secondary"
+        onDelete={() => handleRemoveSkill(skill.skillTagName)}
+        label={skill.skillTagName}
+      />
+    );
+  });
 
   return (
     <>
@@ -174,6 +231,42 @@ export default function PersonalProjectEdit({ projectData }: Props) {
                   />
                 )}
               </Stack>
+
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                <Stack direction="column">
+                  <Divider textAlign="left">Select Skills</Divider>
+                  <Stack
+                    direction="row"
+                    flexWrap="wrap"
+                    rowGap={1}
+                    columnGap={1}
+                    sx={{
+                      p: 1,
+                      maxHeight: 150,
+                      overflowY: "scroll",
+                    }}
+                  >
+                    {availableSkillChips}
+                  </Stack>
+                </Stack>
+
+                <Stack direction="column">
+                  <Divider textAlign="left">Added Skills</Divider>
+                  <Stack
+                    direction="row"
+                    flexWrap="wrap"
+                    rowGap={1}
+                    columnGap={1}
+                    sx={{
+                      p: 1,
+                      maxHeight: 150,
+                      overflowY: "scroll",
+                    }}
+                  >
+                    {addedSkillChips}
+                  </Stack>
+                </Stack>
+              </Box>
 
               <Stack direction={"row"} spacing={2}>
                 <Button

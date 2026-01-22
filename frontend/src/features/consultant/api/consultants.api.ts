@@ -4,7 +4,9 @@ import type { components } from "@api-types/openapi";
 type ConsultantResponse = components["schemas"]["ConsultantResponse"];
 type EmploymentListResponse = components["schemas"]["EmploymentListResponse"];
 type ProjectListResponse = components["schemas"]["GetProjectsResponse"];
-type ProjectRequest = Partial<components["schemas"]["Project"]>;
+type ProjectRequest = Partial<
+  components["schemas"]["GetProjectsResponse"][number]
+>;
 type SkillRequest = Partial<components["schemas"]["ConsultantSkill"]>;
 type SkillResponse = components["schemas"]["ConsultantSkill"];
 type SkillTagResponse = components["schemas"]["SkillTagList"];
