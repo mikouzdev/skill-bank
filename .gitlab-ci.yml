@@ -19,7 +19,6 @@ install:
     - pnpm install
     - cd ..
     - cd frontend
-    - npm install -g pnpm
     - pnpm install
   #- pnpm run db:migrate (database has to be running)
     #- pnpm run db:seed
@@ -28,6 +27,7 @@ lint:
   stage: lint
   script:
     - npm install -g pnpm
+    - cd frontend
     - pnpm run lint
     - cd ..
     - cd backend
