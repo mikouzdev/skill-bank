@@ -13,9 +13,15 @@ stages:
 
 install:
   stage: install
-  script: 
-    - cd backend
+  script:
     - npm install pnpm
+    - cd backend
     - pnpm install
     - pnpm run db:migrate (database has to be running)
     - pnpm run db:seed
+
+lint:
+  stage: lint
+  script:
+    - npm run lint
+
