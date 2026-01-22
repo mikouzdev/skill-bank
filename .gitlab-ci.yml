@@ -33,6 +33,7 @@ lint_backend:
 
 lint_frontend:
   stage: lint
+  script:
     - cd backend
     - npm install -g pnpm
     - pnpm install
