@@ -15,11 +15,11 @@ install:
   stage: install
   script:
     - npm install -g pnpm
-    - docker compose up -d
+    #- docker compose up -d
     - cd backend
     - pnpm install
-    - pnpm run db:migrate
-    - pnpm run db:seed
+    #- pnpm run db:migrate
+    #- pnpm run db:seed
     - cd ..
     - cd frontend
     - pnpm install
@@ -31,8 +31,8 @@ lint_backend:
     - cd backend
     - npm install -g pnpm
     - pnpm install
-    - npm run dev
-    - npm run generate:api-types
+    #- npm run dev
+    #- npm run generate:api-types
     - npm run lint
 
 lint_frontend:
@@ -41,8 +41,8 @@ lint_frontend:
     - cd backend
     - npm install -g pnpm
     - pnpm install
-    - npm run dev
-    - npm run generate:api-types
+    #- npm run dev
+    #- npm run generate:api-types
     - cd ..
     - cd frontend
     - pnpm install
