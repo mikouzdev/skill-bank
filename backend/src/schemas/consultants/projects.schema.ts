@@ -64,6 +64,7 @@ export const ProjectBodySchema = ProjectSchema.omit({
   .extend({
     start: z.coerce.date(),
     end: z.coerce.date().nullable().optional(),
+    projectSkills: z.array(ProjectSkillSchema),
   })
   .refine((project) => (project.end ? project.start <= project.end : true), {
     message: "End date must be a later or equal date to start date",
