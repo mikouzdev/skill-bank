@@ -66,5 +66,32 @@ export const adminPaths = {
                 500: { description: "Server error" },
             },
         },
+        put: {
+            summary: "Update a user",
+            tags: ["Admin", "User"],
+            parameters: [
+            {
+                name: "userId",
+                in: "path" as const,
+                required: true,
+                schema: { type: "integer" as const },
+            },
+            ],
+            requestBody: {
+                required: true,
+                content: { "application/json": { schema: UserBodySchema, // Unsafe assignmet, for later could consider using zod-to-openapi https://github.com/asteasolutions/zod-to-openapi
+                } }
+            },
+            responses: {
+                200: {
+                    description: "Update successful",
+                    content: {
+                    "application/json": { schema: FullUserResponseSchema },
+                    },
+                },
+                400: { description: "Invalid request body" },
+                500: { description: "Server error" },
+            },
+        },
     },
 }
