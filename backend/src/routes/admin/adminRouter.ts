@@ -79,6 +79,11 @@ adminRouter.post("/users", authenticate, async (req: Request, res: Response) => 
   res.status(201).json(createdUser);
 });
 
+/**
+ * Delete a user in the database
+ * @route DELETE /admin/users/{userId}
+ * @returns 
+ */
 //Add this once it is made functional (checks for user admin role correctly)
 //adminOnly,
 adminRouter.delete("/users/:userId", authenticate, async (req: Request, res: Response) => {
@@ -98,4 +103,57 @@ adminRouter.delete("/users/:userId", authenticate, async (req: Request, res: Res
     }
 
     res.status(204).send();
+});
+
+/**
+ * Update a user in the database
+ * @route PUT /admin/users/{userId}
+ * @returns updated user
+ */
+//Add this once it is made functional (checks for user admin role correctly)
+//adminOnly,
+adminRouter.put("/users/:userId", authenticate, async (req: Request, res: Response) => {
+  const parsedParams = UserIdParamsSchema.safeParse(req.params);
+
+
+  if (!parsedParams.success) {
+    res.status(400).json(parsedParams.error);
+    return;
+  }
+  const { userId } = parsedParams.data;
+
+  const parsedBody = UserBodySchema.safeParse(req.body);
+  if (!parsedBody.success) {
+    res.status(400).json(parsedBody.error);
+    return;
+  }
+
+  const {
+    name,
+    email,
+    passwordHash,
+    roles,
+  } = parsedBody.data;
+
+  let user = null;
+
+  try {
+    user = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        email,
+        name,
+        passwordHash,
+        roles: {
+          deleteMany: {},
+          create: roles
+        },
+      },
+    });
+  } catch (err) {
+    res.status(500).json(err);
+    return;
+  }
+
+  res.json(user);
 });
