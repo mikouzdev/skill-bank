@@ -130,3 +130,8 @@ export type PageSection = Prisma.PageSectionModel
  * 
  */
 export type Comment = Prisma.CommentModel
+/**
+ * Model BlacklistedTokens
+ * 
+ */
+export type BlacklistedTokens = Prisma.BlacklistedTokensModel
