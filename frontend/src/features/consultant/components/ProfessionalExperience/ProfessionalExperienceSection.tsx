@@ -13,6 +13,7 @@ import {
 } from "../../api/consultants.api";
 
 import type { components } from "@api-types/openapi";
+import { useState } from "react";
 type ConsultantEmploymentList = components["schemas"]["EmploymentListResponse"];
 type SkillsResponse = components["schemas"]["SkillTagList"];
 type Employment = Partial<components["schemas"]["EmploymentResponse"]>;
@@ -28,6 +29,8 @@ export default function ProfessionalExperience({
   skillData,
   editable,
 }: Props) {
+  const [employments, setEmployments] = useState<Employment[]>(data || []);
+
   // posts employment without skills first to get the needed employmentId
   // after that is done, it posts the skills to the employment one by one.
   async function AddNewWorkExperience(formData: Employment) {
@@ -54,10 +57,28 @@ export default function ProfessionalExperience({
           await addEmploymentSkill(employmentId, skill.skillTagName);
         }
       }
+
+      // update local state on success
+      const addedEmployment: Employment = {
+        ...response.data,
+        employmentSkills: formData.employmentSkills,
+      };
+
+      setEmployments((prev) => [...prev, addedEmployment]);
     } catch (error) {
       console.error("Failed to add work experience:", error);
       return;
     }
+  }
+
+  function handleDelete(id: number) {
+    setEmployments((prev) => prev.filter((emp) => emp.id !== id));
+  }
+
+  function handleUpdate(employment: Employment) {
+    setEmployments((prev) =>
+      prev.map((emp) => (emp.id === employment.id ? employment : emp))
+    );
   }
 
   const defaultSection = (
@@ -71,11 +92,13 @@ export default function ProfessionalExperience({
       </Stack>
 
       <Stack spacing={1}>
-        {data.map((item, i) => (
+        {employments.map((item) => (
           <ProfessionalExperienceItem
-            key={i}
-            item={item}
+            key={item.id}
+            item={item as components["schemas"]["EmploymentResponse"]}
             skillData={skillData}
+            onDelete={handleDelete}
+            onUpdate={handleUpdate}
           />
         ))}
       </Stack>
@@ -89,7 +112,7 @@ export default function ProfessionalExperience({
         <AddNewExperience
           update={(formData) => void AddNewWorkExperience(formData)}
           skillData={skillData}
-        ></AddNewExperience>
+        />
         <FormControlLabel
           control={<Switch defaultChecked />}
           label="Visible to others"
@@ -98,12 +121,14 @@ export default function ProfessionalExperience({
       </Stack>
 
       <Stack spacing={1}>
-        {data.map((item, i) => (
+        {employments.map((item) => (
           <ProfessionalExperienceItem
-            key={i}
-            item={item}
+            key={item.id}
+            item={item as components["schemas"]["EmploymentResponse"]}
             skillData={skillData}
             editable={editable}
+            onDelete={handleDelete}
+            onUpdate={handleUpdate}
           />
         ))}
       </Stack>
