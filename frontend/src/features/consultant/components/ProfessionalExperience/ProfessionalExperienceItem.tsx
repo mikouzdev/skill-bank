@@ -5,12 +5,15 @@ import ProfessionalExperienceEdit from "./ProfessionalExperienceEdit";
 
 type ConsultantEmploymentItem =
   components["schemas"]["EmploymentListResponse"][number];
+type Employment = Partial<components["schemas"]["EmploymentResponse"]>;
 type SkillsResponse = components["schemas"]["SkillTagList"];
 
 type Props = {
   item: ConsultantEmploymentItem;
   editable?: boolean;
   skillData: SkillsResponse;
+  onDelete: (id: number) => void;
+  onUpdate: (employment: Employment) => void;
 };
 
 const DATE_FORMAT = "MM/YYYY";
@@ -19,10 +22,17 @@ export default function ProfessionalExperienceItem({
   item,
   skillData,
   editable,
+  onDelete,
+  onUpdate,
 }: Props) {
   const editOnlyButtons = editable && (
     <Stack direction={"row"} spacing={1}>
-      <ProfessionalExperienceEdit employmentData={item} skillData={skillData} />
+      <ProfessionalExperienceEdit
+        employmentData={item}
+        skillData={skillData}
+        onDelete={onDelete}
+        onUpdate={onUpdate}
+      />
     </Stack>
   );
 
