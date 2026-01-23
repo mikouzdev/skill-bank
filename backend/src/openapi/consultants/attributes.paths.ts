@@ -1,5 +1,5 @@
 import {
-    GetAttributesResponseSchema
+    GetAttributesResponseSchema, AttributeBodySchema, AttributeSchema
 } from "../../schemas/consultants/attributes.schema.js";
 
 export const attributesPaths = {
@@ -27,4 +27,24 @@ export const attributesPaths = {
             },
         },
     },
+    "/consultants/me/attributes": {
+        post: {
+            summary: "Create a new attribute",
+            tags: ["Consultants", "Attributes"],
+            requestBody: {
+                required: true,
+                content: { "application/json": { schema: AttributeBodySchema } },
+            },
+            responses: {
+                200: {
+                    description: "Creation successful",
+                    content: {
+                    "application/json": { schema: AttributeSchema },
+                    },
+                },
+                400: { description: "Invalid request body" },
+                500: { description: "Server error" },
+            },
+        },
+    }
 }

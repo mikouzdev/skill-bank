@@ -401,7 +401,8 @@ export const ModelName = {
   SalesListItem: 'SalesListItem',
   Customer: 'Customer',
   PageSection: 'PageSection',
-  Comment: 'Comment'
+  Comment: 'Comment',
+  BlacklistedTokens: 'BlacklistedTokens'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -417,7 +418,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "userRole" | "consultantAttribute" | "consultant" | "consultantSkill" | "projectSkill" | "employmentSkill" | "skillTag" | "skillCategory" | "employment" | "project" | "projectLink" | "salesperson" | "salesList" | "salesListItem" | "customer" | "pageSection" | "comment"
+    modelProps: "user" | "userRole" | "consultantAttribute" | "consultant" | "consultantSkill" | "projectSkill" | "employmentSkill" | "skillTag" | "skillCategory" | "employment" | "project" | "projectLink" | "salesperson" | "salesList" | "salesListItem" | "customer" | "pageSection" | "comment" | "blacklistedTokens"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1753,6 +1754,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    BlacklistedTokens: {
+      payload: Prisma.$BlacklistedTokensPayload<ExtArgs>
+      fields: Prisma.BlacklistedTokensFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BlacklistedTokensFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlacklistedTokensPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BlacklistedTokensFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlacklistedTokensPayload>
+        }
+        findFirst: {
+          args: Prisma.BlacklistedTokensFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlacklistedTokensPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BlacklistedTokensFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlacklistedTokensPayload>
+        }
+        findMany: {
+          args: Prisma.BlacklistedTokensFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlacklistedTokensPayload>[]
+        }
+        create: {
+          args: Prisma.BlacklistedTokensCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlacklistedTokensPayload>
+        }
+        createMany: {
+          args: Prisma.BlacklistedTokensCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.BlacklistedTokensCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlacklistedTokensPayload>[]
+        }
+        delete: {
+          args: Prisma.BlacklistedTokensDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlacklistedTokensPayload>
+        }
+        update: {
+          args: Prisma.BlacklistedTokensUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlacklistedTokensPayload>
+        }
+        deleteMany: {
+          args: Prisma.BlacklistedTokensDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BlacklistedTokensUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.BlacklistedTokensUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlacklistedTokensPayload>[]
+        }
+        upsert: {
+          args: Prisma.BlacklistedTokensUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlacklistedTokensPayload>
+        }
+        aggregate: {
+          args: Prisma.BlacklistedTokensAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBlacklistedTokens>
+        }
+        groupBy: {
+          args: Prisma.BlacklistedTokensGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BlacklistedTokensGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BlacklistedTokensCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BlacklistedTokensCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1988,6 +2063,14 @@ export const CommentScalarFieldEnum = {
 } as const
 
 export type CommentScalarFieldEnum = (typeof CommentScalarFieldEnum)[keyof typeof CommentScalarFieldEnum]
+
+
+export const BlacklistedTokensScalarFieldEnum = {
+  id: 'id',
+  token: 'token'
+} as const
+
+export type BlacklistedTokensScalarFieldEnum = (typeof BlacklistedTokensScalarFieldEnum)[keyof typeof BlacklistedTokensScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2251,6 +2334,7 @@ export type GlobalOmitConfig = {
   customer?: Prisma.CustomerOmit
   pageSection?: Prisma.PageSectionOmit
   comment?: Prisma.CommentOmit
+  blacklistedTokens?: Prisma.BlacklistedTokensOmit
 }
 
 /* Types for Logging */

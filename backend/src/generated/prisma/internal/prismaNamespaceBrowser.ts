@@ -68,7 +68,8 @@ export const ModelName = {
   SalesListItem: 'SalesListItem',
   Customer: 'Customer',
   PageSection: 'PageSection',
-  Comment: 'Comment'
+  Comment: 'Comment',
+  BlacklistedTokens: 'BlacklistedTokens'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -283,6 +284,14 @@ export const CommentScalarFieldEnum = {
 } as const
 
 export type CommentScalarFieldEnum = (typeof CommentScalarFieldEnum)[keyof typeof CommentScalarFieldEnum]
+
+
+export const BlacklistedTokensScalarFieldEnum = {
+  id: 'id',
+  token: 'token'
+} as const
+
+export type BlacklistedTokensScalarFieldEnum = (typeof BlacklistedTokensScalarFieldEnum)[keyof typeof BlacklistedTokensScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -15,3 +15,9 @@ export const AttributeSchema = z
 export const GetAttributesResponseSchema = z
   .array(AttributeSchema)
   .meta({ id: "GetAttributesResponse" });
+
+export const AttributeBodySchema = AttributeSchema.omit({
+  id: true,
+  consultantId: true,
+  createdAt: true,
+}).meta({ id: "AttributeBody" });
