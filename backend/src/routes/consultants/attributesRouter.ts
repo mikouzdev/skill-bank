@@ -1,12 +1,17 @@
 import { Router, type Request, type Response } from "express";
 import { ConsultantIdParamsSchema } from "../../schemas/consultants/consultants.schema.js";
-import { AttributeBodySchema } from "../../schemas/consultants/attributes.schema.js";
+import { AttributeBodySchema, AttributeIdParamsSchema } from "../../schemas/consultants/attributes.schema.js";
 import { Visibility } from "../../generated/prisma/enums.js";
 import { prisma } from "../../db/prismaClient.js";
 import { authenticate } from "../../middlewares/authentication.js";
 
 export const attributesRouter = Router();
 
+/**
+ * Gets all attributes of a consultant
+ * @route GET /{consultantId}/attributes
+ * @returns [attributes]
+ */
 attributesRouter.get(
   "/:consultantId/attributes",
   async (req: Request, res: Response) => {
@@ -38,6 +43,11 @@ attributesRouter.get(
     res.json(sections);
 });
 
+/**
+ * Add a new attribute for a consultant
+ * @route POST /me/attributes
+ * @returns new attribute
+ */
 attributesRouter.post(
   "/me/attributes", authenticate,
   async (req: Request, res: Response) => {
@@ -80,8 +90,31 @@ attributesRouter.post(
 
     res.json(attribute);
 });
+/**
+ * Delete an attribute
+ * @route DELETE /me/attributes/{attributeId}
+ * @returns deleted attribute
+ */
+attributesRouter.delete(
+  "/me/attributes/:attributeId", authenticate,
+  async (req: Request, res: Response) => {
+    const parsedParams = AttributeIdParamsSchema.safeParse(req.params);
+    if (!parsedParams.success) {
+      res.status(400).json(parsedParams.error);
+      return;
+    }
+    const { attributeId } = parsedParams.data;
+    try {
+      await prisma.consultantAttribute.delete({
+        where: { id: attributeId },
+      });
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
 
+    res.status(204).send();
+});
 
 //TODO: attributes endpoints
 //PUT /consultants/me/attributes/{attributeId}
-//DELETE /consultants/me/attributes/{attributeId}
