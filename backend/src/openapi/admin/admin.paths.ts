@@ -8,7 +8,7 @@ export const adminPaths = {
     "/admin/users": {
         get: {
             summary: "Get all users",
-            tags: ["Admin"],
+            tags: ["Admin", "User"],
             responses: {
                 "200": {
                     description: "Token received",
@@ -23,7 +23,7 @@ export const adminPaths = {
         },
         post: {
             summary: "Post new user",
-            tags: ["Admin"],
+            tags: ["Admin", "User"],
             requestBody: {
                 required: true,
                 content: {
@@ -45,6 +45,25 @@ export const adminPaths = {
                 "500": {
                     description: "Server error"
                 },
+            },
+        },
+    },
+    "/admin/users/{userId}": {
+        delete: {
+            summary: "Delete a user",
+            tags: ["Admin", "User"],
+            parameters: [
+                {
+                    name: "userId",
+                    in: "path" as const,
+                    required: true,
+                    schema: { type: "integer" as const },
+                },
+            ],
+            responses: {
+                204: { description: "Deletion successful" },
+                400: { description: "Invalid request" },
+                500: { description: "Server error" },
             },
         },
     },
