@@ -4,13 +4,17 @@ import dayjs from "dayjs";
 import type { components } from "@api-types/openapi";
 import PersonalProjectEdit from "./PersonalProjectEdit";
 
-type ConsultantProject = components["schemas"]["GetProjectsResponse"][number];
+type ProjectResponse = components["schemas"]["GetProjectsResponse"][number];
+type Project = Partial<components["schemas"]["GetProjectsResponse"][number]>;
+
 type SkillsResponse = components["schemas"]["SkillTagList"];
 
 type Props = {
-  item: ConsultantProject;
+  item: ProjectResponse;
   editable?: boolean;
   skillData: SkillsResponse;
+  onUpdate: (project: Project) => void;
+  onDelete: (id: number) => void;
 };
 
 // in what format are the start and end times shown
@@ -20,6 +24,8 @@ export default function PersonalProjectItem({
   item,
   skillData,
   editable,
+  onUpdate,
+  onDelete,
 }: Props) {
   const projectLinks = item.projectLinks.map((link, i) => (
     <Chip
@@ -47,7 +53,12 @@ export default function PersonalProjectItem({
 
   const editOnlyButtons = editable && (
     <Stack direction={"row"} spacing={1}>
-      <PersonalProjectEdit projectData={item} skillData={skillData} />
+      <PersonalProjectEdit
+        projectData={item}
+        skillData={skillData}
+        onUpdate={onUpdate}
+        onDelete={onDelete}
+      />
     </Stack>
   );
 

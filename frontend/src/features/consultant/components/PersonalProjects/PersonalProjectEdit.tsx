@@ -35,9 +35,16 @@ type ProjectSkill = components["schemas"]["ProjectSkill"];
 type Props = {
   projectData: Project;
   skillData: SkillsResponse;
+  onUpdate: (project: Project) => void;
+  onDelete: (id: number) => void;
 };
 
-export default function PersonalProjectEdit({ projectData, skillData }: Props) {
+export default function PersonalProjectEdit({
+  projectData,
+  skillData,
+  onUpdate,
+  onDelete,
+}: Props) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOngoing, setIsOngoing] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -70,6 +77,8 @@ export default function PersonalProjectEdit({ projectData, skillData }: Props) {
       // just to see the loading icon :)
       await new Promise((res) => setTimeout(res, 500));
 
+      onUpdate(updatedProject);
+
       setIsOpen(false);
     } catch (error) {
       console.log("Failed to update project", error);
@@ -94,7 +103,7 @@ export default function PersonalProjectEdit({ projectData, skillData }: Props) {
     if (projectData.id === undefined) return;
     try {
       await deleteProject(projectData.id);
-      alert("project deleted succesfully, refresh page.");
+      onDelete(projectData.id);
     } catch (error) {
       console.log("error while deleting project", error);
     }

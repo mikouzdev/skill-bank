@@ -10,9 +10,11 @@ import { addProjectSkill, postProjects } from "../../api/consultants.api";
 import { AddNewProject } from "./PersonalProjectAdd";
 
 import type { components } from "@api-types/openapi";
+import { useState } from "react";
 
 type ConsultantProjectList = components["schemas"]["GetProjectsResponse"];
-type Project = Partial<components["schemas"]["Project"]>;
+type Project = Partial<components["schemas"]["GetProjectsResponse"][number]>;
+
 type SkillsResponse = components["schemas"]["SkillTagList"];
 type ProjectSkill = Pick<components["schemas"]["ProjectSkill"], "skillTagName">;
 
@@ -23,22 +25,52 @@ type Props = {
 };
 
 export default function PersonalProjects({ data, skillData, editable }: Props) {
+  const [projects, setProjects] = useState<ConsultantProjectList>(data || []);
+
   async function addProject(formData: Project, skills: ProjectSkill[]) {
     try {
       // post project first
-      const response = await postProjects(formData);
+      const response = await postProjects({ ...formData, projectSkills: [] });
+
+      // used for local state
+      const addedProject: ConsultantProjectList[number] = {
+        ...response.data,
+        projectSkills: [],
+        projectLinks: [],
+      };
 
       // after project is posted, post skills to it one by one.
       if (skills && skills.length > 0 && response.data?.id) {
         const projectId = response.data.id;
+
         for (const skill of skills) {
-          await addProjectSkill(projectId, skill.skillTagName);
+          const skillResponse = await addProjectSkill(
+            projectId,
+            skill.skillTagName
+          );
+
+          // add skill to addedProject (for local state)
+          addedProject.projectSkills.push(skillResponse.data);
         }
       }
+      // update local state
+      setProjects((prev) => [...prev, addedProject]);
     } catch (error) {
       console.log("Failed to add personal project:", error);
       return;
     }
+  }
+
+  function handleDelete(id: number) {
+    setProjects((prev) => prev.filter((proj) => proj.id !== id));
+  }
+
+  function handleUpdate(project: Project) {
+    setProjects((prev) =>
+      prev.map((proj) =>
+        proj.id === project.id ? { ...proj, ...project } : proj
+      )
+    );
   }
 
   const defaultSection = (
@@ -53,11 +85,13 @@ export default function PersonalProjects({ data, skillData, editable }: Props) {
         />
       </Stack>
       <Stack spacing={1}>
-        {data.map((item) => (
+        {projects.map((item) => (
           <PersonalProjectItem
             key={item.id}
             item={item}
             skillData={skillData}
+            onUpdate={handleUpdate}
+            onDelete={handleDelete}
           />
         ))}
       </Stack>
@@ -73,20 +107,22 @@ export default function PersonalProjects({ data, skillData, editable }: Props) {
             void addProject(formData, skills);
           }}
           skillData={skillData}
-        ></AddNewProject>
+        />
         <FormControlLabel
           control={<Switch defaultChecked />}
           label="Section is visible to ohter consultants"
         />
       </Stack>
       <Stack spacing={1}>
-        {data.map((item) => (
+        {projects.map((item) => (
           <>
             <PersonalProjectItem
               key={item.id}
               item={item}
               skillData={skillData}
               editable
+              onUpdate={handleUpdate}
+              onDelete={handleDelete}
             />
           </>
         ))}
