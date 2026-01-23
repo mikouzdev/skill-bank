@@ -7,9 +7,9 @@ cache:
 
 stages:
   - install
+  - lint
   - build
   - deploy
-  - lint
 
 install:
   stage: install
@@ -35,8 +35,8 @@ lint_backend:
 lint_frontend:
   stage: lint
   script:
-    - npm install -g pnpm
     - cd frontend
+    - npm install -g pnpm
     - pnpm install
     - npm run lint
 
