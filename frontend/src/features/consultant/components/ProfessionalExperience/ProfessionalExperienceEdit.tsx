@@ -35,11 +35,15 @@ type EmploymentSkill = components["schemas"]["EmploymentSkill"];
 type Props = {
   employmentData: Employment;
   skillData: SkillsResponse;
+  onDelete: (id: number) => void;
+  onUpdate: (employment: Employment) => void;
 };
 
 export default function ProfessionalExperienceEdit({
   employmentData,
   skillData,
+  onDelete,
+  onUpdate,
 }: Props) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOngoing, setIsOngoing] = useState<boolean>(false);
@@ -75,9 +79,13 @@ export default function ProfessionalExperienceEdit({
         employmentSkills: addedSkills || [],
       };
 
-      await updateEmployment(updatedEmployment);
+      const response = await updateEmployment(updatedEmployment);
+
       // just to see the loading icon :)
       await new Promise((res) => setTimeout(res, 500));
+
+      // for local changes
+      onUpdate({ ...response.data, employmentSkills: addedSkills });
 
       setIsOpen(false);
     } catch (error) {
@@ -103,7 +111,7 @@ export default function ProfessionalExperienceEdit({
     if (employmentData.id === undefined) return;
     try {
       await deleteEmployment(employmentData.id);
-      alert("Employment deleted successfully, refresh page.");
+      onDelete(employmentData.id);
     } catch (error) {
       console.log("error while deleting employment", error);
     }
@@ -177,6 +185,7 @@ export default function ProfessionalExperienceEdit({
         variant="contained"
         color="error"
         onClick={() => void handleDeleteEmployment()}
+        loading={loading}
       >
         Delete
       </Button>
