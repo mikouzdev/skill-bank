@@ -7,10 +7,9 @@ cache:
 
 stages:
   - install
-  - lint
   - build
   - deploy
-
+  - lint
 
 install:
   stage: install
@@ -24,7 +23,6 @@ install:
     - cd ..
     - cd frontend
     - pnpm install
-
 
 lint_backend:
   stage: lint
