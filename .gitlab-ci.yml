@@ -1,11 +1,19 @@
 trigger:  
   branches:  
-       include:  
-       - main  
+       include:
+       - main
 
 jobs:  
   - job: Build  
           pool:  
-          vmImage: 'ubuntu-latest'  
+          vmImage: 'ubuntu-latest'
           steps:  
           - script: echo "Building application"
+  - job: Lint_backend
+          pool:  
+          vmImage: 'ubuntu-latest'
+          steps:  
+          - script: cd backend
+          npm install -g pnpm
+          pnpm install
+          npm run lint
