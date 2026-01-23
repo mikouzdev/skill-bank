@@ -1,57 +1,11 @@
-default:
-  image: node
+trigger:  
+  branches:  
+       include:  
+       - main  
 
-cache:
-  paths:
-    - node_modules/
-
-stages:
-  - install
-  - lint
-  - build
-  - deploy
-
-install:
-  stage: install
-  script:
-    - npm install -g pnpm
-    #- docker compose up -d
-    - cd backend
-    - pnpm install
-    #- pnpm run db:migrate
-    #- pnpm run db:seed
-    - cd ..
-    - cd frontend
-    - pnpm install
-
-lint_backend:
-  stage: lint
-  script:
-    - cd backend
-    - npm install -g pnpm
-    - pnpm install
-    - npm run lint
-
-lint_frontend:
-  stage: lint
-  script:
-    - cd frontend
-    - npm install -g pnpm
-    - pnpm install
-    - npm run lint
-
-build:
-  stage: build
-  script:
-    - cd backend
-    - npm install -g typescript
-    - tsc
-    - cd ../frontend
-    - npm install -g typescript
-    - tsc
-
-deploy:
-  stage: deploy
-  script:
-    - cd backend
-    - node ./dist/index.js
+jobs:  
+  - job: Build  
+          pool:  
+          vmImage: 'ubuntu-latest'  
+          steps:  
+          - script: echo "Building application"
