@@ -1,14 +1,14 @@
 image: docker
 services:
   - docker:dind
-  
+
 cache:
   paths:
     - node_modules/
 
 stages:
-  - install
   - build_deploy
+  - install
   - deploy
   - lint
 
