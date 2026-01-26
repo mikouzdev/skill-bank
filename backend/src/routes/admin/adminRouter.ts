@@ -36,6 +36,7 @@ adminRouter.get("/users", authenticate, async (req: Request, res: Response) => {
  */
 //Add this once it is made functional (checks for user admin role correctly)
 //adminOnly,
+//TODO: Add roles to relevant tables as well (consultant/sales/admin)
 adminRouter.post("/users", authenticate, async (req: Request, res: Response) => {
   const parsedBody = UserBodySchema.safeParse(req.body);
   

@@ -30,8 +30,16 @@ export const GetPageSectionsResponseSchema = z
   )
   .meta({ id: "GetPageSectionsResponse" });
 
-  export const ConsultantIdSectionNameParamsSchema = z.object({
-    consultantId: z.coerce.number().meta({ example: "1" }),
-    sectionName: z.enum(["GENERAL", "NETWORKING_LINKS", "DESCRIPTION", "SKILLS", "EMPLOYMENTS", "PROJECTS"]).meta({ example: "GENERAL" }),
-  }).meta({ id: "GetConsultantIdSectionNameParams" });
-  
+export const ConsultantIdSectionNameParamsSchema = z.object({
+  consultantId: z.coerce.number().meta({ example: "1" }),
+  sectionName: z.enum(["GENERAL", "NETWORKING_LINKS", "DESCRIPTION", "SKILLS", "EMPLOYMENTS", "PROJECTS"]).meta({ example: "GENERAL" }),
+}).meta({ id: "GetConsultantIdSectionNameParams" });
+
+export const SectionNameParamsSchema = z.object({
+  sectionName: z.enum(["GENERAL", "NETWORKING_LINKS", "DESCRIPTION", "SKILLS", "EMPLOYMENTS", "PROJECTS"]).meta({ example: "GENERAL" }),
+}).meta({ id: "GetSectionNameParams" });
+
+export const PageSectionBodySchema = PageSectionSchema.omit({
+  id: true,
+  consultantId: true,
+}).meta({ id: "PageSectionBody" });

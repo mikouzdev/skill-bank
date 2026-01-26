@@ -104,9 +104,23 @@ attributesRouter.delete(
       return;
     }
     const { attributeId } = parsedParams.data;
+    // TODO: use consultantId from a JWT token instead of getting the first
+    //       entry from the database
+    let consultantId;
+    try {
+      const consultant = await prisma.consultant.findFirst();
+      if (consultant === null) {
+        res.status(404).json({ message: "No mock data found" });
+        return;
+      }
+      consultantId = consultant.id;
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
     try {
       await prisma.consultantAttribute.delete({
-        where: { id: attributeId },
+        where: { id: attributeId, consultantId: consultantId },
       });
     } catch (err) {
       res.status(500).json(err);
@@ -137,10 +151,25 @@ attributesRouter.put(
     }
     const { value, label, type, visibility } = parsedBody.data;
 
+    // TODO: use consultantId from a JWT token instead of getting the first
+    //       entry from the database
+    let consultantId;
+    try {
+      const consultant = await prisma.consultant.findFirst();
+      if (consultant === null) {
+        res.status(404).json({ message: "No mock data found" });
+        return;
+      }
+      consultantId = consultant.id;
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
+
     let attribute = null;
     try {
       attribute = await prisma.consultantAttribute.update({
-        where: { id: attributeId },
+        where: { id: attributeId, consultantId: consultantId },
         data: {
           value,
           label,

@@ -1,6 +1,6 @@
 import {
     GetPageSectionsResponseSchema,
-    ConsultantIdSectionNameParamsSchema
+    ConsultantIdSectionNameParamsSchema, PageSectionBodySchema, PageSectionSchema
 } from "../../schemas/consultants/pageSections.schema.js";
 
 
@@ -62,4 +62,35 @@ export const pageSectionsPaths = {
             },
         },
     },
+    "/consultants/me/sections/{sectionName}": {
+        put: {
+            summary: "Update a page section",
+            tags: ["Consultants", "Page Sections"],
+            parameters: [
+                {
+                    name: "sectionName",
+                    in: "path" as const,
+                    required: true,
+                    schema: { 
+                        type: "string" as const,
+                        enum: ["GENERAL", "NETWORKING_LINKS", "DESCRIPTION", "SKILLS", "EMPLOYMENTS", "PROJECTS"]
+                    },
+                },
+            ],
+            requestBody: {
+                required: true,
+                content: { "application/json": { schema: PageSectionBodySchema } },
+            },
+            responses: {
+            200: {
+                description: "Update successful",
+                content: {
+                "application/json": { schema: PageSectionSchema },
+                },
+            },
+            400: { description: "Invalid request body" },
+            500: { description: "Server error" },
+            },
+        },
+    }
 }
