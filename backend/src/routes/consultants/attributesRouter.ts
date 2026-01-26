@@ -115,6 +115,44 @@ attributesRouter.delete(
 
     res.status(204).send();
 });
+/**
+ * Update an attribute
+ * @route PUT /me/attributes/{attributeId}
+ * @returns updated attribute
+ */
+attributesRouter.put(
+  "/me/attributes/:attributeId", authenticate,
+  async (req: Request, res: Response) => {
+    const parsedParams = AttributeIdParamsSchema.safeParse(req.params);
+    if (!parsedParams.success) {
+      res.status(400).json(parsedParams.error);
+      return;
+    }
+    const { attributeId } = parsedParams.data;
 
-//TODO: attributes endpoints
-//PUT /consultants/me/attributes/{attributeId}
+    const parsedBody = AttributeBodySchema.safeParse(req.body);
+    if (!parsedBody.success) {
+      res.status(400).json(parsedBody.error);
+      return;
+    }
+    const { value, label, type, visibility } = parsedBody.data;
+
+    let attribute = null;
+    try {
+      attribute = await prisma.consultantAttribute.update({
+        where: { id: attributeId },
+        data: {
+          value,
+          label,
+          type,
+          visibility,
+        },
+      });
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
+
+    res.json(attribute);
+
+});

@@ -15,6 +15,7 @@ export const EmploymentResponseSchema = z
     jobTitle: z.string().meta({ example: "Fullstack developer" }),
     consultantId: z.number().int().meta({ example: 1 }),
     createdAt: z.date().meta({ example: "2025-12-19T14:01:24.308Z" }),
+    updatedAt: z.date().meta({ example: "2025-12-19T14:01:24.308Z" }),
     description: z
       .string()
       .meta({ example: "Description text of the role and responsibilites" }),

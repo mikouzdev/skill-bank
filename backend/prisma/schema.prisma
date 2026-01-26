@@ -55,6 +55,7 @@ model ConsultantAttribute {
   id           Int               @id @default(autoincrement())
   consultantId Int
   createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
   value        String
   label        String
   type         UserAttributeType @default(TEXT)
@@ -90,6 +91,7 @@ model ConsultantSkill {
   id           Int      @id @default(autoincrement())
   consultantId Int
   createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
   skillName    String
   /// Proficiency is rated on a scale 1-5
   proficiency  Int
@@ -147,6 +149,7 @@ model Employment {
   id           Int        @id @default(autoincrement())
   consultantId Int
   createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
   employer     String
   jobTitle     String
   description  String
@@ -162,6 +165,7 @@ model Project {
   id           Int        @id @default(autoincrement())
   consultantId Int
   createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
   name         String
   description  String
   start        DateTime
@@ -177,6 +181,7 @@ model ProjectLink {
   id        Int      @id @default(autoincrement())
   projectId Int
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   url       String
   label     String
 
@@ -274,7 +279,6 @@ model Comment {
 }
 
 model BlacklistedTokens {
-  id            Int      @id @default(autoincrement())
-  token         String
+  id    Int    @id @default(autoincrement())
+  token String
 }
-

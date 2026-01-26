@@ -44,6 +44,7 @@ export type ConsultantSkillMinAggregateOutputType = {
   id: number | null
   consultantId: number | null
   createdAt: Date | null
+  updatedAt: Date | null
   skillName: string | null
   proficiency: number | null
   listPosition: number | null
@@ -53,6 +54,7 @@ export type ConsultantSkillMaxAggregateOutputType = {
   id: number | null
   consultantId: number | null
   createdAt: Date | null
+  updatedAt: Date | null
   skillName: string | null
   proficiency: number | null
   listPosition: number | null
@@ -62,6 +64,7 @@ export type ConsultantSkillCountAggregateOutputType = {
   id: number
   consultantId: number
   createdAt: number
+  updatedAt: number
   skillName: number
   proficiency: number
   listPosition: number
@@ -87,6 +90,7 @@ export type ConsultantSkillMinAggregateInputType = {
   id?: true
   consultantId?: true
   createdAt?: true
+  updatedAt?: true
   skillName?: true
   proficiency?: true
   listPosition?: true
@@ -96,6 +100,7 @@ export type ConsultantSkillMaxAggregateInputType = {
   id?: true
   consultantId?: true
   createdAt?: true
+  updatedAt?: true
   skillName?: true
   proficiency?: true
   listPosition?: true
@@ -105,6 +110,7 @@ export type ConsultantSkillCountAggregateInputType = {
   id?: true
   consultantId?: true
   createdAt?: true
+  updatedAt?: true
   skillName?: true
   proficiency?: true
   listPosition?: true
@@ -201,6 +207,7 @@ export type ConsultantSkillGroupByOutputType = {
   id: number
   consultantId: number
   createdAt: Date
+  updatedAt: Date
   skillName: string
   proficiency: number
   listPosition: number
@@ -233,6 +240,7 @@ export type ConsultantSkillWhereInput = {
   id?: Prisma.IntFilter<"ConsultantSkill"> | number
   consultantId?: Prisma.IntFilter<"ConsultantSkill"> | number
   createdAt?: Prisma.DateTimeFilter<"ConsultantSkill"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ConsultantSkill"> | Date | string
   skillName?: Prisma.StringFilter<"ConsultantSkill"> | string
   proficiency?: Prisma.IntFilter<"ConsultantSkill"> | number
   listPosition?: Prisma.IntFilter<"ConsultantSkill"> | number
@@ -244,6 +252,7 @@ export type ConsultantSkillOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   consultantId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   skillName?: Prisma.SortOrder
   proficiency?: Prisma.SortOrder
   listPosition?: Prisma.SortOrder
@@ -259,6 +268,7 @@ export type ConsultantSkillWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.ConsultantSkillWhereInput | Prisma.ConsultantSkillWhereInput[]
   consultantId?: Prisma.IntFilter<"ConsultantSkill"> | number
   createdAt?: Prisma.DateTimeFilter<"ConsultantSkill"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ConsultantSkill"> | Date | string
   skillName?: Prisma.StringFilter<"ConsultantSkill"> | string
   proficiency?: Prisma.IntFilter<"ConsultantSkill"> | number
   listPosition?: Prisma.IntFilter<"ConsultantSkill"> | number
@@ -270,6 +280,7 @@ export type ConsultantSkillOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   consultantId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   skillName?: Prisma.SortOrder
   proficiency?: Prisma.SortOrder
   listPosition?: Prisma.SortOrder
@@ -287,6 +298,7 @@ export type ConsultantSkillScalarWhereWithAggregatesInput = {
   id?: Prisma.IntWithAggregatesFilter<"ConsultantSkill"> | number
   consultantId?: Prisma.IntWithAggregatesFilter<"ConsultantSkill"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ConsultantSkill"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ConsultantSkill"> | Date | string
   skillName?: Prisma.StringWithAggregatesFilter<"ConsultantSkill"> | string
   proficiency?: Prisma.IntWithAggregatesFilter<"ConsultantSkill"> | number
   listPosition?: Prisma.IntWithAggregatesFilter<"ConsultantSkill"> | number
@@ -294,6 +306,7 @@ export type ConsultantSkillScalarWhereWithAggregatesInput = {
 
 export type ConsultantSkillCreateInput = {
   createdAt?: Date | string
+  updatedAt?: Date | string
   proficiency: number
   listPosition?: number
   consultant: Prisma.ConsultantCreateNestedOneWithoutConsultantSkillsInput
@@ -304,6 +317,7 @@ export type ConsultantSkillUncheckedCreateInput = {
   id?: number
   consultantId: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   skillName: string
   proficiency: number
   listPosition?: number
@@ -311,6 +325,7 @@ export type ConsultantSkillUncheckedCreateInput = {
 
 export type ConsultantSkillUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   proficiency?: Prisma.IntFieldUpdateOperationsInput | number
   listPosition?: Prisma.IntFieldUpdateOperationsInput | number
   consultant?: Prisma.ConsultantUpdateOneRequiredWithoutConsultantSkillsNestedInput
@@ -321,6 +336,7 @@ export type ConsultantSkillUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   consultantId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skillName?: Prisma.StringFieldUpdateOperationsInput | string
   proficiency?: Prisma.IntFieldUpdateOperationsInput | number
   listPosition?: Prisma.IntFieldUpdateOperationsInput | number
@@ -330,6 +346,7 @@ export type ConsultantSkillCreateManyInput = {
   id?: number
   consultantId: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   skillName: string
   proficiency: number
   listPosition?: number
@@ -337,6 +354,7 @@ export type ConsultantSkillCreateManyInput = {
 
 export type ConsultantSkillUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   proficiency?: Prisma.IntFieldUpdateOperationsInput | number
   listPosition?: Prisma.IntFieldUpdateOperationsInput | number
 }
@@ -345,6 +363,7 @@ export type ConsultantSkillUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   consultantId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skillName?: Prisma.StringFieldUpdateOperationsInput | string
   proficiency?: Prisma.IntFieldUpdateOperationsInput | number
   listPosition?: Prisma.IntFieldUpdateOperationsInput | number
@@ -369,6 +388,7 @@ export type ConsultantSkillCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   consultantId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   skillName?: Prisma.SortOrder
   proficiency?: Prisma.SortOrder
   listPosition?: Prisma.SortOrder
@@ -385,6 +405,7 @@ export type ConsultantSkillMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   consultantId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   skillName?: Prisma.SortOrder
   proficiency?: Prisma.SortOrder
   listPosition?: Prisma.SortOrder
@@ -394,6 +415,7 @@ export type ConsultantSkillMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   consultantId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   skillName?: Prisma.SortOrder
   proficiency?: Prisma.SortOrder
   listPosition?: Prisma.SortOrder
@@ -492,6 +514,7 @@ export type ConsultantSkillUncheckedUpdateManyWithoutSkillTagNestedInput = {
 
 export type ConsultantSkillCreateWithoutConsultantInput = {
   createdAt?: Date | string
+  updatedAt?: Date | string
   proficiency: number
   listPosition?: number
   skillTag: Prisma.SkillTagCreateNestedOneWithoutConsultantSkillsInput
@@ -500,6 +523,7 @@ export type ConsultantSkillCreateWithoutConsultantInput = {
 export type ConsultantSkillUncheckedCreateWithoutConsultantInput = {
   id?: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   skillName: string
   proficiency: number
   listPosition?: number
@@ -538,6 +562,7 @@ export type ConsultantSkillScalarWhereInput = {
   id?: Prisma.IntFilter<"ConsultantSkill"> | number
   consultantId?: Prisma.IntFilter<"ConsultantSkill"> | number
   createdAt?: Prisma.DateTimeFilter<"ConsultantSkill"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ConsultantSkill"> | Date | string
   skillName?: Prisma.StringFilter<"ConsultantSkill"> | string
   proficiency?: Prisma.IntFilter<"ConsultantSkill"> | number
   listPosition?: Prisma.IntFilter<"ConsultantSkill"> | number
@@ -545,6 +570,7 @@ export type ConsultantSkillScalarWhereInput = {
 
 export type ConsultantSkillCreateWithoutSkillTagInput = {
   createdAt?: Date | string
+  updatedAt?: Date | string
   proficiency: number
   listPosition?: number
   consultant: Prisma.ConsultantCreateNestedOneWithoutConsultantSkillsInput
@@ -554,6 +580,7 @@ export type ConsultantSkillUncheckedCreateWithoutSkillTagInput = {
   id?: number
   consultantId: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   proficiency: number
   listPosition?: number
 }
@@ -587,6 +614,7 @@ export type ConsultantSkillUpdateManyWithWhereWithoutSkillTagInput = {
 export type ConsultantSkillCreateManyConsultantInput = {
   id?: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   skillName: string
   proficiency: number
   listPosition?: number
@@ -594,6 +622,7 @@ export type ConsultantSkillCreateManyConsultantInput = {
 
 export type ConsultantSkillUpdateWithoutConsultantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   proficiency?: Prisma.IntFieldUpdateOperationsInput | number
   listPosition?: Prisma.IntFieldUpdateOperationsInput | number
   skillTag?: Prisma.SkillTagUpdateOneRequiredWithoutConsultantSkillsNestedInput
@@ -602,6 +631,7 @@ export type ConsultantSkillUpdateWithoutConsultantInput = {
 export type ConsultantSkillUncheckedUpdateWithoutConsultantInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skillName?: Prisma.StringFieldUpdateOperationsInput | string
   proficiency?: Prisma.IntFieldUpdateOperationsInput | number
   listPosition?: Prisma.IntFieldUpdateOperationsInput | number
@@ -610,6 +640,7 @@ export type ConsultantSkillUncheckedUpdateWithoutConsultantInput = {
 export type ConsultantSkillUncheckedUpdateManyWithoutConsultantInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skillName?: Prisma.StringFieldUpdateOperationsInput | string
   proficiency?: Prisma.IntFieldUpdateOperationsInput | number
   listPosition?: Prisma.IntFieldUpdateOperationsInput | number
@@ -619,12 +650,14 @@ export type ConsultantSkillCreateManySkillTagInput = {
   id?: number
   consultantId: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   proficiency: number
   listPosition?: number
 }
 
 export type ConsultantSkillUpdateWithoutSkillTagInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   proficiency?: Prisma.IntFieldUpdateOperationsInput | number
   listPosition?: Prisma.IntFieldUpdateOperationsInput | number
   consultant?: Prisma.ConsultantUpdateOneRequiredWithoutConsultantSkillsNestedInput
@@ -634,6 +667,7 @@ export type ConsultantSkillUncheckedUpdateWithoutSkillTagInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   consultantId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   proficiency?: Prisma.IntFieldUpdateOperationsInput | number
   listPosition?: Prisma.IntFieldUpdateOperationsInput | number
 }
@@ -642,6 +676,7 @@ export type ConsultantSkillUncheckedUpdateManyWithoutSkillTagInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   consultantId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   proficiency?: Prisma.IntFieldUpdateOperationsInput | number
   listPosition?: Prisma.IntFieldUpdateOperationsInput | number
 }
@@ -652,6 +687,7 @@ export type ConsultantSkillSelect<ExtArgs extends runtime.Types.Extensions.Inter
   id?: boolean
   consultantId?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   skillName?: boolean
   proficiency?: boolean
   listPosition?: boolean
@@ -663,6 +699,7 @@ export type ConsultantSkillSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   id?: boolean
   consultantId?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   skillName?: boolean
   proficiency?: boolean
   listPosition?: boolean
@@ -674,6 +711,7 @@ export type ConsultantSkillSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   id?: boolean
   consultantId?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   skillName?: boolean
   proficiency?: boolean
   listPosition?: boolean
@@ -685,12 +723,13 @@ export type ConsultantSkillSelectScalar = {
   id?: boolean
   consultantId?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   skillName?: boolean
   proficiency?: boolean
   listPosition?: boolean
 }
 
-export type ConsultantSkillOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "consultantId" | "createdAt" | "skillName" | "proficiency" | "listPosition", ExtArgs["result"]["consultantSkill"]>
+export type ConsultantSkillOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "consultantId" | "createdAt" | "updatedAt" | "skillName" | "proficiency" | "listPosition", ExtArgs["result"]["consultantSkill"]>
 export type ConsultantSkillInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   consultant?: boolean | Prisma.ConsultantDefaultArgs<ExtArgs>
   skillTag?: boolean | Prisma.SkillTagDefaultArgs<ExtArgs>
@@ -714,6 +753,7 @@ export type $ConsultantSkillPayload<ExtArgs extends runtime.Types.Extensions.Int
     id: number
     consultantId: number
     createdAt: Date
+    updatedAt: Date
     skillName: string
     /**
      * Proficiency is rated on a scale 1-5
@@ -1148,6 +1188,7 @@ export interface ConsultantSkillFieldRefs {
   readonly id: Prisma.FieldRef<"ConsultantSkill", 'Int'>
   readonly consultantId: Prisma.FieldRef<"ConsultantSkill", 'Int'>
   readonly createdAt: Prisma.FieldRef<"ConsultantSkill", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"ConsultantSkill", 'DateTime'>
   readonly skillName: Prisma.FieldRef<"ConsultantSkill", 'String'>
   readonly proficiency: Prisma.FieldRef<"ConsultantSkill", 'Int'>
   readonly listPosition: Prisma.FieldRef<"ConsultantSkill", 'Int'>

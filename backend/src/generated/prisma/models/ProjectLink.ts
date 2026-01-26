@@ -40,6 +40,7 @@ export type ProjectLinkMinAggregateOutputType = {
   id: number | null
   projectId: number | null
   createdAt: Date | null
+  updatedAt: Date | null
   url: string | null
   label: string | null
 }
@@ -48,6 +49,7 @@ export type ProjectLinkMaxAggregateOutputType = {
   id: number | null
   projectId: number | null
   createdAt: Date | null
+  updatedAt: Date | null
   url: string | null
   label: string | null
 }
@@ -56,6 +58,7 @@ export type ProjectLinkCountAggregateOutputType = {
   id: number
   projectId: number
   createdAt: number
+  updatedAt: number
   url: number
   label: number
   _all: number
@@ -76,6 +79,7 @@ export type ProjectLinkMinAggregateInputType = {
   id?: true
   projectId?: true
   createdAt?: true
+  updatedAt?: true
   url?: true
   label?: true
 }
@@ -84,6 +88,7 @@ export type ProjectLinkMaxAggregateInputType = {
   id?: true
   projectId?: true
   createdAt?: true
+  updatedAt?: true
   url?: true
   label?: true
 }
@@ -92,6 +97,7 @@ export type ProjectLinkCountAggregateInputType = {
   id?: true
   projectId?: true
   createdAt?: true
+  updatedAt?: true
   url?: true
   label?: true
   _all?: true
@@ -187,6 +193,7 @@ export type ProjectLinkGroupByOutputType = {
   id: number
   projectId: number
   createdAt: Date
+  updatedAt: Date
   url: string
   label: string
   _count: ProjectLinkCountAggregateOutputType | null
@@ -218,6 +225,7 @@ export type ProjectLinkWhereInput = {
   id?: Prisma.IntFilter<"ProjectLink"> | number
   projectId?: Prisma.IntFilter<"ProjectLink"> | number
   createdAt?: Prisma.DateTimeFilter<"ProjectLink"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ProjectLink"> | Date | string
   url?: Prisma.StringFilter<"ProjectLink"> | string
   label?: Prisma.StringFilter<"ProjectLink"> | string
   project?: Prisma.XOR<Prisma.ProjectScalarRelationFilter, Prisma.ProjectWhereInput>
@@ -227,6 +235,7 @@ export type ProjectLinkOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   projectId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   url?: Prisma.SortOrder
   label?: Prisma.SortOrder
   project?: Prisma.ProjectOrderByWithRelationInput
@@ -239,6 +248,7 @@ export type ProjectLinkWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.ProjectLinkWhereInput | Prisma.ProjectLinkWhereInput[]
   projectId?: Prisma.IntFilter<"ProjectLink"> | number
   createdAt?: Prisma.DateTimeFilter<"ProjectLink"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ProjectLink"> | Date | string
   url?: Prisma.StringFilter<"ProjectLink"> | string
   label?: Prisma.StringFilter<"ProjectLink"> | string
   project?: Prisma.XOR<Prisma.ProjectScalarRelationFilter, Prisma.ProjectWhereInput>
@@ -248,6 +258,7 @@ export type ProjectLinkOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   projectId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   url?: Prisma.SortOrder
   label?: Prisma.SortOrder
   _count?: Prisma.ProjectLinkCountOrderByAggregateInput
@@ -264,12 +275,14 @@ export type ProjectLinkScalarWhereWithAggregatesInput = {
   id?: Prisma.IntWithAggregatesFilter<"ProjectLink"> | number
   projectId?: Prisma.IntWithAggregatesFilter<"ProjectLink"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ProjectLink"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ProjectLink"> | Date | string
   url?: Prisma.StringWithAggregatesFilter<"ProjectLink"> | string
   label?: Prisma.StringWithAggregatesFilter<"ProjectLink"> | string
 }
 
 export type ProjectLinkCreateInput = {
   createdAt?: Date | string
+  updatedAt?: Date | string
   url: string
   label: string
   project: Prisma.ProjectCreateNestedOneWithoutProjectLinksInput
@@ -279,12 +292,14 @@ export type ProjectLinkUncheckedCreateInput = {
   id?: number
   projectId: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   url: string
   label: string
 }
 
 export type ProjectLinkUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
   project?: Prisma.ProjectUpdateOneRequiredWithoutProjectLinksNestedInput
@@ -294,6 +309,7 @@ export type ProjectLinkUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   projectId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
 }
@@ -302,12 +318,14 @@ export type ProjectLinkCreateManyInput = {
   id?: number
   projectId: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   url: string
   label: string
 }
 
 export type ProjectLinkUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
 }
@@ -316,6 +334,7 @@ export type ProjectLinkUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   projectId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
 }
@@ -334,6 +353,7 @@ export type ProjectLinkCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   projectId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   url?: Prisma.SortOrder
   label?: Prisma.SortOrder
 }
@@ -347,6 +367,7 @@ export type ProjectLinkMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   projectId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   url?: Prisma.SortOrder
   label?: Prisma.SortOrder
 }
@@ -355,6 +376,7 @@ export type ProjectLinkMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   projectId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   url?: Prisma.SortOrder
   label?: Prisma.SortOrder
 }
@@ -408,6 +430,7 @@ export type ProjectLinkUncheckedUpdateManyWithoutProjectNestedInput = {
 
 export type ProjectLinkCreateWithoutProjectInput = {
   createdAt?: Date | string
+  updatedAt?: Date | string
   url: string
   label: string
 }
@@ -415,6 +438,7 @@ export type ProjectLinkCreateWithoutProjectInput = {
 export type ProjectLinkUncheckedCreateWithoutProjectInput = {
   id?: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   url: string
   label: string
 }
@@ -452,6 +476,7 @@ export type ProjectLinkScalarWhereInput = {
   id?: Prisma.IntFilter<"ProjectLink"> | number
   projectId?: Prisma.IntFilter<"ProjectLink"> | number
   createdAt?: Prisma.DateTimeFilter<"ProjectLink"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ProjectLink"> | Date | string
   url?: Prisma.StringFilter<"ProjectLink"> | string
   label?: Prisma.StringFilter<"ProjectLink"> | string
 }
@@ -459,12 +484,14 @@ export type ProjectLinkScalarWhereInput = {
 export type ProjectLinkCreateManyProjectInput = {
   id?: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   url: string
   label: string
 }
 
 export type ProjectLinkUpdateWithoutProjectInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
 }
@@ -472,6 +499,7 @@ export type ProjectLinkUpdateWithoutProjectInput = {
 export type ProjectLinkUncheckedUpdateWithoutProjectInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
 }
@@ -479,6 +507,7 @@ export type ProjectLinkUncheckedUpdateWithoutProjectInput = {
 export type ProjectLinkUncheckedUpdateManyWithoutProjectInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
 }
@@ -489,6 +518,7 @@ export type ProjectLinkSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   id?: boolean
   projectId?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   url?: boolean
   label?: boolean
   project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
@@ -498,6 +528,7 @@ export type ProjectLinkSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   id?: boolean
   projectId?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   url?: boolean
   label?: boolean
   project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
@@ -507,6 +538,7 @@ export type ProjectLinkSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   id?: boolean
   projectId?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   url?: boolean
   label?: boolean
   project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
@@ -516,11 +548,12 @@ export type ProjectLinkSelectScalar = {
   id?: boolean
   projectId?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   url?: boolean
   label?: boolean
 }
 
-export type ProjectLinkOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "projectId" | "createdAt" | "url" | "label", ExtArgs["result"]["projectLink"]>
+export type ProjectLinkOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "projectId" | "createdAt" | "updatedAt" | "url" | "label", ExtArgs["result"]["projectLink"]>
 export type ProjectLinkInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
 }
@@ -540,6 +573,7 @@ export type $ProjectLinkPayload<ExtArgs extends runtime.Types.Extensions.Interna
     id: number
     projectId: number
     createdAt: Date
+    updatedAt: Date
     url: string
     label: string
   }, ExtArgs["result"]["projectLink"]>
@@ -969,6 +1003,7 @@ export interface ProjectLinkFieldRefs {
   readonly id: Prisma.FieldRef<"ProjectLink", 'Int'>
   readonly projectId: Prisma.FieldRef<"ProjectLink", 'Int'>
   readonly createdAt: Prisma.FieldRef<"ProjectLink", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"ProjectLink", 'DateTime'>
   readonly url: Prisma.FieldRef<"ProjectLink", 'String'>
   readonly label: Prisma.FieldRef<"ProjectLink", 'String'>
 }

@@ -40,6 +40,7 @@ export type ProjectMinAggregateOutputType = {
   id: number | null
   consultantId: number | null
   createdAt: Date | null
+  updatedAt: Date | null
   name: string | null
   description: string | null
   start: Date | null
@@ -51,6 +52,7 @@ export type ProjectMaxAggregateOutputType = {
   id: number | null
   consultantId: number | null
   createdAt: Date | null
+  updatedAt: Date | null
   name: string | null
   description: string | null
   start: Date | null
@@ -62,6 +64,7 @@ export type ProjectCountAggregateOutputType = {
   id: number
   consultantId: number
   createdAt: number
+  updatedAt: number
   name: number
   description: number
   start: number
@@ -85,6 +88,7 @@ export type ProjectMinAggregateInputType = {
   id?: true
   consultantId?: true
   createdAt?: true
+  updatedAt?: true
   name?: true
   description?: true
   start?: true
@@ -96,6 +100,7 @@ export type ProjectMaxAggregateInputType = {
   id?: true
   consultantId?: true
   createdAt?: true
+  updatedAt?: true
   name?: true
   description?: true
   start?: true
@@ -107,6 +112,7 @@ export type ProjectCountAggregateInputType = {
   id?: true
   consultantId?: true
   createdAt?: true
+  updatedAt?: true
   name?: true
   description?: true
   start?: true
@@ -205,6 +211,7 @@ export type ProjectGroupByOutputType = {
   id: number
   consultantId: number
   createdAt: Date
+  updatedAt: Date
   name: string
   description: string
   start: Date
@@ -239,6 +246,7 @@ export type ProjectWhereInput = {
   id?: Prisma.IntFilter<"Project"> | number
   consultantId?: Prisma.IntFilter<"Project"> | number
   createdAt?: Prisma.DateTimeFilter<"Project"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Project"> | Date | string
   name?: Prisma.StringFilter<"Project"> | string
   description?: Prisma.StringFilter<"Project"> | string
   start?: Prisma.DateTimeFilter<"Project"> | Date | string
@@ -253,6 +261,7 @@ export type ProjectOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   consultantId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   start?: Prisma.SortOrder
@@ -270,6 +279,7 @@ export type ProjectWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.ProjectWhereInput | Prisma.ProjectWhereInput[]
   consultantId?: Prisma.IntFilter<"Project"> | number
   createdAt?: Prisma.DateTimeFilter<"Project"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Project"> | Date | string
   name?: Prisma.StringFilter<"Project"> | string
   description?: Prisma.StringFilter<"Project"> | string
   start?: Prisma.DateTimeFilter<"Project"> | Date | string
@@ -284,6 +294,7 @@ export type ProjectOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   consultantId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   start?: Prisma.SortOrder
@@ -303,6 +314,7 @@ export type ProjectScalarWhereWithAggregatesInput = {
   id?: Prisma.IntWithAggregatesFilter<"Project"> | number
   consultantId?: Prisma.IntWithAggregatesFilter<"Project"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Project"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Project"> | Date | string
   name?: Prisma.StringWithAggregatesFilter<"Project"> | string
   description?: Prisma.StringWithAggregatesFilter<"Project"> | string
   start?: Prisma.DateTimeWithAggregatesFilter<"Project"> | Date | string
@@ -312,6 +324,7 @@ export type ProjectScalarWhereWithAggregatesInput = {
 
 export type ProjectCreateInput = {
   createdAt?: Date | string
+  updatedAt?: Date | string
   name: string
   description: string
   start: Date | string
@@ -326,6 +339,7 @@ export type ProjectUncheckedCreateInput = {
   id?: number
   consultantId: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   name: string
   description: string
   start: Date | string
@@ -337,6 +351,7 @@ export type ProjectUncheckedCreateInput = {
 
 export type ProjectUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   start?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -351,6 +366,7 @@ export type ProjectUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   consultantId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   start?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -364,6 +380,7 @@ export type ProjectCreateManyInput = {
   id?: number
   consultantId: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   name: string
   description: string
   start: Date | string
@@ -373,6 +390,7 @@ export type ProjectCreateManyInput = {
 
 export type ProjectUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   start?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -384,6 +402,7 @@ export type ProjectUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   consultantId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   start?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -410,6 +429,7 @@ export type ProjectCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   consultantId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   start?: Prisma.SortOrder
@@ -426,6 +446,7 @@ export type ProjectMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   consultantId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   start?: Prisma.SortOrder
@@ -437,6 +458,7 @@ export type ProjectMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   consultantId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   start?: Prisma.SortOrder
@@ -521,6 +543,7 @@ export type ProjectUpdateOneRequiredWithoutProjectLinksNestedInput = {
 
 export type ProjectCreateWithoutConsultantInput = {
   createdAt?: Date | string
+  updatedAt?: Date | string
   name: string
   description: string
   start: Date | string
@@ -533,6 +556,7 @@ export type ProjectCreateWithoutConsultantInput = {
 export type ProjectUncheckedCreateWithoutConsultantInput = {
   id?: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   name: string
   description: string
   start: Date | string
@@ -575,6 +599,7 @@ export type ProjectScalarWhereInput = {
   id?: Prisma.IntFilter<"Project"> | number
   consultantId?: Prisma.IntFilter<"Project"> | number
   createdAt?: Prisma.DateTimeFilter<"Project"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Project"> | Date | string
   name?: Prisma.StringFilter<"Project"> | string
   description?: Prisma.StringFilter<"Project"> | string
   start?: Prisma.DateTimeFilter<"Project"> | Date | string
@@ -584,6 +609,7 @@ export type ProjectScalarWhereInput = {
 
 export type ProjectCreateWithoutProjectSkillsInput = {
   createdAt?: Date | string
+  updatedAt?: Date | string
   name: string
   description: string
   start: Date | string
@@ -597,6 +623,7 @@ export type ProjectUncheckedCreateWithoutProjectSkillsInput = {
   id?: number
   consultantId: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   name: string
   description: string
   start: Date | string
@@ -623,6 +650,7 @@ export type ProjectUpdateToOneWithWhereWithoutProjectSkillsInput = {
 
 export type ProjectUpdateWithoutProjectSkillsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   start?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -636,6 +664,7 @@ export type ProjectUncheckedUpdateWithoutProjectSkillsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   consultantId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   start?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -646,6 +675,7 @@ export type ProjectUncheckedUpdateWithoutProjectSkillsInput = {
 
 export type ProjectCreateWithoutProjectLinksInput = {
   createdAt?: Date | string
+  updatedAt?: Date | string
   name: string
   description: string
   start: Date | string
@@ -659,6 +689,7 @@ export type ProjectUncheckedCreateWithoutProjectLinksInput = {
   id?: number
   consultantId: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   name: string
   description: string
   start: Date | string
@@ -685,6 +716,7 @@ export type ProjectUpdateToOneWithWhereWithoutProjectLinksInput = {
 
 export type ProjectUpdateWithoutProjectLinksInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   start?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -698,6 +730,7 @@ export type ProjectUncheckedUpdateWithoutProjectLinksInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   consultantId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   start?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -709,6 +742,7 @@ export type ProjectUncheckedUpdateWithoutProjectLinksInput = {
 export type ProjectCreateManyConsultantInput = {
   id?: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   name: string
   description: string
   start: Date | string
@@ -718,6 +752,7 @@ export type ProjectCreateManyConsultantInput = {
 
 export type ProjectUpdateWithoutConsultantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   start?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -730,6 +765,7 @@ export type ProjectUpdateWithoutConsultantInput = {
 export type ProjectUncheckedUpdateWithoutConsultantInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   start?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -742,6 +778,7 @@ export type ProjectUncheckedUpdateWithoutConsultantInput = {
 export type ProjectUncheckedUpdateManyWithoutConsultantInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   start?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -793,6 +830,7 @@ export type ProjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   id?: boolean
   consultantId?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   name?: boolean
   description?: boolean
   start?: boolean
@@ -808,6 +846,7 @@ export type ProjectSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   consultantId?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   name?: boolean
   description?: boolean
   start?: boolean
@@ -820,6 +859,7 @@ export type ProjectSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   consultantId?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   name?: boolean
   description?: boolean
   start?: boolean
@@ -832,6 +872,7 @@ export type ProjectSelectScalar = {
   id?: boolean
   consultantId?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   name?: boolean
   description?: boolean
   start?: boolean
@@ -839,7 +880,7 @@ export type ProjectSelectScalar = {
   visibility?: boolean
 }
 
-export type ProjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "consultantId" | "createdAt" | "name" | "description" | "start" | "end" | "visibility", ExtArgs["result"]["project"]>
+export type ProjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "consultantId" | "createdAt" | "updatedAt" | "name" | "description" | "start" | "end" | "visibility", ExtArgs["result"]["project"]>
 export type ProjectInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   projectLinks?: boolean | Prisma.Project$projectLinksArgs<ExtArgs>
   consultant?: boolean | Prisma.ConsultantDefaultArgs<ExtArgs>
@@ -864,6 +905,7 @@ export type $ProjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     id: number
     consultantId: number
     createdAt: Date
+    updatedAt: Date
     name: string
     description: string
     start: Date
@@ -1298,6 +1340,7 @@ export interface ProjectFieldRefs {
   readonly id: Prisma.FieldRef<"Project", 'Int'>
   readonly consultantId: Prisma.FieldRef<"Project", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Project", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"Project", 'DateTime'>
   readonly name: Prisma.FieldRef<"Project", 'String'>
   readonly description: Prisma.FieldRef<"Project", 'String'>
   readonly start: Prisma.FieldRef<"Project", 'DateTime'>

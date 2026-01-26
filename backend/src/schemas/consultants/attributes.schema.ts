@@ -5,6 +5,7 @@ export const AttributeSchema = z
     id: z.number().meta({ example: "1" }),
     consultantId: z.number().meta({ example: "1" }),
     createdAt: z.date().meta({ example: "2025-12-19T14:01:24.308Z" }),
+    updatedAt: z.date().meta({ example: "2025-12-19T14:01:24.308Z" }),
     value: z.string().meta({ example: "Example value" }),
     label: z.string().meta({ example: "Example value" }),
     type: z.enum(["TEXT", "LINK"]).meta({ example: "TEXT" }),
@@ -20,6 +21,7 @@ export const AttributeBodySchema = AttributeSchema.omit({
   id: true,
   consultantId: true,
   createdAt: true,
+  updatedAt: true,
 }).meta({ id: "AttributeBody" });
 
 export const AttributeIdParamsSchema = z.object({

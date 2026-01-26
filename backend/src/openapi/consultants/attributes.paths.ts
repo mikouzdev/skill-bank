@@ -66,6 +66,32 @@ export const attributesPaths = {
                 400: { description: "Invalid attribute id" },
                 500: { description: "Server error" },
             },
-        }
+        },
+        put: {
+            summary: "Update an attribute",
+            tags: ["Consultants", "Attributes"],
+            parameters: [
+            {
+                name: "attributeId",
+                in: "path" as const,
+                required: true,
+                schema: { type: "integer" as const },
+            },
+            ],
+            requestBody: {
+                required: true,
+                content: { "application/json": { schema: AttributeBodySchema } },
+            },
+            responses: {
+            200: {
+                description: "Update successful",
+                content: {
+                "application/json": { schema: AttributeSchema },
+                },
+            },
+            400: { description: "Invalid request body" },
+            500: { description: "Server error" },
+            },
+        },
     },
 }
