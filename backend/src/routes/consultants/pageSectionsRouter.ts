@@ -1,6 +1,6 @@
 import { Router, type Request, type Response } from "express";
 import { ConsultantIdParamsSchema } from "../../schemas/consultants/consultants.schema.js";
-import { ConsultantIdSectionNameParamsSchema } from "../../schemas/consultants/pageSections.schema.js";
+import { ConsultantIdSectionNameParamsSchema, SectionNameParamsSchema, PageSectionBodySchema } from "../../schemas/consultants/pageSections.schema.js";
 import { Visibility } from "../../generated/prisma/enums.js";
 import { prisma } from "../../db/prismaClient.js";
 import { authenticate } from "../../middlewares/authentication.js";
@@ -87,6 +87,62 @@ pageSectionsRouter.get(
     }
     res.json(pageSection);
   });
+/**
+ * Update a page section
+ * @route PUT /consultants/me/sections/{sectionName}
+ * @returns updated page section
+ */
+pageSectionsRouter.put(
+  "/me/sections/:sectionName", authenticate,
+  async (req: Request, res: Response) => {
+    const parsedParams = SectionNameParamsSchema.safeParse(req.params);
+    if (!parsedParams.success) {
+      res.status(400).json(parsedParams.error);
+      return;
+    }
+    const { sectionName } = parsedParams.data;
 
-//TODO: page section endpoints
-//PUT /consultants/me/sections/{sectionName}
+    const parsedBody = PageSectionBodySchema.safeParse(req.body);
+    if (!parsedBody.success) {
+      res.status(400).json(parsedBody.error);
+      return;
+    }
+    const { name, visibility } = parsedBody.data;
+
+    // TODO: use consultantId from a JWT token instead of getting the first
+    //       entry from the database
+    let consultantId;
+    try {
+      const consultant = await prisma.consultant.findFirst();
+      if (consultant === null) {
+        res.status(404).json({ message: "No mock data found" });
+        return;
+      }
+      consultantId = consultant.id;
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
+
+    let pageSection = null;
+    try {
+      pageSection = await prisma.pageSection.update({
+        where: {
+          consultantId_name: {
+            consultantId,
+            name: sectionName,
+          }
+        },
+        data: {
+          name,
+          visibility,
+        },
+      });
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
+
+    res.json(pageSection);
+
+});
