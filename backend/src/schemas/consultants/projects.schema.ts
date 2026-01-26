@@ -9,6 +9,7 @@ export const ProjectSchema = z
     consultantId: z.number().meta({ example: "1" }),
     name: z.string().meta({ example: "Smol Project" }),
     createdAt: z.date().meta({ example: "2025-12-19T14:01:24.308Z" }),
+    updatedAt: z.date().meta({ example: "2025-12-19T14:01:24.308Z" }),
     start: z.date().meta({ example: "2025-12-19T14:01:24.308Z" }),
     end: z.date().nullable().meta({ example: "2025-12-19T14:01:24.308Z" }),
     visibility: z.enum(["LIMITED", "PUBLIC"]).meta({ example: "PUBLIC" }),

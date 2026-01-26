@@ -40,6 +40,7 @@ export type ConsultantAttributeMinAggregateOutputType = {
   id: number | null
   consultantId: number | null
   createdAt: Date | null
+  updatedAt: Date | null
   value: string | null
   label: string | null
   type: $Enums.UserAttributeType | null
@@ -50,6 +51,7 @@ export type ConsultantAttributeMaxAggregateOutputType = {
   id: number | null
   consultantId: number | null
   createdAt: Date | null
+  updatedAt: Date | null
   value: string | null
   label: string | null
   type: $Enums.UserAttributeType | null
@@ -60,6 +62,7 @@ export type ConsultantAttributeCountAggregateOutputType = {
   id: number
   consultantId: number
   createdAt: number
+  updatedAt: number
   value: number
   label: number
   type: number
@@ -82,6 +85,7 @@ export type ConsultantAttributeMinAggregateInputType = {
   id?: true
   consultantId?: true
   createdAt?: true
+  updatedAt?: true
   value?: true
   label?: true
   type?: true
@@ -92,6 +96,7 @@ export type ConsultantAttributeMaxAggregateInputType = {
   id?: true
   consultantId?: true
   createdAt?: true
+  updatedAt?: true
   value?: true
   label?: true
   type?: true
@@ -102,6 +107,7 @@ export type ConsultantAttributeCountAggregateInputType = {
   id?: true
   consultantId?: true
   createdAt?: true
+  updatedAt?: true
   value?: true
   label?: true
   type?: true
@@ -199,6 +205,7 @@ export type ConsultantAttributeGroupByOutputType = {
   id: number
   consultantId: number
   createdAt: Date
+  updatedAt: Date
   value: string
   label: string
   type: $Enums.UserAttributeType
@@ -232,6 +239,7 @@ export type ConsultantAttributeWhereInput = {
   id?: Prisma.IntFilter<"ConsultantAttribute"> | number
   consultantId?: Prisma.IntFilter<"ConsultantAttribute"> | number
   createdAt?: Prisma.DateTimeFilter<"ConsultantAttribute"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ConsultantAttribute"> | Date | string
   value?: Prisma.StringFilter<"ConsultantAttribute"> | string
   label?: Prisma.StringFilter<"ConsultantAttribute"> | string
   type?: Prisma.EnumUserAttributeTypeFilter<"ConsultantAttribute"> | $Enums.UserAttributeType
@@ -243,6 +251,7 @@ export type ConsultantAttributeOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   consultantId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   value?: Prisma.SortOrder
   label?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -258,6 +267,7 @@ export type ConsultantAttributeWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.ConsultantAttributeWhereInput | Prisma.ConsultantAttributeWhereInput[]
   consultantId?: Prisma.IntFilter<"ConsultantAttribute"> | number
   createdAt?: Prisma.DateTimeFilter<"ConsultantAttribute"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ConsultantAttribute"> | Date | string
   value?: Prisma.StringFilter<"ConsultantAttribute"> | string
   label?: Prisma.StringFilter<"ConsultantAttribute"> | string
   type?: Prisma.EnumUserAttributeTypeFilter<"ConsultantAttribute"> | $Enums.UserAttributeType
@@ -269,6 +279,7 @@ export type ConsultantAttributeOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   consultantId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   value?: Prisma.SortOrder
   label?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -287,6 +298,7 @@ export type ConsultantAttributeScalarWhereWithAggregatesInput = {
   id?: Prisma.IntWithAggregatesFilter<"ConsultantAttribute"> | number
   consultantId?: Prisma.IntWithAggregatesFilter<"ConsultantAttribute"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ConsultantAttribute"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ConsultantAttribute"> | Date | string
   value?: Prisma.StringWithAggregatesFilter<"ConsultantAttribute"> | string
   label?: Prisma.StringWithAggregatesFilter<"ConsultantAttribute"> | string
   type?: Prisma.EnumUserAttributeTypeWithAggregatesFilter<"ConsultantAttribute"> | $Enums.UserAttributeType
@@ -295,6 +307,7 @@ export type ConsultantAttributeScalarWhereWithAggregatesInput = {
 
 export type ConsultantAttributeCreateInput = {
   createdAt?: Date | string
+  updatedAt?: Date | string
   value: string
   label: string
   type?: $Enums.UserAttributeType
@@ -306,6 +319,7 @@ export type ConsultantAttributeUncheckedCreateInput = {
   id?: number
   consultantId: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   value: string
   label: string
   type?: $Enums.UserAttributeType
@@ -314,6 +328,7 @@ export type ConsultantAttributeUncheckedCreateInput = {
 
 export type ConsultantAttributeUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumUserAttributeTypeFieldUpdateOperationsInput | $Enums.UserAttributeType
@@ -325,6 +340,7 @@ export type ConsultantAttributeUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   consultantId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumUserAttributeTypeFieldUpdateOperationsInput | $Enums.UserAttributeType
@@ -335,6 +351,7 @@ export type ConsultantAttributeCreateManyInput = {
   id?: number
   consultantId: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   value: string
   label: string
   type?: $Enums.UserAttributeType
@@ -343,6 +360,7 @@ export type ConsultantAttributeCreateManyInput = {
 
 export type ConsultantAttributeUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumUserAttributeTypeFieldUpdateOperationsInput | $Enums.UserAttributeType
@@ -353,6 +371,7 @@ export type ConsultantAttributeUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   consultantId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumUserAttributeTypeFieldUpdateOperationsInput | $Enums.UserAttributeType
@@ -368,6 +387,7 @@ export type ConsultantAttributeCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   consultantId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   value?: Prisma.SortOrder
   label?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -383,6 +403,7 @@ export type ConsultantAttributeMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   consultantId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   value?: Prisma.SortOrder
   label?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -393,6 +414,7 @@ export type ConsultantAttributeMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   consultantId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   value?: Prisma.SortOrder
   label?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -466,6 +488,7 @@ export type ConsultantAttributeUncheckedUpdateManyWithoutConsultantNestedInput =
 
 export type ConsultantAttributeCreateWithoutConsultantInput = {
   createdAt?: Date | string
+  updatedAt?: Date | string
   value: string
   label: string
   type?: $Enums.UserAttributeType
@@ -475,6 +498,7 @@ export type ConsultantAttributeCreateWithoutConsultantInput = {
 export type ConsultantAttributeUncheckedCreateWithoutConsultantInput = {
   id?: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   value: string
   label: string
   type?: $Enums.UserAttributeType
@@ -514,6 +538,7 @@ export type ConsultantAttributeScalarWhereInput = {
   id?: Prisma.IntFilter<"ConsultantAttribute"> | number
   consultantId?: Prisma.IntFilter<"ConsultantAttribute"> | number
   createdAt?: Prisma.DateTimeFilter<"ConsultantAttribute"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ConsultantAttribute"> | Date | string
   value?: Prisma.StringFilter<"ConsultantAttribute"> | string
   label?: Prisma.StringFilter<"ConsultantAttribute"> | string
   type?: Prisma.EnumUserAttributeTypeFilter<"ConsultantAttribute"> | $Enums.UserAttributeType
@@ -523,6 +548,7 @@ export type ConsultantAttributeScalarWhereInput = {
 export type ConsultantAttributeCreateManyConsultantInput = {
   id?: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   value: string
   label: string
   type?: $Enums.UserAttributeType
@@ -531,6 +557,7 @@ export type ConsultantAttributeCreateManyConsultantInput = {
 
 export type ConsultantAttributeUpdateWithoutConsultantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumUserAttributeTypeFieldUpdateOperationsInput | $Enums.UserAttributeType
@@ -540,6 +567,7 @@ export type ConsultantAttributeUpdateWithoutConsultantInput = {
 export type ConsultantAttributeUncheckedUpdateWithoutConsultantInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumUserAttributeTypeFieldUpdateOperationsInput | $Enums.UserAttributeType
@@ -549,6 +577,7 @@ export type ConsultantAttributeUncheckedUpdateWithoutConsultantInput = {
 export type ConsultantAttributeUncheckedUpdateManyWithoutConsultantInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumUserAttributeTypeFieldUpdateOperationsInput | $Enums.UserAttributeType
@@ -561,6 +590,7 @@ export type ConsultantAttributeSelect<ExtArgs extends runtime.Types.Extensions.I
   id?: boolean
   consultantId?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   value?: boolean
   label?: boolean
   type?: boolean
@@ -572,6 +602,7 @@ export type ConsultantAttributeSelectCreateManyAndReturn<ExtArgs extends runtime
   id?: boolean
   consultantId?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   value?: boolean
   label?: boolean
   type?: boolean
@@ -583,6 +614,7 @@ export type ConsultantAttributeSelectUpdateManyAndReturn<ExtArgs extends runtime
   id?: boolean
   consultantId?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   value?: boolean
   label?: boolean
   type?: boolean
@@ -594,13 +626,14 @@ export type ConsultantAttributeSelectScalar = {
   id?: boolean
   consultantId?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   value?: boolean
   label?: boolean
   type?: boolean
   visibility?: boolean
 }
 
-export type ConsultantAttributeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "consultantId" | "createdAt" | "value" | "label" | "type" | "visibility", ExtArgs["result"]["consultantAttribute"]>
+export type ConsultantAttributeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "consultantId" | "createdAt" | "updatedAt" | "value" | "label" | "type" | "visibility", ExtArgs["result"]["consultantAttribute"]>
 export type ConsultantAttributeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   consultant?: boolean | Prisma.ConsultantDefaultArgs<ExtArgs>
 }
@@ -620,6 +653,7 @@ export type $ConsultantAttributePayload<ExtArgs extends runtime.Types.Extensions
     id: number
     consultantId: number
     createdAt: Date
+    updatedAt: Date
     value: string
     label: string
     type: $Enums.UserAttributeType
@@ -1051,6 +1085,7 @@ export interface ConsultantAttributeFieldRefs {
   readonly id: Prisma.FieldRef<"ConsultantAttribute", 'Int'>
   readonly consultantId: Prisma.FieldRef<"ConsultantAttribute", 'Int'>
   readonly createdAt: Prisma.FieldRef<"ConsultantAttribute", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"ConsultantAttribute", 'DateTime'>
   readonly value: Prisma.FieldRef<"ConsultantAttribute", 'String'>
   readonly label: Prisma.FieldRef<"ConsultantAttribute", 'String'>
   readonly type: Prisma.FieldRef<"ConsultantAttribute", 'UserAttributeType'>

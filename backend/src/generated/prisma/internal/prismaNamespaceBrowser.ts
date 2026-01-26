@@ -113,6 +113,7 @@ export const ConsultantAttributeScalarFieldEnum = {
   id: 'id',
   consultantId: 'consultantId',
   createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
   value: 'value',
   label: 'label',
   type: 'type',
@@ -137,6 +138,7 @@ export const ConsultantSkillScalarFieldEnum = {
   id: 'id',
   consultantId: 'consultantId',
   createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
   skillName: 'skillName',
   proficiency: 'proficiency',
   listPosition: 'listPosition'
@@ -184,6 +186,7 @@ export const EmploymentScalarFieldEnum = {
   id: 'id',
   consultantId: 'consultantId',
   createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
   employer: 'employer',
   jobTitle: 'jobTitle',
   description: 'description',
@@ -199,6 +202,7 @@ export const ProjectScalarFieldEnum = {
   id: 'id',
   consultantId: 'consultantId',
   createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
   name: 'name',
   description: 'description',
   start: 'start',
@@ -213,6 +217,7 @@ export const ProjectLinkScalarFieldEnum = {
   id: 'id',
   projectId: 'projectId',
   createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
   url: 'url',
   label: 'label'
 } as const

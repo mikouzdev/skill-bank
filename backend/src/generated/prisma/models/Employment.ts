@@ -40,6 +40,7 @@ export type EmploymentMinAggregateOutputType = {
   id: number | null
   consultantId: number | null
   createdAt: Date | null
+  updatedAt: Date | null
   employer: string | null
   jobTitle: string | null
   description: string | null
@@ -52,6 +53,7 @@ export type EmploymentMaxAggregateOutputType = {
   id: number | null
   consultantId: number | null
   createdAt: Date | null
+  updatedAt: Date | null
   employer: string | null
   jobTitle: string | null
   description: string | null
@@ -64,6 +66,7 @@ export type EmploymentCountAggregateOutputType = {
   id: number
   consultantId: number
   createdAt: number
+  updatedAt: number
   employer: number
   jobTitle: number
   description: number
@@ -88,6 +91,7 @@ export type EmploymentMinAggregateInputType = {
   id?: true
   consultantId?: true
   createdAt?: true
+  updatedAt?: true
   employer?: true
   jobTitle?: true
   description?: true
@@ -100,6 +104,7 @@ export type EmploymentMaxAggregateInputType = {
   id?: true
   consultantId?: true
   createdAt?: true
+  updatedAt?: true
   employer?: true
   jobTitle?: true
   description?: true
@@ -112,6 +117,7 @@ export type EmploymentCountAggregateInputType = {
   id?: true
   consultantId?: true
   createdAt?: true
+  updatedAt?: true
   employer?: true
   jobTitle?: true
   description?: true
@@ -211,6 +217,7 @@ export type EmploymentGroupByOutputType = {
   id: number
   consultantId: number
   createdAt: Date
+  updatedAt: Date
   employer: string
   jobTitle: string
   description: string
@@ -246,6 +253,7 @@ export type EmploymentWhereInput = {
   id?: Prisma.IntFilter<"Employment"> | number
   consultantId?: Prisma.IntFilter<"Employment"> | number
   createdAt?: Prisma.DateTimeFilter<"Employment"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Employment"> | Date | string
   employer?: Prisma.StringFilter<"Employment"> | string
   jobTitle?: Prisma.StringFilter<"Employment"> | string
   description?: Prisma.StringFilter<"Employment"> | string
@@ -260,6 +268,7 @@ export type EmploymentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   consultantId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   employer?: Prisma.SortOrder
   jobTitle?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -277,6 +286,7 @@ export type EmploymentWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.EmploymentWhereInput | Prisma.EmploymentWhereInput[]
   consultantId?: Prisma.IntFilter<"Employment"> | number
   createdAt?: Prisma.DateTimeFilter<"Employment"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Employment"> | Date | string
   employer?: Prisma.StringFilter<"Employment"> | string
   jobTitle?: Prisma.StringFilter<"Employment"> | string
   description?: Prisma.StringFilter<"Employment"> | string
@@ -291,6 +301,7 @@ export type EmploymentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   consultantId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   employer?: Prisma.SortOrder
   jobTitle?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -311,6 +322,7 @@ export type EmploymentScalarWhereWithAggregatesInput = {
   id?: Prisma.IntWithAggregatesFilter<"Employment"> | number
   consultantId?: Prisma.IntWithAggregatesFilter<"Employment"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Employment"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Employment"> | Date | string
   employer?: Prisma.StringWithAggregatesFilter<"Employment"> | string
   jobTitle?: Prisma.StringWithAggregatesFilter<"Employment"> | string
   description?: Prisma.StringWithAggregatesFilter<"Employment"> | string
@@ -321,6 +333,7 @@ export type EmploymentScalarWhereWithAggregatesInput = {
 
 export type EmploymentCreateInput = {
   createdAt?: Date | string
+  updatedAt?: Date | string
   employer: string
   jobTitle: string
   description: string
@@ -335,6 +348,7 @@ export type EmploymentUncheckedCreateInput = {
   id?: number
   consultantId: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   employer: string
   jobTitle: string
   description: string
@@ -346,6 +360,7 @@ export type EmploymentUncheckedCreateInput = {
 
 export type EmploymentUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   employer?: Prisma.StringFieldUpdateOperationsInput | string
   jobTitle?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
@@ -360,6 +375,7 @@ export type EmploymentUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   consultantId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   employer?: Prisma.StringFieldUpdateOperationsInput | string
   jobTitle?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
@@ -373,6 +389,7 @@ export type EmploymentCreateManyInput = {
   id?: number
   consultantId: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   employer: string
   jobTitle: string
   description: string
@@ -383,6 +400,7 @@ export type EmploymentCreateManyInput = {
 
 export type EmploymentUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   employer?: Prisma.StringFieldUpdateOperationsInput | string
   jobTitle?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
@@ -395,6 +413,7 @@ export type EmploymentUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   consultantId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   employer?: Prisma.StringFieldUpdateOperationsInput | string
   jobTitle?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
@@ -422,6 +441,7 @@ export type EmploymentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   consultantId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   employer?: Prisma.SortOrder
   jobTitle?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -439,6 +459,7 @@ export type EmploymentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   consultantId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   employer?: Prisma.SortOrder
   jobTitle?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -451,6 +472,7 @@ export type EmploymentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   consultantId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   employer?: Prisma.SortOrder
   jobTitle?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -526,6 +548,7 @@ export type NullableDateTimeFieldUpdateOperationsInput = {
 
 export type EmploymentCreateWithoutConsultantInput = {
   createdAt?: Date | string
+  updatedAt?: Date | string
   employer: string
   jobTitle: string
   description: string
@@ -538,6 +561,7 @@ export type EmploymentCreateWithoutConsultantInput = {
 export type EmploymentUncheckedCreateWithoutConsultantInput = {
   id?: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   employer: string
   jobTitle: string
   description: string
@@ -580,6 +604,7 @@ export type EmploymentScalarWhereInput = {
   id?: Prisma.IntFilter<"Employment"> | number
   consultantId?: Prisma.IntFilter<"Employment"> | number
   createdAt?: Prisma.DateTimeFilter<"Employment"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Employment"> | Date | string
   employer?: Prisma.StringFilter<"Employment"> | string
   jobTitle?: Prisma.StringFilter<"Employment"> | string
   description?: Prisma.StringFilter<"Employment"> | string
@@ -590,6 +615,7 @@ export type EmploymentScalarWhereInput = {
 
 export type EmploymentCreateWithoutEmploymentSkillsInput = {
   createdAt?: Date | string
+  updatedAt?: Date | string
   employer: string
   jobTitle: string
   description: string
@@ -603,6 +629,7 @@ export type EmploymentUncheckedCreateWithoutEmploymentSkillsInput = {
   id?: number
   consultantId: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   employer: string
   jobTitle: string
   description: string
@@ -629,6 +656,7 @@ export type EmploymentUpdateToOneWithWhereWithoutEmploymentSkillsInput = {
 
 export type EmploymentUpdateWithoutEmploymentSkillsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   employer?: Prisma.StringFieldUpdateOperationsInput | string
   jobTitle?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
@@ -642,6 +670,7 @@ export type EmploymentUncheckedUpdateWithoutEmploymentSkillsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   consultantId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   employer?: Prisma.StringFieldUpdateOperationsInput | string
   jobTitle?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
@@ -653,6 +682,7 @@ export type EmploymentUncheckedUpdateWithoutEmploymentSkillsInput = {
 export type EmploymentCreateManyConsultantInput = {
   id?: number
   createdAt?: Date | string
+  updatedAt?: Date | string
   employer: string
   jobTitle: string
   description: string
@@ -663,6 +693,7 @@ export type EmploymentCreateManyConsultantInput = {
 
 export type EmploymentUpdateWithoutConsultantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   employer?: Prisma.StringFieldUpdateOperationsInput | string
   jobTitle?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
@@ -675,6 +706,7 @@ export type EmploymentUpdateWithoutConsultantInput = {
 export type EmploymentUncheckedUpdateWithoutConsultantInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   employer?: Prisma.StringFieldUpdateOperationsInput | string
   jobTitle?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
@@ -687,6 +719,7 @@ export type EmploymentUncheckedUpdateWithoutConsultantInput = {
 export type EmploymentUncheckedUpdateManyWithoutConsultantInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   employer?: Prisma.StringFieldUpdateOperationsInput | string
   jobTitle?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
@@ -730,6 +763,7 @@ export type EmploymentSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   id?: boolean
   consultantId?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   employer?: boolean
   jobTitle?: boolean
   description?: boolean
@@ -745,6 +779,7 @@ export type EmploymentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   id?: boolean
   consultantId?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   employer?: boolean
   jobTitle?: boolean
   description?: boolean
@@ -758,6 +793,7 @@ export type EmploymentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   id?: boolean
   consultantId?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   employer?: boolean
   jobTitle?: boolean
   description?: boolean
@@ -771,6 +807,7 @@ export type EmploymentSelectScalar = {
   id?: boolean
   consultantId?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   employer?: boolean
   jobTitle?: boolean
   description?: boolean
@@ -779,7 +816,7 @@ export type EmploymentSelectScalar = {
   visibility?: boolean
 }
 
-export type EmploymentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "consultantId" | "createdAt" | "employer" | "jobTitle" | "description" | "start" | "end" | "visibility", ExtArgs["result"]["employment"]>
+export type EmploymentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "consultantId" | "createdAt" | "updatedAt" | "employer" | "jobTitle" | "description" | "start" | "end" | "visibility", ExtArgs["result"]["employment"]>
 export type EmploymentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   consultant?: boolean | Prisma.ConsultantDefaultArgs<ExtArgs>
   employmentSkills?: boolean | Prisma.Employment$employmentSkillsArgs<ExtArgs>
@@ -802,6 +839,7 @@ export type $EmploymentPayload<ExtArgs extends runtime.Types.Extensions.Internal
     id: number
     consultantId: number
     createdAt: Date
+    updatedAt: Date
     employer: string
     jobTitle: string
     description: string
@@ -1236,6 +1274,7 @@ export interface EmploymentFieldRefs {
   readonly id: Prisma.FieldRef<"Employment", 'Int'>
   readonly consultantId: Prisma.FieldRef<"Employment", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Employment", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"Employment", 'DateTime'>
   readonly employer: Prisma.FieldRef<"Employment", 'String'>
   readonly jobTitle: Prisma.FieldRef<"Employment", 'String'>
   readonly description: Prisma.FieldRef<"Employment", 'String'>
