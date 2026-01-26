@@ -45,6 +45,7 @@ lint_frontend:
 build:
   stage: build_deploy
   script:
+    - cd backend      
     - docker build -t "$ACR_REPOSITORY"/azure-pipeline-app:latest .
     - docker login "$ACR_REPOSITORY" -u "$ACR_USERNAME" -p "$ACR_PASSWORD"
     - docker push "$ACR_REPOSITORY"/azure-pipeline-app:latest
