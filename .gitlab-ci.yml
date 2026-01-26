@@ -1,6 +1,7 @@
-default:
-  image: node
-
+image: docker
+services:
+  - docker:dind
+  
 cache:
   paths:
     - node_modules/
