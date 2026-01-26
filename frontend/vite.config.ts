@@ -22,6 +22,10 @@ export default defineConfig(({ mode }) => {
           target: `${env.VITE_BACKEND_HOST}:${env.VITE_BACKEND_PORT}`,
           changeOrigin: true,
         },
+        "/admin": {
+          target: `${env.VITE_BACKEND_HOST}:${env.VITE_BACKEND_PORT}`,
+          changeOrigin: true,
+        },
       },
     },
   };
