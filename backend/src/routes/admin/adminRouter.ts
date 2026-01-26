@@ -61,6 +61,7 @@ adminRouter.post("/users", authenticate, async (req: Request, res: Response) => 
     return;
   }
   let createdUser = null;
+  let createdConsultant = null;
   try {
     createdUser = await prisma.user.create({
       data: {
@@ -71,6 +72,21 @@ adminRouter.post("/users", authenticate, async (req: Request, res: Response) => 
           create: roles
         }
       },
+    });
+    roles.forEach(async role => {
+      switch (role.role) {
+        case "CONSULTANT":
+          createdConsultant = await prisma.consultant.create({
+            data: {
+              
+            },
+          });
+          break;
+        case "SALESPERSON":
+          break;
+        case "ADMIN":
+          break;
+      }
     });
   } catch (err) {
     res.status(500).json(err);
