@@ -7,9 +7,9 @@ cache:
 
 stages:
   - install
-  - lint
   - build
   - deploy
+  - lint
 
 install:
   stage: install
@@ -40,15 +40,13 @@ lint_frontend:
     - pnpm install
     - npm run lint
 
+
 build:
-  stage: build
+  stage: build_deploy
   script:
-    - cd backend
-    - npm install -g typescript
-    - tsc
-    - cd ../frontend
-    - npm install -g typescript
-    - tsc
+    - docker build -t "$ACR_REPOSITORY"/azure-pipeline-app:latest .
+    - docker login "$ACR_REPOSITORY" -u "$ACR_USERNAME" -p "$ACR_PASSWORD"
+    - docker push "$ACR_REPOSITORY"/azure-pipeline-app:latest
 
 deploy:
   stage: deploy
