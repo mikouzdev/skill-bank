@@ -46,5 +46,26 @@ export const attributesPaths = {
                 500: { description: "Server error" },
             },
         },
-    }
+    },
+    "/consultants/me/attributes/{attributeId}": {
+        delete: {
+            summary: "Delete an attribute",
+            tags: ["Consultants", "Attributes"],
+            parameters: [
+                {
+                name: "attributeId",
+                in: "path" as const,
+                required: true,
+                schema: { type: "integer" as const },
+                },
+            ],
+            responses: {
+                204: {
+                description: "Deletion successful",
+                },
+                400: { description: "Invalid attribute id" },
+                500: { description: "Server error" },
+            },
+        }
+    },
 }

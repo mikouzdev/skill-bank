@@ -21,3 +21,7 @@ export const AttributeBodySchema = AttributeSchema.omit({
   consultantId: true,
   createdAt: true,
 }).meta({ id: "AttributeBody" });
+
+export const AttributeIdParamsSchema = z.object({
+  attributeId: z.coerce.number().meta({ example: "1" }),
+}).meta({ id: "AttributeIdParams" });
