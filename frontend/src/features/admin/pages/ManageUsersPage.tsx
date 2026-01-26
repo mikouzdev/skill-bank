@@ -8,24 +8,26 @@ import { UserCard } from "../components/UserCard";
 import { AddUserDialog } from "../components/AddUserDialog";
 import SearchBar from "../../../shared/components/Search";
 import { DeleteUsersDialog } from "../components/DeleteUsersDialog";
+import { createUser } from "../api/admin.api";
+import type { components } from "@api-types/openapi";
 
+type UserRequest = components["schemas"]["UserBody"];
 
 type SelectedUser = {
   id: number;
   name: string;
-}
+};
 
 export const ManageUsersPage = () => {
-
   const [ids, setIds] = useState<number[]>([]);
   const [selectedUsers, setSelectedUsers] = useState<SelectedUser[]>([]);
   const [search, setSearch] = useState<string>("");
 
   const toggleSelected = (user: SelectedUser) => {
-  setSelectedUsers(prev =>
-    prev.some(u => u.id === user.id)
-      ? prev.filter(u => u.id !== user.id)
-      : [...prev, user]
+    setSelectedUsers((prev) =>
+      prev.some((u) => u.id === user.id)
+        ? prev.filter((u) => u.id !== user.id)
+        : [...prev, user]
     );
   };
 
@@ -52,6 +54,21 @@ export const ManageUsersPage = () => {
     }
   };
 
+  // todo: replace alerts with some more sophisticated feedback
+  async function handleCreateNewUser(user: UserRequest): Promise<boolean> {
+    console.log("user payload: ", user);
+    try {
+      const response = await createUser(user);
+      console.log(response.data);
+      alert("Succesfully created a new user");
+      return true;
+    } catch (error: unknown) {
+      console.log("failed to create user: ", error);
+      alert("Failed to create user, more info in console");
+      return false;
+    }
+  }
+
   return (
     <>
       <Paper sx={{ border: 1, margin: "16px", background: "#efefef" }}>
@@ -60,17 +77,16 @@ export const ManageUsersPage = () => {
           loadConsultants={() => void loadConsultants()}
         />
         {ids.map((id) => (
-          <Box key={id} sx={{ m: 3, background: "white" } }>
+          <Box key={id} sx={{ m: 3, background: "white" }}>
             <UserCard
               consultantID={id}
-              selected={selectedUsers.some(u => u.id === id)}
+              selected={selectedUsers.some((u) => u.id === id)}
               onToggle={toggleSelected}
-             />
+            />
           </Box>
         ))}
-        
       </Paper>
-      <Stack 
+      <Stack
         direction="row"
         spacing={2}
         sx={{ mt: 1 }}
@@ -78,12 +94,12 @@ export const ManageUsersPage = () => {
         alignItems="center"
       >
         <Box>
-          <AddUserDialog />
+          <AddUserDialog onAddUser={handleCreateNewUser} />
         </Box>
-        <Box >
+        <Box>
           <DeleteUsersDialog selectedUsers={selectedUsers} />
         </Box>
-      </Stack>      
+      </Stack>
     </>
   );
 };

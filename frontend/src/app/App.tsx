@@ -24,7 +24,7 @@ function App() {
           <Route path="/me" element={<ConsultantProfilePage />} />
           <Route path="/me/edit" element={<ConsultantProfileSettings />} />
           <Route path="/sales" element={<ConsultantListView />} />
-          <Route path="/adminManageUsers" element={<ManageUsersPage />} />
+          <Route path="/manage-users" element={<ManageUsersPage />} />
           <Route
             path="/listConsultants"
             element={<ConsultantListConsultants />}
