@@ -7,7 +7,7 @@ cache:
 
 stages:
   - install
-  - build
+  - build_deploy
   - deploy
   - lint
 
