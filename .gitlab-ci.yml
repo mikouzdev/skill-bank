@@ -3,8 +3,8 @@ cache:
     - node_modules/
 
 stages:
-  - build_deploy
   - lint
+  - build_deploy
 
 lint_backend:
   image: node:24
