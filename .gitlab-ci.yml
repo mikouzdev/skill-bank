@@ -1,31 +1,13 @@
-image: docker
-services:
-  - docker:dind
-
 cache:
   paths:
     - node_modules/
 
 stages:
   - build_deploy
-  - install
-  - deploy
   - lint
 
-install:
-  stage: install
-  script:
-    - npm install -g pnpm
-    #- docker compose up -d
-    - cd backend
-    - pnpm install
-    #- pnpm run db:migrate
-    #- pnpm run db:seed
-    - cd ..
-    - cd frontend
-    - pnpm install
-
 lint_backend:
+  image: node:24
   stage: lint
   script:
     - cd backend
@@ -34,6 +16,7 @@ lint_backend:
     - npm run lint
 
 lint_frontend:
+  image: node:24
   stage: lint
   script:
     - cd frontend
@@ -42,15 +25,13 @@ lint_frontend:
     - npm run lint
 
 
-build:
+build_deploy:
   stage: build_deploy
+  image: docker
+  services:
+  - docker:dind
   script:
-    - docker build -t "$ACR_REPOSITORY"/azure-pipeline-app:latest .
+    - docker build -t "$ACR_REPOSITORY" .
     - docker login "$ACR_REPOSITORY" -u "$ACR_USERNAME" -p "$ACR_PASSWORD"
-    - docker push "$ACR_REPOSITORY"/azure-pipeline-app:latest
+    - docker push "$ACR_REPOSITORY"
 
-deploy:
-  stage: deploy
-  script:
-    - cd backend
-    - node ./dist/index.js
