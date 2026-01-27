@@ -1,17 +1,15 @@
 import { Paper, Box, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
-import {
-  getConsultants,
-  searchConsultants,
-} from "../../consultant/api/consultants.api";
 import { UserCard } from "../components/UserCard";
 import { AddUserDialog } from "../components/AddUserDialog";
-import SearchBar from "../../../shared/components/Search";
 import { DeleteUsersDialog } from "../components/DeleteUsersDialog";
-import { createUser } from "../api/admin.api";
+import { createUser, deleteUser, getUsers } from "../api/admin.api";
 import type { components } from "@api-types/openapi";
+// import { searchConsultants } from "../../consultant/api/consultants.api";
+// import SearchBar from "../../../shared/components/Search";
 
 type UserRequest = components["schemas"]["UserBody"];
+type UserListResponse = components["schemas"]["AllUsersResponse"];
 
 type SelectedUser = {
   id: number;
@@ -19,9 +17,9 @@ type SelectedUser = {
 };
 
 export const ManageUsersPage = () => {
-  const [ids, setIds] = useState<number[]>([]);
+  const [users, setUsers] = useState<UserListResponse>([]);
   const [selectedUsers, setSelectedUsers] = useState<SelectedUser[]>([]);
-  const [search, setSearch] = useState<string>("");
+  // const [search, setSearch] = useState<string>("");
 
   const toggleSelected = (user: SelectedUser) => {
     setSelectedUsers((prev) =>
@@ -34,32 +32,33 @@ export const ManageUsersPage = () => {
   useEffect(() => {
     const load = async () => {
       try {
-        const response = await getConsultants(); // change this to all users
-        const consultants = response.data;
-        setIds(consultants.map((c) => c.userId));
+        const response = await getUsers();
+        setUsers(response.data);
       } catch (err) {
         console.error("Failed to load users", err);
       }
     };
-    load().catch(console.error);
+    void load();
   }, []);
 
-  const loadConsultants = async () => {
-    try {
-      const response = await searchConsultants(search);
-      const consultants = response.data;
-      setIds(consultants.map((c) => c.userId));
-    } catch (err) {
-      console.error("Failed to load consultants", err);
-    }
-  };
+  // commented because it searches only consultants and not all users
+
+  // const loadConsultants = async () => {
+  //   try {
+  //     const response = await searchConsultants(search);
+  //     const consultants = response.data;
+  //     setIds(consultants.map((c) => c.userId));
+  //   } catch (err) {
+  //     console.error("Failed to load consultants", err);
+  //   }
+  // };
 
   // todo: replace alerts with some more sophisticated feedback
   async function handleCreateNewUser(user: UserRequest): Promise<boolean> {
     console.log("user payload: ", user);
     try {
       const response = await createUser(user);
-      console.log(response.data);
+      setUsers((prev) => [...prev, response.data]);
       alert("Succesfully created a new user");
       return true;
     } catch (error: unknown) {
@@ -69,18 +68,33 @@ export const ManageUsersPage = () => {
     }
   }
 
+  async function handleDeleteUsers(): Promise<boolean> {
+    for (const selected of selectedUsers) {
+      try {
+        await deleteUser(selected.id);
+        setUsers((prev) => prev.filter((user) => user.id !== selected.id));
+        setSelectedUsers([]);
+      } catch (error) {
+        console.log(`failed to delete user: ${selected.name}`, error);
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   return (
     <>
       <Paper sx={{ border: 1, margin: "16px", background: "#efefef" }}>
-        <SearchBar
+        {/* <SearchBar
           getText={setSearch}
           loadConsultants={() => void loadConsultants()}
-        />
-        {ids.map((id) => (
-          <Box key={id} sx={{ m: 3, background: "white" }}>
+        /> */}
+        {users.map((user) => (
+          <Box key={user.id} sx={{ m: 3, background: "white" }}>
             <UserCard
-              consultantID={id}
-              selected={selectedUsers.some((u) => u.id === id)}
+              user={user}
+              selected={selectedUsers.some((u) => u.id === user.id)}
               onToggle={toggleSelected}
             />
           </Box>
@@ -97,7 +111,10 @@ export const ManageUsersPage = () => {
           <AddUserDialog onAddUser={handleCreateNewUser} />
         </Box>
         <Box>
-          <DeleteUsersDialog selectedUsers={selectedUsers} />
+          <DeleteUsersDialog
+            selectedUsers={selectedUsers}
+            onDelete={handleDeleteUsers}
+          />
         </Box>
       </Stack>
     </>
