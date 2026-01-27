@@ -18,6 +18,11 @@ export const adminRouter = Router();
 adminRouter.get("/users", authenticate, async (req: Request, res: Response) => {
   try {
     const users = await prisma.user.findMany({
+        include: {
+          roles: {
+
+          },
+        },
         omit: {
             passwordHash: true
         }});
@@ -35,8 +40,7 @@ adminRouter.get("/users", authenticate, async (req: Request, res: Response) => {
  * @returns created user
  */
 //Add this once it is made functional (checks for user admin role correctly)
-//adminOnly,
-//TODO: Add roles to relevant tables as well (consultant/sales/admin)
+//adminOnly
 adminRouter.post("/users", authenticate, async (req: Request, res: Response) => {
   const parsedBody = UserBodySchema.safeParse(req.body);
   
@@ -61,6 +65,9 @@ adminRouter.post("/users", authenticate, async (req: Request, res: Response) => 
     return;
   }
   let createdUser = null;
+  let createdConsultant = null;
+  let createdSalesPerson = null;
+  let createdCustomer = null;
   try {
     createdUser = await prisma.user.create({
       data: {
@@ -71,6 +78,44 @@ adminRouter.post("/users", authenticate, async (req: Request, res: Response) => 
           create: roles
         }
       },
+    });
+    let userId = createdUser.id;
+    roles.forEach(async role => {
+      switch (role.role) {
+        case "CONSULTANT":
+          createdConsultant = await prisma.consultant.create({
+            data: {
+              userId: userId,
+              description: "",
+              roleTitle: "",
+              profilePictureUrl: "",
+              consultantAttributes: {
+                create: [],
+              },
+            },
+          });
+          break;
+        case "SALESPERSON":
+          createdSalesPerson = await prisma.salesperson.create({
+            data: {
+              userId: userId,
+              salesLists: {
+                create: [],
+              },
+            },
+          });
+          break;
+        case "CUSTOMER":
+          createdCustomer = await prisma.customer.create({
+            data: {
+              userId: userId,
+              salesLists: {
+                create: [],
+              },
+            },
+          });
+          break;
+      }
     });
   } catch (err) {
     res.status(500).json(err);
