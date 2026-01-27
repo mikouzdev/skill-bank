@@ -18,6 +18,11 @@ export const adminRouter = Router();
 adminRouter.get("/users", authenticate, async (req: Request, res: Response) => {
   try {
     const users = await prisma.user.findMany({
+        include: {
+          roles: {
+
+          },
+        },
         omit: {
             passwordHash: true
         }});
