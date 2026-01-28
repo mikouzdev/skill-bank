@@ -3,29 +3,27 @@ import Circle from "@mui/icons-material/Circle";
 import CircleIcon from "@mui/icons-material/Circle";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-import { type SkillsResponse } from "../../types/types";
 import { useState } from "react";
 import { deleteSkill, updateSkill } from "../../api/consultants.api";
 import type { components } from "@api-types/openapi";
 import AddSkillDialog from "./AddSkillDialog";
-import { useSkills } from "../../hooks/useSkills";
 
-type SkillRequest = Partial<components["schemas"]["ConsultantSkill"]>;
+type ConsultantSkill = components["schemas"]["ConsultantSkill"];
+type SkillsResponse = components["schemas"]["SkillTagList"];
 
 type Props = {
-  data: SkillsResponse;
+  skillData: SkillsResponse;
+  data: ConsultantSkill[];
   editable?: boolean;
 };
 
-export default function Skills({ data, editable }: Props) {
-  const [skills, setSkills] = useState<SkillsResponse>(data); // consultant skills
-
-  const { skillPool } = useSkills(); // all available skills that consultant can use
+export default function Skills({ skillData, data, editable }: Props) {
+  const [skills, setSkills] = useState<ConsultantSkill[]>(data); // consultant skills
 
   async function handleUpdateSkill(id: number, newProficiency: number | null) {
     if (newProficiency === null) return;
     try {
-      const payload: SkillRequest = {
+      const payload = {
         proficiency: newProficiency,
       };
 
@@ -61,9 +59,7 @@ export default function Skills({ data, editable }: Props) {
     </IconButton>
   );
 
-  function handleSkillAdded(
-    newSkill: components["schemas"]["ConsultantSkill"]
-  ) {
+  function handleSkillAdded(newSkill: ConsultantSkill) {
     setSkills((prev) => [...prev, newSkill]);
   }
 
@@ -71,9 +67,9 @@ export default function Skills({ data, editable }: Props) {
     <Box sx={{ p: 2 }}>
       <Stack direction={"row"} spacing={2}>
         <Typography variant="h5">Skills</Typography>
-        {skillPool && (
+        {skillData && (
           <AddSkillDialog
-            skillData={skillPool}
+            skillData={skillData}
             onSkillAdded={handleSkillAdded}
           />
         )}

@@ -125,3 +125,9 @@ export const deleteSkill = (id: number) => {
 export const updateProfile = (formData: UpdateConsultantData | FormData) => {
   return api.put("/consultants/me", formData);
 };
+
+type AttributeResponse = components["schemas"]["GetAttributesResponse"];
+
+export const getAttributes = (id: number) => {
+  return api.get<AttributeResponse>(`/consultants/${id}/attributes`);
+};

@@ -53,6 +53,17 @@ async function main() {
           {
             label: "LinkedIn",
             value: "https://linkedin.com/in/alice",
+            type: "LINK",
+          },
+          {
+            label: "GitHub",
+            value: "https://github.com/alice",
+            type: "LINK",
+          },
+          {
+            label: "GitLab",
+            value: "https://gitlab.com/alice",
+            type: "LINK",
           },
         ],
       },
