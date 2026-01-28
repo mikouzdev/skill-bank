@@ -1,6 +1,4 @@
-import {
-  SkillTagsSchema,
-} from "../../schemas/consultants/skills.schema.js";
+import { PostSkillTagBodySchema, SkillTagsSchema } from "../../schemas/skills/skill-tags.schema.js"
 
 export const allSkillsPaths = {
   "/skills": {
@@ -17,5 +15,19 @@ export const allSkillsPaths = {
         500: { description: "Server error" },
       },
     },
+    post: {
+      summary: "Create a new skill",
+      tags: ["Skills"],
+      requestBody: {
+        required: true,
+        content: { "application/json": { schema: PostSkillTagBodySchema} },
+      },
+      responses: {
+        201: { description: "Created", content: { "application/json": { schema: SkillTagsSchema} } },
+        400: { description: "Invalid request" }, 
+        409: { description: "Skill already exists"},
+        500: { description: "Server error" },
+      }
+    }
   },
-}
+};

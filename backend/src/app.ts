@@ -3,6 +3,7 @@ import { consultantsRootRouter } from "./routes/consultants/consultantsRootRoute
 import { usersRouter } from "./routes/auth/usersRouter.js";
 import { adminRouter } from "./routes/admin/adminRouter.js";
 import { skillsRouter } from "./routes/skills/skillsRouter.js";
+import { errorHandler } from "./middlewares/errorHandler.js";
 
 const app = express();
 app.use(express.json());
@@ -14,5 +15,7 @@ app.use("/consultants", consultantsRootRouter);
 app.use("/auth", usersRouter);
 app.use("/admin", adminRouter);
 app.use("/skills", skillsRouter);
+
+app.use(errorHandler);
 
 export default app;

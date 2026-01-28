@@ -1,3 +1,6 @@
+import dotenvx from "@dotenvx/dotenvx";
+dotenvx.config({ path: ".env" });
+
 import { defineConfig, env } from "prisma/config";
 
 export default defineConfig({

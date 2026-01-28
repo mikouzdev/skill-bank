@@ -1,10 +1,11 @@
 import {
   ConsultantSkillSchema,
   ConsultantSkillsSchema,
-  PostSkillBodySchema,
+  PostConsultantSkillBodySchema,
   SkillProficiencyBodySchema,
-  SkillTagsSchema,
 } from "../../schemas/consultants/skills.schema.js";
+
+import { SkillTagsSchema } from "../../schemas/skills/skill-tags.schema.js";
 
 export const skillsPaths = {
   "/consultants/skills/all": {
@@ -53,7 +54,9 @@ export const skillsPaths = {
       tags: ["Consultants", "Skills"],
       requestBody: {
         required: true,
-        content: { "application/json": { schema: PostSkillBodySchema } },
+        content: {
+          "application/json": { schema: PostConsultantSkillBodySchema },
+        },
       },
       responses: {
         200: {

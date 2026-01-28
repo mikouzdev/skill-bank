@@ -3,7 +3,7 @@ import { ConsultantIdParamsSchema } from "../../schemas/consultants/consultants.
 import { prisma } from "../../db/prismaClient.js";
 import {
   SkillIdParamsSchema,
-  PostSkillBodySchema,
+  PostConsultantSkillBodySchema,
   SkillProficiencyBodySchema,
 } from "../../schemas/consultants/skills.schema.js";
 
@@ -63,7 +63,7 @@ skillsRouter.get(
  * @body : {skill: string, proficiency: number}
  */
 skillsRouter.post("/skills/me", async (req: Request, res: Response) => {
-  const parsedBody = PostSkillBodySchema.safeParse(req.body);
+  const parsedBody = PostConsultantSkillBodySchema.safeParse(req.body);
 
   if (!parsedBody.success) {
     res.status(400).json(parsedBody.error);
