@@ -94,7 +94,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get decoded token */
+        /** Get current user identity and roles */
         get: {
             parameters: {
                 query?: never;
@@ -104,13 +104,13 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description Token received */
+                /** @description OK */
                 200: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["AuthResponse"];
+                        "application/json": components["schemas"]["MeResponse"];
                     };
                 };
             };
@@ -453,6 +453,8 @@ export interface paths {
                         consultantId: number;
                         /** @example 2025-12-19T14:01:24.308Z */
                         createdAt: string;
+                        /** @example 2025-12-19T14:01:24.308Z */
+                        updatedAt: string;
                         /** @example Description text of the role and responsibilites */
                         description: string;
                         /** @example 2020-03-01 */
@@ -541,6 +543,8 @@ export interface paths {
                         employer: string;
                         /** @example Fullstack developer */
                         jobTitle: string;
+                        /** @example 2025-12-19T14:01:24.308Z */
+                        updatedAt: string;
                         /** @example Description text of the role and responsibilites */
                         description: string;
                         start: string;
@@ -570,6 +574,8 @@ export interface paths {
                             consultantId: number;
                             /** @example 2025-12-19T14:01:24.308Z */
                             createdAt: string;
+                            /** @example 2025-12-19T14:01:24.308Z */
+                            updatedAt: string;
                             /** @example Description text of the role and responsibilites */
                             description: string;
                             /** @example 2020-03-01 */
@@ -795,6 +801,8 @@ export interface paths {
                         description: string;
                         /** @example Smol Project */
                         name: string;
+                        /** @example 2025-12-19T14:01:24.308Z */
+                        updatedAt: string;
                         start: string;
                         end?: string | null;
                         /**
@@ -915,6 +923,8 @@ export interface paths {
                         description: string;
                         /** @example Smol Project */
                         name: string;
+                        /** @example 2025-12-19T14:01:24.308Z */
+                        updatedAt: string;
                         start: string;
                         end?: string | null;
                         /**
@@ -1558,7 +1568,47 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        put?: never;
+        /** Update a user */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    userId: number;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["UserBody"];
+                };
+            };
+            responses: {
+                /** @description Update successful */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["FullUserResponse"];
+                    };
+                };
+                /** @description Invalid request body */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
         post?: never;
         /** Delete a user */
         delete: {
@@ -1705,6 +1755,62 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/consultants/me/sections/{sectionName}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Update a page section */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    sectionName: "GENERAL" | "NETWORKING_LINKS" | "DESCRIPTION" | "SKILLS" | "EMPLOYMENTS" | "PROJECTS";
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["PageSectionBody"];
+                };
+            };
+            responses: {
+                /** @description Update successful */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PageSection"];
+                    };
+                };
+                /** @description Invalid request body */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/consultants/{consultantId}/attributes": {
         parameters: {
             query?: never;
@@ -1757,6 +1863,150 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/consultants/me/attributes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create a new attribute */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["AttributeBody"];
+                };
+            };
+            responses: {
+                /** @description Creation successful */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Attribute"];
+                    };
+                };
+                /** @description Invalid request body */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/consultants/me/attributes/{attributeId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Update an attribute */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    attributeId: number;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["AttributeBody"];
+                };
+            };
+            responses: {
+                /** @description Update successful */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Attribute"];
+                    };
+                };
+                /** @description Invalid request body */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        post?: never;
+        /** Delete an attribute */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    attributeId: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Deletion successful */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid attribute id */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/skills": {
         parameters: {
             query?: never;
@@ -1793,7 +2043,52 @@ export interface paths {
             };
         };
         put?: never;
-        post?: never;
+        /** Create a new skill */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["PostSkillTagBody"];
+                };
+            };
+            responses: {
+                /** @description Created */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SkillTagList"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Skill already exists */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
         delete?: never;
         options?: never;
         head?: never;
@@ -1852,6 +2147,40 @@ export interface components {
             /** @example hashedtestpassword */
             passwordHash: string;
         };
+        PageSectionBody: {
+            /**
+             * @example GENERAL
+             * @enum {string}
+             */
+            name: "GENERAL" | "NETWORKING_LINKS" | "DESCRIPTION" | "SKILLS" | "EMPLOYMENTS" | "PROJECTS";
+            /**
+             * @example PUBLIC
+             * @enum {string}
+             */
+            visibility: "LIMITED" | "PUBLIC";
+        };
+        AttributeBody: {
+            /** @example Example value */
+            value: string;
+            /** @example Example value */
+            label: string;
+            /**
+             * @example TEXT
+             * @enum {string}
+             */
+            type: "TEXT" | "LINK";
+            /**
+             * @example PUBLIC
+             * @enum {string}
+             */
+            visibility: "LIMITED" | "PUBLIC";
+        };
+        PostSkillTagBody: {
+            /** @example typescript */
+            name: string;
+            /** @example 3 */
+            categoryId?: number | null;
+        };
         AuthResponse: {
             /** @example jwt.token */
             token: string;
@@ -1863,6 +2192,29 @@ export interface components {
             success: boolean;
             /** @example Logged out successfully */
             message: string;
+        };
+        MeResponse: {
+            /** @example 1 */
+            id: number;
+            /**
+             * Format: email
+             * @example user@example.com
+             */
+            email: string;
+            /** @example Alice Consult */
+            name: string;
+            /**
+             * @example [
+             *       "CONSULTANT"
+             *     ]
+             */
+            roles: ("CONSULTANT" | "SALESPERSON" | "CUSTOMER" | "ADMIN")[];
+            /** @example 12 */
+            consultantId: number | null;
+            /** @example null */
+            salespersonId: number | null;
+            /** @example null */
+            customerId: number | null;
         };
         AllConsultantsResponse: components["schemas"]["ConsultantResponse"][];
         ConsultantResponse: {
@@ -1893,6 +2245,8 @@ export interface components {
             consultantId: number;
             /** @example 2025-12-19T14:01:24.308Z */
             createdAt: string;
+            /** @example 2025-12-19T14:01:24.308Z */
+            updatedAt: string;
             /** @example Description text of the role and responsibilites */
             description: string;
             /** @example 2020-03-01 */
@@ -1918,6 +2272,8 @@ export interface components {
             /** @example 2025-12-19T14:01:24.308Z */
             createdAt: string;
             /** @example 2025-12-19T14:01:24.308Z */
+            updatedAt: string;
+            /** @example 2025-12-19T14:01:24.308Z */
             start: string;
             /** @example 2025-12-19T14:01:24.308Z */
             end: string | null;
@@ -1938,6 +2294,8 @@ export interface components {
             name: string;
             /** @example 2025-12-19T14:01:24.308Z */
             createdAt: string;
+            /** @example 2025-12-19T14:01:24.308Z */
+            updatedAt: string;
             /** @example 2025-12-19T14:01:24.308Z */
             start: string;
             /** @example 2025-12-19T14:01:24.308Z */
@@ -1967,8 +2325,8 @@ export interface components {
             /** @example 1 */
             id: number;
             /** @example null */
-            categoryid: number | null;
-            /** @example Typescript */
+            categoryId: number | null;
+            /** @example typescript */
             name: string;
         };
         ConsultantSkill: {
@@ -1978,6 +2336,8 @@ export interface components {
             consultantId: number;
             /** @example 2025-12-19T14:01:24.308Z */
             createdAt: string;
+            /** @example 2025-12-19T14:01:24.308Z */
+            updatedAt: string;
             /** @example Python */
             skillName: string;
             /** @example 5 */
@@ -2084,6 +2444,22 @@ export interface components {
             /** @example 1 */
             replyToId: number;
         };
+        PageSection: {
+            /** @example 1 */
+            id: number;
+            /** @example 1 */
+            consultantId: number;
+            /**
+             * @example GENERAL
+             * @enum {string}
+             */
+            name: "GENERAL" | "NETWORKING_LINKS" | "DESCRIPTION" | "SKILLS" | "EMPLOYMENTS" | "PROJECTS";
+            /**
+             * @example PUBLIC
+             * @enum {string}
+             */
+            visibility: "LIMITED" | "PUBLIC";
+        };
         GetAttributesResponse: components["schemas"]["Attribute"][];
         Attribute: {
             /** @example 1 */
@@ -2092,6 +2468,8 @@ export interface components {
             consultantId: number;
             /** @example 2025-12-19T14:01:24.308Z */
             createdAt: string;
+            /** @example 2025-12-19T14:01:24.308Z */
+            updatedAt: string;
             /** @example Example value */
             value: string;
             /** @example Example value */
