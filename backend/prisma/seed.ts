@@ -18,10 +18,10 @@ async function main() {
   await prisma.employmentSkill.deleteMany();
   await prisma.employment.deleteMany();
   await prisma.consultantSkill.deleteMany();
-  await prisma.user.deleteMany();
   await prisma.consultant.deleteMany();
-  await prisma.skillTag.deleteMany();
   await prisma.userRole.deleteMany();
+  await prisma.user.deleteMany();
+  await prisma.skillTag.deleteMany();
 
   console.log("🧹 Database cleared");
 
@@ -125,6 +125,32 @@ async function main() {
     },
   });
   console.log("🧑‍💼 Consultant Carol created");
+
+  // ===========================================
+  // Salesperson user
+  // ===========================================
+
+  // password is hashed-password
+  // sama passu kuin Alice Consultantilla
+  const salesUser = await prisma.user.create({
+    data: {
+      name: "Sally Sales",
+      email: "sally@demo.com",
+      passwordHash:
+        "$argon2i$v=19$m=16,t=2,p=1$aXNuVjNDZmlWdVdSUG9KYQ$k0KvnEBaLJHBQ9y3rHwQUQ",
+      roles: {
+        create: [{ role: Role.SALESPERSON }],
+      },
+    },
+  });
+
+  const salesperson = await prisma.salesperson.create({
+    data: {
+      userId: salesUser.id,
+    },
+  });
+
+  console.log("🧑‍💼 Salesperson Sally created");
   // ===========================================
   // Skills
   // ===========================================
@@ -327,12 +353,11 @@ async function main() {
   // ===========================================
   const pageSections = await prisma.pageSection.createMany({
     data: [
-      { 
+      {
         consultantId: consultant.id,
         name: "GENERAL" as const,
         visibility: "PUBLIC" as const,
       },
-      
     ],
   });
   console.log("Page sections created");

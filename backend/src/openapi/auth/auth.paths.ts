@@ -1,7 +1,8 @@
 import {
   LoginSchema,
-  AuthResponseSchema,
+  AuthResponseSchema as AuthLoginResponseSchema,
   LogoutResponseSchema,
+  MeResponseSchema,
 } from "../../schemas/auth/auth.schema.js";
 
 export const authPaths = {
@@ -20,7 +21,7 @@ export const authPaths = {
         "200": {
           description: "Login successful",
           content: {
-            "application/json": { schema: AuthResponseSchema },
+            "application/json": { schema: AuthLoginResponseSchema },
           },
         },
         401: { description: "Invalid credentials" },
@@ -43,13 +44,13 @@ export const authPaths = {
   },
   "/auth/me": {
     get: {
-      summary: "Get decoded token",
+      summary: "Get current user identity and roles",
       tags: ["Auth"],
       responses: {
         "200": {
-          description: "Token received",
+          description: "OK",
           content: {
-            "application/json": { schema: AuthResponseSchema },
+            "application/json": { schema: MeResponseSchema },
           },
         },
       },
