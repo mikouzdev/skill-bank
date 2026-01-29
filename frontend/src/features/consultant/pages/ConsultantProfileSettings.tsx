@@ -35,10 +35,7 @@ export default function ConsultantProfileSettings() {
     >
       <EditableProfileHeader data={consultant} />
       <Divider />
-      {/* todo: external links */}
-      {/* Consultant has no external links yet. */}
-      {/* Placeholder. */}
-      <EditableExternalLinks links={[""]}></EditableExternalLinks>
+      <EditableExternalLinks attributes={attributes} />
       <Divider />
       <Skills data={skills} skillData={skillPool} editable />
       <ProfessionalExperience

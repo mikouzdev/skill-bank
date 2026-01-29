@@ -43,14 +43,14 @@ export const LoginPageForm = () => {
     await new Promise((res) => setTimeout(res, 500));
 
     const success = await login(form);
-    if (!success) {
-      // todo: error feedback; show error message etc
-      setIsLoading(false);
+    if (success) {
+      void navigate("/me");
+      return;
     }
 
-    // todo: navigate somewhere on success
-    // maybe based on role on just main page.
-    void navigate("/me");
+    // todo: error feedback; show error message etc
+    setIsLoading(false);
+    alert("log in failed");
   }
 
   return (
