@@ -127,7 +127,17 @@ export const updateProfile = (formData: UpdateConsultantData | FormData) => {
 };
 
 type AttributeResponse = components["schemas"]["GetAttributesResponse"];
+type AttributeBody = Partial<components["schemas"]["AttributeBody"]>;
+type Attribute = components["schemas"]["Attribute"];
 
 export const getAttributes = (id: number) => {
   return api.get<AttributeResponse>(`/consultants/${id}/attributes`);
+};
+
+export const updateAttribute = (id: number, payload: AttributeBody) => {
+  return api.put<Attribute>(`/consultants/me/attributes/${id}`, payload);
+};
+
+export const createAttribute = (payload: AttributeBody) => {
+  return api.post<Attribute>("/consultants/me/attributes", payload);
 };
