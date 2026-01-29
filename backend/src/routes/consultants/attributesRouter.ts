@@ -3,7 +3,7 @@ import { ConsultantIdParamsSchema } from "../../schemas/consultants/consultants.
 import { AttributeBodySchema, AttributeIdParamsSchema } from "../../schemas/consultants/attributes.schema.js";
 import { Visibility } from "../../generated/prisma/enums.js";
 import { prisma } from "../../db/prismaClient.js";
-import { authenticate } from "../../middlewares/authentication.js";
+import { authenticate, type AuthenticatedRequest } from "../../middlewares/authentication.js";
 
 export const attributesRouter = Router();
 
@@ -50,7 +50,7 @@ attributesRouter.get(
  */
 attributesRouter.post(
   "/me/attributes", authenticate,
-  async (req: Request, res: Response) => {
+  async (req: AuthenticatedRequest, res: Response) => {
     const parsedBody = AttributeBodySchema.safeParse(req.body);
     if (!parsedBody.success) {
       res.status(400).json(parsedBody.error);
@@ -58,31 +58,43 @@ attributesRouter.post(
     }
     const { value, label, type, visibility } = parsedBody.data;
 
-    // TODO: use consultantId from a JWT token instead of getting the first
-    //       entry from the database
-    let consultantId;
-    try {
-      const consultant = await prisma.consultant.findFirst();
-      if (consultant === null) {
-        res.status(404).json({ message: "No mock data found" });
-        return;
-      }
-      consultantId = consultant.id;
-    } catch (err) {
-      res.status(500).json(err);
-      return;
-    }
     let attribute = null;
     try {
-      attribute = await prisma.consultantAttribute.create({
-        data: {
-          consultantId,
-          value,
-          label,
-          type,
-          visibility,
+      const user = await prisma.user.findUnique({
+        where: { id: req.user!.id },
+        select: {
+          id: true,
+          roles: { select: { role: true } },
+          consultant: { select: { id: true } },
         },
       });
+      if (user === null) {
+        res
+          .status(404)
+          .json({ message: "User not found" });
+        return;
+      }
+      let consultantId = user?.consultant?.id;
+      if(consultantId !== undefined && consultantId !== null){
+        const consultant = await prisma.consultant.findUnique({
+          where: { id: consultantId }
+        });
+        if (consultant === null) {
+          res
+            .status(404)
+            .json({ message: "Consultant not found" });
+          return;
+        }
+        attribute = await prisma.consultantAttribute.create({
+          data: {
+            consultantId,
+            value,
+            label,
+            type,
+            visibility,
+          },
+        });
+      }
     } catch (err) {
       res.status(500).json(err);
       return;
@@ -97,31 +109,43 @@ attributesRouter.post(
  */
 attributesRouter.delete(
   "/me/attributes/:attributeId", authenticate,
-  async (req: Request, res: Response) => {
+  async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = AttributeIdParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
       res.status(400).json(parsedParams.error);
       return;
     }
     const { attributeId } = parsedParams.data;
-    // TODO: use consultantId from a JWT token instead of getting the first
-    //       entry from the database
-    let consultantId;
     try {
-      const consultant = await prisma.consultant.findFirst();
-      if (consultant === null) {
-        res.status(404).json({ message: "No mock data found" });
+      const user = await prisma.user.findUnique({
+        where: { id: req.user!.id },
+        select: {
+          id: true,
+          roles: { select: { role: true } },
+          consultant: { select: { id: true } },
+        },
+      });
+      if (user === null) {
+        res
+          .status(404)
+          .json({ message: "User not found" });
         return;
       }
-      consultantId = consultant.id;
-    } catch (err) {
-      res.status(500).json(err);
-      return;
-    }
-    try {
-      await prisma.consultantAttribute.delete({
-        where: { id: attributeId, consultantId: consultantId },
-      });
+      let consultantId = user?.consultant?.id;
+      if(consultantId !== undefined && consultantId !== null){
+        const consultant = await prisma.consultant.findUnique({
+          where: { id: consultantId }
+        });
+        if (consultant === null) {
+          res
+            .status(404)
+            .json({ message: "Consultant not found" });
+          return;
+        }
+        await prisma.consultantAttribute.delete({
+          where: { id: attributeId, consultantId: consultantId },
+        });
+      }
     } catch (err) {
       res.status(500).json(err);
       return;
@@ -136,7 +160,7 @@ attributesRouter.delete(
  */
 attributesRouter.put(
   "/me/attributes/:attributeId", authenticate,
-  async (req: Request, res: Response) => {
+  async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = AttributeIdParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
       res.status(400).json(parsedParams.error);
@@ -151,32 +175,43 @@ attributesRouter.put(
     }
     const { value, label, type, visibility } = parsedBody.data;
 
-    // TODO: use consultantId from a JWT token instead of getting the first
-    //       entry from the database
-    let consultantId;
-    try {
-      const consultant = await prisma.consultant.findFirst();
-      if (consultant === null) {
-        res.status(404).json({ message: "No mock data found" });
-        return;
-      }
-      consultantId = consultant.id;
-    } catch (err) {
-      res.status(500).json(err);
-      return;
-    }
-
     let attribute = null;
     try {
-      attribute = await prisma.consultantAttribute.update({
-        where: { id: attributeId, consultantId: consultantId },
-        data: {
-          value,
-          label,
-          type,
-          visibility,
+      const user = await prisma.user.findUnique({
+        where: { id: req.user!.id },
+        select: {
+          id: true,
+          roles: { select: { role: true } },
+          consultant: { select: { id: true } },
         },
       });
+      if (user === null) {
+        res
+          .status(404)
+          .json({ message: "User not found" });
+        return;
+      }
+      let consultantId = user?.consultant?.id;
+      if(consultantId !== undefined && consultantId !== null){
+        const consultant = await prisma.consultant.findUnique({
+          where: { id: consultantId }
+        });
+        if (consultant === null) {
+          res
+            .status(404)
+            .json({ message: "Consultant not found" });
+          return;
+        }
+        attribute = await prisma.consultantAttribute.update({
+          where: { id: attributeId, consultantId: consultantId },
+          data: {
+            value,
+            label,
+            type,
+            visibility,
+          },
+        });
+      }
     } catch (err) {
       res.status(500).json(err);
       return;

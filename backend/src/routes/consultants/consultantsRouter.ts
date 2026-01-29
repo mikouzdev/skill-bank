@@ -11,6 +11,7 @@ import {
   getConsultantsByFilter,
   getConsultantsByName,
 } from "../../middlewares/search.js";
+import { authenticate, type AuthenticatedRequest } from "../../middlewares/authentication.js";
 
 // TODO: Check all env variables in a single place
 const PROFILE_PICTURE_PREFIX =
@@ -91,9 +92,9 @@ consultantsRouter.get("/:consultantId", async (req: Request, res: Response) => {
 });
 
 consultantsRouter.put(
-  "/me",
+  "/me", authenticate,
   uploadFile("profilePicture"),
-  async (req: Request, res: Response) => {
+  async (req: AuthenticatedRequest, res: Response) => {
     const parsedBody = UpdateConsultantSchema.safeParse(req.body);
     if (!parsedBody.success) {
       res.status(400).json(parsedBody.error);
@@ -102,21 +103,6 @@ consultantsRouter.put(
     const { description, roleTitle, user } = parsedBody.data;
     const profilePicture = req.file;
     let profilePictureUrl;
-
-    // TODO: use consultantId from a JWT token instead of getting the first
-    //       entry from the database
-    let consultantId;
-    try {
-      const consultant = await prisma.consultant.findFirst();
-      if (consultant === null) {
-        res.status(404).json({ message: "No mock data found" });
-        return;
-      }
-      consultantId = consultant.id;
-    } catch (err) {
-      res.status(500).json(err);
-      return;
-    }
 
     if (profilePicture !== undefined) {
       let imageType;
@@ -139,69 +125,80 @@ consultantsRouter.put(
       // Get the URL of the previous image
       let consultant = null;
       try {
-        consultant = await prisma.consultant.findFirst({
-          where: { id: consultantId },
+        const user = await prisma.user.findUnique({
+          where: { id: req.user!.id },
+          select: {
+            id: true,
+            name: true,
+            roles: { select: { role: true } },
+            consultant: { select: { id: true } },
+          },
         });
-      } catch (err) {
-        res.status(500).json(err);
-        return;
-      }
-      if (consultant === null) {
-        res.status(404).json({ message: "Consultant id not found" });
-        return;
-      }
-
-      // Delete the previous image
-      const storageService = new LocalStorageService();
-      const previousFilename = new URL(consultant.profilePictureUrl).pathname
-        .split("/")
-        .pop();
-
-      if (previousFilename !== undefined) {
-        try {
-          await storageService.delete(previousFilename);
-        } catch (err) {
-          res.status(500).json(err);
+        if (user === null) {
+          res
+            .status(404)
+            .json({ message: "User not found" });
           return;
         }
-      }
+        let consultantId = user?.consultant?.id;
+        if(consultantId !== undefined && consultantId !== null){
+          const consultant = await prisma.consultant.findUnique({
+            where: { id: consultantId }
+          });
+          if (consultant === null) {
+            res
+              .status(404)
+              .json({ message: "Consultant not found" });
+            return;
+          }
+          // Delete the previous image
+          const storageService = new LocalStorageService();
+          const previousFilename = new URL(consultant.profilePictureUrl).pathname
+            .split("/")
+            .pop();
 
-      // Add a new picture
-      const profilePictureFileName = `${consultantId}_pp${new Date().getTime()}.${
-        imageType.ext
-      }`;
-      profilePictureUrl = `${PROFILE_PICTURE_PREFIX}/${profilePictureFileName}`;
+          if (previousFilename !== undefined) {
+            try {
+              await storageService.delete(previousFilename);
+            } catch (err) {
+              res.status(500).json(err);
+              return;
+            }
+          }
 
-      try {
-        await storageService.save(
-          profilePictureFileName,
-          profilePicture.buffer
-        );
+          // Add a new picture
+          const profilePictureFileName = `${consultantId}_pp${new Date().getTime()}.${
+            imageType.ext
+          }`;
+          profilePictureUrl = `${PROFILE_PICTURE_PREFIX}/${profilePictureFileName}`;
+          try {
+            await storageService.save(
+              profilePictureFileName,
+              profilePicture.buffer
+            );
+            await prisma.consultant.update({
+            where: { id: consultantId },
+              data: {
+                ...(description !== undefined ? { description } : {}),
+                ...(roleTitle !== undefined ? { roleTitle } : {}),
+                ...(profilePictureUrl !== undefined ? { profilePictureUrl } : {}),
+                user: {
+                  update: {
+                    ...(user?.name !== undefined ? { name: user.name } : {}),
+                  },
+                },
+              },
+            });
+          } catch (err) {
+            res.status(500).json(err);
+            return;
+          }
+        }
       } catch (err) {
         res.status(500).json(err);
         return;
       }
     }
-
-    try {
-      await prisma.consultant.update({
-        where: { id: consultantId },
-        data: {
-          ...(description !== undefined ? { description } : {}),
-          ...(roleTitle !== undefined ? { roleTitle } : {}),
-          ...(profilePictureUrl !== undefined ? { profilePictureUrl } : {}),
-          user: {
-            update: {
-              ...(user?.name !== undefined ? { name: user.name } : {}),
-            },
-          },
-        },
-      });
-    } catch (err) {
-      res.status(500).json(err);
-      return;
-    }
-
     res.status(204).json();
   }
 );
