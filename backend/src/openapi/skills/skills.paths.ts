@@ -62,5 +62,19 @@ export const allSkillsPaths = {
         500: { description: "Server error" },
       },
     },
+    delete: {
+      summary: "Delete a skill",
+      tags: ["Skills"],
+      requestParams: {
+        path: SkillNameParamsSchema,
+      },
+      responses: {
+        204: { description: "Skill deleted" },
+        403: { description: "Unauthorized" },
+        404: { description: "Skill not found" },
+        409: { description: "Skill is in use and cannot be deleted" },
+        500: { description: "Server error" },
+      },
+    },
   },
 };

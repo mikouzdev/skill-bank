@@ -1,9 +1,9 @@
-import { Paper, Box, Stack } from "@mui/material";
+import { Paper, Box, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { UserCard } from "../components/UserCard";
 import { AddUserDialog } from "../components/AddUserDialog";
 import { DeleteUsersDialog } from "../components/DeleteUsersDialog";
-import { createUser, deleteUser, getUsers } from "../api/admin.api";
+import { createUser, deleteUser, getUsers, updateUser } from "../api/admin.api";
 import type { components } from "@api-types/openapi";
 // import { searchConsultants } from "../../consultant/api/consultants.api";
 // import SearchBar from "../../../shared/components/Search";
@@ -19,6 +19,8 @@ type SelectedUser = {
 export const ManageUsersPage = () => {
   const [users, setUsers] = useState<UserListResponse>([]);
   const [selectedUsers, setSelectedUsers] = useState<SelectedUser[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
   // const [search, setSearch] = useState<string>("");
 
   const toggleSelected = (user: SelectedUser) => {
@@ -32,14 +34,23 @@ export const ManageUsersPage = () => {
   useEffect(() => {
     const load = async () => {
       try {
+        setError("");
+        setLoading(true);
         const response = await getUsers();
         setUsers(response.data);
       } catch (err) {
         console.error("Failed to load users", err);
+        setError("Failed to load users");
+      } finally {
+        setLoading(false);
       }
     };
     void load();
   }, []);
+
+  if (loading) return <Typography>Loading...</Typography>;
+
+  if (error) return <Typography>{error}</Typography>;
 
   // commented because it searches only consultants and not all users
 
@@ -55,7 +66,6 @@ export const ManageUsersPage = () => {
 
   // todo: replace alerts with some more sophisticated feedback
   async function handleCreateNewUser(user: UserRequest): Promise<boolean> {
-    console.log("user payload: ", user);
     try {
       const response = await createUser(user);
       setUsers((prev) => [...prev, response.data]);
@@ -73,14 +83,31 @@ export const ManageUsersPage = () => {
       try {
         await deleteUser(selected.id);
         setUsers((prev) => prev.filter((user) => user.id !== selected.id));
-        setSelectedUsers([]);
       } catch (error) {
         console.log(`failed to delete user: ${selected.name}`, error);
+        alert("failed to delete user");
         return false;
       }
     }
-
+    setSelectedUsers([]);
     return true;
+  }
+
+  async function handleUpdateUser(
+    id: number,
+    payload: UserRequest
+  ): Promise<boolean> {
+    try {
+      const response = await updateUser(id, payload);
+      setUsers((prev) =>
+        prev.map((user) => (user.id === id ? response.data : user))
+      );
+      return true;
+    } catch (error) {
+      console.log("failed to update user: ", error);
+      alert("failed to update user");
+      return false;
+    }
   }
 
   return (
@@ -96,6 +123,9 @@ export const ManageUsersPage = () => {
               user={user}
               selected={selectedUsers.some((u) => u.id === user.id)}
               onToggle={toggleSelected}
+              onRoleChangeSubmit={(id, payload) =>
+                handleUpdateUser(id, payload)
+              }
             />
           </Box>
         ))}

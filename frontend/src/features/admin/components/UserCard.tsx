@@ -1,21 +1,47 @@
 import { Avatar, Box, Stack, Button, Checkbox } from "@mui/material";
 import { ChangeUserRole } from "./ChangeUserRole";
 import type { components } from "@api-types/openapi";
+import dayjs from "dayjs";
 
 type SelectedUser = { id: number; name: string };
 type UserResponse = components["schemas"]["UserResponse"];
+type UserBody = components["schemas"]["UserBody"];
 
 type Props = {
   user: UserResponse;
   selected: boolean;
   onToggle: (user: SelectedUser) => void;
+  onRoleChangeSubmit: (id: number, user: UserBody) => Promise<boolean>;
 };
 
-export const UserCard = ({ user, selected, onToggle }: Props) => {
+// user creation date
+function userCreationDate(date: string | Date) {
+  const now = dayjs();
+  const target = date;
+
+  const seconds = now.diff(target, "second");
+  if (seconds < 60) return `${seconds} seconds ago`;
+
+  const minutes = now.diff(target, "minute");
+  if (minutes < 60) return `${minutes} minutes ago`;
+
+  const hours = now.diff(target, "hour");
+  if (hours < 24) return `${hours} hours ago`;
+
+  const days = now.diff(target, "day");
+  return `${days} days ago`;
+}
+
+export const UserCard = ({
+  user,
+  selected,
+  onToggle,
+  onRoleChangeSubmit,
+}: Props) => {
   return (
     <>
       <Box sx={{ p: "12px", textWrap: "nowrap" }}>
-        <Stack direction="row" spacing={2}>
+        <Stack direction="row" spacing={2} alignItems="center">
           <Box>
             <Checkbox
               checked={selected}
@@ -36,14 +62,20 @@ export const UserCard = ({ user, selected, onToggle }: Props) => {
 
           {/* todo: show all roles */}
           <Box>{user.roles?.[0]?.role ? user.roles[0].role : "N/A"}</Box>
-          <Box>123 Days ago</Box>
+          <Box>{userCreationDate(user.createdAt)}</Box>
 
           <Box
-            sx={{ width: "100%", display: "flex", justifyContent: "flex-end" }}
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "flex-end",
+              gap: 1,
+            }}
           >
-            {/* <Button type="submit">Change role</Button>   */}
-            <ChangeUserRole id={user.id} name={user.name} />
-            <Button type="submit">View profile</Button>
+            <ChangeUserRole user={user} onSubmit={onRoleChangeSubmit} />
+            <Button variant="contained" type="submit">
+              View profile
+            </Button>
           </Box>
         </Stack>
       </Box>
