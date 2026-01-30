@@ -9,15 +9,55 @@ import {
   Checkbox,
   FormControlLabel,
   FormGroup,
+  Box,
 } from "@mui/material";
+import type { components } from "@api-types/openapi";
+
+type UserResponse = components["schemas"]["UserResponse"];
+type UserBody = components["schemas"]["UserBody"];
+type Role = "CONSULTANT" | "SALESPERSON" | "CUSTOMER" | "ADMIN";
 
 type Props = {
-    id: number; 
-    name: string;
-}
-export function ChangeUserRole({id, name} : Props) {
+  user: UserResponse;
+  onSubmit: (id: number, user: UserBody) => Promise<boolean>;
+};
+
+export function ChangeUserRole({ user, onSubmit }: Props) {
   const [open, setOpen] = useState(false);
-  const [form, setForm] = useState({}); // add roles here
+  const [form, setForm] = useState<UserResponse>(user); // add roles here
+  const [loading, setLoading] = useState<boolean>(false);
+
+  function hasRole(role: Role) {
+    return form.roles.some((r) => r.role === role);
+  }
+
+  function handleRoleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const role = e.target.name as Role;
+    const checked = e.target.checked;
+
+    setForm((prev) => ({
+      ...prev,
+      roles: checked
+        ? [...prev.roles, { role }]
+        : prev.roles.filter((r) => r.role !== role),
+    }));
+  }
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    const payload: UserBody = {
+      email: user.email,
+      name: user.name,
+      roles: form.roles,
+      passwordHash: "",
+    };
+
+    setLoading(true);
+    const success = await onSubmit(user.id, payload);
+    if (success) setOpen(false);
+    setLoading(false);
+  }
 
   return (
     <>
@@ -25,34 +65,68 @@ export function ChangeUserRole({id, name} : Props) {
         Change Role
       </Button>
 
-      <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="sm">
-        <DialogTitle>Change role of {name}</DialogTitle>
-
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            console.log("submit payload:", form); //pass to console for debuging
-            setOpen(false);
-          }}
-        >
+      <Dialog
+        open={open}
+        onClose={() => setOpen(false)}
+        fullWidth
+        maxWidth="sm"
+      >
+        <Box component="form" onSubmit={(e) => void handleSubmit(e)}>
+          <DialogTitle>Change role of {user.name}</DialogTitle>
           <DialogContent>
             <Stack direction="column" spacing={2} sx={{ mt: 1 }}>
               <FormGroup>
-                <FormControlLabel control={<Checkbox defaultChecked />} label="Consultant" />
-                <FormControlLabel control={<Checkbox />} label="Sales" />
-                <FormControlLabel control={<Checkbox />} label="Customer" />
-                <FormControlLabel control={<Checkbox />} label="Admin" />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      name="CONSULTANT"
+                      checked={hasRole("CONSULTANT")}
+                      onChange={(e) => handleRoleChange(e)}
+                    />
+                  }
+                  label="Consultant"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      name="SALESPERSON"
+                      checked={hasRole("SALESPERSON")}
+                      onChange={(e) => handleRoleChange(e)}
+                    />
+                  }
+                  label="Sales"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      name="CUSTOMER"
+                      checked={hasRole("CUSTOMER")}
+                      onChange={(e) => handleRoleChange(e)}
+                    />
+                  }
+                  label="Customer"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      name="ADMIN"
+                      checked={hasRole("ADMIN")}
+                      onChange={(e) => handleRoleChange(e)}
+                    />
+                  }
+                  label="Admin"
+                />
               </FormGroup>
             </Stack>
           </DialogContent>
 
           <DialogActions>
             <Button onClick={() => setOpen(false)}>Cancel</Button>
-            <Button type="submit" variant="contained">
+            <Button type="submit" variant="contained" loading={loading}>
               Save
             </Button>
           </DialogActions>
-        </form>
+        </Box>
       </Dialog>
     </>
   );
