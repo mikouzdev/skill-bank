@@ -3,7 +3,7 @@ import { ConsultantIdParamsSchema } from "../../schemas/consultants/consultants.
 import { ConsultantIdSectionNameParamsSchema, SectionNameParamsSchema, PageSectionBodySchema } from "../../schemas/consultants/pageSections.schema.js";
 import { Visibility } from "../../generated/prisma/enums.js";
 import { prisma } from "../../db/prismaClient.js";
-import { authenticate, type AuthenticatedRequest } from "../../middlewares/authentication.js";
+import { authenticate, type AuthenticatedRequest, findMe } from "../../middlewares/authentication.js";
 
 export const pageSectionsRouter = Router();
 
@@ -111,31 +111,8 @@ pageSectionsRouter.put(
 
     let pageSection = null;
     try {
-      const user = await prisma.user.findUnique({
-        where: { id: req.user!.id },
-        select: {
-          id: true,
-          roles: { select: { role: true } },
-          consultant: { select: { id: true } },
-        },
-      });
-      if (user === null) {
-        res
-          .status(404)
-          .json({ message: "User not found" });
-        return;
-      }
-      let consultantId = user?.consultant?.id;
+      let consultantId = await findMe(req.user!.id, res);
       if(consultantId !== undefined && consultantId !== null){
-        const consultant = await prisma.consultant.findUnique({
-          where: { id: consultantId }
-        });
-        if (consultant === null) {
-          res
-            .status(404)
-            .json({ message: "Consultant not found" });
-          return;
-        }
         pageSection = await prisma.pageSection.update({
           where: {
             consultantId_name: {

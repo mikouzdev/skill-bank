@@ -5,6 +5,7 @@ import {
   PostProjectLinkBodySchema,
   ProjectLinkSchema,
   ProjectSkillSchema,
+  PostProjectSkillBodySchema,
 } from "../../schemas/consultants/projects.schema.js";
 
 export const projectsPaths = {
@@ -166,7 +167,7 @@ export const projectsPaths = {
       ],
       requestBody: {
         required: true,
-        content: { "application/json": { schema: PostProjectLinkBodySchema } },
+        content: { "application/json": { schema: PostProjectSkillBodySchema } },
       },
       responses: {
         200: {

@@ -11,7 +11,7 @@ import {
   getConsultantsByFilter,
   getConsultantsByName,
 } from "../../middlewares/search.js";
-import { authenticate, type AuthenticatedRequest } from "../../middlewares/authentication.js";
+import { authenticate, type AuthenticatedRequest, findMe } from "../../middlewares/authentication.js";
 
 // TODO: Check all env variables in a single place
 const PROFILE_PICTURE_PREFIX =
@@ -125,22 +125,7 @@ consultantsRouter.put(
       // Get the URL of the previous image
       let consultant = null;
       try {
-        const user = await prisma.user.findUnique({
-          where: { id: req.user!.id },
-          select: {
-            id: true,
-            name: true,
-            roles: { select: { role: true } },
-            consultant: { select: { id: true } },
-          },
-        });
-        if (user === null) {
-          res
-            .status(404)
-            .json({ message: "User not found" });
-          return;
-        }
-        let consultantId = user?.consultant?.id;
+        let consultantId = await findMe(req.user!.id, res);
         if(consultantId !== undefined && consultantId !== null){
           const consultant = await prisma.consultant.findUnique({
             where: { id: consultantId }

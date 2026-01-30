@@ -21,7 +21,7 @@ export const ProjectLinkSchema = z
     id: z.number().meta({ example: "1" }),
     projectId: z.number().meta({ example: "1" }),
     createdAt: z.date().meta({ example: "2025-12-19T14:01:24.308Z" }),
-    url: z.string().meta({ example: "https://example.com" }),
+    url: z.string().meta({ example: "https:\/\/example.com" }),
     label: z.string().meta({ example: "Github" }),
   })
   .meta({ id: "ProjectLink" });
