@@ -22,6 +22,7 @@ async function main() {
   await prisma.userRole.deleteMany();
   await prisma.user.deleteMany();
   await prisma.skillTag.deleteMany();
+  await prisma.skillCategory.deleteMany();
 
   console.log("🧹 Database cleared");
 
@@ -256,6 +257,16 @@ async function main() {
   //================================================
 
   console.log("🛠️ Skills created");
+
+  // ===========================================
+  // Category
+  // ===========================================
+
+  const frontendCategory = await prisma.skillCategory.create({
+    data: { name: "Frontend" },
+  });
+
+  console.log("🏷️ Frontend category created");
 
   // ===========================================
   // Projects
