@@ -4,8 +4,12 @@ import {
   authenticate,
   type AuthenticatedRequest,
 } from "../../middlewares/authentication.js";
-import { PostSkillTagBodySchema } from "../../schemas/skills/skill-tags.schema.js";
-
+import {
+  PostSkillTagBodySchema,
+  PatchSkillTagBodySchema,
+  SkillNameParamsSchema,
+} from "../../schemas/skills/skill-tags.schema.js";
+import { Prisma } from "../../generated/prisma/client.js";
 export const skillsRouter = Router();
 
 /**
@@ -42,7 +46,7 @@ skillsRouter.post(
     }
 
     const name = parsed.data.name.trim().toLowerCase();
-    
+
     const categoryId = parsed.data.categoryId ?? null;
 
     const skillTagRow = await prisma.skillTag.upsert({
@@ -62,5 +66,57 @@ skillsRouter.post(
     };
 
     return res.status(201).json(skillTag);
+  }
+);
+
+skillsRouter.patch(
+  "/:skillName",
+  authenticate,
+  async (req: AuthenticatedRequest, res: Response) => {
+    try {
+      const roles = req.user?.roles ?? [];
+      if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
+        return res.status(403).json({ error: "Unauthorized" });
+      }
+
+      const paramsParsed = SkillNameParamsSchema.safeParse(req.params);
+      if (!paramsParsed.success) {
+        return res.status(400).json({ error: "Invalid request" });
+      }
+
+      const skillName = paramsParsed.data.skillName.trim().toLowerCase();
+
+      const bodyParsed = PatchSkillTagBodySchema.safeParse(req.body);
+      if (!bodyParsed.success) {
+        return res.status(400).json({ error: "Invalid request" });
+      }
+
+      const categoryId = bodyParsed.data.categoryId;
+
+      const updatedSkillTag = await prisma.skillTag.update({
+        where: { name: skillName },
+        data: {
+          ...(categoryId !== undefined ? { categoryid: categoryId } : {}),
+        },
+      });
+
+      return res.status(200).json({
+        id: updatedSkillTag.id,
+        name: updatedSkillTag.name,
+        categoryId: updatedSkillTag.categoryid,
+      });
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        switch (error.code) {
+          case "P2025":
+            return res.status(404).json({ error: "Skill tag not found" });
+          case "P2003":
+            return res
+              .status(400)
+              .json({ error: "Invalid request" }); // categoryId does not exist
+        }
+      }
+      return res.status(500).json({ error: "Server error" });
+    }
   }
 );

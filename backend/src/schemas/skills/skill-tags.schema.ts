@@ -15,13 +15,18 @@ export const SkillTagsSchema = z
 export const PostSkillTagBodySchema = z
   .object({
     name: z.string().min(1).meta({ example: "typescript" }),
-    categoryId: z
-      .number()
-      .int()
-      .nullable()
-      .optional()
-      .meta({ example: 3 }),
+    categoryId: z.number().int().nullable().optional().meta({ example: 1 }),
   })
   .meta({ id: "PostSkillTagBody" });
 
-  export type PostSkillTagBody = z.infer<typeof PostSkillTagBodySchema>;
+export const PatchSkillTagBodySchema = z
+  .object({
+    categoryId: z.number().int().nullable().optional().meta({ example: 1 }),
+  })
+  .meta({ id: "PatchSkillTagBody" });
+
+export const SkillNameParamsSchema = z.object({
+  skillName: z.string().min(1).meta({ example: "typescript" }),
+});
+
+export type PostSkillTagBody = z.infer<typeof PostSkillTagBodySchema>;
