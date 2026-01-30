@@ -18,16 +18,16 @@ export const skillsRouter = Router();
  * @returns [skills]
  */
 skillsRouter.get("/", async (req: Request, res: Response) => {
-  try {
-    const skills = await prisma.skillTag.findMany({
-      orderBy: { name: "asc" },
-    });
-    res.send(skills);
-    return;
-  } catch (err) {
-    res.status(500).json(err);
-    return;
-  }
+  const skills = await prisma.skillTag.findMany({
+    orderBy: { name: "asc" },
+  });
+  return res.json(
+    skills.map((s) => ({
+      id: s.id,
+      name: s.name,
+      categoryId: s.categoryid, // to get rid of mapping, change DB field to categoryId
+    }))
+  );
 });
 
 skillsRouter.post(
@@ -111,12 +111,62 @@ skillsRouter.patch(
           case "P2025":
             return res.status(404).json({ error: "Skill tag not found" });
           case "P2003":
-            return res
-              .status(400)
-              .json({ error: "Invalid request" }); // categoryId does not exist
+            return res.status(400).json({ error: "Invalid request" }); // categoryId does not exist
         }
       }
-      return res.status(500).json({ error: "Server error" });
+      throw error;
     }
+  }
+);
+
+skillsRouter.delete(
+  "/:skillName",
+  authenticate,
+  async (req: AuthenticatedRequest, res: Response) => {
+    const roles = req.user?.roles ?? [];
+    if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
+      return res.status(403).json({ error: "Unauthorized" });
+    }
+
+    const paramsParsed = SkillNameParamsSchema.safeParse(req.params);
+    if (!paramsParsed.success) {
+      return res.status(400).json({ error: "Invalid request" });
+    }
+
+    const skillName = paramsParsed.data.skillName.trim().toLowerCase();
+
+    const skillUsage = await prisma.skillTag.findUnique({
+      where: { name: skillName },
+      select: {
+        _count: {
+          select: {
+            consultantSkills: true,
+            employmentSkills: true,
+            projectSkills: true,
+          },
+        },
+      },
+    });
+
+    if (!skillUsage) {
+      return res.status(404).json({ error: "Skill not found" });
+    }
+
+    if (
+      skillUsage._count.consultantSkills > 0 ||
+      skillUsage._count.employmentSkills > 0 ||
+      skillUsage._count.projectSkills > 0
+    ) {
+      return res.status(409).json({
+        error: "Skill is in use and cannot be deleted",
+        counts: skillUsage._count,
+      });
+    }
+
+    await prisma.skillTag.delete({
+      where: { name: skillName },
+    });
+
+    return res.status(200).json({ message: "Skill deleted" });
   }
 );
