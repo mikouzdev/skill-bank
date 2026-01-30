@@ -2063,18 +2063,11 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["SkillTagList"];
+                        "application/json": components["schemas"]["SkillTag"];
                     };
                 };
                 /** @description Invalid request */
                 400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Skill already exists */
-                409: {
                     headers: {
                         [name: string]: unknown;
                     };
@@ -2093,6 +2086,79 @@ export interface paths {
         options?: never;
         head?: never;
         patch?: never;
+        trace?: never;
+    };
+    "/skills/{skillName}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update a skill
+         * @description Updates the category of an existing skill. Either categoryId or null can be provided.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    skillName: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["PatchSkillTagBody"];
+                };
+            };
+            responses: {
+                /** @description Updated */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SkillTag"];
+                    };
+                };
+                /** @description Invalid params/body or invalid categoryId */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Skill not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
         trace?: never;
     };
 }
@@ -2178,7 +2244,11 @@ export interface components {
         PostSkillTagBody: {
             /** @example typescript */
             name: string;
-            /** @example 3 */
+            /** @example 1 */
+            categoryId?: number | null;
+        };
+        PatchSkillTagBody: {
+            /** @example 1 */
             categoryId?: number | null;
         };
         AuthResponse: {
