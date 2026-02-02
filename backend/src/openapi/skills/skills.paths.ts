@@ -108,5 +108,34 @@ export const allSkillsPaths = {
         500: { description: "Server error" },
       },
     },
+  },
+  "/skills/categories/{categoryId}": {
+    put: {
+      summary: "Edits a skill category",
+      tags: ["Skills"],
+      parameters: [
+        {
+          name: "categoryId",
+          in: "path" as const,
+          required: true,
+          //TODO: use SkillCategoryIdParamsSchema
+          schema: { type: "integer" as const },
+        },
+      ],
+      requestBody: {
+        required: true,
+        content: { "application/json": { schema: PostSkillCategoryBodySchema } },
+      },
+      responses: {
+        200: {
+          description: "Edit successful",
+          content: {
+            "application/json": { schema: skillCategorySchema },
+          },
+        },
+        400: { description: "Invalid request" },
+        500: { description: "Server error" },
+      },
+    },
   }
 };

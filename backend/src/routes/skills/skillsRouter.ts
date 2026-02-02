@@ -9,7 +9,7 @@ import {
   PatchSkillTagBodySchema,
   SkillNameParamsSchema,
 } from "../../schemas/skills/skill-tags.schema.js";
-import { PostSkillCategoryBodySchema } from "../../schemas/skills/skill-categories.schema.js"
+import { PostSkillCategoryBodySchema, SkillCategoryIdParamsSchema } from "../../schemas/skills/skill-categories.schema.js"
 import { Prisma } from "../../generated/prisma/client.js";
 export const skillsRouter = Router();
 
@@ -193,10 +193,6 @@ skillsRouter.delete(
  * @returns [skill categories]
  */
 skillsRouter.get("/categories", authenticate, async (req: AuthenticatedRequest, res: Response) => {
-  const roles = req.user?.roles ?? [];
-  if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
-   return res.status(403).json({ error: "Unauthorized" });
-  }
   try {
     const categories = await prisma.skillCategory.findMany({
         include: {
@@ -249,4 +245,51 @@ skillsRouter.post("/categories", authenticate, async (req: AuthenticatedRequest,
     return;
   }
 
+});
+
+/**
+ * Edit skill category in the database
+ * @route PUT /skills/categories/{categoryId}
+ * @returns edited skill category
+ */
+skillsRouter.put("/categories/:categoryId", authenticate, async (req: AuthenticatedRequest, res: Response) => {
+  //const roles = req.user?.roles ?? [];
+  // if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
+  //   return res.status(403).json({ error: "Unauthorized" });
+  // }
+  const parsedParams = SkillCategoryIdParamsSchema.safeParse(req.params);
+  if (!parsedParams.success) {
+    res.status(400).json(parsedParams.error);
+    return;
+  }
+  const { categoryId } = parsedParams.data;
+
+  const parsedBody = PostSkillCategoryBodySchema.safeParse(req.body);
+  if (!parsedBody.success) {
+    res.status(400).json(parsedBody.error);
+    return;
+  }
+  const { name, skillTags } = parsedBody.data;
+
+  let category = null;
+  try {
+    category = await prisma.skillCategory.update({
+      where: { id: categoryId },
+      data: {
+        name,
+        skillTags: {
+          deleteMany: {}, // delete skills
+            // create incoming skills, ( it errors if the skill doesnt exist in SkillTag )
+          create: skillTags.map((skillTag) => ({
+            name: skillTag.name,
+          })),
+        }
+      },
+    });
+    res.status(200).json(category);
+    return;
+  } catch (err) {
+    res.status(500).json(err);
+    return;
+  }
 });

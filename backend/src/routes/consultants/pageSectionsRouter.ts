@@ -50,10 +50,13 @@ pageSectionsRouter.get(
  * @route GET /consultants/{consultantId}/sections/{sectionName}
  * @returns page section
  */
-//TODO: make this only available for sales and admin roles
 pageSectionsRouter.get(
   "/:consultantId/sections/:sectionName", authenticate,
-  async (req: Request, res: Response) => {
+  async (req: AuthenticatedRequest, res: Response) => {
+    const roles = req.user?.roles ?? [];
+    if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
+      return res.status(403).json({ error: "Unauthorized" });
+    }
     const parsedParams = ConsultantIdSectionNameParamsSchema.safeParse(
       req.params
     );
