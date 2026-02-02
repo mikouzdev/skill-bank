@@ -16,3 +16,7 @@ export const PostSkillCategoryBodySchema = skillCategorySchema.pick({
 export const SkillCategoriesSchema = z
   .array(skillCategorySchema)
   .meta({ id: "SkillCategories" });
+
+export const SkillCategoryIdParamsSchema = z.object({
+  categoryId: z.coerce.number().meta({ example: "1" }),
+}).meta({ id: "SkillCategoryId" });
