@@ -9,6 +9,7 @@ import {
   PatchSkillTagBodySchema,
   SkillNameParamsSchema,
 } from "../../schemas/skills/skill-tags.schema.js";
+import { PostSkillCategoryBodySchema } from "../../schemas/skills/skill-categories.schema.js"
 import { Prisma } from "../../generated/prisma/client.js";
 export const skillsRouter = Router();
 
@@ -30,6 +31,11 @@ skillsRouter.get("/", async (req: Request, res: Response) => {
   );
 });
 
+/**
+ * Add new skill in the database
+ * @route POST /skills
+ * @returns added skill
+ */
 skillsRouter.post(
   "/",
   authenticate,
@@ -69,6 +75,11 @@ skillsRouter.post(
   }
 );
 
+/**
+ * Update skill in the database
+ * @route PATCH /skills/{skillName}
+ * @returns updated skill
+ */
 skillsRouter.patch(
   "/:skillName",
   authenticate,
@@ -119,6 +130,11 @@ skillsRouter.patch(
   }
 );
 
+/**
+ * Delete skill in the database
+ * @route DELETE /skills/{skillName}
+ * @returns confirmation message
+ */
 skillsRouter.delete(
   "/:skillName",
   authenticate,
@@ -170,3 +186,67 @@ skillsRouter.delete(
     return res.status(200).json({ message: "Skill deleted" });
   }
 );
+
+/**
+ * Get all skill categories in the database
+ * @route GET /skills/categories
+ * @returns [skill categories]
+ */
+skillsRouter.get("/categories", authenticate, async (req: AuthenticatedRequest, res: Response) => {
+  //const roles = req.user?.roles ?? [];
+  //if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
+  //  return res.status(403).json({ error: "Unauthorized" });
+  //}
+  try {
+    const categories = await prisma.skillCategory.findMany({
+        include: {
+          skillTags: true,
+        },
+      }
+    );
+    res.send(categories);
+    return;
+  } catch (err) {
+    res.status(500).json(err);
+    return;
+  }
+});
+
+/**
+ * Add new skill category in the database
+ * @route POST /skills/categories
+ * @returns created skill category
+ */
+skillsRouter.post("/categories", authenticate, async (req: AuthenticatedRequest, res: Response) => {
+  // const roles = req.user?.roles ?? [];
+  // if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
+  //   return res.status(403).json({ error: "Unauthorized" });
+  // }
+  const parsedBody = PostSkillCategoryBodySchema.safeParse(req.body);
+  if (!parsedBody.success) {
+    return res
+      .status(400)
+      .json({ error: "Invalid body", details: parsedBody.error });
+  }
+  const { name, skillTags } = parsedBody.data;
+
+  let category = null;
+  try {
+    category = await prisma.skillCategory.create({
+        data: {
+          name,
+          skillTags: {
+            create: skillTags.map((skillTag) => ({
+              name: skillTag.name
+            })),
+          }
+        },
+      });
+      res.status(201).json(category);
+      return;
+    } catch (err) {
+    res.status(500).json(err);
+    return;
+  }
+
+});

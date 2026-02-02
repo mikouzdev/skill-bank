@@ -5,6 +5,7 @@ import {
   SkillTagSchema,
   SkillTagsSchema,
 } from "../../schemas/skills/skill-tags.schema.js";
+import { PostSkillCategoryBodySchema, skillCategorySchema, SkillCategoriesSchema } from "../../schemas/skills/skill-categories.schema.js"
 
 export const allSkillsPaths = {
   "/skills": {
@@ -77,4 +78,35 @@ export const allSkillsPaths = {
       },
     },
   },
+  "/skills/categories": {
+    get: {
+      summary: "Get all skill categories",
+      tags: ["Skills"],
+      responses: {
+        200: {
+          description: "Retrieval successful",
+          content: {
+            "application/json": { schema: SkillCategoriesSchema },
+          },
+        },
+        500: { description: "Server error" },
+      },
+    },
+    post: {
+      summary: "Create a new skill category",
+      tags: ["Skills"],
+      requestBody: {
+        required: true,
+        content: { "application/json": { schema: PostSkillCategoryBodySchema } },
+      },
+      responses: {
+        201: {
+          description: "Created",
+          content: { "application/json": { schema: skillCategorySchema } },
+        },
+        400: { description: "Invalid request" },
+        500: { description: "Server error" },
+      },
+    },
+  }
 };
