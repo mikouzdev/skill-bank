@@ -13,9 +13,7 @@ export const adminRouter = Router();
  * @route GET /admin/users
  * @returns [users]
  */
-//Add this once it is made functional (checks for user admin role correctly)
-//adminOnly,
-adminRouter.get("/users", authenticate, async (req: Request, res: Response) => {
+adminRouter.get("/users", adminOnly, authenticate, async (req: Request, res: Response) => {
   try {
     const users = await prisma.user.findMany({
       include: {
@@ -38,11 +36,9 @@ adminRouter.get("/users", authenticate, async (req: Request, res: Response) => {
  * @route POST /admin/users
  * @returns created user
  */
-//Add this once it is made functional (checks for user admin role correctly)
-//adminOnly
 adminRouter.post(
   "/users",
-  authenticate,
+  authenticate, adminOnly,
   async (req: Request, res: Response) => {
     const parsedBody = UserBodySchema.safeParse(req.body);
 
@@ -79,7 +75,7 @@ adminRouter.post(
           roles: true,
         },
       });
-      let userId = createdUser.id;
+      const userId = createdUser.id;
       roles.forEach(async (role) => {
         switch (role.role) {
           case "CONSULTANT":
@@ -131,11 +127,9 @@ adminRouter.post(
  * @route DELETE /admin/users/{userId}
  * @returns
  */
-//Add this once it is made functional (checks for user admin role correctly)
-//adminOnly,
 adminRouter.delete(
   "/users/:userId",
-  authenticate,
+  authenticate, adminOnly,
   async (req: Request, res: Response) => {
     const parsedParams = UserIdParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
@@ -161,11 +155,9 @@ adminRouter.delete(
  * @route PUT /admin/users/{userId}
  * @returns updated user
  */
-//Add this once it is made functional (checks for user admin role correctly)
-//adminOnly,
 adminRouter.put(
   "/users/:userId",
-  authenticate,
+  authenticate, adminOnly,
   async (req: Request, res: Response) => {
     const parsedParams = UserIdParamsSchema.safeParse(req.params);
 

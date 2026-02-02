@@ -4,7 +4,6 @@ import { prisma } from "../db/prismaClient.js";
 import type { Role } from "../generated/prisma/enums.js";
 import { TokenPayloadSchema } from "../schemas/auth/auth.schema.js";
 
-//TODO: roles
 export interface AuthenticatedRequest extends Request {
   user?: {
     id: number;

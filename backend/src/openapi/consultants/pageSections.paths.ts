@@ -1,6 +1,5 @@
 import {
-    GetPageSectionsResponseSchema,
-    ConsultantIdSectionNameParamsSchema, PageSectionBodySchema, PageSectionSchema
+    GetPageSectionsResponseSchema, PageSectionBodySchema, PageSectionSchema
 } from "../../schemas/consultants/pageSections.schema.js";
 
 
