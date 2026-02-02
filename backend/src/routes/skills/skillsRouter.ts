@@ -193,10 +193,10 @@ skillsRouter.delete(
  * @returns [skill categories]
  */
 skillsRouter.get("/categories", authenticate, async (req: AuthenticatedRequest, res: Response) => {
-  //const roles = req.user?.roles ?? [];
-  //if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
-  //  return res.status(403).json({ error: "Unauthorized" });
-  //}
+  const roles = req.user?.roles ?? [];
+  if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
+   return res.status(403).json({ error: "Unauthorized" });
+  }
   try {
     const categories = await prisma.skillCategory.findMany({
         include: {
@@ -218,10 +218,10 @@ skillsRouter.get("/categories", authenticate, async (req: AuthenticatedRequest, 
  * @returns created skill category
  */
 skillsRouter.post("/categories", authenticate, async (req: AuthenticatedRequest, res: Response) => {
-  // const roles = req.user?.roles ?? [];
-  // if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
-  //   return res.status(403).json({ error: "Unauthorized" });
-  // }
+  const roles = req.user?.roles ?? [];
+  if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
+    return res.status(403).json({ error: "Unauthorized" });
+  }
   const parsedBody = PostSkillCategoryBodySchema.safeParse(req.body);
   if (!parsedBody.success) {
     return res
