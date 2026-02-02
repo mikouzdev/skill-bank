@@ -93,7 +93,7 @@ pageSectionsRouter.get(
  * @returns updated page section
  */
 pageSectionsRouter.put(
-  "/me/sections/:sectionName", authenticate,
+  "/me/sections/:sectionName", authenticate, findMe,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = SectionNameParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
@@ -110,8 +110,8 @@ pageSectionsRouter.put(
     const { name, visibility } = parsedBody.data;
 
     let pageSection = null;
+    let consultantId = res.locals.consultantId;
     try {
-      let consultantId = await findMe(req.user!.id, res);
       if(consultantId !== undefined && consultantId !== null){
         pageSection = await prisma.pageSection.update({
           where: {

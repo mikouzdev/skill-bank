@@ -50,7 +50,7 @@ employmentsRouter.get(
 );
 
 employmentsRouter.post(
-  "/me/employments", authenticate,
+  "/me/employments", authenticate, findMe,
   async (req: AuthenticatedRequest, res: Response) => {
     console.log("Found consultant");
 
@@ -71,8 +71,8 @@ employmentsRouter.post(
     } = parsedBody.data;
 
     let createdEmployment = null;
+    let consultantId = res.locals.consultantId;
     try {
-      let consultantId = await findMe(req.user!.id, res);
       if(consultantId !== undefined && consultantId !== null){
         createdEmployment = await prisma.employment.create({
           data: {
@@ -101,7 +101,7 @@ employmentsRouter.post(
 );
 
 employmentsRouter.put(
-  "/me/employments/:employmentId", authenticate,
+  "/me/employments/:employmentId", authenticate, findMe,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = EmploymentIdParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
@@ -126,8 +126,8 @@ employmentsRouter.put(
     } = parsedBody.data;
 
     let employment = null;
+    let consultantId = res.locals.consultantId;
     try {
-      let consultantId = await findMe(req.user!.id, res);
       if(consultantId !== undefined && consultantId !== null){
         employment = await prisma.employment.update({
           where: { id: employmentId, consultantId: consultantId },
@@ -158,7 +158,7 @@ employmentsRouter.put(
 );
 
 employmentsRouter.delete(
-  "/me/employments/:employmentId", authenticate,
+  "/me/employments/:employmentId", authenticate, findMe,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = EmploymentIdParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
@@ -166,9 +166,8 @@ employmentsRouter.delete(
       return;
     }
     const { employmentId } = parsedParams.data;
-
+    let consultantId = res.locals.consultantId;
     try {
-      let consultantId = await findMe(req.user!.id, res);
       if(consultantId !== undefined && consultantId !== null){
         await prisma.employment.delete({
           where: { id: employmentId, consultantId: consultantId },
@@ -184,7 +183,7 @@ employmentsRouter.delete(
 );
 
 employmentsRouter.post(
-  "/me/employments/:employmentId/skills", authenticate,
+  "/me/employments/:employmentId/skills", authenticate, findMe,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = EmploymentIdParamsSchema.safeParse(req.params);
     const parsedBody = PostEmploymentSkillBodySchema.safeParse(req.body);
@@ -202,8 +201,8 @@ employmentsRouter.post(
     const { skillTagName } = parsedBody.data;
 
     let employmentSkill = null;
+    let consultantId = res.locals.consultantId;
     try {
-      let consultantId = await findMe(req.user!.id, res);
       if(consultantId !== undefined && consultantId !== null){
         const employment = await prisma.employment.findUnique({
           where: { id: employmentId, consultantId: consultantId }
@@ -231,7 +230,7 @@ employmentsRouter.post(
 );
 
 employmentsRouter.delete(
-  "/me/employments/:employmentId/skills/:employmentSkillId", authenticate,
+  "/me/employments/:employmentId/skills/:employmentSkillId", authenticate, findMe,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = DeleteEmploymentSkillParamsSchema.safeParse(
       req.params
@@ -241,9 +240,8 @@ employmentsRouter.delete(
       return;
     }
     const { employmentId, employmentSkillId } = parsedParams.data;
-
+    let consultantId = res.locals.consultantId;
     try {
-      let consultantId = await findMe(req.user!.id, res);
       if(consultantId !== undefined && consultantId !== null){
         const employment = await prisma.employment.findUnique({
           where: { id: employmentId, consultantId: consultantId }

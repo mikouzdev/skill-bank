@@ -92,7 +92,7 @@ consultantsRouter.get("/:consultantId", async (req: Request, res: Response) => {
 });
 
 consultantsRouter.put(
-  "/me", authenticate,
+  "/me", authenticate, findMe,
   uploadFile("profilePicture"),
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedBody = UpdateConsultantSchema.safeParse(req.body);
@@ -124,8 +124,8 @@ consultantsRouter.put(
 
       // Get the URL of the previous image
       let consultant = null;
+      let consultantId = res.locals.consultantId;
       try {
-        let consultantId = await findMe(req.user!.id, res);
         if(consultantId !== undefined && consultantId !== null){
           const consultant = await prisma.consultant.findUnique({
             where: { id: consultantId }

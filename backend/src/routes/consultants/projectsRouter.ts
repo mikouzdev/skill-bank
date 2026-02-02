@@ -14,7 +14,7 @@ import { authenticate, type AuthenticatedRequest, findMe } from "../../middlewar
 
 export const projectsRouter = Router();
 
-projectsRouter.post("/me/projects", authenticate, async (req: AuthenticatedRequest, res: Response) => {
+projectsRouter.post("/me/projects", authenticate, findMe, async (req: AuthenticatedRequest, res: Response) => {
   const parsedBody = ProjectBodySchema.safeParse(req.body);
   if (!parsedBody.success) {
     res.status(400).json(parsedBody.error);
@@ -23,8 +23,8 @@ projectsRouter.post("/me/projects", authenticate, async (req: AuthenticatedReque
   const { description, name, start, end, visibility } = parsedBody.data;
 
   let project = null;
+  let consultantId = res.locals.consultantId;
   try {
-    let consultantId = await findMe(req.user!.id, res);
     if(consultantId !== undefined && consultantId !== null){
       project = await prisma.project.create({
         data: {
@@ -82,7 +82,7 @@ projectsRouter.get(
 );
 
 projectsRouter.put(
-  "/me/projects/:projectId", authenticate,
+  "/me/projects/:projectId", authenticate, findMe,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = ProjectIdParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
@@ -101,10 +101,9 @@ projectsRouter.put(
 
     let project = null;
     try {
-      let consultantId = await findMe(req.user!.id, res);
-      if(consultantId !== undefined && consultantId !== null){
+      if(res.locals.consultantId !== undefined && res.locals.consultantId !== null){
         project = await prisma.project.update({
-          where: { id: projectId, consultantId: consultantId },
+          where: { id: projectId, consultantId: res.locals.consultantId },
           data: {
             description,
             name,
@@ -131,7 +130,7 @@ projectsRouter.put(
 );
 
 projectsRouter.delete(
-  "/me/projects/:projectId", authenticate,
+  "/me/projects/:projectId", authenticate, findMe,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = ProjectIdParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
@@ -141,10 +140,9 @@ projectsRouter.delete(
     const { projectId } = parsedParams.data;
 
     try {
-      let consultantId = await findMe(req.user!.id, res);
-      if(consultantId !== undefined && consultantId !== null){
+      if(res.locals.consultantId !== undefined && res.locals.consultantId !== null){
         await prisma.project.delete({
-          where: { id: projectId, consultantId: consultantId },
+          where: { id: projectId, consultantId: res.locals.consultantId },
         });
       }
     } catch (err) {
@@ -157,7 +155,7 @@ projectsRouter.delete(
 );
 
 projectsRouter.post(
-  "/me/projects/:projectId/links", authenticate,
+  "/me/projects/:projectId/links", authenticate, findMe,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = ProjectIdParamsSchema.safeParse(req.params);
     const parsedBody = PostProjectLinkBodySchema.safeParse(req.body);
@@ -176,10 +174,9 @@ projectsRouter.post(
 
     let projectLink = null;
     try {
-      let consultantId = await findMe(req.user!.id, res);
-      if(consultantId !== undefined && consultantId !== null){
+      if(res.locals.consultantId !== undefined && res.locals.consultantId !== null){
         const project = await prisma.project.findUnique({
-          where: { id: projectId, consultantId: consultantId }
+          where: { id: projectId, consultantId: res.locals.consultantId }
         });
         if (project === null) {
           res
@@ -205,7 +202,7 @@ projectsRouter.post(
 );
 
 projectsRouter.delete(
-  "/me/projects/:projectId/links/:linkId", authenticate,
+  "/me/projects/:projectId/links/:linkId", authenticate, findMe,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = DeleteProjectLinkParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
@@ -215,10 +212,9 @@ projectsRouter.delete(
     const { projectId, linkId } = parsedParams.data;
 
     try {
-      let consultantId = await findMe(req.user!.id, res);
-      if(consultantId !== undefined && consultantId !== null){
+      if(res.locals.consultantId !== undefined && res.locals.consultantId !== null){
         const project = await prisma.project.findUnique({
-          where: { id: projectId, consultantId: consultantId }
+          where: { id: projectId, consultantId: res.locals.consultantId }
         });
         if (project === null) {
           res
@@ -240,7 +236,7 @@ projectsRouter.delete(
 );
 
 projectsRouter.post(
-  "/me/projects/:projectId/skills", authenticate,
+  "/me/projects/:projectId/skills", authenticate, findMe,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = ProjectIdParamsSchema.safeParse(req.params);
     const parsedBody = PostProjectSkillBodySchema.safeParse(req.body);
@@ -259,10 +255,9 @@ projectsRouter.post(
 
     let projectSkill = null;
     try {
-      let consultantId = await findMe(req.user!.id, res);
-      if(consultantId !== undefined && consultantId !== null){
+      if(res.locals.consultantId !== undefined && res.locals.consultantId !== null){
         const project = await prisma.project.findUnique({
-          where: { id: projectId, consultantId: consultantId }
+          where: { id: projectId, consultantId: res.locals.consultantId }
         });
         if (project === null) {
           res
@@ -294,7 +289,7 @@ projectsRouter.post(
 );
 
 projectsRouter.delete(
-  "/me/projects/:projectId/skills/:projectSkillId", authenticate,
+  "/me/projects/:projectId/skills/:projectSkillId", authenticate, findMe,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = DeleteProjectSkillParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
@@ -304,10 +299,9 @@ projectsRouter.delete(
     const { projectId, projectSkillId } = parsedParams.data;
 
     try {
-      let consultantId = await findMe(req.user!.id, res);
-      if(consultantId !== undefined && consultantId !== null){
+      if(res.locals.consultantId !== undefined && res.locals.consultantId !== null){
         const project = await prisma.project.findUnique({
-          where: { id: projectId, consultantId: consultantId }
+          where: { id: projectId, consultantId: res.locals.consultantId }
         });
         if (project === null) {
           res

@@ -68,7 +68,7 @@ skillsRouter.get(
  * @route : POST /consultants/skills/me
  * @body : {skill: string, proficiency: number}
  */
-skillsRouter.post("/skills/me", authenticate, async (req: AuthenticatedRequest, res: Response) => {
+skillsRouter.post("/skills/me", authenticate, findMe, async (req: AuthenticatedRequest, res: Response) => {
   const parsedBody = PostConsultantSkillBodySchema.safeParse(req.body);
   if (!parsedBody.success) {
     res.status(400).json(parsedBody.error);
@@ -77,8 +77,7 @@ skillsRouter.post("/skills/me", authenticate, async (req: AuthenticatedRequest, 
   const { skillName, proficiency } = parsedBody.data;
 
   try {
-    let consultantId = await findMe(req.user!.id, res);
-    if(consultantId !== undefined && consultantId !== null){
+    if(res.locals.consultantId !== undefined && res.locals.consultantId !== null){
       // make sure the skill exists in skilltags
       const skillExists = await prisma.skillTag.findFirst({
         where: { name: skillName },
@@ -91,7 +90,7 @@ skillsRouter.post("/skills/me", authenticate, async (req: AuthenticatedRequest, 
       // check if consultant already has this skill
       const consultantHasSkill = await prisma.consultantSkill.findFirst({
         where: {
-          consultantId: consultantId,
+          consultantId: res.locals.consultantId,
           skillName: skillName,
         },
       });
@@ -106,7 +105,7 @@ skillsRouter.post("/skills/me", authenticate, async (req: AuthenticatedRequest, 
         data: {
           skillName,
           proficiency: proficiency,
-          consultantId: consultantId,
+          consultantId: res.locals.consultantId,
         },
       });
 
@@ -124,7 +123,7 @@ skillsRouter.post("/skills/me", authenticate, async (req: AuthenticatedRequest, 
  * @route DELETE /consultants/skills/me/{skillId}
  */
 skillsRouter.delete(
-  "/skills/me/:skillId", authenticate,
+  "/skills/me/:skillId", authenticate, findMe,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = SkillIdParamsSchema.safeParse(req.params);
 
@@ -136,12 +135,11 @@ skillsRouter.delete(
     const { skillId } = parsedParams.data;
 
     try {
-      let consultantId = await findMe(req.user!.id, res);
-      if(consultantId !== undefined && consultantId !== null){
+      if(res.locals.consultantId !== undefined && res.locals.consultantId !== null){
         await prisma.consultantSkill.delete({ 
           where: { 
             id: skillId, 
-            consultantId: consultantId
+            consultantId: res.locals.consultantId
           }
         });
       }
@@ -159,7 +157,7 @@ skillsRouter.delete(
  * @body {proficiency: {skill's proficiency}}
  * @route PUT /consultants/skills/me/{skillId}
  */
-skillsRouter.put("/skills/me/:skillId", authenticate, async (req: AuthenticatedRequest, res: Response) => {
+skillsRouter.put("/skills/me/:skillId", authenticate, findMe, async (req: AuthenticatedRequest, res: Response) => {
   const parsedParams = SkillIdParamsSchema.safeParse(req.params);
   const parsedBody = SkillProficiencyBodySchema.safeParse(req.body);
 
@@ -176,10 +174,9 @@ skillsRouter.put("/skills/me/:skillId", authenticate, async (req: AuthenticatedR
   const { proficiency } = parsedBody.data;
 
   try {
-    let consultantId = await findMe(req.user!.id, res);
-    if(consultantId !== undefined && consultantId !== null){
+    if(res.locals.consultantId !== undefined && res.locals.consultantId !== null){
       await prisma.consultantSkill.update({
-        where: { id: skillId, consultantId: consultantId },
+        where: { id: skillId, consultantId: res.locals.consultantId },
         data: { proficiency },
       });
     }

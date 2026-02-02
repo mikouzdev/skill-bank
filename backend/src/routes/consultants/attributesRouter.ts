@@ -49,7 +49,7 @@ attributesRouter.get(
  * @returns new attribute
  */
 attributesRouter.post(
-  "/me/attributes", authenticate,
+  "/me/attributes", authenticate, findMe,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedBody = AttributeBodySchema.safeParse(req.body);
     if (!parsedBody.success) {
@@ -59,8 +59,8 @@ attributesRouter.post(
     const { value, label, type, visibility } = parsedBody.data;
 
     let attribute = null;
+    let consultantId = res.locals.consultantId;
     try {
-      let consultantId = await findMe(req.user!.id, res);
       if(consultantId !== undefined && consultantId !== null){
         attribute = await prisma.consultantAttribute.create({
           data: {
@@ -85,7 +85,7 @@ attributesRouter.post(
  * @returns deleted attribute
  */
 attributesRouter.delete(
-  "/me/attributes/:attributeId", authenticate,
+  "/me/attributes/:attributeId", authenticate, findMe,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = AttributeIdParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
@@ -93,8 +93,8 @@ attributesRouter.delete(
       return;
     }
     const { attributeId } = parsedParams.data;
+    let consultantId = res.locals.consultantId;
     try {
-      let consultantId = await findMe(req.user!.id, res);
       if(consultantId !== undefined && consultantId !== null){
         await prisma.consultantAttribute.delete({
           where: { id: attributeId, consultantId: consultantId },
@@ -113,7 +113,7 @@ attributesRouter.delete(
  * @returns updated attribute
  */
 attributesRouter.put(
-  "/me/attributes/:attributeId", authenticate,
+  "/me/attributes/:attributeId", authenticate, findMe,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = AttributeIdParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
@@ -130,8 +130,8 @@ attributesRouter.put(
     const { value, label, type, visibility } = parsedBody.data;
 
     let attribute = null;
+    let consultantId = res.locals.consultantId;
     try {
-      let consultantId = await findMe(req.user!.id, res);
       if(consultantId !== undefined && consultantId !== null){
         attribute = await prisma.consultantAttribute.update({
           where: { id: attributeId, consultantId: consultantId },
