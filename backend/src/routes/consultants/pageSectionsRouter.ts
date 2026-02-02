@@ -3,7 +3,7 @@ import { ConsultantIdParamsSchema } from "../../schemas/consultants/consultants.
 import { ConsultantIdSectionNameParamsSchema, SectionNameParamsSchema, PageSectionBodySchema } from "../../schemas/consultants/pageSections.schema.js";
 import { Visibility } from "../../generated/prisma/enums.js";
 import { prisma } from "../../db/prismaClient.js";
-import { authenticate, type AuthenticatedRequest, findMe } from "../../middlewares/authentication.js";
+import { authenticate, type AuthenticatedRequest } from "../../middlewares/authentication.js";
 
 export const pageSectionsRouter = Router();
 
@@ -93,7 +93,7 @@ pageSectionsRouter.get(
  * @returns updated page section
  */
 pageSectionsRouter.put(
-  "/me/sections/:sectionName", authenticate, findMe,
+  "/me/sections/:sectionName", authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = SectionNameParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
@@ -110,9 +110,28 @@ pageSectionsRouter.put(
     const { name, visibility } = parsedBody.data;
 
     let pageSection = null;
-    let consultantId = res.locals.consultantId;
+    const user = await prisma.user.findUnique({
+      where: { id: req.user!.id },
+      select: {
+        id: true,
+        roles: { select: { role: true } },
+        consultant: { select: { id: true } },
+      },
+    });
+    if (user === null) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+    const consultantId = user?.consultant?.id;
     try {
       if(consultantId !== undefined && consultantId !== null){
+        const consultant = await prisma.consultant.findUnique({
+          where: { id: consultantId }
+        });
+        if (consultant === null) {
+          res.status(404).json({ message: "Consultant not found" });
+          return;
+        }
         pageSection = await prisma.pageSection.update({
           where: {
             consultantId_name: {

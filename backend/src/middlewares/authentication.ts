@@ -86,30 +86,3 @@ export const requireRoles =
   };
 
 export const adminOnly = requireRoles("ADMIN");
-
-export const findMe =  async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-  const user = await prisma.user.findUnique({
-    where: { id: req.user!.id },
-    select: {
-      id: true,
-      roles: { select: { role: true } },
-      consultant: { select: { id: true } },
-    },
-  });
-  if (user === null) {
-    res.status(404).json({ message: "User not found" });
-    return;
-  }
-  const consultantId = user?.consultant?.id;
-  if(consultantId !== undefined && consultantId !== null){
-    const consultant = await prisma.consultant.findUnique({
-      where: { id: consultantId }
-    });
-    if (consultant === null) {
-      res.status(404).json({ message: "Consultant not found" });
-      return;
-    }
-    res.locals.consultantId = consultantId;
-    next();
-  }
-}

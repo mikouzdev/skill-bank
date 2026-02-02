@@ -3,7 +3,7 @@ import { ConsultantIdParamsSchema } from "../../schemas/consultants/consultants.
 import { AttributeBodySchema, AttributeIdParamsSchema } from "../../schemas/consultants/attributes.schema.js";
 import { Visibility } from "../../generated/prisma/enums.js";
 import { prisma } from "../../db/prismaClient.js";
-import { authenticate, type AuthenticatedRequest, findMe } from "../../middlewares/authentication.js";
+import { authenticate, type AuthenticatedRequest } from "../../middlewares/authentication.js";
 
 export const attributesRouter = Router();
 
@@ -49,7 +49,7 @@ attributesRouter.get(
  * @returns new attribute
  */
 attributesRouter.post(
-  "/me/attributes", authenticate, findMe,
+  "/me/attributes", authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedBody = AttributeBodySchema.safeParse(req.body);
     if (!parsedBody.success) {
@@ -59,9 +59,28 @@ attributesRouter.post(
     const { value, label, type, visibility } = parsedBody.data;
 
     let attribute = null;
-    let consultantId = res.locals.consultantId;
+    const user = await prisma.user.findUnique({
+      where: { id: req.user!.id },
+      select: {
+        id: true,
+        roles: { select: { role: true } },
+        consultant: { select: { id: true } },
+      },
+    });
+    if (user === null) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+    const consultantId = user?.consultant?.id;
     try {
       if(consultantId !== undefined && consultantId !== null){
+        const consultant = await prisma.consultant.findUnique({
+          where: { id: consultantId }
+        });
+        if (consultant === null) {
+          res.status(404).json({ message: "Consultant not found" });
+          return;
+        }
         attribute = await prisma.consultantAttribute.create({
           data: {
             consultantId,
@@ -85,7 +104,7 @@ attributesRouter.post(
  * @returns deleted attribute
  */
 attributesRouter.delete(
-  "/me/attributes/:attributeId", authenticate, findMe,
+  "/me/attributes/:attributeId", authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = AttributeIdParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
@@ -93,9 +112,28 @@ attributesRouter.delete(
       return;
     }
     const { attributeId } = parsedParams.data;
-    let consultantId = res.locals.consultantId;
+    const user = await prisma.user.findUnique({
+      where: { id: req.user!.id },
+      select: {
+        id: true,
+        roles: { select: { role: true } },
+        consultant: { select: { id: true } },
+      },
+    });
+    if (user === null) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+    const consultantId = user?.consultant?.id;
     try {
       if(consultantId !== undefined && consultantId !== null){
+        const consultant = await prisma.consultant.findUnique({
+          where: { id: consultantId }
+        });
+        if (consultant === null) {
+          res.status(404).json({ message: "Consultant not found" });
+          return;
+        }
         await prisma.consultantAttribute.delete({
           where: { id: attributeId, consultantId: consultantId },
         });
@@ -113,7 +151,7 @@ attributesRouter.delete(
  * @returns updated attribute
  */
 attributesRouter.put(
-  "/me/attributes/:attributeId", authenticate, findMe,
+  "/me/attributes/:attributeId", authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = AttributeIdParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
@@ -130,9 +168,28 @@ attributesRouter.put(
     const { value, label, type, visibility } = parsedBody.data;
 
     let attribute = null;
-    let consultantId = res.locals.consultantId;
+    const user = await prisma.user.findUnique({
+      where: { id: req.user!.id },
+      select: {
+        id: true,
+        roles: { select: { role: true } },
+        consultant: { select: { id: true } },
+      },
+    });
+    if (user === null) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+    const consultantId = user?.consultant?.id;
     try {
       if(consultantId !== undefined && consultantId !== null){
+        const consultant = await prisma.consultant.findUnique({
+          where: { id: consultantId }
+        });
+        if (consultant === null) {
+          res.status(404).json({ message: "Consultant not found" });
+          return;
+        }
         attribute = await prisma.consultantAttribute.update({
           where: { id: attributeId, consultantId: consultantId },
           data: {

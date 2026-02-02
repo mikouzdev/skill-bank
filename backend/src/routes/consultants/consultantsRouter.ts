@@ -11,7 +11,7 @@ import {
   getConsultantsByFilter,
   getConsultantsByName,
 } from "../../middlewares/search.js";
-import { authenticate, type AuthenticatedRequest, findMe } from "../../middlewares/authentication.js";
+import { authenticate, type AuthenticatedRequest } from "../../middlewares/authentication.js";
 
 // TODO: Check all env variables in a single place
 const PROFILE_PICTURE_PREFIX =
@@ -92,7 +92,7 @@ consultantsRouter.get("/:consultantId", async (req: Request, res: Response) => {
 });
 
 consultantsRouter.put(
-  "/me", authenticate, findMe,
+  "/me", authenticate,
   uploadFile("profilePicture"),
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedBody = UpdateConsultantSchema.safeParse(req.body);
@@ -124,10 +124,30 @@ consultantsRouter.put(
 
       // Get the URL of the previous image
       let consultant = null;
-      let consultantId = res.locals.consultantId;
+      const user = await prisma.user.findUnique({
+        where: { id: req.user!.id },
+        select: {
+          id: true,
+          name: true,
+          roles: { select: { role: true } },
+          consultant: { select: { id: true } },
+        },
+      });
+      if (user === null) {
+        res.status(404).json({ message: "User not found" });
+        return;
+      }
+      const consultantId = user?.consultant?.id;
       try {
         if(consultantId !== undefined && consultantId !== null){
-          const consultant = await prisma.consultant.findUnique({
+          consultant = await prisma.consultant.findUnique({
+            where: { id: consultantId }
+          });
+          if (consultant === null) {
+            res.status(404).json({ message: "Consultant not found" });
+            return;
+          }
+          consultant = await prisma.consultant.findUnique({
             where: { id: consultantId }
           });
           if (consultant === null) {

@@ -75,7 +75,7 @@ adminRouter.post(
           roles: true,
         },
       });
-      let userId = createdUser.id;
+      const userId = createdUser.id;
       roles.forEach(async (role) => {
         switch (role.role) {
           case "CONSULTANT":

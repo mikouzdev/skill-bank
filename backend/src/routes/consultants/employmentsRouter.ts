@@ -8,7 +8,7 @@ import {
 } from "../../schemas/consultants/employment.schema.js";
 import { Visibility } from "../../generated/prisma/enums.js";
 import { prisma } from "../../db/prismaClient.js";
-import { authenticate, type AuthenticatedRequest, findMe } from "../../middlewares/authentication.js";
+import { authenticate, type AuthenticatedRequest } from "../../middlewares/authentication.js";
 
 export const employmentsRouter = Router();
 
@@ -50,7 +50,7 @@ employmentsRouter.get(
 );
 
 employmentsRouter.post(
-  "/me/employments", authenticate, findMe,
+  "/me/employments", authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
     console.log("Found consultant");
 
@@ -71,9 +71,28 @@ employmentsRouter.post(
     } = parsedBody.data;
 
     let createdEmployment = null;
-    let consultantId = res.locals.consultantId;
+    const user = await prisma.user.findUnique({
+      where: { id: req.user!.id },
+      select: {
+        id: true,
+        roles: { select: { role: true } },
+        consultant: { select: { id: true } },
+      },
+    });
+    if (user === null) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+    const consultantId = user?.consultant?.id;
     try {
       if(consultantId !== undefined && consultantId !== null){
+        const consultant = await prisma.consultant.findUnique({
+          where: { id: consultantId }
+        });
+        if (consultant === null) {
+          res.status(404).json({ message: "Consultant not found" });
+          return;
+        }
         createdEmployment = await prisma.employment.create({
           data: {
             consultantId,
@@ -101,7 +120,7 @@ employmentsRouter.post(
 );
 
 employmentsRouter.put(
-  "/me/employments/:employmentId", authenticate, findMe,
+  "/me/employments/:employmentId", authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = EmploymentIdParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
@@ -126,9 +145,28 @@ employmentsRouter.put(
     } = parsedBody.data;
 
     let employment = null;
-    let consultantId = res.locals.consultantId;
+    const user = await prisma.user.findUnique({
+      where: { id: req.user!.id },
+      select: {
+        id: true,
+        roles: { select: { role: true } },
+        consultant: { select: { id: true } },
+      },
+    });
+    if (user === null) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+    const consultantId = user?.consultant?.id;
     try {
       if(consultantId !== undefined && consultantId !== null){
+        const consultant = await prisma.consultant.findUnique({
+          where: { id: consultantId }
+        });
+        if (consultant === null) {
+          res.status(404).json({ message: "Consultant not found" });
+          return;
+        }
         employment = await prisma.employment.update({
           where: { id: employmentId, consultantId: consultantId },
           data: {
@@ -158,7 +196,7 @@ employmentsRouter.put(
 );
 
 employmentsRouter.delete(
-  "/me/employments/:employmentId", authenticate, findMe,
+  "/me/employments/:employmentId", authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = EmploymentIdParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
@@ -166,9 +204,28 @@ employmentsRouter.delete(
       return;
     }
     const { employmentId } = parsedParams.data;
-    let consultantId = res.locals.consultantId;
+    const user = await prisma.user.findUnique({
+      where: { id: req.user!.id },
+      select: {
+        id: true,
+        roles: { select: { role: true } },
+        consultant: { select: { id: true } },
+      },
+    });
+    if (user === null) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+    const consultantId = user?.consultant?.id;
     try {
       if(consultantId !== undefined && consultantId !== null){
+        const consultant = await prisma.consultant.findUnique({
+          where: { id: consultantId }
+        });
+        if (consultant === null) {
+          res.status(404).json({ message: "Consultant not found" });
+          return;
+        }
         await prisma.employment.delete({
           where: { id: employmentId, consultantId: consultantId },
         });
@@ -183,7 +240,7 @@ employmentsRouter.delete(
 );
 
 employmentsRouter.post(
-  "/me/employments/:employmentId/skills", authenticate, findMe,
+  "/me/employments/:employmentId/skills", authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = EmploymentIdParamsSchema.safeParse(req.params);
     const parsedBody = PostEmploymentSkillBodySchema.safeParse(req.body);
@@ -201,9 +258,28 @@ employmentsRouter.post(
     const { skillTagName } = parsedBody.data;
 
     let employmentSkill = null;
-    let consultantId = res.locals.consultantId;
+    const user = await prisma.user.findUnique({
+      where: { id: req.user!.id },
+      select: {
+        id: true,
+        roles: { select: { role: true } },
+        consultant: { select: { id: true } },
+      },
+    });
+    if (user === null) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+    const consultantId = user?.consultant?.id;
     try {
       if(consultantId !== undefined && consultantId !== null){
+        const consultant = await prisma.consultant.findUnique({
+          where: { id: consultantId }
+        });
+        if (consultant === null) {
+          res.status(404).json({ message: "Consultant not found" });
+          return;
+        }
         const employment = await prisma.employment.findUnique({
           where: { id: employmentId, consultantId: consultantId }
         });
@@ -230,7 +306,7 @@ employmentsRouter.post(
 );
 
 employmentsRouter.delete(
-  "/me/employments/:employmentId/skills/:employmentSkillId", authenticate, findMe,
+  "/me/employments/:employmentId/skills/:employmentSkillId", authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = DeleteEmploymentSkillParamsSchema.safeParse(
       req.params
@@ -240,9 +316,28 @@ employmentsRouter.delete(
       return;
     }
     const { employmentId, employmentSkillId } = parsedParams.data;
-    let consultantId = res.locals.consultantId;
+    const user = await prisma.user.findUnique({
+      where: { id: req.user!.id },
+      select: {
+        id: true,
+        roles: { select: { role: true } },
+        consultant: { select: { id: true } },
+      },
+    });
+    if (user === null) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+    const consultantId = user?.consultant?.id;
     try {
       if(consultantId !== undefined && consultantId !== null){
+        const consultant = await prisma.consultant.findUnique({
+          where: { id: consultantId }
+        });
+        if (consultant === null) {
+          res.status(404).json({ message: "Consultant not found" });
+          return;
+        }
         const employment = await prisma.employment.findUnique({
           where: { id: employmentId, consultantId: consultantId }
         });
