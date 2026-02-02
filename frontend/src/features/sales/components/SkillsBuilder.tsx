@@ -1,4 +1,4 @@
-import { Box, Typography, Rating, Button } from "@mui/material";
+import { Box, Typography, Rating } from "@mui/material";
 import Circle from "@mui/icons-material/Circle";
 import CircleIcon from "@mui/icons-material/Circle";
 
@@ -33,28 +33,25 @@ export default function SkillsBuilder({ data }: Props) {
               {skill.skillName}
             </Typography>
 
-        
-
-        <Rating
-          readOnly
-          name={`skill-${skill.id}`}
-          value={skill.proficiency}
-          precision={1}
-          icon={<CircleIcon fontSize="inherit" />}
-          emptyIcon={<Circle style={{ opacity: 0.55 }} fontSize="inherit" />}
-          sx={{
-            color: "rgba(34, 130, 255, 1)",
-            "& .MuiRating-icon": {
-            fontSize: 10, 
-          },           
-          }}
-          
-
-        />
+            <Rating
+              readOnly
+              name={`skill-${skill.id}`}
+              value={skill.proficiency}
+              precision={1}
+              icon={<CircleIcon fontSize="inherit" />}
+              emptyIcon={
+                <Circle style={{ opacity: 0.55 }} fontSize="inherit" />
+              }
+              sx={{
+                color: "rgba(34, 130, 255, 1)",
+                "& .MuiRating-icon": {
+                  fontSize: 10,
+                },
+              }}
+            />
           </Box>
         ))}
       </Box>
     </Box>
   );
 }
-

@@ -1,5 +1,6 @@
 import { Paper, Box } from "@mui/material";
 import { ConsultantCard } from "../components/ConsultantCard";
+import { FilterViewForm } from "../components/FilterViewForm";
 import { useEffect, useState } from "react";
 import {
   filterConsultants,
@@ -41,6 +42,7 @@ export const ConsultantListView = () => {
           getText={setSearch}
           loadConsultants={() => void loadConsultants()}
         />
+        <FilterViewForm />
         {ids.map((id) => (
           <Box key={id} sx={{ m: 3, border: 1, background: "white" }}>
             <ConsultantCard consultantID={id} />
