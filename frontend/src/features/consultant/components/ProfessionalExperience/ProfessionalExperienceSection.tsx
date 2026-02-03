@@ -1,10 +1,4 @@
-import {
-  Box,
-  Typography,
-  Stack,
-  FormControlLabel,
-  Switch,
-} from "@mui/material";
+import { Box, Typography, Stack } from "@mui/material";
 import ProfessionalExperienceItem from "./ProfessionalExperienceItem";
 import AddNewExperience from "./ProfessionalExperienceAdd";
 import {
@@ -14,6 +8,7 @@ import {
 
 import type { components } from "@api-types/openapi";
 import { useState } from "react";
+import SectionVisibilitySwitch from "../../../../shared/components/SectionVisibilitySwitch";
 type ConsultantEmploymentList = components["schemas"]["EmploymentListResponse"];
 type SkillsResponse = components["schemas"]["SkillTagList"];
 type Employment = Partial<components["schemas"]["EmploymentResponse"]>;
@@ -113,10 +108,8 @@ export default function ProfessionalExperience({
           update={(formData) => void AddNewWorkExperience(formData)}
           skillData={skillData}
         />
-        <FormControlLabel
-          control={<Switch defaultChecked />}
-          label="Visible to others"
-          labelPlacement="start"
+        <SectionVisibilitySwitch
+          sectionData={{ name: "EMPLOYMENTS", visibility: "PUBLIC" }}
         />
       </Stack>
 

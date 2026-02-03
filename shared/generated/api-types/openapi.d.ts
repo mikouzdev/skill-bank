@@ -2129,7 +2129,7 @@ export interface paths {
                         "application/json": components["schemas"]["SkillTag"];
                     };
                 };
-                /** @description Invalid params/body or invalid categoryId */
+                /** @description Invalid request */
                 400: {
                     headers: {
                         [name: string]: unknown;

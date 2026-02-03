@@ -1,16 +1,11 @@
-import {
-  Box,
-  Typography,
-  Stack,
-  FormControlLabel,
-  Switch,
-} from "@mui/material";
+import { Box, Typography, Stack } from "@mui/material";
 import PersonalProjectItem from "./PersonalProjectItem";
 import { addProjectSkill, postProjects } from "../../api/consultants.api";
 import { AddNewProject } from "./PersonalProjectAdd";
 
 import type { components } from "@api-types/openapi";
 import { useState } from "react";
+import SectionVisibilitySwitch from "../../../../shared/components/SectionVisibilitySwitch";
 
 type ConsultantProjectList = components["schemas"]["GetProjectsResponse"];
 type Project = Partial<components["schemas"]["GetProjectsResponse"][number]>;
@@ -108,9 +103,8 @@ export default function PersonalProjects({ data, skillData, editable }: Props) {
           }}
           skillData={skillData}
         />
-        <FormControlLabel
-          control={<Switch defaultChecked />}
-          label="Section is visible to ohter consultants"
+        <SectionVisibilitySwitch
+          sectionData={{ name: "PROJECTS", visibility: "PUBLIC" }}
         />
       </Stack>
       <Stack spacing={1}>

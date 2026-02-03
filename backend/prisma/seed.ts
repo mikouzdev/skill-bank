@@ -380,6 +380,26 @@ async function main() {
         name: "GENERAL" as const,
         visibility: "PUBLIC" as const,
       },
+      {
+        consultantId: consultant.id,
+        name: "NETWORKING_LINKS" as const,
+        visibility: "PUBLIC" as const,
+      },
+      {
+        consultantId: consultant.id,
+        name: "SKILLS" as const,
+        visibility: "PUBLIC" as const,
+      },
+      {
+        consultantId: consultant.id,
+        name: "EMPLOYMENTS" as const,
+        visibility: "PUBLIC" as const,
+      },
+      {
+        consultantId: consultant.id,
+        name: "PROJECTS" as const,
+        visibility: "PUBLIC" as const,
+      },
     ],
   });
   console.log("Page sections created");
