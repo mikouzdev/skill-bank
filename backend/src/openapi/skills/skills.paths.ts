@@ -137,5 +137,24 @@ export const allSkillsPaths = {
         500: { description: "Server error" },
       },
     },
-  }
+    delete: {
+      summary: "Delete a skill category",
+      tags: ["Skills"],
+      parameters: [
+        {
+          name: "categoryId",
+          in: "path" as const,
+          required: true,
+          //TODO: use SkillCategoryIdParamsSchema
+          schema: { type: "integer" as const },
+        },
+      ],
+      responses: {
+        204: { description: "Skill deleted" },
+        400: { description: "Invalid request" },
+        403: { description: "Unauthorized" },
+        500: { description: "Server error" },
+      },
+    },
+  },
 };
