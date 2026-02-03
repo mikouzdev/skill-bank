@@ -293,3 +293,35 @@ skillsRouter.put("/categories/:categoryId", authenticate, async (req: Authentica
     return;
   }
 });
+
+/**
+ * Delete skill category in the database
+ * @route DELETE /skills/categories/{categoryId}
+ * @returns confirmation of deletion
+ */
+skillsRouter.delete("/categories/:categoryId", authenticate, async (req: AuthenticatedRequest, res: Response) => {
+  // const roles = req.user?.roles ?? [];
+  // if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
+  //   return res.status(403).json({ error: "Unauthorized" });
+  // }
+  const parsedParams = SkillCategoryIdParamsSchema.safeParse(req.params);
+  if (!parsedParams.success) {
+    res.status(400).json(parsedParams.error);
+    return;
+  }
+  const { categoryId } = parsedParams.data;
+
+  let category = null;
+  try {
+    category = await prisma.skillCategory.delete({ 
+          where: { 
+            id: categoryId
+          }
+        });
+      res.status(204).json();
+      return;
+    } catch (err) {
+    res.status(500).json(err);
+    return;
+  }
+});
