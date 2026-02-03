@@ -13,6 +13,7 @@ import {
 import { useState } from "react";
 import { SiGitlab, SiGithub, SiLinkedin } from "react-icons/si";
 import { createAttribute, updateAttribute } from "../../api/consultants.api";
+import SectionVisibilitySwitch from "../../../../shared/components/SectionVisibilitySwitch";
 
 type AttributeList = components["schemas"]["GetAttributesResponse"];
 type AttributeResponse = components["schemas"]["Attribute"];
@@ -155,9 +156,8 @@ export default function EditableExternalLinks({ attributes }: Props) {
   const sectionTitle = (
     <Stack direction={"row"} spacing={1}>
       <Typography variant="h5">External Links</Typography>
-      <FormControlLabel
-        control={<Switch defaultChecked />}
-        label="Visible to other consultants"
+      <SectionVisibilitySwitch
+        sectionData={{ name: "NETWORKING_LINKS", visibility: "PUBLIC" }}
       />
     </Stack>
   );
