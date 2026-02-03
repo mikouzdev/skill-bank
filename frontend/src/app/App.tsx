@@ -10,6 +10,7 @@ import { ConsultantListView } from "../features/sales/pages/ConsultantListView";
 import { ManageUsersPage } from "../features/admin/pages/ManageUsersPage";
 import { ConsultantListConsultants } from "../features/consultant/pages/ConsultantListConsultants";
 import { SidebarLayout } from "./layout/SidebarLayout";
+import SkillEditingPage from "../shared/pages/SkillEditing/SkillEditingPage";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             path="/listConsultants"
             element={<ConsultantListConsultants />}
           />
+          <Route path="/editSkills" element={<SkillEditingPage />} />
         </Route>
       </Routes>
     </ThemeProvider>

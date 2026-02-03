@@ -13,23 +13,28 @@ export const adminRouter = Router();
  * @route GET /admin/users
  * @returns [users]
  */
-adminRouter.get("/users", adminOnly, authenticate, async (req: Request, res: Response) => {
-  try {
-    const users = await prisma.user.findMany({
-      include: {
-        roles: {},
-      },
-      omit: {
-        passwordHash: true,
-      },
-    });
-    res.send(users);
-    return;
-  } catch (err) {
-    res.status(500).json(err);
-    return;
+adminRouter.get(
+  "/users",
+  authenticate,
+  adminOnly,
+  async (req: Request, res: Response) => {
+    try {
+      const users = await prisma.user.findMany({
+        include: {
+          roles: {},
+        },
+        omit: {
+          passwordHash: true,
+        },
+      });
+      res.send(users);
+      return;
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
   }
-});
+);
 
 /**
  * Add a new user in the database
@@ -38,7 +43,8 @@ adminRouter.get("/users", adminOnly, authenticate, async (req: Request, res: Res
  */
 adminRouter.post(
   "/users",
-  authenticate, adminOnly,
+  authenticate,
+  adminOnly,
   async (req: Request, res: Response) => {
     const parsedBody = UserBodySchema.safeParse(req.body);
 
@@ -129,7 +135,8 @@ adminRouter.post(
  */
 adminRouter.delete(
   "/users/:userId",
-  authenticate, adminOnly,
+  authenticate,
+  adminOnly,
   async (req: Request, res: Response) => {
     const parsedParams = UserIdParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
@@ -157,7 +164,8 @@ adminRouter.delete(
  */
 adminRouter.put(
   "/users/:userId",
-  authenticate, adminOnly,
+  authenticate,
+  adminOnly,
   async (req: Request, res: Response) => {
     const parsedParams = UserIdParamsSchema.safeParse(req.params);
 

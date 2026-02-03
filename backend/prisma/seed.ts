@@ -27,6 +27,24 @@ async function main() {
   console.log("🧹 Database cleared");
 
   // ===========================================
+  // Admin User
+  // ===========================================
+
+  await prisma.user.create({
+    data: {
+      name: "Admin",
+      email: "admin@admin.com",
+      passwordHash:
+        "$argon2i$v=19$m=16,t=2,p=1$aXNuVjNDZmlWdVdSUG9KYQ$k0KvnEBaLJHBQ9y3rHwQUQ",
+      roles: {
+        create: [{ role: Role.ADMIN }],
+      },
+    },
+  });
+
+  console.log("🛡️ Admin user created");
+
+  // ===========================================
   // User & Consultant
   // ===========================================
 
@@ -368,7 +386,7 @@ async function main() {
     ],
   });
 
-  console.log("Employment skills created");
+  console.log("💼 Employment skills created");
 
   // ===========================================
   // Page sections
@@ -402,7 +420,7 @@ async function main() {
       },
     ],
   });
-  console.log("Page sections created");
+  console.log("📖 Page sections created");
 
   console.log("🎉 Seed complete!");
 }

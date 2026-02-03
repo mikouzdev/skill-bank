@@ -1137,10 +1137,8 @@ export interface paths {
             requestBody: {
                 content: {
                     "application/json": {
-                        /** @example https://example.com */
-                        url: string;
-                        /** @example Github */
-                        label: string;
+                        /** @example Python */
+                        skillTagName: string;
                     };
                 };
             };
@@ -2098,7 +2096,55 @@ export interface paths {
         get?: never;
         put?: never;
         post?: never;
-        delete?: never;
+        /** Delete a skill */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    skillName: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Skill deleted */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Skill not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Skill is in use and cannot be deleted */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
         options?: never;
         head?: never;
         /**
@@ -2159,6 +2205,87 @@ export interface paths {
                 };
             };
         };
+        trace?: never;
+    };
+    "/skills/categories": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all skill categories */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Retrieval successful */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SkillCategories"];
+                    };
+                };
+                /** @description Server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        /** Create a new skill category */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["skillCategoryBody"];
+                };
+            };
+            responses: {
+                /** @description Created */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["skillCategory"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
 }
@@ -2250,6 +2377,15 @@ export interface components {
         PatchSkillTagBody: {
             /** @example 1 */
             categoryId?: number | null;
+        };
+        skillCategoryBody: {
+            /** @example Python */
+            name: string;
+            skillTags: components["schemas"]["PostSkillTagWithoutCategoryBody"][];
+        };
+        PostSkillTagWithoutCategoryBody: {
+            /** @example typescript */
+            name: string;
         };
         AuthResponse: {
             /** @example jwt.token */
@@ -2554,6 +2690,14 @@ export interface components {
              * @enum {string}
              */
             visibility: "LIMITED" | "PUBLIC";
+        };
+        SkillCategories: components["schemas"]["skillCategory"][];
+        skillCategory: {
+            /** @example 1 */
+            id: number;
+            /** @example Python */
+            name: string;
+            skillTags: components["schemas"]["SkillTag"][];
         };
         EmploymentSkillOutput: {
             /** @example react */

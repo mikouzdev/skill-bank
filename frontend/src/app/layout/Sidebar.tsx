@@ -25,6 +25,7 @@ const navItems: NavItem[] = [
   { text: "Edit profile", path: "/me/edit", icon: <Edit /> }, // consultant
   { text: "Sales", path: "/sales" },
   { text: "Admin", path: "/manage-users" },
+  { text: "Skill Editing", path: "/editSkills" }, // admin, sales
 ];
 
 export function Sidebar() {
