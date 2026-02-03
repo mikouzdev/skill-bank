@@ -14,6 +14,11 @@ import { authenticate, type AuthenticatedRequest } from "../../middlewares/authe
 
 export const projectsRouter = Router();
 
+/**
+ * Add a project for current consultant
+ * @route POST /consultants/me/projects
+ * @returns created project
+ */
 projectsRouter.post("/me/projects", authenticate, async (req: AuthenticatedRequest, res: Response) => {
   const parsedBody = ProjectBodySchema.safeParse(req.body);
   if (!parsedBody.success) {
@@ -64,19 +69,26 @@ projectsRouter.post("/me/projects", authenticate, async (req: AuthenticatedReque
   res.json(project);
 });
 
+/**
+ * Get all projects from a consultant
+ * @route GET /consultants/{consultantId}/projects
+ * @returns [projects]
+ */
 projectsRouter.get(
-  "/:consultantId/projects",
-  async (req: Request, res: Response) => {
+  "/:consultantId/projects", authenticate,
+  async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = ConsultantIdParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
       res.status(400).json(parsedParams.error);
       return;
     }
     const { consultantId } = parsedParams.data;
-    // Visibility for now, auth based later
+    const roles = req.user?.roles ?? [];
+    let allowedVisibilities = [Visibility.PUBLIC, Visibility.LIMITED];
     //Sales/admin can see everyone, consult gets only public
-    //Visibility.LIMITED
-    const allowedVisibilities = [Visibility.PUBLIC];
+    if(!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
+      allowedVisibilities = [Visibility.PUBLIC];
+    }
     let projects = null;
     try {
       projects = await prisma.project.findMany({
@@ -100,6 +112,11 @@ projectsRouter.get(
   }
 );
 
+/**
+ * Update a project for current consultant
+ * @route PUT /consultants/me/projects/{projectId}
+ * @returns updated project
+ */
 projectsRouter.put(
   "/me/projects/:projectId", authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
@@ -168,6 +185,11 @@ projectsRouter.put(
   }
 );
 
+/**
+ * Delete a project for current consultant
+ * @route DELETE /consultants/me/projects/{projectId}
+ * @returns confirmation message
+ */
 projectsRouter.delete(
   "/me/projects/:projectId", authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
@@ -212,6 +234,11 @@ projectsRouter.delete(
   }
 );
 
+/**
+ * Add a link for a project for current consultant
+ * @route POST /consultants/me/projects/{projectId}/links
+ * @returns created project link
+ */
 projectsRouter.post(
   "/me/projects/:projectId/links", authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
@@ -279,6 +306,11 @@ projectsRouter.post(
   }
 );
 
+/**
+ * Delete a link for a project for current consultant
+ * @route POST /consultants/me/projects/{projectId}/links/{linkId}
+ * @returns confirmation message
+ */
 projectsRouter.delete(
   "/me/projects/:projectId/links/:linkId", authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
@@ -332,6 +364,11 @@ projectsRouter.delete(
   }
 );
 
+/**
+ * Add a skill for a project for current consultant
+ * @route POST /consultants/me/projects/{projectId}/skills
+ * @returns created project skill
+ */
 projectsRouter.post(
   "/me/projects/:projectId/skills", authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
@@ -405,6 +442,11 @@ projectsRouter.post(
   }
 );
 
+/**
+ * Delete a project skill from current consultant
+ * @route DELETE /consultants/me/projects/{projectId}/skills/{projectSkillId}
+ * @returns confirmation message
+ */
 projectsRouter.delete(
   "/me/projects/:projectId/skills/:projectSkillId", authenticate,
   async (req: AuthenticatedRequest, res: Response) => {

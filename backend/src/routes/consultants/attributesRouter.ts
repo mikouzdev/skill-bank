@@ -13,18 +13,20 @@ export const attributesRouter = Router();
  * @returns [attributes]
  */
 attributesRouter.get(
-  "/:consultantId/attributes",
-  async (req: Request, res: Response) => {
+  "/:consultantId/attributes", authenticate,
+  async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = ConsultantIdParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
       res.status(400).json(parsedParams.error);
       return;
     }
     const { consultantId } = parsedParams.data;
-    // Visibility for now, auth based later
+    const roles = req.user?.roles ?? [];
+    let allowedVisibilities = [Visibility.PUBLIC, Visibility.LIMITED];
     //Sales/admin can see everyone, consult gets only public
-    //Visibility.LIMITED
-    const allowedVisibilities = [Visibility.PUBLIC];
+    if(!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
+      allowedVisibilities = [Visibility.PUBLIC];
+    }
     let sections = null;
     try {
       sections = await prisma.consultantAttribute.findMany({

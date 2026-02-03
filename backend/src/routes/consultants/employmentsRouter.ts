@@ -12,9 +12,14 @@ import { authenticate, type AuthenticatedRequest } from "../../middlewares/authe
 
 export const employmentsRouter = Router();
 
+/**
+ * Get a consultant's employments
+ * @route GET /consultants/{consultantId}/employments
+ * @returns [employments]
+ */
 employmentsRouter.get(
-  "/:consultantId/employments",
-  async (req: Request, res: Response) => {
+  "/:consultantId/employments", authenticate,
+  async (req: AuthenticatedRequest, res: Response) => {
     try {
       const parsedParams = ConsultantIdParamsSchema.safeParse(req.params);
       if (!parsedParams.success) {
@@ -23,10 +28,12 @@ employmentsRouter.get(
       }
 
       const { consultantId } = parsedParams.data;
-      // Visibility for now, auth based later
+      const roles = req.user?.roles ?? [];
+      let allowedVisibilities = [Visibility.PUBLIC, Visibility.LIMITED];
       //Sales/admin can see everyone, consult gets only public
-      //Visibility.LIMITED
-      const allowedVisibilities = [Visibility.PUBLIC];
+      if(!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
+        allowedVisibilities = [Visibility.PUBLIC];
+      }
       const employments = await prisma.employment.findMany({
         where: {
           consultantId,
@@ -49,6 +56,11 @@ employmentsRouter.get(
   }
 );
 
+/**
+ * Add employment for current consultant
+ * @route POST /consultants/me/employments
+ * @returns created employment
+ */
 employmentsRouter.post(
   "/me/employments", authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
@@ -119,6 +131,11 @@ employmentsRouter.post(
   }
 );
 
+/**
+ * Update specific employment for current consultant
+ * @route PUT /consultants/me/employments/{employmentId}
+ * @returns updated employment
+ */
 employmentsRouter.put(
   "/me/employments/:employmentId", authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
@@ -195,6 +212,11 @@ employmentsRouter.put(
   }
 );
 
+/**
+ * Delete specific employment for current consultant
+ * @route PUT /consultants/me/employments/{employmentId}
+ * @returns confirmation message
+ */
 employmentsRouter.delete(
   "/me/employments/:employmentId", authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
@@ -239,6 +261,11 @@ employmentsRouter.delete(
   }
 );
 
+/**
+ * Add skill for an employment of current consultant
+ * @route POST /consultants/me/employments/{employmentId}/skills
+ * @returns created skill
+ */
 employmentsRouter.post(
   "/me/employments/:employmentId/skills", authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
@@ -305,6 +332,11 @@ employmentsRouter.post(
   }
 );
 
+/**
+ * Delete a skill for an employment of current consultant
+ * @route POST /consultants/me/employments/{employmentId}/skills/{employmentSkillId}
+ * @returns confirmation message
+ */
 employmentsRouter.delete(
   "/me/employments/:employmentId/skills/:employmentSkillId", authenticate,
   async (req: AuthenticatedRequest, res: Response) => {

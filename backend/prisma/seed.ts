@@ -174,7 +174,7 @@ async function main() {
     },
   });
 
-  const salesperson = await prisma.salesperson.create({
+  await prisma.salesperson.create({
     data: {
       userId: salesUser.id,
     },
@@ -185,7 +185,7 @@ async function main() {
   // Skills
   // ===========================================
 
-  const skilltags = await prisma.skillTag.createMany({
+  await prisma.skillTag.createMany({
     data: [
       { name: "java" },
       { name: "csharp" },
@@ -220,7 +220,7 @@ async function main() {
     ],
   });
 
-  const skills = await prisma.consultantSkill.createMany({
+  await prisma.consultantSkill.createMany({
     data: [
       { skillName: "java", proficiency: 4, consultantId: consultant.id },
       {
@@ -280,7 +280,7 @@ async function main() {
   // Category
   // ===========================================
 
-  const frontendCategory = await prisma.skillCategory.create({
+  await prisma.skillCategory.create({
     data: { name: "Frontend" },
   });
 
@@ -391,7 +391,7 @@ async function main() {
   // ===========================================
   // Page sections
   // ===========================================
-  const pageSections = await prisma.pageSection.createMany({
+  await prisma.pageSection.createMany({
     data: [
       {
         consultantId: consultant.id,
