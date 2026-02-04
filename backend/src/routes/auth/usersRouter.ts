@@ -71,7 +71,7 @@ usersRouter.post("/logout", async (req: Request, res: Response) => {
 
     if (checkIfBlacklisted) return res.sendStatus(204);
     //Blacklist token so it cannot be used anymore
-    const newBlacklist = await prisma.blacklistedTokens.create({
+    await prisma.blacklistedTokens.create({
       data: {
         token: token,
       },

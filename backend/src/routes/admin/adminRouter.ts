@@ -64,9 +64,6 @@ adminRouter.post(
       return;
     }
     let createdUser = null;
-    let createdConsultant = null;
-    let createdSalesPerson = null;
-    let createdCustomer = null;
     try {
       createdUser = await prisma.user.create({
         data: {
@@ -82,10 +79,12 @@ adminRouter.post(
         },
       });
       const userId = createdUser.id;
+      //TODO fix:
+      //eslint error: Promise returned in function argument where a void return was expected
       roles.forEach(async (role) => {
         switch (role.role) {
           case "CONSULTANT":
-            createdConsultant = await prisma.consultant.create({
+            await prisma.consultant.create({
               data: {
                 userId: userId,
                 description: "",
@@ -98,7 +97,7 @@ adminRouter.post(
             });
             break;
           case "SALESPERSON":
-            createdSalesPerson = await prisma.salesperson.create({
+            await prisma.salesperson.create({
               data: {
                 userId: userId,
                 salesLists: {
@@ -108,7 +107,7 @@ adminRouter.post(
             });
             break;
           case "CUSTOMER":
-            createdCustomer = await prisma.customer.create({
+            await prisma.customer.create({
               data: {
                 userId: userId,
                 salesLists: {
@@ -118,6 +117,7 @@ adminRouter.post(
             });
             break;
         }
+        return;
       });
     } catch (err) {
       res.status(500).json(err);

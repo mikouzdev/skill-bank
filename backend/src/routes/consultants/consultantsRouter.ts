@@ -22,6 +22,11 @@ const PROFILE_PICTURE_PREFIX =
 
 export const consultantsRouter = Router();
 
+/**
+ * Get consultants
+ * @route GET /consultants
+ * @returns [consultants]
+ */
 consultantsRouter.get("/", async (req: Request, res: Response) => {
   try {
     const consultants = await prisma.consultant.findMany();
@@ -33,6 +38,11 @@ consultantsRouter.get("/", async (req: Request, res: Response) => {
   }
 });
 
+/**
+ * Get one or more consultants filtered by name search query
+ * @route GET /consultants/search
+ * @returns [consultants]
+ */
 consultantsRouter.get("/search", async (req: Request, res: Response) => {
   try {
     const { consultantName } = req.query;
@@ -47,6 +57,11 @@ consultantsRouter.get("/search", async (req: Request, res: Response) => {
   }
 });
 
+/**
+ * Get one or more consultants filtered by text search query
+ * @route GET /consultants/filter
+ * @returns [consultants]
+ */
 consultantsRouter.get("/filter", async (req: Request, res: Response) => {
   try {
     const { freeText } = req.query;
@@ -59,6 +74,11 @@ consultantsRouter.get("/filter", async (req: Request, res: Response) => {
     return;
   }
 });
+/**
+ * Get a specific consultant by ID
+ * @route GET /consultants/{consultantId}
+ * @returns consultant
+ */
 consultantsRouter.get("/:consultantId", async (req: Request, res: Response) => {
   const parsedParams = ConsultantIdParamsSchema.safeParse(req.params);
   if (!parsedParams.success) {
@@ -90,7 +110,11 @@ consultantsRouter.get("/:consultantId", async (req: Request, res: Response) => {
   }
   res.json(consultant);
 });
-
+/**
+ * Update current consultant's profile picture
+ * @route PUT /consultants/me
+ * @returns confirmation message
+ */
 consultantsRouter.put(
   "/me", authenticate,
   uploadFile("profilePicture"),
