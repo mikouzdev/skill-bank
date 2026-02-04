@@ -7,11 +7,11 @@ export const theme = createTheme({
       paper: "#EEEEEE",
     },
   },
-  
+
   //
   components: {
     MuiButton: {
-    styleOverrides: {
+      styleOverrides: {
         root: {
           borderRadius: "999px",
           backgroundColor: "#0079c4",
@@ -25,8 +25,8 @@ export const theme = createTheme({
       },
     },
 
-    MuiDialog:{
-      styleOverrides:{
+    MuiDialog: {
+      styleOverrides: {
         root: {
           '& button[type="submit"]': {
             backgroundColor: "#1f9d1f",
@@ -35,13 +35,28 @@ export const theme = createTheme({
           '& button[type="submit"]:hover': {
             backgroundColor: "#178217",
           },
-          
         },
       },
     },
-
-
-
   },
   //
+});
+
+export const formsTheme = createTheme(theme, {
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: "999px",
+          backgroundColor: "white",
+          width: "fit-content",
+          color: "black", //"text.primary",
+          variant: "contained",
+          "&:hover": {
+            backgroundColor: "#f5f5f5",
+          },
+        },
+      },
+    },
+  },
 });
