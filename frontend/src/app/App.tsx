@@ -11,28 +11,31 @@ import { ManageUsersPage } from "../features/admin/pages/ManageUsersPage";
 import { ConsultantListConsultants } from "../features/consultant/pages/ConsultantListConsultants";
 import { SidebarLayout } from "./layout/SidebarLayout";
 import SkillEditingPage from "../shared/pages/SkillEditing/SkillEditingPage";
+import { SnackbarProvider } from "../shared/components/SnackbarProvider";
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
 
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/loginRole" element={<LoginRolePage />} />
+      <SnackbarProvider>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/loginRole" element={<LoginRolePage />} />
 
-        <Route element={<SidebarLayout />}>
-          <Route path="/me" element={<ConsultantProfilePage />} />
-          <Route path="/me/edit" element={<ConsultantProfileSettings />} />
-          <Route path="/sales" element={<ConsultantListView />} />
-          <Route path="/manage-users" element={<ManageUsersPage />} />
-          <Route
-            path="/listConsultants"
-            element={<ConsultantListConsultants />}
-          />
-          <Route path="/editSkills" element={<SkillEditingPage />} />
-        </Route>
-      </Routes>
+          <Route element={<SidebarLayout />}>
+            <Route path="/me" element={<ConsultantProfilePage />} />
+            <Route path="/me/edit" element={<ConsultantProfileSettings />} />
+            <Route path="/sales" element={<ConsultantListView />} />
+            <Route path="/manage-users" element={<ManageUsersPage />} />
+            <Route
+              path="/listConsultants"
+              element={<ConsultantListConsultants />}
+            />
+            <Route path="/editSkills" element={<SkillEditingPage />} />
+          </Route>
+        </Routes>
+      </SnackbarProvider>
     </ThemeProvider>
   );
 }
