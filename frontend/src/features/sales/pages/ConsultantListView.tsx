@@ -18,7 +18,7 @@ export const ConsultantListView = () => {
       try {
         const response = await getConsultants();
         const consultants = response.data;
-        setIds(consultants.map((c) => c.userId));
+        setIds(consultants.map((c) => c.id));
       } catch (err) {
         console.error("Failed to load consultants", err);
       }

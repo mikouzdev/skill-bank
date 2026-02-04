@@ -2522,7 +2522,7 @@ export interface components {
         AllConsultantsResponse: components["schemas"]["ConsultantResponse"][];
         ConsultantResponse: {
             /** @example 1 */
-            consultantId: number;
+            id: number;
             /** @example 1 */
             userId: number;
             /** @example I'm something of a fullstack developer myself. */
