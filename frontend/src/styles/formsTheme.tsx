@@ -1,28 +1,10 @@
-import { createTheme, Box } from "@mui/material";
-import { theme } from "./theme";
+import { Box } from "@mui/material";
 
-
-export const formsTheme = createTheme(theme, {
-  components: {
-    MuiButton: {
-       
-      styleOverrides: {
-        root: {
-          borderRadius: "999px",
-          backgroundColor: "white",
-          width: "fit-content",
-          color: "black", //"text.primary",
-          variant: "contained",
-          "&:hover": {
-            backgroundColor: "#f5f5f5",
-          },
-        },
-      },
-    },
-  },
-});
-
-export const CenterFloatingForm = ({ children }: { children: React.ReactNode })  => {
+export const CenterFloatingForm = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   return (
     <Box
       sx={{
@@ -36,4 +18,4 @@ export const CenterFloatingForm = ({ children }: { children: React.ReactNode }) 
       {children}
     </Box>
   );
-}
+};
