@@ -402,7 +402,9 @@ export const ModelName = {
   Customer: 'Customer',
   PageSection: 'PageSection',
   Comment: 'Comment',
-  BlacklistedTokens: 'BlacklistedTokens'
+  BlacklistedTokens: 'BlacklistedTokens',
+  OfferPages: 'OfferPages',
+  ConsultantPages: 'ConsultantPages'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -418,7 +420,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "userRole" | "consultantAttribute" | "consultant" | "consultantSkill" | "projectSkill" | "employmentSkill" | "skillTag" | "skillCategory" | "employment" | "project" | "projectLink" | "salesperson" | "salesList" | "salesListItem" | "customer" | "pageSection" | "comment" | "blacklistedTokens"
+    modelProps: "user" | "userRole" | "consultantAttribute" | "consultant" | "consultantSkill" | "projectSkill" | "employmentSkill" | "skillTag" | "skillCategory" | "employment" | "project" | "projectLink" | "salesperson" | "salesList" | "salesListItem" | "customer" | "pageSection" | "comment" | "blacklistedTokens" | "offerPages" | "consultantPages"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1828,6 +1830,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    OfferPages: {
+      payload: Prisma.$OfferPagesPayload<ExtArgs>
+      fields: Prisma.OfferPagesFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OfferPagesFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OfferPagesPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OfferPagesFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OfferPagesPayload>
+        }
+        findFirst: {
+          args: Prisma.OfferPagesFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OfferPagesPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OfferPagesFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OfferPagesPayload>
+        }
+        findMany: {
+          args: Prisma.OfferPagesFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OfferPagesPayload>[]
+        }
+        create: {
+          args: Prisma.OfferPagesCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OfferPagesPayload>
+        }
+        createMany: {
+          args: Prisma.OfferPagesCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.OfferPagesCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OfferPagesPayload>[]
+        }
+        delete: {
+          args: Prisma.OfferPagesDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OfferPagesPayload>
+        }
+        update: {
+          args: Prisma.OfferPagesUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OfferPagesPayload>
+        }
+        deleteMany: {
+          args: Prisma.OfferPagesDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OfferPagesUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.OfferPagesUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OfferPagesPayload>[]
+        }
+        upsert: {
+          args: Prisma.OfferPagesUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OfferPagesPayload>
+        }
+        aggregate: {
+          args: Prisma.OfferPagesAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOfferPages>
+        }
+        groupBy: {
+          args: Prisma.OfferPagesGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OfferPagesGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OfferPagesCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OfferPagesCountAggregateOutputType> | number
+        }
+      }
+    }
+    ConsultantPages: {
+      payload: Prisma.$ConsultantPagesPayload<ExtArgs>
+      fields: Prisma.ConsultantPagesFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ConsultantPagesFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConsultantPagesPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ConsultantPagesFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConsultantPagesPayload>
+        }
+        findFirst: {
+          args: Prisma.ConsultantPagesFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConsultantPagesPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ConsultantPagesFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConsultantPagesPayload>
+        }
+        findMany: {
+          args: Prisma.ConsultantPagesFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConsultantPagesPayload>[]
+        }
+        create: {
+          args: Prisma.ConsultantPagesCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConsultantPagesPayload>
+        }
+        createMany: {
+          args: Prisma.ConsultantPagesCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ConsultantPagesCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConsultantPagesPayload>[]
+        }
+        delete: {
+          args: Prisma.ConsultantPagesDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConsultantPagesPayload>
+        }
+        update: {
+          args: Prisma.ConsultantPagesUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConsultantPagesPayload>
+        }
+        deleteMany: {
+          args: Prisma.ConsultantPagesDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ConsultantPagesUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ConsultantPagesUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConsultantPagesPayload>[]
+        }
+        upsert: {
+          args: Prisma.ConsultantPagesUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConsultantPagesPayload>
+        }
+        aggregate: {
+          args: Prisma.ConsultantPagesAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateConsultantPages>
+        }
+        groupBy: {
+          args: Prisma.ConsultantPagesGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ConsultantPagesGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ConsultantPagesCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ConsultantPagesCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1946,7 +2096,7 @@ export type EmploymentSkillScalarFieldEnum = (typeof EmploymentSkillScalarFieldE
 
 export const SkillTagScalarFieldEnum = {
   id: 'id',
-  categoryid: 'categoryid',
+  categoryId: 'categoryId',
   name: 'name'
 } as const
 
@@ -2076,6 +2226,27 @@ export const BlacklistedTokensScalarFieldEnum = {
 } as const
 
 export type BlacklistedTokensScalarFieldEnum = (typeof BlacklistedTokensScalarFieldEnum)[keyof typeof BlacklistedTokensScalarFieldEnum]
+
+
+export const OfferPagesScalarFieldEnum = {
+  id: 'id',
+  salespersonId: 'salespersonId',
+  customerId: 'customerId',
+  description: 'description',
+  passwordHash: 'passwordHash'
+} as const
+
+export type OfferPagesScalarFieldEnum = (typeof OfferPagesScalarFieldEnum)[keyof typeof OfferPagesScalarFieldEnum]
+
+
+export const ConsultantPagesScalarFieldEnum = {
+  id: 'id',
+  offerPageId: 'offerPageId',
+  consultantId: 'consultantId',
+  showInfo: 'showInfo'
+} as const
+
+export type ConsultantPagesScalarFieldEnum = (typeof ConsultantPagesScalarFieldEnum)[keyof typeof ConsultantPagesScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2340,6 +2511,8 @@ export type GlobalOmitConfig = {
   pageSection?: Prisma.PageSectionOmit
   comment?: Prisma.CommentOmit
   blacklistedTokens?: Prisma.BlacklistedTokensOmit
+  offerPages?: Prisma.OfferPagesOmit
+  consultantPages?: Prisma.ConsultantPagesOmit
 }
 
 /* Types for Logging */

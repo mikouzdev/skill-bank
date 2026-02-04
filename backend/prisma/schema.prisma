@@ -85,6 +85,7 @@ model Consultant {
   consultantSkills     ConsultantSkill[]
   pageSections         PageSection[]
   consultantAttributes ConsultantAttribute[]
+  consultantPages   ConsultantPages[]
 }
 
 model ConsultantSkill {
@@ -128,11 +129,11 @@ model EmploymentSkill {
 /// Delete a SkillTag when the last reference is deleted
 model SkillTag {
   id         Int    @id @default(autoincrement())
-  categoryid Int?
+  categoryId Int?
   /// name should be stored in lowercase to prevent duplicates
   name       String @unique
 
-  category         SkillCategory?    @relation(fields: [categoryid], references: [id])
+  category         SkillCategory?    @relation(fields: [categoryId], references: [id])
   consultantSkills ConsultantSkill[]
   projectSkills    ProjectSkill[]
   employmentSkills EmploymentSkill[]
@@ -194,6 +195,7 @@ model Salesperson {
 
   user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   salesLists SalesList[]
+  offerPages OfferPages[]
 }
 
 /// Created by salespeople and viewable by customers.
@@ -237,6 +239,7 @@ model Customer {
 
   user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   salesLists SalesList[]
+  offerPages OfferPages[]
 }
 
 model PageSection {
@@ -281,4 +284,26 @@ model Comment {
 model BlacklistedTokens {
   id    Int    @id @default(autoincrement())
   token String
+}
+
+/// Created by salespeople and viewable by customers.
+model OfferPages {
+  id    Int    @id @default(autoincrement())
+  salespersonId    Int
+  customerId       Int
+  description String?
+  passwordHash String
+
+  salesperson    Salesperson     @relation(fields: [salespersonId], references: [id])
+  customer       Customer        @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  consultantPages ConsultantPages[]
+}
+
+model ConsultantPages {
+  id    Int    @id @default(autoincrement())
+  offerPageId Int
+  consultantId Int
+  showInfo Boolean
+  offerPage    OfferPages     @relation(fields: [offerPageId], references: [id])
+  Consultant Consultant  @relation(fields: [consultantId], references: [id])
 }

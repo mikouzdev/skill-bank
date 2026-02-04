@@ -174,13 +174,40 @@ async function main() {
     },
   });
 
-  await prisma.salesperson.create({
+  const sales1 = await prisma.salesperson.create({
     data: {
       userId: salesUser.id,
     },
   });
 
   console.log("🧑‍💼 Salesperson Sally created");
+
+  // ===========================================
+  // Customer user
+  // ===========================================
+
+  // password is hashed-password
+  // sama passu kuin Alice Consultantilla
+  const customerUser = await prisma.user.create({
+    data: {
+      name: "Cuno Customer",
+      email: "cuno@demo.com",
+      passwordHash:
+        "$argon2i$v=19$m=16,t=2,p=1$aXNuVjNDZmlWdVdSUG9KYQ$k0KvnEBaLJHBQ9y3rHwQUQ",
+      roles: {
+        create: [{ role: Role.CUSTOMER }],
+      },
+    },
+  });
+
+  const customer1 = await prisma.customer.create({
+    data: {
+      userId: customerUser.id,
+    },
+  });
+
+  console.log("🧑‍💼 Customer Cuno created");
+
   // ===========================================
   // Skills
   // ===========================================
@@ -421,6 +448,23 @@ async function main() {
     ],
   });
   console.log("📖 Page sections created");
+
+  await prisma.salesList.createMany({
+    data: [
+      { salespersonId: sales1.id, description: "Pitempi testi teksti" as const, shortDescription: "testi teksti" as const, customerId: customer1.id }
+    ],
+  });
+
+  console.log("📖 Sales lists created");
+
+  //password: hashed-password
+  await prisma.offerPages.createMany({
+    data: [
+      { salespersonId: sales1.id, description: "Pitempi testi teksti" as const, passwordHash: "$argon2i$v=19$m=16,t=2,p=1$aXNuVjNDZmlWdVdSUG9KYQ$k0KvnEBaLJHBQ9y3rHwQUQ", customerId: customer1.id }
+    ],
+  });
+
+  console.log("📖 Offer pages created");
 
   console.log("🎉 Seed complete!");
 }

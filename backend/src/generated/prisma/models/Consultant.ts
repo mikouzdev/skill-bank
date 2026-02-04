@@ -227,6 +227,7 @@ export type ConsultantWhereInput = {
   consultantSkills?: Prisma.ConsultantSkillListRelationFilter
   pageSections?: Prisma.PageSectionListRelationFilter
   consultantAttributes?: Prisma.ConsultantAttributeListRelationFilter
+  consultantPages?: Prisma.ConsultantPagesListRelationFilter
 }
 
 export type ConsultantOrderByWithRelationInput = {
@@ -242,6 +243,7 @@ export type ConsultantOrderByWithRelationInput = {
   consultantSkills?: Prisma.ConsultantSkillOrderByRelationAggregateInput
   pageSections?: Prisma.PageSectionOrderByRelationAggregateInput
   consultantAttributes?: Prisma.ConsultantAttributeOrderByRelationAggregateInput
+  consultantPages?: Prisma.ConsultantPagesOrderByRelationAggregateInput
 }
 
 export type ConsultantWhereUniqueInput = Prisma.AtLeast<{
@@ -260,6 +262,7 @@ export type ConsultantWhereUniqueInput = Prisma.AtLeast<{
   consultantSkills?: Prisma.ConsultantSkillListRelationFilter
   pageSections?: Prisma.PageSectionListRelationFilter
   consultantAttributes?: Prisma.ConsultantAttributeListRelationFilter
+  consultantPages?: Prisma.ConsultantPagesListRelationFilter
 }, "id" | "userId">
 
 export type ConsultantOrderByWithAggregationInput = {
@@ -297,6 +300,7 @@ export type ConsultantCreateInput = {
   consultantSkills?: Prisma.ConsultantSkillCreateNestedManyWithoutConsultantInput
   pageSections?: Prisma.PageSectionCreateNestedManyWithoutConsultantInput
   consultantAttributes?: Prisma.ConsultantAttributeCreateNestedManyWithoutConsultantInput
+  consultantPages?: Prisma.ConsultantPagesCreateNestedManyWithoutConsultantInput
 }
 
 export type ConsultantUncheckedCreateInput = {
@@ -311,6 +315,7 @@ export type ConsultantUncheckedCreateInput = {
   consultantSkills?: Prisma.ConsultantSkillUncheckedCreateNestedManyWithoutConsultantInput
   pageSections?: Prisma.PageSectionUncheckedCreateNestedManyWithoutConsultantInput
   consultantAttributes?: Prisma.ConsultantAttributeUncheckedCreateNestedManyWithoutConsultantInput
+  consultantPages?: Prisma.ConsultantPagesUncheckedCreateNestedManyWithoutConsultantInput
 }
 
 export type ConsultantUpdateInput = {
@@ -324,6 +329,7 @@ export type ConsultantUpdateInput = {
   consultantSkills?: Prisma.ConsultantSkillUpdateManyWithoutConsultantNestedInput
   pageSections?: Prisma.PageSectionUpdateManyWithoutConsultantNestedInput
   consultantAttributes?: Prisma.ConsultantAttributeUpdateManyWithoutConsultantNestedInput
+  consultantPages?: Prisma.ConsultantPagesUpdateManyWithoutConsultantNestedInput
 }
 
 export type ConsultantUncheckedUpdateInput = {
@@ -338,6 +344,7 @@ export type ConsultantUncheckedUpdateInput = {
   consultantSkills?: Prisma.ConsultantSkillUncheckedUpdateManyWithoutConsultantNestedInput
   pageSections?: Prisma.PageSectionUncheckedUpdateManyWithoutConsultantNestedInput
   consultantAttributes?: Prisma.ConsultantAttributeUncheckedUpdateManyWithoutConsultantNestedInput
+  consultantPages?: Prisma.ConsultantPagesUncheckedUpdateManyWithoutConsultantNestedInput
 }
 
 export type ConsultantCreateManyInput = {
@@ -522,6 +529,20 @@ export type ConsultantUpdateOneRequiredWithoutPageSectionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ConsultantUpdateToOneWithWhereWithoutPageSectionsInput, Prisma.ConsultantUpdateWithoutPageSectionsInput>, Prisma.ConsultantUncheckedUpdateWithoutPageSectionsInput>
 }
 
+export type ConsultantCreateNestedOneWithoutConsultantPagesInput = {
+  create?: Prisma.XOR<Prisma.ConsultantCreateWithoutConsultantPagesInput, Prisma.ConsultantUncheckedCreateWithoutConsultantPagesInput>
+  connectOrCreate?: Prisma.ConsultantCreateOrConnectWithoutConsultantPagesInput
+  connect?: Prisma.ConsultantWhereUniqueInput
+}
+
+export type ConsultantUpdateOneRequiredWithoutConsultantPagesNestedInput = {
+  create?: Prisma.XOR<Prisma.ConsultantCreateWithoutConsultantPagesInput, Prisma.ConsultantUncheckedCreateWithoutConsultantPagesInput>
+  connectOrCreate?: Prisma.ConsultantCreateOrConnectWithoutConsultantPagesInput
+  upsert?: Prisma.ConsultantUpsertWithoutConsultantPagesInput
+  connect?: Prisma.ConsultantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ConsultantUpdateToOneWithWhereWithoutConsultantPagesInput, Prisma.ConsultantUpdateWithoutConsultantPagesInput>, Prisma.ConsultantUncheckedUpdateWithoutConsultantPagesInput>
+}
+
 export type ConsultantCreateWithoutUserInput = {
   description: string
   roleTitle: string
@@ -532,6 +553,7 @@ export type ConsultantCreateWithoutUserInput = {
   consultantSkills?: Prisma.ConsultantSkillCreateNestedManyWithoutConsultantInput
   pageSections?: Prisma.PageSectionCreateNestedManyWithoutConsultantInput
   consultantAttributes?: Prisma.ConsultantAttributeCreateNestedManyWithoutConsultantInput
+  consultantPages?: Prisma.ConsultantPagesCreateNestedManyWithoutConsultantInput
 }
 
 export type ConsultantUncheckedCreateWithoutUserInput = {
@@ -545,6 +567,7 @@ export type ConsultantUncheckedCreateWithoutUserInput = {
   consultantSkills?: Prisma.ConsultantSkillUncheckedCreateNestedManyWithoutConsultantInput
   pageSections?: Prisma.PageSectionUncheckedCreateNestedManyWithoutConsultantInput
   consultantAttributes?: Prisma.ConsultantAttributeUncheckedCreateNestedManyWithoutConsultantInput
+  consultantPages?: Prisma.ConsultantPagesUncheckedCreateNestedManyWithoutConsultantInput
 }
 
 export type ConsultantCreateOrConnectWithoutUserInput = {
@@ -573,6 +596,7 @@ export type ConsultantUpdateWithoutUserInput = {
   consultantSkills?: Prisma.ConsultantSkillUpdateManyWithoutConsultantNestedInput
   pageSections?: Prisma.PageSectionUpdateManyWithoutConsultantNestedInput
   consultantAttributes?: Prisma.ConsultantAttributeUpdateManyWithoutConsultantNestedInput
+  consultantPages?: Prisma.ConsultantPagesUpdateManyWithoutConsultantNestedInput
 }
 
 export type ConsultantUncheckedUpdateWithoutUserInput = {
@@ -586,6 +610,7 @@ export type ConsultantUncheckedUpdateWithoutUserInput = {
   consultantSkills?: Prisma.ConsultantSkillUncheckedUpdateManyWithoutConsultantNestedInput
   pageSections?: Prisma.PageSectionUncheckedUpdateManyWithoutConsultantNestedInput
   consultantAttributes?: Prisma.ConsultantAttributeUncheckedUpdateManyWithoutConsultantNestedInput
+  consultantPages?: Prisma.ConsultantPagesUncheckedUpdateManyWithoutConsultantNestedInput
 }
 
 export type ConsultantCreateWithoutConsultantAttributesInput = {
@@ -598,6 +623,7 @@ export type ConsultantCreateWithoutConsultantAttributesInput = {
   projects?: Prisma.ProjectCreateNestedManyWithoutConsultantInput
   consultantSkills?: Prisma.ConsultantSkillCreateNestedManyWithoutConsultantInput
   pageSections?: Prisma.PageSectionCreateNestedManyWithoutConsultantInput
+  consultantPages?: Prisma.ConsultantPagesCreateNestedManyWithoutConsultantInput
 }
 
 export type ConsultantUncheckedCreateWithoutConsultantAttributesInput = {
@@ -611,6 +637,7 @@ export type ConsultantUncheckedCreateWithoutConsultantAttributesInput = {
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutConsultantInput
   consultantSkills?: Prisma.ConsultantSkillUncheckedCreateNestedManyWithoutConsultantInput
   pageSections?: Prisma.PageSectionUncheckedCreateNestedManyWithoutConsultantInput
+  consultantPages?: Prisma.ConsultantPagesUncheckedCreateNestedManyWithoutConsultantInput
 }
 
 export type ConsultantCreateOrConnectWithoutConsultantAttributesInput = {
@@ -639,6 +666,7 @@ export type ConsultantUpdateWithoutConsultantAttributesInput = {
   projects?: Prisma.ProjectUpdateManyWithoutConsultantNestedInput
   consultantSkills?: Prisma.ConsultantSkillUpdateManyWithoutConsultantNestedInput
   pageSections?: Prisma.PageSectionUpdateManyWithoutConsultantNestedInput
+  consultantPages?: Prisma.ConsultantPagesUpdateManyWithoutConsultantNestedInput
 }
 
 export type ConsultantUncheckedUpdateWithoutConsultantAttributesInput = {
@@ -652,6 +680,7 @@ export type ConsultantUncheckedUpdateWithoutConsultantAttributesInput = {
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutConsultantNestedInput
   consultantSkills?: Prisma.ConsultantSkillUncheckedUpdateManyWithoutConsultantNestedInput
   pageSections?: Prisma.PageSectionUncheckedUpdateManyWithoutConsultantNestedInput
+  consultantPages?: Prisma.ConsultantPagesUncheckedUpdateManyWithoutConsultantNestedInput
 }
 
 export type ConsultantCreateWithoutConsultantSkillsInput = {
@@ -664,6 +693,7 @@ export type ConsultantCreateWithoutConsultantSkillsInput = {
   projects?: Prisma.ProjectCreateNestedManyWithoutConsultantInput
   pageSections?: Prisma.PageSectionCreateNestedManyWithoutConsultantInput
   consultantAttributes?: Prisma.ConsultantAttributeCreateNestedManyWithoutConsultantInput
+  consultantPages?: Prisma.ConsultantPagesCreateNestedManyWithoutConsultantInput
 }
 
 export type ConsultantUncheckedCreateWithoutConsultantSkillsInput = {
@@ -677,6 +707,7 @@ export type ConsultantUncheckedCreateWithoutConsultantSkillsInput = {
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutConsultantInput
   pageSections?: Prisma.PageSectionUncheckedCreateNestedManyWithoutConsultantInput
   consultantAttributes?: Prisma.ConsultantAttributeUncheckedCreateNestedManyWithoutConsultantInput
+  consultantPages?: Prisma.ConsultantPagesUncheckedCreateNestedManyWithoutConsultantInput
 }
 
 export type ConsultantCreateOrConnectWithoutConsultantSkillsInput = {
@@ -705,6 +736,7 @@ export type ConsultantUpdateWithoutConsultantSkillsInput = {
   projects?: Prisma.ProjectUpdateManyWithoutConsultantNestedInput
   pageSections?: Prisma.PageSectionUpdateManyWithoutConsultantNestedInput
   consultantAttributes?: Prisma.ConsultantAttributeUpdateManyWithoutConsultantNestedInput
+  consultantPages?: Prisma.ConsultantPagesUpdateManyWithoutConsultantNestedInput
 }
 
 export type ConsultantUncheckedUpdateWithoutConsultantSkillsInput = {
@@ -718,6 +750,7 @@ export type ConsultantUncheckedUpdateWithoutConsultantSkillsInput = {
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutConsultantNestedInput
   pageSections?: Prisma.PageSectionUncheckedUpdateManyWithoutConsultantNestedInput
   consultantAttributes?: Prisma.ConsultantAttributeUncheckedUpdateManyWithoutConsultantNestedInput
+  consultantPages?: Prisma.ConsultantPagesUncheckedUpdateManyWithoutConsultantNestedInput
 }
 
 export type ConsultantCreateWithoutEmploymentsInput = {
@@ -730,6 +763,7 @@ export type ConsultantCreateWithoutEmploymentsInput = {
   consultantSkills?: Prisma.ConsultantSkillCreateNestedManyWithoutConsultantInput
   pageSections?: Prisma.PageSectionCreateNestedManyWithoutConsultantInput
   consultantAttributes?: Prisma.ConsultantAttributeCreateNestedManyWithoutConsultantInput
+  consultantPages?: Prisma.ConsultantPagesCreateNestedManyWithoutConsultantInput
 }
 
 export type ConsultantUncheckedCreateWithoutEmploymentsInput = {
@@ -743,6 +777,7 @@ export type ConsultantUncheckedCreateWithoutEmploymentsInput = {
   consultantSkills?: Prisma.ConsultantSkillUncheckedCreateNestedManyWithoutConsultantInput
   pageSections?: Prisma.PageSectionUncheckedCreateNestedManyWithoutConsultantInput
   consultantAttributes?: Prisma.ConsultantAttributeUncheckedCreateNestedManyWithoutConsultantInput
+  consultantPages?: Prisma.ConsultantPagesUncheckedCreateNestedManyWithoutConsultantInput
 }
 
 export type ConsultantCreateOrConnectWithoutEmploymentsInput = {
@@ -771,6 +806,7 @@ export type ConsultantUpdateWithoutEmploymentsInput = {
   consultantSkills?: Prisma.ConsultantSkillUpdateManyWithoutConsultantNestedInput
   pageSections?: Prisma.PageSectionUpdateManyWithoutConsultantNestedInput
   consultantAttributes?: Prisma.ConsultantAttributeUpdateManyWithoutConsultantNestedInput
+  consultantPages?: Prisma.ConsultantPagesUpdateManyWithoutConsultantNestedInput
 }
 
 export type ConsultantUncheckedUpdateWithoutEmploymentsInput = {
@@ -784,6 +820,7 @@ export type ConsultantUncheckedUpdateWithoutEmploymentsInput = {
   consultantSkills?: Prisma.ConsultantSkillUncheckedUpdateManyWithoutConsultantNestedInput
   pageSections?: Prisma.PageSectionUncheckedUpdateManyWithoutConsultantNestedInput
   consultantAttributes?: Prisma.ConsultantAttributeUncheckedUpdateManyWithoutConsultantNestedInput
+  consultantPages?: Prisma.ConsultantPagesUncheckedUpdateManyWithoutConsultantNestedInput
 }
 
 export type ConsultantCreateWithoutProjectsInput = {
@@ -796,6 +833,7 @@ export type ConsultantCreateWithoutProjectsInput = {
   consultantSkills?: Prisma.ConsultantSkillCreateNestedManyWithoutConsultantInput
   pageSections?: Prisma.PageSectionCreateNestedManyWithoutConsultantInput
   consultantAttributes?: Prisma.ConsultantAttributeCreateNestedManyWithoutConsultantInput
+  consultantPages?: Prisma.ConsultantPagesCreateNestedManyWithoutConsultantInput
 }
 
 export type ConsultantUncheckedCreateWithoutProjectsInput = {
@@ -809,6 +847,7 @@ export type ConsultantUncheckedCreateWithoutProjectsInput = {
   consultantSkills?: Prisma.ConsultantSkillUncheckedCreateNestedManyWithoutConsultantInput
   pageSections?: Prisma.PageSectionUncheckedCreateNestedManyWithoutConsultantInput
   consultantAttributes?: Prisma.ConsultantAttributeUncheckedCreateNestedManyWithoutConsultantInput
+  consultantPages?: Prisma.ConsultantPagesUncheckedCreateNestedManyWithoutConsultantInput
 }
 
 export type ConsultantCreateOrConnectWithoutProjectsInput = {
@@ -837,6 +876,7 @@ export type ConsultantUpdateWithoutProjectsInput = {
   consultantSkills?: Prisma.ConsultantSkillUpdateManyWithoutConsultantNestedInput
   pageSections?: Prisma.PageSectionUpdateManyWithoutConsultantNestedInput
   consultantAttributes?: Prisma.ConsultantAttributeUpdateManyWithoutConsultantNestedInput
+  consultantPages?: Prisma.ConsultantPagesUpdateManyWithoutConsultantNestedInput
 }
 
 export type ConsultantUncheckedUpdateWithoutProjectsInput = {
@@ -850,6 +890,7 @@ export type ConsultantUncheckedUpdateWithoutProjectsInput = {
   consultantSkills?: Prisma.ConsultantSkillUncheckedUpdateManyWithoutConsultantNestedInput
   pageSections?: Prisma.PageSectionUncheckedUpdateManyWithoutConsultantNestedInput
   consultantAttributes?: Prisma.ConsultantAttributeUncheckedUpdateManyWithoutConsultantNestedInput
+  consultantPages?: Prisma.ConsultantPagesUncheckedUpdateManyWithoutConsultantNestedInput
 }
 
 export type ConsultantCreateWithoutSalesListItemsInput = {
@@ -862,6 +903,7 @@ export type ConsultantCreateWithoutSalesListItemsInput = {
   consultantSkills?: Prisma.ConsultantSkillCreateNestedManyWithoutConsultantInput
   pageSections?: Prisma.PageSectionCreateNestedManyWithoutConsultantInput
   consultantAttributes?: Prisma.ConsultantAttributeCreateNestedManyWithoutConsultantInput
+  consultantPages?: Prisma.ConsultantPagesCreateNestedManyWithoutConsultantInput
 }
 
 export type ConsultantUncheckedCreateWithoutSalesListItemsInput = {
@@ -875,6 +917,7 @@ export type ConsultantUncheckedCreateWithoutSalesListItemsInput = {
   consultantSkills?: Prisma.ConsultantSkillUncheckedCreateNestedManyWithoutConsultantInput
   pageSections?: Prisma.PageSectionUncheckedCreateNestedManyWithoutConsultantInput
   consultantAttributes?: Prisma.ConsultantAttributeUncheckedCreateNestedManyWithoutConsultantInput
+  consultantPages?: Prisma.ConsultantPagesUncheckedCreateNestedManyWithoutConsultantInput
 }
 
 export type ConsultantCreateOrConnectWithoutSalesListItemsInput = {
@@ -903,6 +946,7 @@ export type ConsultantUpdateWithoutSalesListItemsInput = {
   consultantSkills?: Prisma.ConsultantSkillUpdateManyWithoutConsultantNestedInput
   pageSections?: Prisma.PageSectionUpdateManyWithoutConsultantNestedInput
   consultantAttributes?: Prisma.ConsultantAttributeUpdateManyWithoutConsultantNestedInput
+  consultantPages?: Prisma.ConsultantPagesUpdateManyWithoutConsultantNestedInput
 }
 
 export type ConsultantUncheckedUpdateWithoutSalesListItemsInput = {
@@ -916,6 +960,7 @@ export type ConsultantUncheckedUpdateWithoutSalesListItemsInput = {
   consultantSkills?: Prisma.ConsultantSkillUncheckedUpdateManyWithoutConsultantNestedInput
   pageSections?: Prisma.PageSectionUncheckedUpdateManyWithoutConsultantNestedInput
   consultantAttributes?: Prisma.ConsultantAttributeUncheckedUpdateManyWithoutConsultantNestedInput
+  consultantPages?: Prisma.ConsultantPagesUncheckedUpdateManyWithoutConsultantNestedInput
 }
 
 export type ConsultantCreateWithoutPageSectionsInput = {
@@ -928,6 +973,7 @@ export type ConsultantCreateWithoutPageSectionsInput = {
   projects?: Prisma.ProjectCreateNestedManyWithoutConsultantInput
   consultantSkills?: Prisma.ConsultantSkillCreateNestedManyWithoutConsultantInput
   consultantAttributes?: Prisma.ConsultantAttributeCreateNestedManyWithoutConsultantInput
+  consultantPages?: Prisma.ConsultantPagesCreateNestedManyWithoutConsultantInput
 }
 
 export type ConsultantUncheckedCreateWithoutPageSectionsInput = {
@@ -941,6 +987,7 @@ export type ConsultantUncheckedCreateWithoutPageSectionsInput = {
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutConsultantInput
   consultantSkills?: Prisma.ConsultantSkillUncheckedCreateNestedManyWithoutConsultantInput
   consultantAttributes?: Prisma.ConsultantAttributeUncheckedCreateNestedManyWithoutConsultantInput
+  consultantPages?: Prisma.ConsultantPagesUncheckedCreateNestedManyWithoutConsultantInput
 }
 
 export type ConsultantCreateOrConnectWithoutPageSectionsInput = {
@@ -969,6 +1016,7 @@ export type ConsultantUpdateWithoutPageSectionsInput = {
   projects?: Prisma.ProjectUpdateManyWithoutConsultantNestedInput
   consultantSkills?: Prisma.ConsultantSkillUpdateManyWithoutConsultantNestedInput
   consultantAttributes?: Prisma.ConsultantAttributeUpdateManyWithoutConsultantNestedInput
+  consultantPages?: Prisma.ConsultantPagesUpdateManyWithoutConsultantNestedInput
 }
 
 export type ConsultantUncheckedUpdateWithoutPageSectionsInput = {
@@ -981,6 +1029,77 @@ export type ConsultantUncheckedUpdateWithoutPageSectionsInput = {
   employments?: Prisma.EmploymentUncheckedUpdateManyWithoutConsultantNestedInput
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutConsultantNestedInput
   consultantSkills?: Prisma.ConsultantSkillUncheckedUpdateManyWithoutConsultantNestedInput
+  consultantAttributes?: Prisma.ConsultantAttributeUncheckedUpdateManyWithoutConsultantNestedInput
+  consultantPages?: Prisma.ConsultantPagesUncheckedUpdateManyWithoutConsultantNestedInput
+}
+
+export type ConsultantCreateWithoutConsultantPagesInput = {
+  description: string
+  roleTitle: string
+  profilePictureUrl: string
+  user: Prisma.UserCreateNestedOneWithoutConsultantInput
+  salesListItems?: Prisma.SalesListItemCreateNestedManyWithoutConsultantInput
+  employments?: Prisma.EmploymentCreateNestedManyWithoutConsultantInput
+  projects?: Prisma.ProjectCreateNestedManyWithoutConsultantInput
+  consultantSkills?: Prisma.ConsultantSkillCreateNestedManyWithoutConsultantInput
+  pageSections?: Prisma.PageSectionCreateNestedManyWithoutConsultantInput
+  consultantAttributes?: Prisma.ConsultantAttributeCreateNestedManyWithoutConsultantInput
+}
+
+export type ConsultantUncheckedCreateWithoutConsultantPagesInput = {
+  id?: number
+  userId: number
+  description: string
+  roleTitle: string
+  profilePictureUrl: string
+  salesListItems?: Prisma.SalesListItemUncheckedCreateNestedManyWithoutConsultantInput
+  employments?: Prisma.EmploymentUncheckedCreateNestedManyWithoutConsultantInput
+  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutConsultantInput
+  consultantSkills?: Prisma.ConsultantSkillUncheckedCreateNestedManyWithoutConsultantInput
+  pageSections?: Prisma.PageSectionUncheckedCreateNestedManyWithoutConsultantInput
+  consultantAttributes?: Prisma.ConsultantAttributeUncheckedCreateNestedManyWithoutConsultantInput
+}
+
+export type ConsultantCreateOrConnectWithoutConsultantPagesInput = {
+  where: Prisma.ConsultantWhereUniqueInput
+  create: Prisma.XOR<Prisma.ConsultantCreateWithoutConsultantPagesInput, Prisma.ConsultantUncheckedCreateWithoutConsultantPagesInput>
+}
+
+export type ConsultantUpsertWithoutConsultantPagesInput = {
+  update: Prisma.XOR<Prisma.ConsultantUpdateWithoutConsultantPagesInput, Prisma.ConsultantUncheckedUpdateWithoutConsultantPagesInput>
+  create: Prisma.XOR<Prisma.ConsultantCreateWithoutConsultantPagesInput, Prisma.ConsultantUncheckedCreateWithoutConsultantPagesInput>
+  where?: Prisma.ConsultantWhereInput
+}
+
+export type ConsultantUpdateToOneWithWhereWithoutConsultantPagesInput = {
+  where?: Prisma.ConsultantWhereInput
+  data: Prisma.XOR<Prisma.ConsultantUpdateWithoutConsultantPagesInput, Prisma.ConsultantUncheckedUpdateWithoutConsultantPagesInput>
+}
+
+export type ConsultantUpdateWithoutConsultantPagesInput = {
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  roleTitle?: Prisma.StringFieldUpdateOperationsInput | string
+  profilePictureUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  user?: Prisma.UserUpdateOneRequiredWithoutConsultantNestedInput
+  salesListItems?: Prisma.SalesListItemUpdateManyWithoutConsultantNestedInput
+  employments?: Prisma.EmploymentUpdateManyWithoutConsultantNestedInput
+  projects?: Prisma.ProjectUpdateManyWithoutConsultantNestedInput
+  consultantSkills?: Prisma.ConsultantSkillUpdateManyWithoutConsultantNestedInput
+  pageSections?: Prisma.PageSectionUpdateManyWithoutConsultantNestedInput
+  consultantAttributes?: Prisma.ConsultantAttributeUpdateManyWithoutConsultantNestedInput
+}
+
+export type ConsultantUncheckedUpdateWithoutConsultantPagesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  roleTitle?: Prisma.StringFieldUpdateOperationsInput | string
+  profilePictureUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  salesListItems?: Prisma.SalesListItemUncheckedUpdateManyWithoutConsultantNestedInput
+  employments?: Prisma.EmploymentUncheckedUpdateManyWithoutConsultantNestedInput
+  projects?: Prisma.ProjectUncheckedUpdateManyWithoutConsultantNestedInput
+  consultantSkills?: Prisma.ConsultantSkillUncheckedUpdateManyWithoutConsultantNestedInput
+  pageSections?: Prisma.PageSectionUncheckedUpdateManyWithoutConsultantNestedInput
   consultantAttributes?: Prisma.ConsultantAttributeUncheckedUpdateManyWithoutConsultantNestedInput
 }
 
@@ -996,6 +1115,7 @@ export type ConsultantCountOutputType = {
   consultantSkills: number
   pageSections: number
   consultantAttributes: number
+  consultantPages: number
 }
 
 export type ConsultantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1005,6 +1125,7 @@ export type ConsultantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extens
   consultantSkills?: boolean | ConsultantCountOutputTypeCountConsultantSkillsArgs
   pageSections?: boolean | ConsultantCountOutputTypeCountPageSectionsArgs
   consultantAttributes?: boolean | ConsultantCountOutputTypeCountConsultantAttributesArgs
+  consultantPages?: boolean | ConsultantCountOutputTypeCountConsultantPagesArgs
 }
 
 /**
@@ -1059,6 +1180,13 @@ export type ConsultantCountOutputTypeCountConsultantAttributesArgs<ExtArgs exten
   where?: Prisma.ConsultantAttributeWhereInput
 }
 
+/**
+ * ConsultantCountOutputType without action
+ */
+export type ConsultantCountOutputTypeCountConsultantPagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ConsultantPagesWhereInput
+}
+
 
 export type ConsultantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1073,6 +1201,7 @@ export type ConsultantSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   consultantSkills?: boolean | Prisma.Consultant$consultantSkillsArgs<ExtArgs>
   pageSections?: boolean | Prisma.Consultant$pageSectionsArgs<ExtArgs>
   consultantAttributes?: boolean | Prisma.Consultant$consultantAttributesArgs<ExtArgs>
+  consultantPages?: boolean | Prisma.Consultant$consultantPagesArgs<ExtArgs>
   _count?: boolean | Prisma.ConsultantCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["consultant"]>
 
@@ -1111,6 +1240,7 @@ export type ConsultantInclude<ExtArgs extends runtime.Types.Extensions.InternalA
   consultantSkills?: boolean | Prisma.Consultant$consultantSkillsArgs<ExtArgs>
   pageSections?: boolean | Prisma.Consultant$pageSectionsArgs<ExtArgs>
   consultantAttributes?: boolean | Prisma.Consultant$consultantAttributesArgs<ExtArgs>
+  consultantPages?: boolean | Prisma.Consultant$consultantPagesArgs<ExtArgs>
   _count?: boolean | Prisma.ConsultantCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ConsultantIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1130,6 +1260,7 @@ export type $ConsultantPayload<ExtArgs extends runtime.Types.Extensions.Internal
     consultantSkills: Prisma.$ConsultantSkillPayload<ExtArgs>[]
     pageSections: Prisma.$PageSectionPayload<ExtArgs>[]
     consultantAttributes: Prisma.$ConsultantAttributePayload<ExtArgs>[]
+    consultantPages: Prisma.$ConsultantPagesPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1538,6 +1669,7 @@ export interface Prisma__ConsultantClient<T, Null = never, ExtArgs extends runti
   consultantSkills<T extends Prisma.Consultant$consultantSkillsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Consultant$consultantSkillsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConsultantSkillPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   pageSections<T extends Prisma.Consultant$pageSectionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Consultant$pageSectionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PageSectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   consultantAttributes<T extends Prisma.Consultant$consultantAttributesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Consultant$consultantAttributesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConsultantAttributePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  consultantPages<T extends Prisma.Consultant$consultantPagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Consultant$consultantPagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConsultantPagesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2109,6 +2241,30 @@ export type Consultant$consultantAttributesArgs<ExtArgs extends runtime.Types.Ex
   take?: number
   skip?: number
   distinct?: Prisma.ConsultantAttributeScalarFieldEnum | Prisma.ConsultantAttributeScalarFieldEnum[]
+}
+
+/**
+ * Consultant.consultantPages
+ */
+export type Consultant$consultantPagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ConsultantPages
+   */
+  select?: Prisma.ConsultantPagesSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ConsultantPages
+   */
+  omit?: Prisma.ConsultantPagesOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConsultantPagesInclude<ExtArgs> | null
+  where?: Prisma.ConsultantPagesWhereInput
+  orderBy?: Prisma.ConsultantPagesOrderByWithRelationInput | Prisma.ConsultantPagesOrderByWithRelationInput[]
+  cursor?: Prisma.ConsultantPagesWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ConsultantPagesScalarFieldEnum | Prisma.ConsultantPagesScalarFieldEnum[]
 }
 
 /**
