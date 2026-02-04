@@ -352,6 +352,102 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/consultants/jsonFilter": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Filter consultant by JsonFilter */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /**
+                         * @description List of skill-based filters
+                         * @example [
+                         *       {
+                         *         "skill": "TypeScript",
+                         *         "proficiency": 4,
+                         *         "range": "GREATER"
+                         *       }
+                         *     ]
+                         */
+                        filter_skills?: {
+                            /**
+                             * @description Name of the skill
+                             * @example TypeScript
+                             */
+                            skill: string;
+                            /**
+                             * @description Proficiency level for the skill
+                             * @example 4
+                             */
+                            proficiency: number;
+                            /**
+                             * @description Comparison operator used when evaluating numeric values
+                             * @example GREATER
+                             * @enum {string}
+                             */
+                            range: "GREATER" | "LESSER" | "EQUAL";
+                        }[];
+                        /**
+                         * @description Required experience in months
+                         * @example 24
+                         */
+                        experienceInMonths?: number;
+                        /**
+                         * @description Comparison operator used when evaluating numeric values
+                         * @example GREATER
+                         * @enum {string}
+                         */
+                        range?: "GREATER" | "LESSER" | "EQUAL";
+                        /**
+                         * @description Free-text keyword filters
+                         * @example [
+                         *       "backend",
+                         *       "typescript",
+                         *       "cloud"
+                         *     ]
+                         */
+                        keywords?: string[];
+                    };
+                };
+            };
+            responses: {
+                /** @description Some consultant found */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ConsultantResponse"];
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/consultants/{consultantId}/employments": {
         parameters: {
             query?: never;
