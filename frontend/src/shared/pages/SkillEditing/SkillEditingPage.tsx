@@ -1,14 +1,5 @@
-import {
-  Box,
-  Button,
-  Container,
-  IconButton,
-  Paper,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Container, Paper, Stack, Typography } from "@mui/material";
 
-import DeleteIcon from "@mui/icons-material/Delete";
 import { useEffect, useState } from "react";
 import {
   createSkillTag,
@@ -19,23 +10,25 @@ import type { components } from "@api-types/openapi";
 import SkillTagItem from "./components/SkillTagItem";
 import SkillCreationDialog from "./components/SkillCreationDialog";
 import { useAuth } from "../../../app/hooks/useAuth";
+import {
+  createCategory,
+  deleteCategory,
+  getCategories,
+} from "../../api/categories.api";
+import SkillCategoryItem from "./components/SkillCategoryItem";
+import CategoryCreationDialog from "./components/CategoryCreationDialog";
 
 type PostSkillTagBody = components["schemas"]["PostSkillTagBody"];
 type SkillTagResponse = components["schemas"]["SkillTagList"];
 
-const categoryItem = (
-  <Stack direction={"row"} alignItems={"center"} spacing={1}>
-    <IconButton>
-      <DeleteIcon color="error" />
-    </IconButton>
-    <Typography>Category 1</Typography>
-  </Stack>
-);
+type SkillCategoryBody = components["schemas"]["skillCategoryBody"];
+type SkillCategories = components["schemas"]["SkillCategories"];
 
 export default function SkillEditingPage() {
   const { currentUser } = useAuth();
 
   const [skillTags, setSkillTags] = useState<SkillTagResponse>([]);
+  const [categories, setCategories] = useState<SkillCategories>([]);
 
   useEffect(() => {
     async function fetchSkillPool() {
@@ -47,7 +40,17 @@ export default function SkillEditingPage() {
       }
     }
 
+    async function fetchSkillCategories() {
+      try {
+        const response = await getCategories();
+        setCategories(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
     void fetchSkillPool();
+    void fetchSkillCategories();
   }, []);
 
   async function handleDeleteSkillTag(skillName: string) {
@@ -56,6 +59,16 @@ export default function SkillEditingPage() {
       setSkillTags(skillTags?.filter((skill) => skill.name !== skillName));
     } catch (error) {
       alert("Failed to delete skill. Skill is probably in use.");
+      console.log(error);
+    }
+  }
+
+  async function handleDeleteCategory(id: number) {
+    try {
+      await deleteCategory(id);
+      setCategories(categories.filter((c) => c.id !== id));
+    } catch (error) {
+      alert("failed to delete category");
       console.log(error);
     }
   }
@@ -81,11 +94,38 @@ export default function SkillEditingPage() {
     }
   }
 
+  async function handleCreateCategory(
+    payload: SkillCategoryBody
+  ): Promise<boolean> {
+    try {
+      if (categories.find((c) => c.name === payload.name)) {
+        alert(`category ${payload.name} already exists`);
+        return false;
+      }
+
+      const response = await createCategory(payload);
+      setCategories((prev) => [...prev, response.data]);
+      return true;
+    } catch (error) {
+      console.log("failed to create category: ", error);
+      alert("failed to create category.");
+      return false;
+    }
+  }
+
   const mappedSkillTags = skillTags?.map((skill) => (
     <SkillTagItem
       key={skill.id}
       skill={skill}
       onDelete={(skillName) => handleDeleteSkillTag(skillName)}
+    />
+  ));
+
+  const mappedSkillCategories = categories?.map((category) => (
+    <SkillCategoryItem
+      key={category.id}
+      category={category}
+      onDelete={(id) => handleDeleteCategory(id)}
     />
   ));
 
@@ -108,7 +148,7 @@ export default function SkillEditingPage() {
         <Box display={"flex"} flexDirection={"column"} gap={1} flex={1}>
           <Stack direction={"row"} spacing={2} alignItems={"center"}>
             <Typography variant="h5">Category</Typography>
-            <Button size="small">Add category</Button>
+            <CategoryCreationDialog onCreate={handleCreateCategory} />
           </Stack>
           <Paper elevation={1}>
             <Stack
@@ -118,19 +158,18 @@ export default function SkillEditingPage() {
               maxHeight={700}
               overflow={"scroll"}
             >
-              {categoryItem}
-              {categoryItem}
-              {categoryItem}
-              {categoryItem}
-              {categoryItem}
+              {mappedSkillCategories}
             </Stack>
           </Paper>
         </Box>
 
         <Box display={"flex"} flexDirection={"column"} gap={1} flex={1}>
           <Stack direction={"row"} spacing={2} alignItems={"center"}>
-            <Typography variant="h5">Skills - Category Name</Typography>
-            <SkillCreationDialog onCreate={handleCreateSkillTag} />
+            <Typography variant="h5">Skills</Typography>
+            <SkillCreationDialog
+              onCreate={handleCreateSkillTag}
+              categories={categories}
+            />
           </Stack>
           <Paper elevation={1}>
             <Stack

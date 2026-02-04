@@ -1,11 +1,9 @@
-import { Paper, Box } from "@mui/material"
+import { Paper, Box } from "@mui/material";
 import { ConsultantCard } from "../../sales/components/ConsultantCard";
 import { useEffect, useState } from "react";
 import { getConsultants } from "../../consultant/api/consultants.api";
 
-
 export const ConsultantListConsultants = () => {
-
   const [ids, setIds] = useState<number[]>([]);
 
   useEffect(() => {
@@ -13,25 +11,23 @@ export const ConsultantListConsultants = () => {
       try {
         const response = await getConsultants();
         const consultants = response.data;
-        setIds(consultants.map((c) => c.userId));
+        setIds(consultants.map((c) => c.id));
       } catch (err) {
         console.error("Failed to load consultants", err);
       }
     };
-    load();
+    void load();
   }, []);
 
-  return(
-  <>
-    <Paper sx={{  border: 1, margin: "16px", background: "#efefef"}}>
-                
-      {ids.map((id) => (
-        <Box key={id} sx={{ m: 3, border: 1, background: "white" }}>
-          <ConsultantCard consultantID={id} />
-        </Box>
-      ))}
- 
-     </Paper>
-  </>
-)
-}
+  return (
+    <>
+      <Paper sx={{ border: 1, margin: "16px", background: "#efefef" }}>
+        {ids.map((id) => (
+          <Box key={id} sx={{ m: 3, border: 1, background: "white" }}>
+            <ConsultantCard consultantID={id} />
+          </Box>
+        ))}
+      </Paper>
+    </>
+  );
+};

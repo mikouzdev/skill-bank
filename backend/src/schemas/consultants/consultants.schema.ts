@@ -6,7 +6,7 @@ export const ConsultantIdParamsSchema = z.object({
 
 export const ConsultantResponseSchema = z
   .object({
-    consultantId: z.number().meta({ example: "1" }),
+    id: z.number().meta({ example: "1" }),
     userId: z.number().meta({ example: "1" }),
     description: z
       .string()
@@ -26,7 +26,7 @@ export const AllConsultantsResponseSchema = z
   .meta({ id: "AllConsultantsResponse" });
 
 export const UpdateConsultantSchema = ConsultantResponseSchema.omit({
-  consultantId: true,
+  id: true,
   userId: true,
   profilePictureUrl: true,
 })

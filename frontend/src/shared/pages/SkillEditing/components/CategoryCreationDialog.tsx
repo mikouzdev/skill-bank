@@ -4,40 +4,27 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  type SelectChangeEvent,
   Stack,
   TextField,
 } from "@mui/material";
 import { useState } from "react";
 
-type PostSkillTagBody = components["schemas"]["PostSkillTagBody"];
-type SkillCategories = components["schemas"]["SkillCategories"];
+type SkillCategoryBody = components["schemas"]["skillCategoryBody"];
 
 interface Props {
-  onCreate: (payload: PostSkillTagBody) => Promise<boolean>;
-  categories: SkillCategories;
+  onCreate: (payload: SkillCategoryBody) => Promise<boolean>;
 }
 
-export default function SkillCreationDialog({ onCreate, categories }: Props) {
+export default function CategoryCreationDialog({ onCreate }: Props) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [form, setForm] = useState<PostSkillTagBody>({
+  const [form, setForm] = useState<SkillCategoryBody>({
     name: "",
-    categoryId: null,
+    skillTags: [],
   });
 
   function handleNameChange(e: React.ChangeEvent<HTMLInputElement>) {
     setForm((prev) => ({ ...prev, name: e.target.value }));
-  }
-
-  function handleCategoryChange(e: SelectChangeEvent<number | string>) {
-    const { value } = e.target;
-
-    setForm((prev) => ({ ...prev, categoryId: value === "" ? null : value }));
   }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -47,15 +34,15 @@ export default function SkillCreationDialog({ onCreate, categories }: Props) {
     // just to see the loading icon :)
     await new Promise((res) => setTimeout(res, 200));
 
-    const newSkill: PostSkillTagBody = {
+    const newCategory: SkillCategoryBody = {
       name: form.name.trim(),
-      categoryId: form.categoryId,
+      skillTags: form.skillTags,
     };
 
-    const success = await onCreate(newSkill);
+    const success = await onCreate(newCategory);
     setLoading(false);
     if (success) {
-      setForm({ name: "", categoryId: null });
+      setForm({ name: "", skillTags: [] });
       setIsOpen(false);
     }
   }
@@ -63,11 +50,11 @@ export default function SkillCreationDialog({ onCreate, categories }: Props) {
   return (
     <>
       <Button size="small" onClick={() => setIsOpen(true)}>
-        Add skill
+        Add category
       </Button>
 
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
-        <DialogTitle>Add new skill</DialogTitle>
+        <DialogTitle>Add new category</DialogTitle>
         <DialogContent>
           <Stack
             direction={"column"}
@@ -78,27 +65,11 @@ export default function SkillCreationDialog({ onCreate, categories }: Props) {
           >
             <TextField
               type="text"
-              label="Skill name"
+              label="Category name"
               value={form.name}
               onChange={handleNameChange}
             />
 
-            <FormControl fullWidth>
-              <InputLabel id="category-select-label">Category</InputLabel>
-              <Select
-                labelId="category-select-label"
-                label="Category"
-                value={form.categoryId ?? ""}
-                onChange={handleCategoryChange}
-              >
-                <MenuItem value="">No category</MenuItem>
-                {categories.map((c) => (
-                  <MenuItem key={c.id} value={c.id}>
-                    {c.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
             <Stack direction={"row"} gap={3} justifyContent={"center"}>
               <Button
                 color="secondary"
