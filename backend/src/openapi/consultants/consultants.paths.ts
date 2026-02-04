@@ -2,6 +2,7 @@ import {
   ConsultantResponseSchema,
   AllConsultantsResponseSchema,
 } from "../../schemas/consultants/consultants.schema.js";
+import { JsonFilterSchema } from "../../schemas/consultants/search.schema.js";
 
 export const consultantsPaths = {
   "/consultants": {
@@ -92,6 +93,27 @@ export const consultantsPaths = {
       responses: {
         200: {
           description: "Some consultant found",
+        },
+        500: { description: "Internal server error" },
+      },
+    },
+  },
+  "/consultants/jsonFilter": {
+    post: {
+      summary: "Filter consultant by JsonFilter",
+      tags: ["Consultants", "Filter"],
+      requestBody: {
+        required: true,
+        content: {
+          "application/json": {
+            schema: JsonFilterSchema,
+          },
+        },
+      },
+      responses: {
+        200: {
+          description: "Some consultant found",
+          content: { "application/json": { schema: ConsultantResponseSchema } },
         },
         500: { description: "Internal server error" },
       },
