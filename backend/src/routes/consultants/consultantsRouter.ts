@@ -9,9 +9,14 @@ import { fileTypeFromBuffer } from "file-type";
 import { uploadFile } from "../../middlewares/file.js";
 import {
   getConsultantsByFilter,
+  getConsultantsByJsonFilter,
   getConsultantsByName,
 } from "../../middlewares/search.js";
-import { authenticate, type AuthenticatedRequest } from "../../middlewares/authentication.js";
+import {
+  authenticate,
+  type AuthenticatedRequest,
+} from "../../middlewares/authentication.js";
+import { JsonFilterSchema } from "../../schemas/consultants/search.schema.js";
 
 // TODO: Check all env variables in a single place
 const PROFILE_PICTURE_PREFIX =
@@ -74,6 +79,30 @@ consultantsRouter.get("/filter", async (req: Request, res: Response) => {
     return;
   }
 });
+
+/**
+ * Filter consultants by Json
+ * @route POST /consultants/jsonFilter
+ * @returns consultant[]
+ */
+consultantsRouter.post("/jsonFilter", async (req: Request, res: Response) => {
+  try {
+    const jsonFilter = JsonFilterSchema.safeParse(req.body);
+
+    if (!jsonFilter.success) {
+      res.status(500).json(jsonFilter.error);
+      return;
+    }
+    const foundConsultants = await getConsultantsByJsonFilter(jsonFilter.data);
+    res.send(foundConsultants.map((el) => el));
+
+    return;
+  } catch (err) {
+    res.status(500).json(err);
+    return;
+  }
+});
+
 /**
  * Get a specific consultant by ID
  * @route GET /consultants/{consultantId}
@@ -116,7 +145,8 @@ consultantsRouter.get("/:consultantId", async (req: Request, res: Response) => {
  * @returns confirmation message
  */
 consultantsRouter.put(
-  "/me", authenticate,
+  "/me",
+  authenticate,
   uploadFile("profilePicture"),
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedBody = UpdateConsultantSchema.safeParse(req.body);
@@ -124,7 +154,7 @@ consultantsRouter.put(
       res.status(400).json(parsedBody.error);
       return;
     }
-    const { description, roleTitle, user } = parsedBody.data;
+    const { description, roleTitle } = parsedBody.data;
     const profilePicture = req.file;
     let profilePictureUrl;
 
@@ -163,26 +193,26 @@ consultantsRouter.put(
       }
       const consultantId = user?.consultant?.id;
       try {
-        if(consultantId !== undefined && consultantId !== null){
+        if (consultantId !== undefined && consultantId !== null) {
           consultant = await prisma.consultant.findUnique({
-            where: { id: consultantId }
+            where: { id: consultantId },
           });
           if (consultant === null) {
             res.status(404).json({ message: "Consultant not found" });
             return;
           }
           consultant = await prisma.consultant.findUnique({
-            where: { id: consultantId }
+            where: { id: consultantId },
           });
           if (consultant === null) {
-            res
-              .status(404)
-              .json({ message: "Consultant not found" });
+            res.status(404).json({ message: "Consultant not found" });
             return;
           }
           // Delete the previous image
           const storageService = new LocalStorageService();
-          const previousFilename = new URL(consultant.profilePictureUrl).pathname
+          const previousFilename = new URL(
+            consultant.profilePictureUrl
+          ).pathname
             .split("/")
             .pop();
 
@@ -206,11 +236,13 @@ consultantsRouter.put(
               profilePicture.buffer
             );
             await prisma.consultant.update({
-            where: { id: consultantId },
+              where: { id: consultantId },
               data: {
                 ...(description !== undefined ? { description } : {}),
                 ...(roleTitle !== undefined ? { roleTitle } : {}),
-                ...(profilePictureUrl !== undefined ? { profilePictureUrl } : {}),
+                ...(profilePictureUrl !== undefined
+                  ? { profilePictureUrl }
+                  : {}),
                 user: {
                   update: {
                     ...(user?.name !== undefined ? { name: user.name } : {}),
