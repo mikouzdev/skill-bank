@@ -12,6 +12,7 @@ import { ConsultantListConsultants } from "../features/consultant/pages/Consulta
 import { SidebarLayout } from "./layout/SidebarLayout";
 import SkillEditingPage from "../shared/pages/SkillEditing/SkillEditingPage";
 import { SnackbarProvider } from "../shared/components/SnackbarProvider";
+import CustomerLoginPage from "../features/customer/pages/CustromerLoginPage";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
       <SnackbarProvider>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/customerlogin" element={<CustomerLoginPage />} />
           <Route path="/loginRole" element={<LoginRolePage />} />
 
           <Route element={<SidebarLayout />}>
