@@ -1,4 +1,4 @@
-import { Avatar, Box, Stack, Typography, Button } from "@mui/material";
+import { Avatar, Box, Stack, Typography, Button, Paper } from "@mui/material";
 import { useConsultantDetails } from "../../consultant/hooks/useConsultantDetails";
 import SkillsBuilder from "./SkillsBuilder";
 
@@ -16,46 +16,36 @@ export const ConsultantCard = ({ consultantID }: Props) => {
 
   return (
     <>
-      <Box sx={{ p: "12px" }}>
-        <Stack direction="row" spacing={2}>
-          <Box>
-            <Avatar
-              alt={consultant.user.name}
-              src={consultant.profilePictureUrl}
-            />
-          </Box>
-          <Box>
-            <Box>{consultant.user.name}</Box>
-            <Box>{consultant.roleTitle}</Box>
-          </Box>
+      <Paper sx={{ p: 1 }}>
+        <Stack direction="column" spacing={2}>
+          <Stack direction="row" gap={4}>
+            {/* picture, name, title */}
+            <Stack direction={"row"} gap={2} alignItems={"center"}>
+              <Avatar
+                alt={consultant.user.name}
+                src={consultant.profilePictureUrl}
+              />
+              <Stack direction={"column"}>
+                <Typography>{consultant.user.name}</Typography>
+                <Typography variant="body2">{consultant.roleTitle}</Typography>
+              </Stack>
+            </Stack>
 
-          <Box>
-            <Box>Professional Expereience</Box>
-            <Box>5+ years</Box>
-          </Box>
-
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start",
-            }}
-          >
+            {/* professional exp */}
+            <Stack direction={"column"} justifyContent={"center"}>
+              <Typography>Professional Expereience</Typography>
+              <Typography variant="body2">5+ years</Typography>
+            </Stack>
             <SkillsBuilder data={skills} />
-            <Box
-              sx={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "flex-end",
-              }}
-            >
-              <Button type="submit" sx={{ ml: "auto" }}>
-                View profile
-              </Button>
-            </Box>
+          </Stack>
+
+          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <Button size="small" type="submit">
+              View profile
+            </Button>
           </Box>
         </Stack>
-      </Box>
+      </Paper>
     </>
   );
 };
