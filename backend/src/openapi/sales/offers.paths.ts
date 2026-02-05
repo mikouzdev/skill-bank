@@ -1,5 +1,5 @@
 import {
-    GetOfferPagesResponseSchema, OfferPageSchema
+    GetOfferPagesResponseSchema
 } from "../../schemas/sales/offers.schema.js";
 
 export const offersPaths = {

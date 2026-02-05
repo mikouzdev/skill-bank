@@ -1,4 +1,4 @@
-import { Router, type Request, type Response } from "express";
+import { Router, type Response } from "express";
 import { authenticate, type AuthenticatedRequest } from "../../middlewares/authentication.js";
 import { prisma } from "../../db/prismaClient.js";
 import { SalesIdParamsSchema } from "../../schemas/sales/sales.schema.js";
