@@ -79,3 +79,15 @@ offersRouter.get(
     }
     res.json(offerPages);
 });
+
+/**
+ * Add new offer page for a sales user
+ * @route POST /{salesId}/offers
+ * @returns created offer page
+ */
+offersRouter.post(
+  "/:salesId/offers", authenticate,
+  async (req: AuthenticatedRequest, res: Response) => {
+
+
+});
