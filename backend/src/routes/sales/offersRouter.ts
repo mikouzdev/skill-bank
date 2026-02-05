@@ -52,6 +52,9 @@ offersRouter.get(
                         salespersonId: salesId,
                         customerId: customerId,
                     },
+                    omit: {
+                        passwordHash: true,
+                    },
                 });
             }
         } catch (err) {
@@ -64,6 +67,9 @@ offersRouter.get(
             offerPages = await prisma.offerPages.findMany({
                 where: {
                     salespersonId: salesId,
+                },
+                omit: {
+                    passwordHash: true,
                 },
             });
         } catch (err) {
