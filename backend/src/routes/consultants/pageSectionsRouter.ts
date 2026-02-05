@@ -1,9 +1,16 @@
-import { Router, type Request, type Response } from "express";
+import { Router, type Response } from "express";
 import { ConsultantIdParamsSchema } from "../../schemas/consultants/consultants.schema.js";
-import { ConsultantIdSectionNameParamsSchema, SectionNameParamsSchema, PageSectionBodySchema } from "../../schemas/consultants/pageSections.schema.js";
+import {
+  ConsultantIdSectionNameParamsSchema,
+  SectionNameParamsSchema,
+  PageSectionBodySchema,
+} from "../../schemas/consultants/pageSections.schema.js";
 import { Visibility } from "../../generated/prisma/enums.js";
 import { prisma } from "../../db/prismaClient.js";
-import { authenticate, type AuthenticatedRequest } from "../../middlewares/authentication.js";
+import {
+  authenticate,
+  type AuthenticatedRequest,
+} from "../../middlewares/authentication.js";
 
 export const pageSectionsRouter = Router();
 
@@ -13,7 +20,8 @@ export const pageSectionsRouter = Router();
  * @returns [sections]
  */
 pageSectionsRouter.get(
-  "/:consultantId/sections", authenticate,
+  "/:consultantId/sections",
+  authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = ConsultantIdParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
@@ -24,7 +32,7 @@ pageSectionsRouter.get(
     const roles = req.user?.roles ?? [];
     let allowedVisibilities = [Visibility.PUBLIC, Visibility.LIMITED];
     //Sales/admin can see everyone, consult gets only public
-    if(!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
+    if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
       allowedVisibilities = [Visibility.PUBLIC];
     }
     let sections = null;
@@ -37,7 +45,7 @@ pageSectionsRouter.get(
           },
         },
         include: {
-          comments: true
+          comments: true,
         },
       });
     } catch (err) {
@@ -46,14 +54,16 @@ pageSectionsRouter.get(
     }
 
     res.json(sections);
-});
+  }
+);
 /**
  * Get a consultant's page section by name
  * @route GET /consultants/{consultantId}/sections/{sectionName}
  * @returns page section
  */
 pageSectionsRouter.get(
-  "/:consultantId/sections/:sectionName", authenticate,
+  "/:consultantId/sections/:sectionName",
+  authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
     const roles = req.user?.roles ?? [];
     if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
@@ -67,18 +77,16 @@ pageSectionsRouter.get(
       return;
     }
     const { consultantId, sectionName } = parsedParams.data;
-    
+
     let pageSection = null;
     try {
       pageSection = await prisma.pageSection.findFirst({
-        where: { 
+        where: {
           name: sectionName,
-          consultantId: consultantId
+          consultantId: consultantId,
         },
         include: {
-          comments: {
-
-          },
+          comments: {},
         },
       });
     } catch (err) {
@@ -91,14 +99,16 @@ pageSectionsRouter.get(
       return;
     }
     res.json(pageSection);
-  });
+  }
+);
 /**
  * Update a page section
  * @route PUT /consultants/me/sections/{sectionName}
  * @returns updated page section
  */
 pageSectionsRouter.put(
-  "/me/sections/:sectionName", authenticate,
+  "/me/sections/:sectionName",
+  authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = SectionNameParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
@@ -129,9 +139,9 @@ pageSectionsRouter.put(
     }
     const consultantId = user?.consultant?.id;
     try {
-      if(consultantId !== undefined && consultantId !== null){
+      if (consultantId !== undefined && consultantId !== null) {
         const consultant = await prisma.consultant.findUnique({
-          where: { id: consultantId }
+          where: { id: consultantId },
         });
         if (consultant === null) {
           res.status(404).json({ message: "Consultant not found" });
@@ -142,7 +152,7 @@ pageSectionsRouter.put(
             consultantId_name: {
               consultantId,
               name: sectionName,
-            }
+            },
           },
           data: {
             name,
@@ -156,5 +166,5 @@ pageSectionsRouter.put(
     }
 
     res.json(pageSection);
-
-});
+  }
+);

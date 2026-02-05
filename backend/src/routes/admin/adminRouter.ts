@@ -79,46 +79,46 @@ adminRouter.post(
         },
       });
       const userId = createdUser.id;
-      //TODO fix:
-      //eslint error: Promise returned in function argument where a void return was expected
-      roles.forEach(async (role) => {
-        switch (role.role) {
-          case "CONSULTANT":
-            await prisma.consultant.create({
-              data: {
-                userId: userId,
-                description: "",
-                roleTitle: "",
-                profilePictureUrl: "",
-                consultantAttributes: {
-                  create: [],
+      await Promise.all(
+        roles.map(async (role) => {
+          switch (role.role) {
+            case "CONSULTANT":
+              await prisma.consultant.create({
+                data: {
+                  userId: userId,
+                  description: "",
+                  roleTitle: "",
+                  profilePictureUrl: "",
+                  consultantAttributes: {
+                    create: [],
+                  },
                 },
-              },
-            });
-            break;
-          case "SALESPERSON":
-            await prisma.salesperson.create({
-              data: {
-                userId: userId,
-                salesLists: {
-                  create: [],
+              });
+              break;
+            case "SALESPERSON":
+              await prisma.salesperson.create({
+                data: {
+                  userId: userId,
+                  salesLists: {
+                    create: [],
+                  },
                 },
-              },
-            });
-            break;
-          case "CUSTOMER":
-            await prisma.customer.create({
-              data: {
-                userId: userId,
-                salesLists: {
-                  create: [],
+              });
+              break;
+            case "CUSTOMER":
+              await prisma.customer.create({
+                data: {
+                  userId: userId,
+                  salesLists: {
+                    create: [],
+                  },
                 },
-              },
-            });
-            break;
-        }
-        return;
-      });
+              });
+              break;
+          }
+          return;
+        })
+      );
     } catch (err) {
       res.status(500).json(err);
       return;
