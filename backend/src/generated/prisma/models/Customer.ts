@@ -198,6 +198,7 @@ export type CustomerWhereInput = {
   userId?: Prisma.IntFilter<"Customer"> | number
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   salesLists?: Prisma.SalesListListRelationFilter
+  offerPages?: Prisma.OfferPagesListRelationFilter
 }
 
 export type CustomerOrderByWithRelationInput = {
@@ -205,6 +206,7 @@ export type CustomerOrderByWithRelationInput = {
   userId?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   salesLists?: Prisma.SalesListOrderByRelationAggregateInput
+  offerPages?: Prisma.OfferPagesOrderByRelationAggregateInput
 }
 
 export type CustomerWhereUniqueInput = Prisma.AtLeast<{
@@ -215,6 +217,7 @@ export type CustomerWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.CustomerWhereInput | Prisma.CustomerWhereInput[]
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   salesLists?: Prisma.SalesListListRelationFilter
+  offerPages?: Prisma.OfferPagesListRelationFilter
 }, "id" | "userId">
 
 export type CustomerOrderByWithAggregationInput = {
@@ -238,23 +241,27 @@ export type CustomerScalarWhereWithAggregatesInput = {
 export type CustomerCreateInput = {
   user: Prisma.UserCreateNestedOneWithoutCustomerInput
   salesLists?: Prisma.SalesListCreateNestedManyWithoutCustomerInput
+  offerPages?: Prisma.OfferPagesCreateNestedManyWithoutCustomerInput
 }
 
 export type CustomerUncheckedCreateInput = {
   id?: number
   userId: number
   salesLists?: Prisma.SalesListUncheckedCreateNestedManyWithoutCustomerInput
+  offerPages?: Prisma.OfferPagesUncheckedCreateNestedManyWithoutCustomerInput
 }
 
 export type CustomerUpdateInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutCustomerNestedInput
   salesLists?: Prisma.SalesListUpdateManyWithoutCustomerNestedInput
+  offerPages?: Prisma.OfferPagesUpdateManyWithoutCustomerNestedInput
 }
 
 export type CustomerUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   salesLists?: Prisma.SalesListUncheckedUpdateManyWithoutCustomerNestedInput
+  offerPages?: Prisma.OfferPagesUncheckedUpdateManyWithoutCustomerNestedInput
 }
 
 export type CustomerCreateManyInput = {
@@ -352,13 +359,29 @@ export type CustomerUpdateOneRequiredWithoutSalesListsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CustomerUpdateToOneWithWhereWithoutSalesListsInput, Prisma.CustomerUpdateWithoutSalesListsInput>, Prisma.CustomerUncheckedUpdateWithoutSalesListsInput>
 }
 
+export type CustomerCreateNestedOneWithoutOfferPagesInput = {
+  create?: Prisma.XOR<Prisma.CustomerCreateWithoutOfferPagesInput, Prisma.CustomerUncheckedCreateWithoutOfferPagesInput>
+  connectOrCreate?: Prisma.CustomerCreateOrConnectWithoutOfferPagesInput
+  connect?: Prisma.CustomerWhereUniqueInput
+}
+
+export type CustomerUpdateOneRequiredWithoutOfferPagesNestedInput = {
+  create?: Prisma.XOR<Prisma.CustomerCreateWithoutOfferPagesInput, Prisma.CustomerUncheckedCreateWithoutOfferPagesInput>
+  connectOrCreate?: Prisma.CustomerCreateOrConnectWithoutOfferPagesInput
+  upsert?: Prisma.CustomerUpsertWithoutOfferPagesInput
+  connect?: Prisma.CustomerWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CustomerUpdateToOneWithWhereWithoutOfferPagesInput, Prisma.CustomerUpdateWithoutOfferPagesInput>, Prisma.CustomerUncheckedUpdateWithoutOfferPagesInput>
+}
+
 export type CustomerCreateWithoutUserInput = {
   salesLists?: Prisma.SalesListCreateNestedManyWithoutCustomerInput
+  offerPages?: Prisma.OfferPagesCreateNestedManyWithoutCustomerInput
 }
 
 export type CustomerUncheckedCreateWithoutUserInput = {
   id?: number
   salesLists?: Prisma.SalesListUncheckedCreateNestedManyWithoutCustomerInput
+  offerPages?: Prisma.OfferPagesUncheckedCreateNestedManyWithoutCustomerInput
 }
 
 export type CustomerCreateOrConnectWithoutUserInput = {
@@ -379,20 +402,24 @@ export type CustomerUpdateToOneWithWhereWithoutUserInput = {
 
 export type CustomerUpdateWithoutUserInput = {
   salesLists?: Prisma.SalesListUpdateManyWithoutCustomerNestedInput
+  offerPages?: Prisma.OfferPagesUpdateManyWithoutCustomerNestedInput
 }
 
 export type CustomerUncheckedUpdateWithoutUserInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   salesLists?: Prisma.SalesListUncheckedUpdateManyWithoutCustomerNestedInput
+  offerPages?: Prisma.OfferPagesUncheckedUpdateManyWithoutCustomerNestedInput
 }
 
 export type CustomerCreateWithoutSalesListsInput = {
   user: Prisma.UserCreateNestedOneWithoutCustomerInput
+  offerPages?: Prisma.OfferPagesCreateNestedManyWithoutCustomerInput
 }
 
 export type CustomerUncheckedCreateWithoutSalesListsInput = {
   id?: number
   userId: number
+  offerPages?: Prisma.OfferPagesUncheckedCreateNestedManyWithoutCustomerInput
 }
 
 export type CustomerCreateOrConnectWithoutSalesListsInput = {
@@ -413,11 +440,51 @@ export type CustomerUpdateToOneWithWhereWithoutSalesListsInput = {
 
 export type CustomerUpdateWithoutSalesListsInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutCustomerNestedInput
+  offerPages?: Prisma.OfferPagesUpdateManyWithoutCustomerNestedInput
 }
 
 export type CustomerUncheckedUpdateWithoutSalesListsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
+  offerPages?: Prisma.OfferPagesUncheckedUpdateManyWithoutCustomerNestedInput
+}
+
+export type CustomerCreateWithoutOfferPagesInput = {
+  user: Prisma.UserCreateNestedOneWithoutCustomerInput
+  salesLists?: Prisma.SalesListCreateNestedManyWithoutCustomerInput
+}
+
+export type CustomerUncheckedCreateWithoutOfferPagesInput = {
+  id?: number
+  userId: number
+  salesLists?: Prisma.SalesListUncheckedCreateNestedManyWithoutCustomerInput
+}
+
+export type CustomerCreateOrConnectWithoutOfferPagesInput = {
+  where: Prisma.CustomerWhereUniqueInput
+  create: Prisma.XOR<Prisma.CustomerCreateWithoutOfferPagesInput, Prisma.CustomerUncheckedCreateWithoutOfferPagesInput>
+}
+
+export type CustomerUpsertWithoutOfferPagesInput = {
+  update: Prisma.XOR<Prisma.CustomerUpdateWithoutOfferPagesInput, Prisma.CustomerUncheckedUpdateWithoutOfferPagesInput>
+  create: Prisma.XOR<Prisma.CustomerCreateWithoutOfferPagesInput, Prisma.CustomerUncheckedCreateWithoutOfferPagesInput>
+  where?: Prisma.CustomerWhereInput
+}
+
+export type CustomerUpdateToOneWithWhereWithoutOfferPagesInput = {
+  where?: Prisma.CustomerWhereInput
+  data: Prisma.XOR<Prisma.CustomerUpdateWithoutOfferPagesInput, Prisma.CustomerUncheckedUpdateWithoutOfferPagesInput>
+}
+
+export type CustomerUpdateWithoutOfferPagesInput = {
+  user?: Prisma.UserUpdateOneRequiredWithoutCustomerNestedInput
+  salesLists?: Prisma.SalesListUpdateManyWithoutCustomerNestedInput
+}
+
+export type CustomerUncheckedUpdateWithoutOfferPagesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  salesLists?: Prisma.SalesListUncheckedUpdateManyWithoutCustomerNestedInput
 }
 
 
@@ -427,10 +494,12 @@ export type CustomerUncheckedUpdateWithoutSalesListsInput = {
 
 export type CustomerCountOutputType = {
   salesLists: number
+  offerPages: number
 }
 
 export type CustomerCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   salesLists?: boolean | CustomerCountOutputTypeCountSalesListsArgs
+  offerPages?: boolean | CustomerCountOutputTypeCountOfferPagesArgs
 }
 
 /**
@@ -450,12 +519,20 @@ export type CustomerCountOutputTypeCountSalesListsArgs<ExtArgs extends runtime.T
   where?: Prisma.SalesListWhereInput
 }
 
+/**
+ * CustomerCountOutputType without action
+ */
+export type CustomerCountOutputTypeCountOfferPagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OfferPagesWhereInput
+}
+
 
 export type CustomerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   salesLists?: boolean | Prisma.Customer$salesListsArgs<ExtArgs>
+  offerPages?: boolean | Prisma.Customer$offerPagesArgs<ExtArgs>
   _count?: boolean | Prisma.CustomerCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["customer"]>
 
@@ -480,6 +557,7 @@ export type CustomerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs =
 export type CustomerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   salesLists?: boolean | Prisma.Customer$salesListsArgs<ExtArgs>
+  offerPages?: boolean | Prisma.Customer$offerPagesArgs<ExtArgs>
   _count?: boolean | Prisma.CustomerCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CustomerIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -494,6 +572,7 @@ export type $CustomerPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
     salesLists: Prisma.$SalesListPayload<ExtArgs>[]
+    offerPages: Prisma.$OfferPagesPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -894,6 +973,7 @@ export interface Prisma__CustomerClient<T, Null = never, ExtArgs extends runtime
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   salesLists<T extends Prisma.Customer$salesListsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Customer$salesListsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SalesListPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  offerPages<T extends Prisma.Customer$offerPagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Customer$offerPagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OfferPagesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1342,6 +1422,30 @@ export type Customer$salesListsArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.SalesListScalarFieldEnum | Prisma.SalesListScalarFieldEnum[]
+}
+
+/**
+ * Customer.offerPages
+ */
+export type Customer$offerPagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OfferPages
+   */
+  select?: Prisma.OfferPagesSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OfferPages
+   */
+  omit?: Prisma.OfferPagesOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OfferPagesInclude<ExtArgs> | null
+  where?: Prisma.OfferPagesWhereInput
+  orderBy?: Prisma.OfferPagesOrderByWithRelationInput | Prisma.OfferPagesOrderByWithRelationInput[]
+  cursor?: Prisma.OfferPagesWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OfferPagesScalarFieldEnum | Prisma.OfferPagesScalarFieldEnum[]
 }
 
 /**

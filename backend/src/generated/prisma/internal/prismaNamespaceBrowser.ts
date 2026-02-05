@@ -69,7 +69,9 @@ export const ModelName = {
   Customer: 'Customer',
   PageSection: 'PageSection',
   Comment: 'Comment',
-  BlacklistedTokens: 'BlacklistedTokens'
+  BlacklistedTokens: 'BlacklistedTokens',
+  OfferPages: 'OfferPages',
+  ConsultantPages: 'ConsultantPages'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -167,7 +169,7 @@ export type EmploymentSkillScalarFieldEnum = (typeof EmploymentSkillScalarFieldE
 
 export const SkillTagScalarFieldEnum = {
   id: 'id',
-  categoryid: 'categoryid',
+  categoryId: 'categoryId',
   name: 'name'
 } as const
 
@@ -297,6 +299,29 @@ export const BlacklistedTokensScalarFieldEnum = {
 } as const
 
 export type BlacklistedTokensScalarFieldEnum = (typeof BlacklistedTokensScalarFieldEnum)[keyof typeof BlacklistedTokensScalarFieldEnum]
+
+
+export const OfferPagesScalarFieldEnum = {
+  id: 'id',
+  salespersonId: 'salespersonId',
+  customerId: 'customerId',
+  description: 'description',
+  passwordHash: 'passwordHash',
+  name: 'name',
+  shortDescription: 'shortDescription'
+} as const
+
+export type OfferPagesScalarFieldEnum = (typeof OfferPagesScalarFieldEnum)[keyof typeof OfferPagesScalarFieldEnum]
+
+
+export const ConsultantPagesScalarFieldEnum = {
+  id: 'id',
+  offerPageId: 'offerPageId',
+  consultantId: 'consultantId',
+  showInfo: 'showInfo'
+} as const
+
+export type ConsultantPagesScalarFieldEnum = (typeof ConsultantPagesScalarFieldEnum)[keyof typeof ConsultantPagesScalarFieldEnum]
 
 
 export const SortOrder = {

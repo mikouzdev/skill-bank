@@ -28,29 +28,29 @@ export type AggregateSkillTag = {
 
 export type SkillTagAvgAggregateOutputType = {
   id: number | null
-  categoryid: number | null
+  categoryId: number | null
 }
 
 export type SkillTagSumAggregateOutputType = {
   id: number | null
-  categoryid: number | null
+  categoryId: number | null
 }
 
 export type SkillTagMinAggregateOutputType = {
   id: number | null
-  categoryid: number | null
+  categoryId: number | null
   name: string | null
 }
 
 export type SkillTagMaxAggregateOutputType = {
   id: number | null
-  categoryid: number | null
+  categoryId: number | null
   name: string | null
 }
 
 export type SkillTagCountAggregateOutputType = {
   id: number
-  categoryid: number
+  categoryId: number
   name: number
   _all: number
 }
@@ -58,29 +58,29 @@ export type SkillTagCountAggregateOutputType = {
 
 export type SkillTagAvgAggregateInputType = {
   id?: true
-  categoryid?: true
+  categoryId?: true
 }
 
 export type SkillTagSumAggregateInputType = {
   id?: true
-  categoryid?: true
+  categoryId?: true
 }
 
 export type SkillTagMinAggregateInputType = {
   id?: true
-  categoryid?: true
+  categoryId?: true
   name?: true
 }
 
 export type SkillTagMaxAggregateInputType = {
   id?: true
-  categoryid?: true
+  categoryId?: true
   name?: true
 }
 
 export type SkillTagCountAggregateInputType = {
   id?: true
-  categoryid?: true
+  categoryId?: true
   name?: true
   _all?: true
 }
@@ -173,7 +173,7 @@ export type SkillTagGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
 
 export type SkillTagGroupByOutputType = {
   id: number
-  categoryid: number | null
+  categoryId: number | null
   name: string
   _count: SkillTagCountAggregateOutputType | null
   _avg: SkillTagAvgAggregateOutputType | null
@@ -202,7 +202,7 @@ export type SkillTagWhereInput = {
   OR?: Prisma.SkillTagWhereInput[]
   NOT?: Prisma.SkillTagWhereInput | Prisma.SkillTagWhereInput[]
   id?: Prisma.IntFilter<"SkillTag"> | number
-  categoryid?: Prisma.IntNullableFilter<"SkillTag"> | number | null
+  categoryId?: Prisma.IntNullableFilter<"SkillTag"> | number | null
   name?: Prisma.StringFilter<"SkillTag"> | string
   category?: Prisma.XOR<Prisma.SkillCategoryNullableScalarRelationFilter, Prisma.SkillCategoryWhereInput> | null
   consultantSkills?: Prisma.ConsultantSkillListRelationFilter
@@ -212,7 +212,7 @@ export type SkillTagWhereInput = {
 
 export type SkillTagOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  categoryid?: Prisma.SortOrderInput | Prisma.SortOrder
+  categoryId?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
   category?: Prisma.SkillCategoryOrderByWithRelationInput
   consultantSkills?: Prisma.ConsultantSkillOrderByRelationAggregateInput
@@ -226,7 +226,7 @@ export type SkillTagWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.SkillTagWhereInput | Prisma.SkillTagWhereInput[]
   OR?: Prisma.SkillTagWhereInput[]
   NOT?: Prisma.SkillTagWhereInput | Prisma.SkillTagWhereInput[]
-  categoryid?: Prisma.IntNullableFilter<"SkillTag"> | number | null
+  categoryId?: Prisma.IntNullableFilter<"SkillTag"> | number | null
   category?: Prisma.XOR<Prisma.SkillCategoryNullableScalarRelationFilter, Prisma.SkillCategoryWhereInput> | null
   consultantSkills?: Prisma.ConsultantSkillListRelationFilter
   projectSkills?: Prisma.ProjectSkillListRelationFilter
@@ -235,7 +235,7 @@ export type SkillTagWhereUniqueInput = Prisma.AtLeast<{
 
 export type SkillTagOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  categoryid?: Prisma.SortOrderInput | Prisma.SortOrder
+  categoryId?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
   _count?: Prisma.SkillTagCountOrderByAggregateInput
   _avg?: Prisma.SkillTagAvgOrderByAggregateInput
@@ -249,7 +249,7 @@ export type SkillTagScalarWhereWithAggregatesInput = {
   OR?: Prisma.SkillTagScalarWhereWithAggregatesInput[]
   NOT?: Prisma.SkillTagScalarWhereWithAggregatesInput | Prisma.SkillTagScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"SkillTag"> | number
-  categoryid?: Prisma.IntNullableWithAggregatesFilter<"SkillTag"> | number | null
+  categoryId?: Prisma.IntNullableWithAggregatesFilter<"SkillTag"> | number | null
   name?: Prisma.StringWithAggregatesFilter<"SkillTag"> | string
 }
 
@@ -263,7 +263,7 @@ export type SkillTagCreateInput = {
 
 export type SkillTagUncheckedCreateInput = {
   id?: number
-  categoryid?: number | null
+  categoryId?: number | null
   name: string
   consultantSkills?: Prisma.ConsultantSkillUncheckedCreateNestedManyWithoutSkillTagInput
   projectSkills?: Prisma.ProjectSkillUncheckedCreateNestedManyWithoutSkillTagInput
@@ -280,7 +280,7 @@ export type SkillTagUpdateInput = {
 
 export type SkillTagUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  categoryid?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   consultantSkills?: Prisma.ConsultantSkillUncheckedUpdateManyWithoutSkillTagNestedInput
   projectSkills?: Prisma.ProjectSkillUncheckedUpdateManyWithoutSkillTagNestedInput
@@ -289,7 +289,7 @@ export type SkillTagUncheckedUpdateInput = {
 
 export type SkillTagCreateManyInput = {
   id?: number
-  categoryid?: number | null
+  categoryId?: number | null
   name: string
 }
 
@@ -299,7 +299,7 @@ export type SkillTagUpdateManyMutationInput = {
 
 export type SkillTagUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  categoryid?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -310,30 +310,30 @@ export type SkillTagScalarRelationFilter = {
 
 export type SkillTagCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  categoryid?: Prisma.SortOrder
+  categoryId?: Prisma.SortOrder
   name?: Prisma.SortOrder
 }
 
 export type SkillTagAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  categoryid?: Prisma.SortOrder
+  categoryId?: Prisma.SortOrder
 }
 
 export type SkillTagMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  categoryid?: Prisma.SortOrder
+  categoryId?: Prisma.SortOrder
   name?: Prisma.SortOrder
 }
 
 export type SkillTagMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  categoryid?: Prisma.SortOrder
+  categoryId?: Prisma.SortOrder
   name?: Prisma.SortOrder
 }
 
 export type SkillTagSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  categoryid?: Prisma.SortOrder
+  categoryId?: Prisma.SortOrder
 }
 
 export type SkillTagListRelationFilter = {
@@ -447,7 +447,7 @@ export type SkillTagCreateWithoutConsultantSkillsInput = {
 
 export type SkillTagUncheckedCreateWithoutConsultantSkillsInput = {
   id?: number
-  categoryid?: number | null
+  categoryId?: number | null
   name: string
   projectSkills?: Prisma.ProjectSkillUncheckedCreateNestedManyWithoutSkillTagInput
   employmentSkills?: Prisma.EmploymentSkillUncheckedCreateNestedManyWithoutSkillTagInput
@@ -478,7 +478,7 @@ export type SkillTagUpdateWithoutConsultantSkillsInput = {
 
 export type SkillTagUncheckedUpdateWithoutConsultantSkillsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  categoryid?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   projectSkills?: Prisma.ProjectSkillUncheckedUpdateManyWithoutSkillTagNestedInput
   employmentSkills?: Prisma.EmploymentSkillUncheckedUpdateManyWithoutSkillTagNestedInput
@@ -493,7 +493,7 @@ export type SkillTagCreateWithoutProjectSkillsInput = {
 
 export type SkillTagUncheckedCreateWithoutProjectSkillsInput = {
   id?: number
-  categoryid?: number | null
+  categoryId?: number | null
   name: string
   consultantSkills?: Prisma.ConsultantSkillUncheckedCreateNestedManyWithoutSkillTagInput
   employmentSkills?: Prisma.EmploymentSkillUncheckedCreateNestedManyWithoutSkillTagInput
@@ -524,7 +524,7 @@ export type SkillTagUpdateWithoutProjectSkillsInput = {
 
 export type SkillTagUncheckedUpdateWithoutProjectSkillsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  categoryid?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   consultantSkills?: Prisma.ConsultantSkillUncheckedUpdateManyWithoutSkillTagNestedInput
   employmentSkills?: Prisma.EmploymentSkillUncheckedUpdateManyWithoutSkillTagNestedInput
@@ -539,7 +539,7 @@ export type SkillTagCreateWithoutEmploymentSkillsInput = {
 
 export type SkillTagUncheckedCreateWithoutEmploymentSkillsInput = {
   id?: number
-  categoryid?: number | null
+  categoryId?: number | null
   name: string
   consultantSkills?: Prisma.ConsultantSkillUncheckedCreateNestedManyWithoutSkillTagInput
   projectSkills?: Prisma.ProjectSkillUncheckedCreateNestedManyWithoutSkillTagInput
@@ -570,7 +570,7 @@ export type SkillTagUpdateWithoutEmploymentSkillsInput = {
 
 export type SkillTagUncheckedUpdateWithoutEmploymentSkillsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  categoryid?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   consultantSkills?: Prisma.ConsultantSkillUncheckedUpdateManyWithoutSkillTagNestedInput
   projectSkills?: Prisma.ProjectSkillUncheckedUpdateManyWithoutSkillTagNestedInput
@@ -622,7 +622,7 @@ export type SkillTagScalarWhereInput = {
   OR?: Prisma.SkillTagScalarWhereInput[]
   NOT?: Prisma.SkillTagScalarWhereInput | Prisma.SkillTagScalarWhereInput[]
   id?: Prisma.IntFilter<"SkillTag"> | number
-  categoryid?: Prisma.IntNullableFilter<"SkillTag"> | number | null
+  categoryId?: Prisma.IntNullableFilter<"SkillTag"> | number | null
   name?: Prisma.StringFilter<"SkillTag"> | string
 }
 
@@ -702,7 +702,7 @@ export type SkillTagCountOutputTypeCountEmploymentSkillsArgs<ExtArgs extends run
 
 export type SkillTagSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  categoryid?: boolean
+  categoryId?: boolean
   name?: boolean
   category?: boolean | Prisma.SkillTag$categoryArgs<ExtArgs>
   consultantSkills?: boolean | Prisma.SkillTag$consultantSkillsArgs<ExtArgs>
@@ -713,25 +713,25 @@ export type SkillTagSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
 
 export type SkillTagSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  categoryid?: boolean
+  categoryId?: boolean
   name?: boolean
   category?: boolean | Prisma.SkillTag$categoryArgs<ExtArgs>
 }, ExtArgs["result"]["skillTag"]>
 
 export type SkillTagSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  categoryid?: boolean
+  categoryId?: boolean
   name?: boolean
   category?: boolean | Prisma.SkillTag$categoryArgs<ExtArgs>
 }, ExtArgs["result"]["skillTag"]>
 
 export type SkillTagSelectScalar = {
   id?: boolean
-  categoryid?: boolean
+  categoryId?: boolean
   name?: boolean
 }
 
-export type SkillTagOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "categoryid" | "name", ExtArgs["result"]["skillTag"]>
+export type SkillTagOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "categoryId" | "name", ExtArgs["result"]["skillTag"]>
 export type SkillTagInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   category?: boolean | Prisma.SkillTag$categoryArgs<ExtArgs>
   consultantSkills?: boolean | Prisma.SkillTag$consultantSkillsArgs<ExtArgs>
@@ -756,7 +756,7 @@ export type $SkillTagPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
-    categoryid: number | null
+    categoryId: number | null
     /**
      * name should be stored in lowercase to prevent duplicates
      */
@@ -1189,7 +1189,7 @@ export interface Prisma__SkillTagClient<T, Null = never, ExtArgs extends runtime
  */
 export interface SkillTagFieldRefs {
   readonly id: Prisma.FieldRef<"SkillTag", 'Int'>
-  readonly categoryid: Prisma.FieldRef<"SkillTag", 'Int'>
+  readonly categoryId: Prisma.FieldRef<"SkillTag", 'Int'>
   readonly name: Prisma.FieldRef<"SkillTag", 'String'>
 }
     

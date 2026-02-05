@@ -113,3 +113,13 @@ export type Comment = Prisma.CommentModel
  * 
  */
 export type BlacklistedTokens = Prisma.BlacklistedTokensModel
+/**
+ * Model OfferPages
+ * Created by salespeople and viewable by customers.
+ */
+export type OfferPages = Prisma.OfferPagesModel
+/**
+ * Model ConsultantPages
+ * 
+ */
+export type ConsultantPages = Prisma.ConsultantPagesModel
