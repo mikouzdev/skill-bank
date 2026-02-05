@@ -26,6 +26,7 @@ const navItems: NavItem[] = [
   { text: "Sales", path: "/sales" },
   { text: "Admin", path: "/manage-users" },
   { text: "Skill Editing", path: "/editSkills" }, // admin, sales
+  { text: "Offers", path: "/offers", icon: <People /> },
 ];
 
 export function Sidebar() {
