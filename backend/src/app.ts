@@ -2,6 +2,7 @@ import express from "express";
 import { consultantsRootRouter } from "./routes/consultants/consultantsRootRouter.js";
 import { usersRouter } from "./routes/auth/usersRouter.js";
 import { adminRouter } from "./routes/admin/adminRouter.js";
+import { salesRouter } from "./routes/sales/salesRouter.js";
 import { skillsRouter } from "./routes/skills/skillsRouter.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 
@@ -14,6 +15,7 @@ app.use("/static", express.static("uploads/profile_pictures"));
 app.use("/consultants", consultantsRootRouter);
 app.use("/auth", usersRouter);
 app.use("/admin", adminRouter);
+app.use("/sales", salesRouter);
 app.use("/skills", skillsRouter);
 
 app.use(errorHandler);
