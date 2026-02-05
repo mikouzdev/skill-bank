@@ -10,7 +10,10 @@ import {
 } from "../../schemas/consultants/projects.schema.js";
 import { Visibility } from "../../generated/prisma/enums.js";
 import { prisma } from "../../db/prismaClient.js";
-import { authenticate, type AuthenticatedRequest } from "../../middlewares/authentication.js";
+import {
+  authenticate,
+  type AuthenticatedRequest,
+} from "../../middlewares/authentication.js";
 
 export const projectsRouter = Router();
 
@@ -19,55 +22,59 @@ export const projectsRouter = Router();
  * @route POST /consultants/me/projects
  * @returns created project
  */
-projectsRouter.post("/me/projects", authenticate, async (req: AuthenticatedRequest, res: Response) => {
-  const parsedBody = ProjectBodySchema.safeParse(req.body);
-  if (!parsedBody.success) {
-    res.status(400).json(parsedBody.error);
-    return;
-  }
-  const { description, name, start, end, visibility } = parsedBody.data;
-
-  let project = null;
-  const user = await prisma.user.findUnique({
-    where: { id: req.user!.id },
-    select: {
-      id: true,
-      roles: { select: { role: true } },
-      consultant: { select: { id: true } },
-    },
-  });
-  if (user === null) {
-    res.status(404).json({ message: "User not found" });
-    return;
-  }
-  const consultantId = user?.consultant?.id;
-  try {
-    if(consultantId !== undefined && consultantId !== null){
-      const consultant = await prisma.consultant.findUnique({
-        where: { id: consultantId }
-      });
-      if (consultant === null) {
-        res.status(404).json({ message: "Consultant not found" });
-        return;
-      }
-      project = await prisma.project.create({
-        data: {
-          consultantId,
-          description,
-          name,
-          start,
-          ...(end !== undefined ? { end } : {}),
-          visibility,
-        },
-      });
+projectsRouter.post(
+  "/me/projects",
+  authenticate,
+  async (req: AuthenticatedRequest, res: Response) => {
+    const parsedBody = ProjectBodySchema.safeParse(req.body);
+    if (!parsedBody.success) {
+      res.status(400).json(parsedBody.error);
+      return;
     }
-  } catch (err) {
-    res.status(500).json(err);
-    return;
-  }
+    const { description, name, start, end, visibility } = parsedBody.data;
 
-  res.json(project);
-});
+    let project = null;
+    const user = await prisma.user.findUnique({
+      where: { id: req.user!.id },
+      select: {
+        id: true,
+        roles: { select: { role: true } },
+        consultant: { select: { id: true } },
+      },
+    });
+    if (user === null) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+    const consultantId = user?.consultant?.id;
+    try {
+      if (consultantId !== undefined && consultantId !== null) {
+        const consultant = await prisma.consultant.findUnique({
+          where: { id: consultantId },
+        });
+        if (consultant === null) {
+          res.status(404).json({ message: "Consultant not found" });
+          return;
+        }
+        project = await prisma.project.create({
+          data: {
+            consultantId,
+            description,
+            name,
+            start,
+            ...(end !== undefined ? { end } : {}),
+            visibility,
+          },
+        });
+      }
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
+
+    res.json(project);
+  }
+);
 
 /**
  * Get all projects from a consultant
@@ -75,7 +82,8 @@ projectsRouter.post("/me/projects", authenticate, async (req: AuthenticatedReque
  * @returns [projects]
  */
 projectsRouter.get(
-  "/:consultantId/projects", authenticate,
+  "/:consultantId/projects",
+  authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = ConsultantIdParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
@@ -86,7 +94,7 @@ projectsRouter.get(
     const roles = req.user?.roles ?? [];
     let allowedVisibilities = [Visibility.PUBLIC, Visibility.LIMITED];
     //Sales/admin can see everyone, consult gets only public
-    if(!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
+    if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
       allowedVisibilities = [Visibility.PUBLIC];
     }
     let projects = null;
@@ -118,7 +126,8 @@ projectsRouter.get(
  * @returns updated project
  */
 projectsRouter.put(
-  "/me/projects/:projectId", authenticate,
+  "/me/projects/:projectId",
+  authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = ProjectIdParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
@@ -150,9 +159,9 @@ projectsRouter.put(
     }
     const consultantId = user?.consultant?.id;
     try {
-      if(consultantId !== undefined && consultantId !== null){
+      if (consultantId !== undefined && consultantId !== null) {
         const consultant = await prisma.consultant.findUnique({
-          where: { id: consultantId }
+          where: { id: consultantId },
         });
         if (consultant === null) {
           res.status(404).json({ message: "Consultant not found" });
@@ -191,7 +200,8 @@ projectsRouter.put(
  * @returns confirmation message
  */
 projectsRouter.delete(
-  "/me/projects/:projectId", authenticate,
+  "/me/projects/:projectId",
+  authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = ProjectIdParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
@@ -213,9 +223,9 @@ projectsRouter.delete(
     }
     const consultantId = user?.consultant?.id;
     try {
-      if(consultantId !== undefined && consultantId !== null){
+      if (consultantId !== undefined && consultantId !== null) {
         const consultant = await prisma.consultant.findUnique({
-          where: { id: consultantId }
+          where: { id: consultantId },
         });
         if (consultant === null) {
           res.status(404).json({ message: "Consultant not found" });
@@ -240,7 +250,8 @@ projectsRouter.delete(
  * @returns created project link
  */
 projectsRouter.post(
-  "/me/projects/:projectId/links", authenticate,
+  "/me/projects/:projectId/links",
+  authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = ProjectIdParamsSchema.safeParse(req.params);
     const parsedBody = PostProjectLinkBodySchema.safeParse(req.body);
@@ -272,21 +283,19 @@ projectsRouter.post(
     }
     const consultantId = user?.consultant?.id;
     try {
-      if(consultantId !== undefined && consultantId !== null){
+      if (consultantId !== undefined && consultantId !== null) {
         const consultant = await prisma.consultant.findUnique({
-          where: { id: consultantId }
+          where: { id: consultantId },
         });
         if (consultant === null) {
           res.status(404).json({ message: "Consultant not found" });
           return;
         }
         const project = await prisma.project.findUnique({
-          where: { id: projectId, consultantId: consultantId }
+          where: { id: projectId, consultantId: consultantId },
         });
         if (project === null) {
-          res
-            .status(404)
-            .json({ message: "Project not found" });
+          res.status(404).json({ message: "Project not found" });
           return;
         }
         projectLink = await prisma.projectLink.create({
@@ -312,7 +321,8 @@ projectsRouter.post(
  * @returns confirmation message
  */
 projectsRouter.delete(
-  "/me/projects/:projectId/links/:linkId", authenticate,
+  "/me/projects/:projectId/links/:linkId",
+  authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = DeleteProjectLinkParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
@@ -334,21 +344,19 @@ projectsRouter.delete(
     }
     const consultantId = user?.consultant?.id;
     try {
-      if(consultantId !== undefined && consultantId !== null){
+      if (consultantId !== undefined && consultantId !== null) {
         const consultant = await prisma.consultant.findUnique({
-          where: { id: consultantId }
+          where: { id: consultantId },
         });
         if (consultant === null) {
           res.status(404).json({ message: "Consultant not found" });
           return;
         }
         const project = await prisma.project.findUnique({
-          where: { id: projectId, consultantId: consultantId }
+          where: { id: projectId, consultantId: consultantId },
         });
         if (project === null) {
-          res
-            .status(404)
-            .json({ message: "Project not found" });
+          res.status(404).json({ message: "Project not found" });
           return;
         }
         await prisma.projectLink.delete({
@@ -370,7 +378,8 @@ projectsRouter.delete(
  * @returns created project skill
  */
 projectsRouter.post(
-  "/me/projects/:projectId/skills", authenticate,
+  "/me/projects/:projectId/skills",
+  authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = ProjectIdParamsSchema.safeParse(req.params);
     const parsedBody = PostProjectSkillBodySchema.safeParse(req.body);
@@ -402,21 +411,19 @@ projectsRouter.post(
     }
     const consultantId = user?.consultant?.id;
     try {
-      if(consultantId !== undefined && consultantId !== null){
+      if (consultantId !== undefined && consultantId !== null) {
         const consultant = await prisma.consultant.findUnique({
-          where: { id: consultantId }
+          where: { id: consultantId },
         });
         if (consultant === null) {
           res.status(404).json({ message: "Consultant not found" });
           return;
         }
         const project = await prisma.project.findUnique({
-          where: { id: projectId, consultantId: consultantId }
+          where: { id: projectId, consultantId: consultantId },
         });
         if (project === null) {
-          res
-            .status(404)
-            .json({ message: "Project not found" });
+          res.status(404).json({ message: "Project not found" });
           return;
         }
         projectSkill = await prisma.projectSkill.create({
@@ -448,7 +455,8 @@ projectsRouter.post(
  * @returns confirmation message
  */
 projectsRouter.delete(
-  "/me/projects/:projectId/skills/:projectSkillId", authenticate,
+  "/me/projects/:projectId/skills/:projectSkillId",
+  authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = DeleteProjectSkillParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
@@ -470,21 +478,19 @@ projectsRouter.delete(
     }
     const consultantId = user?.consultant?.id;
     try {
-      if(consultantId !== undefined && consultantId !== null){
+      if (consultantId !== undefined && consultantId !== null) {
         const consultant = await prisma.consultant.findUnique({
-          where: { id: consultantId }
+          where: { id: consultantId },
         });
         if (consultant === null) {
           res.status(404).json({ message: "Consultant not found" });
           return;
         }
         const project = await prisma.project.findUnique({
-          where: { id: projectId, consultantId: consultantId }
+          where: { id: projectId, consultantId: consultantId },
         });
         if (project === null) {
-          res
-            .status(404)
-            .json({ message: "Project not found" });
+          res.status(404).json({ message: "Project not found" });
           return;
         }
         await prisma.projectSkill.delete({
