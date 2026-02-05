@@ -85,7 +85,7 @@ model Consultant {
   consultantSkills     ConsultantSkill[]
   pageSections         PageSection[]
   consultantAttributes ConsultantAttribute[]
-  consultantPages   ConsultantPages[]
+  consultantPages      ConsultantPages[]
 }
 
 model ConsultantSkill {
@@ -193,7 +193,7 @@ model Salesperson {
   id     Int @id @default(autoincrement())
   userId Int @unique
 
-  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   salesLists SalesList[]
   offerPages OfferPages[]
 }
@@ -237,7 +237,7 @@ model Customer {
   id     Int @id @default(autoincrement())
   userId Int @unique
 
-  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   salesLists SalesList[]
   offerPages OfferPages[]
 }
@@ -288,22 +288,24 @@ model BlacklistedTokens {
 
 /// Created by salespeople and viewable by customers.
 model OfferPages {
-  id    Int    @id @default(autoincrement())
+  id               Int     @id @default(autoincrement())
   salespersonId    Int
   customerId       Int
-  description String?
-  passwordHash String
+  description      String?
+  passwordHash     String
+  name             String?
+  shortDescription String?
 
-  salesperson    Salesperson     @relation(fields: [salespersonId], references: [id])
-  customer       Customer        @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  salesperson     Salesperson       @relation(fields: [salespersonId], references: [id], onDelete: Cascade)
+  customer        Customer          @relation(fields: [customerId], references: [id], onDelete: Cascade)
   consultantPages ConsultantPages[]
 }
 
 model ConsultantPages {
-  id    Int    @id @default(autoincrement())
-  offerPageId Int
+  id           Int        @id @default(autoincrement())
+  offerPageId  Int
   consultantId Int
-  showInfo Boolean
-  offerPage    OfferPages     @relation(fields: [offerPageId], references: [id])
-  Consultant Consultant  @relation(fields: [consultantId], references: [id])
+  showInfo     Boolean
+  offerPage    OfferPages @relation(fields: [offerPageId], references: [id], onDelete: Cascade)
+  Consultant   Consultant @relation(fields: [consultantId], references: [id], onDelete: Cascade)
 }

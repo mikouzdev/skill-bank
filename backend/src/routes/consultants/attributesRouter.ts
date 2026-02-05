@@ -1,9 +1,15 @@
-import { Router, type Request, type Response } from "express";
+import { Router, type Response } from "express";
 import { ConsultantIdParamsSchema } from "../../schemas/consultants/consultants.schema.js";
-import { AttributeBodySchema, AttributeIdParamsSchema } from "../../schemas/consultants/attributes.schema.js";
+import {
+  AttributeBodySchema,
+  AttributeIdParamsSchema,
+} from "../../schemas/consultants/attributes.schema.js";
 import { Visibility } from "../../generated/prisma/enums.js";
 import { prisma } from "../../db/prismaClient.js";
-import { authenticate, type AuthenticatedRequest } from "../../middlewares/authentication.js";
+import {
+  authenticate,
+  type AuthenticatedRequest,
+} from "../../middlewares/authentication.js";
 
 export const attributesRouter = Router();
 
@@ -13,7 +19,8 @@ export const attributesRouter = Router();
  * @returns [attributes]
  */
 attributesRouter.get(
-  "/:consultantId/attributes", authenticate,
+  "/:consultantId/attributes",
+  authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = ConsultantIdParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
@@ -24,7 +31,7 @@ attributesRouter.get(
     const roles = req.user?.roles ?? [];
     let allowedVisibilities = [Visibility.PUBLIC, Visibility.LIMITED];
     //Sales/admin can see everyone, consult gets only public
-    if(!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
+    if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
       allowedVisibilities = [Visibility.PUBLIC];
     }
     let sections = null;
@@ -43,7 +50,8 @@ attributesRouter.get(
     }
 
     res.json(sections);
-});
+  }
+);
 
 /**
  * Add a new attribute for a consultant
@@ -51,7 +59,8 @@ attributesRouter.get(
  * @returns new attribute
  */
 attributesRouter.post(
-  "/me/attributes", authenticate,
+  "/me/attributes",
+  authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedBody = AttributeBodySchema.safeParse(req.body);
     if (!parsedBody.success) {
@@ -75,9 +84,9 @@ attributesRouter.post(
     }
     const consultantId = user?.consultant?.id;
     try {
-      if(consultantId !== undefined && consultantId !== null){
+      if (consultantId !== undefined && consultantId !== null) {
         const consultant = await prisma.consultant.findUnique({
-          where: { id: consultantId }
+          where: { id: consultantId },
         });
         if (consultant === null) {
           res.status(404).json({ message: "Consultant not found" });
@@ -99,14 +108,16 @@ attributesRouter.post(
     }
 
     res.json(attribute);
-});
+  }
+);
 /**
  * Delete an attribute
  * @route DELETE /me/attributes/{attributeId}
  * @returns deleted attribute
  */
 attributesRouter.delete(
-  "/me/attributes/:attributeId", authenticate,
+  "/me/attributes/:attributeId",
+  authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = AttributeIdParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
@@ -128,9 +139,9 @@ attributesRouter.delete(
     }
     const consultantId = user?.consultant?.id;
     try {
-      if(consultantId !== undefined && consultantId !== null){
+      if (consultantId !== undefined && consultantId !== null) {
         const consultant = await prisma.consultant.findUnique({
-          where: { id: consultantId }
+          where: { id: consultantId },
         });
         if (consultant === null) {
           res.status(404).json({ message: "Consultant not found" });
@@ -146,14 +157,16 @@ attributesRouter.delete(
     }
 
     res.status(204).send();
-});
+  }
+);
 /**
  * Update an attribute
  * @route PUT /me/attributes/{attributeId}
  * @returns updated attribute
  */
 attributesRouter.put(
-  "/me/attributes/:attributeId", authenticate,
+  "/me/attributes/:attributeId",
+  authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = AttributeIdParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
@@ -184,9 +197,9 @@ attributesRouter.put(
     }
     const consultantId = user?.consultant?.id;
     try {
-      if(consultantId !== undefined && consultantId !== null){
+      if (consultantId !== undefined && consultantId !== null) {
         const consultant = await prisma.consultant.findUnique({
-          where: { id: consultantId }
+          where: { id: consultantId },
         });
         if (consultant === null) {
           res.status(404).json({ message: "Consultant not found" });
@@ -208,5 +221,5 @@ attributesRouter.put(
     }
 
     res.json(attribute);
-
-});
+  }
+);

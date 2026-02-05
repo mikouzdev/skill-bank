@@ -9,33 +9,66 @@ import {
 } from "@mui/material";
 import { Person, Edit, People } from "@mui/icons-material";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 const DRAWER_WIDTH = 220;
+
+const ROLES = {
+  CONSULTANT: "CONSULTANT",
+  SALESPERSON: "SALESPERSON",
+  CUSTOMER: "CUSTOMER",
+  ADMIN: "ADMIN",
+} as const;
 
 interface NavItem {
   text: string;
   path: string;
   icon?: React.ReactElement;
-  roles?: ("CONSULTANT" | "SALESPERSON" | "CUSTOMER" | "ADMIN")[];
+  roles?: ("CONSULTANT" | "SALESPERSON" | "CUSTOMER" | "ADMIN")[]; //change this to a type?
 }
 
 const navItems: NavItem[] = [
-  { text: "My profile", path: "/me", icon: <Person /> }, // consultant
-  { text: "Consultants", path: "/listConsultants", icon: <People /> }, // consultant, sales
-  { text: "Edit profile", path: "/me/edit", icon: <Edit /> }, // consultant
-  { text: "Sales", path: "/sales" },
-  { text: "Admin", path: "/manage-users" },
-  { text: "Skill Editing", path: "/editSkills" }, // admin, sales
-  { text: "Offers", path: "/offers", icon: <People /> },
+  {
+    text: "My profile",
+    path: "/me",
+    icon: <Person />,
+    roles: [ROLES.CONSULTANT],
+  }, // consultant
+  {
+    text: "Consultants",
+    path: "/listConsultants",
+    icon: <People />,
+    roles: [ROLES.CONSULTANT, ROLES.SALESPERSON],
+  }, // consultant, sales
+  {
+    text: "Edit profile",
+    path: "/me/edit",
+    icon: <Edit />,
+    roles: [ROLES.CONSULTANT],
+  }, // consultant
+  { text: "Sales", path: "/sales", roles: [ROLES.SALESPERSON] }, //sales
+  { text: "Admin", path: "/manage-users", roles: [ROLES.ADMIN] }, //admin
+  {
+    text: "Skill Editing",
+    path: "/editSkills",
+    roles: [ROLES.ADMIN, ROLES.SALESPERSON],
+  }, // admin, sales
+  {
+    text: "Offers",
+    path: "/offers",
+    icon: <People />,
+    roles: [ROLES.CUSTOMER],
+  },
 ];
 
 export function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
+  const user = useAuth();
 
+  const role = user.currentUser?.roles ?? [];
   const visibleItems = navItems.filter((item) => {
-    if (!item.roles) return true;
-    //todo: use role based visibility on items
+    return item.roles?.some((r) => role.includes(r));
   });
 
   return (

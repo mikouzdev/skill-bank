@@ -2233,7 +2233,9 @@ export const OfferPagesScalarFieldEnum = {
   salespersonId: 'salespersonId',
   customerId: 'customerId',
   description: 'description',
-  passwordHash: 'passwordHash'
+  passwordHash: 'passwordHash',
+  name: 'name',
+  shortDescription: 'shortDescription'
 } as const
 
 export type OfferPagesScalarFieldEnum = (typeof OfferPagesScalarFieldEnum)[keyof typeof OfferPagesScalarFieldEnum]

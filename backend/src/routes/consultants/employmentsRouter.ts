@@ -1,4 +1,4 @@
-import { Router, type Request, type Response } from "express";
+import { Router, type Response } from "express";
 import { ConsultantIdParamsSchema } from "../../schemas/consultants/consultants.schema.js";
 import {
   DeleteEmploymentSkillParamsSchema,
@@ -8,7 +8,10 @@ import {
 } from "../../schemas/consultants/employment.schema.js";
 import { Visibility } from "../../generated/prisma/enums.js";
 import { prisma } from "../../db/prismaClient.js";
-import { authenticate, type AuthenticatedRequest } from "../../middlewares/authentication.js";
+import {
+  authenticate,
+  type AuthenticatedRequest,
+} from "../../middlewares/authentication.js";
 
 export const employmentsRouter = Router();
 
@@ -18,7 +21,8 @@ export const employmentsRouter = Router();
  * @returns [employments]
  */
 employmentsRouter.get(
-  "/:consultantId/employments", authenticate,
+  "/:consultantId/employments",
+  authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
     try {
       const parsedParams = ConsultantIdParamsSchema.safeParse(req.params);
@@ -31,7 +35,7 @@ employmentsRouter.get(
       const roles = req.user?.roles ?? [];
       let allowedVisibilities = [Visibility.PUBLIC, Visibility.LIMITED];
       //Sales/admin can see everyone, consult gets only public
-      if(!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
+      if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
         allowedVisibilities = [Visibility.PUBLIC];
       }
       const employments = await prisma.employment.findMany({
@@ -62,7 +66,8 @@ employmentsRouter.get(
  * @returns created employment
  */
 employmentsRouter.post(
-  "/me/employments", authenticate,
+  "/me/employments",
+  authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
     console.log("Found consultant");
 
@@ -97,9 +102,9 @@ employmentsRouter.post(
     }
     const consultantId = user?.consultant?.id;
     try {
-      if(consultantId !== undefined && consultantId !== null){
+      if (consultantId !== undefined && consultantId !== null) {
         const consultant = await prisma.consultant.findUnique({
-          where: { id: consultantId }
+          where: { id: consultantId },
         });
         if (consultant === null) {
           res.status(404).json({ message: "Consultant not found" });
@@ -137,7 +142,8 @@ employmentsRouter.post(
  * @returns updated employment
  */
 employmentsRouter.put(
-  "/me/employments/:employmentId", authenticate,
+  "/me/employments/:employmentId",
+  authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = EmploymentIdParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
@@ -176,9 +182,9 @@ employmentsRouter.put(
     }
     const consultantId = user?.consultant?.id;
     try {
-      if(consultantId !== undefined && consultantId !== null){
+      if (consultantId !== undefined && consultantId !== null) {
         const consultant = await prisma.consultant.findUnique({
-          where: { id: consultantId }
+          where: { id: consultantId },
         });
         if (consultant === null) {
           res.status(404).json({ message: "Consultant not found" });
@@ -218,7 +224,8 @@ employmentsRouter.put(
  * @returns confirmation message
  */
 employmentsRouter.delete(
-  "/me/employments/:employmentId", authenticate,
+  "/me/employments/:employmentId",
+  authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = EmploymentIdParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
@@ -240,9 +247,9 @@ employmentsRouter.delete(
     }
     const consultantId = user?.consultant?.id;
     try {
-      if(consultantId !== undefined && consultantId !== null){
+      if (consultantId !== undefined && consultantId !== null) {
         const consultant = await prisma.consultant.findUnique({
-          where: { id: consultantId }
+          where: { id: consultantId },
         });
         if (consultant === null) {
           res.status(404).json({ message: "Consultant not found" });
@@ -267,7 +274,8 @@ employmentsRouter.delete(
  * @returns created skill
  */
 employmentsRouter.post(
-  "/me/employments/:employmentId/skills", authenticate,
+  "/me/employments/:employmentId/skills",
+  authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = EmploymentIdParamsSchema.safeParse(req.params);
     const parsedBody = PostEmploymentSkillBodySchema.safeParse(req.body);
@@ -299,21 +307,19 @@ employmentsRouter.post(
     }
     const consultantId = user?.consultant?.id;
     try {
-      if(consultantId !== undefined && consultantId !== null){
+      if (consultantId !== undefined && consultantId !== null) {
         const consultant = await prisma.consultant.findUnique({
-          where: { id: consultantId }
+          where: { id: consultantId },
         });
         if (consultant === null) {
           res.status(404).json({ message: "Consultant not found" });
           return;
         }
         const employment = await prisma.employment.findUnique({
-          where: { id: employmentId, consultantId: consultantId }
+          where: { id: employmentId, consultantId: consultantId },
         });
         if (employment === null) {
-          res
-            .status(404)
-            .json({ message: "Employment not found" });
+          res.status(404).json({ message: "Employment not found" });
           return;
         }
         employmentSkill = await prisma.employmentSkill.create({
@@ -338,7 +344,8 @@ employmentsRouter.post(
  * @returns confirmation message
  */
 employmentsRouter.delete(
-  "/me/employments/:employmentId/skills/:employmentSkillId", authenticate,
+  "/me/employments/:employmentId/skills/:employmentSkillId",
+  authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = DeleteEmploymentSkillParamsSchema.safeParse(
       req.params
@@ -362,21 +369,19 @@ employmentsRouter.delete(
     }
     const consultantId = user?.consultant?.id;
     try {
-      if(consultantId !== undefined && consultantId !== null){
+      if (consultantId !== undefined && consultantId !== null) {
         const consultant = await prisma.consultant.findUnique({
-          where: { id: consultantId }
+          where: { id: consultantId },
         });
         if (consultant === null) {
           res.status(404).json({ message: "Consultant not found" });
           return;
         }
         const employment = await prisma.employment.findUnique({
-          where: { id: employmentId, consultantId: consultantId }
+          where: { id: employmentId, consultantId: consultantId },
         });
         if (employment === null) {
-          res
-            .status(404)
-            .json({ message: "Employment not found" });
+          res.status(404).json({ message: "Employment not found" });
           return;
         }
         await prisma.employmentSkill.delete({

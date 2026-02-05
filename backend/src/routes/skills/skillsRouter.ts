@@ -26,7 +26,7 @@ skillsRouter.get("/", async (req: Request, res: Response) => {
     skills.map((s) => ({
       id: s.id,
       name: s.name,
-      categoryId: s.categoryid, // to get rid of mapping, change DB field to categoryId
+      categoryId: s.categoryId, // to get rid of mapping, change DB field to categoryId
     }))
   );
 });
@@ -59,16 +59,16 @@ skillsRouter.post(
       where: { name },
       update: {
         ...(parsed.data.categoryId !== undefined
-          ? { categoryid: categoryId }
+          ? { categoryId: categoryId }
           : {}),
       },
-      create: { name, categoryid: categoryId },
+      create: { name, categoryId: categoryId },
     });
 
     const skillTag = {
       id: skillTagRow.id,
       name: skillTagRow.name,
-      categoryId: skillTagRow.categoryid, //DB name is categoryid, in Zod categoryId
+      categoryId: skillTagRow.categoryId, //DB name is categoryid, in Zod categoryId
     };
 
     return res.status(201).json(skillTag);
@@ -107,14 +107,14 @@ skillsRouter.patch(
       const updatedSkillTag = await prisma.skillTag.update({
         where: { name: skillName },
         data: {
-          ...(categoryId !== undefined ? { categoryid: categoryId } : {}),
+          ...(categoryId !== undefined ? { categoryId: categoryId } : {}),
         },
       });
 
       return res.status(200).json({
         id: updatedSkillTag.id,
         name: updatedSkillTag.name,
-        categoryId: updatedSkillTag.categoryid,
+        categoryId: updatedSkillTag.categoryId,
       });
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
