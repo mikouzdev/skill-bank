@@ -11,7 +11,9 @@ import { ManageUsersPage } from "../features/admin/pages/ManageUsersPage";
 import { ConsultantListConsultants } from "../features/consultant/pages/ConsultantListConsultants";
 import { SidebarLayout } from "./layout/SidebarLayout";
 import SkillEditingPage from "../shared/pages/SkillEditing/SkillEditingPage";
+import CustomerOffersPage from "../features/customer/pages/CustomerOffersPage";
 import { SnackbarProvider } from "../shared/components/SnackbarProvider";
+import CustomerLoginPage from "../features/customer/pages/CustromerLoginPage";
 
 function App() {
   return (
@@ -21,6 +23,7 @@ function App() {
       <SnackbarProvider>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/customerlogin" element={<CustomerLoginPage />} />
           <Route path="/loginRole" element={<LoginRolePage />} />
 
           <Route element={<SidebarLayout />}>
@@ -33,6 +36,9 @@ function App() {
               element={<ConsultantListConsultants />}
             />
             <Route path="/editSkills" element={<SkillEditingPage />} />
+
+            {/* customer */}
+            <Route path="/offers" element={<CustomerOffersPage />} />
           </Route>
         </Routes>
       </SnackbarProvider>
