@@ -2,6 +2,7 @@ import { Router, type Request, type Response } from "express";
 import {
   UserBodySchema,
   UserIdParamsSchema,
+  UserBodyPartialSchema
 } from "../../schemas/admin/admin.schema.js";
 import { adminOnly, authenticate } from "../../middlewares/authentication.js";
 import { prisma } from "../../db/prismaClient.js";
@@ -177,7 +178,7 @@ adminRouter.put(
     }
     const { userId } = parsedParams.data;
 
-    const parsedBody = UserBodySchema.safeParse(req.body);
+    const parsedBody = UserBodyPartialSchema.safeParse(req.body);
     if (!parsedBody.success) {
       res.status(400).json(parsedBody.error);
       return;
@@ -191,9 +192,9 @@ adminRouter.put(
       user = await prisma.user.update({
         where: { id: userId },
         data: {
-          email,
-          name,
-          passwordHash,
+          ...(email !== undefined ? { email } : {}),
+          ...(name !== undefined ? { name } : {}),
+          ...(passwordHash !== undefined ? { passwordHash } : {}),
           roles: {
             deleteMany: {},
             create: roles,
