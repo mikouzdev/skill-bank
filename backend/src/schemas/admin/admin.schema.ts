@@ -40,4 +40,8 @@ export const UserIdParamsSchema = z.object({
   userId: z.coerce.number().meta({ example: "1" }),
 });
 
-export const UserBodyPartialSchema = UserBodySchema.partial().meta({ id: "UserBodyPartial" });
+export const UserBodyPartialSchema = UserBodySchema.partial({
+  name: true,
+  email: true,
+  passwordHash: true,
+}).meta({ id: "UserBodyPartial" });

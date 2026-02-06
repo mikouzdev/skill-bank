@@ -192,9 +192,9 @@ adminRouter.put(
       user = await prisma.user.update({
         where: { id: userId },
         data: {
-          email,
-          name,
-          passwordHash,
+          ...(email !== undefined ? { email } : {}),
+          ...(name !== undefined ? { name } : {}),
+          ...(passwordHash !== undefined ? { passwordHash } : {}),
           roles: {
             deleteMany: {},
             create: roles,
