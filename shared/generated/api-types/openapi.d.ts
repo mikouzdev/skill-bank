@@ -639,8 +639,6 @@ export interface paths {
                         employer: string;
                         /** @example Fullstack developer */
                         jobTitle: string;
-                        /** @example 2025-12-19T14:01:24.308Z */
-                        updatedAt: string;
                         /** @example Description text of the role and responsibilites */
                         description: string;
                         start: string;
@@ -897,8 +895,6 @@ export interface paths {
                         description: string;
                         /** @example Smol Project */
                         name: string;
-                        /** @example 2025-12-19T14:01:24.308Z */
-                        updatedAt: string;
                         start: string;
                         end?: string | null;
                         /**
@@ -1019,8 +1015,6 @@ export interface paths {
                         description: string;
                         /** @example Smol Project */
                         name: string;
-                        /** @example 2025-12-19T14:01:24.308Z */
-                        updatedAt: string;
                         start: string;
                         end?: string | null;
                         /**
