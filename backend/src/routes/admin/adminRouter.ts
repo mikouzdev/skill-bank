@@ -77,6 +77,9 @@ adminRouter.post(
         include: {
           roles: true,
         },
+        omit: {
+          passwordHash: true,
+        },
       });
       const userId = createdUser.id;
       await Promise.all(
@@ -123,8 +126,6 @@ adminRouter.post(
       res.status(500).json(err);
       return;
     }
-    //override password so its not returned in json
-    createdUser.passwordHash = "";
     res.status(201).json(createdUser);
   }
 );

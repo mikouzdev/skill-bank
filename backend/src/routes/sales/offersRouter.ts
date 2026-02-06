@@ -114,26 +114,27 @@ offersRouter.post(
             return;
         }
         newOfferPage = await prisma.offerPages.create({
-        data: {
-            salespersonId: salesId,
-            customerId: customer.id,
-            description,
-            name,
-            shortDescription,
-            passwordHash,
-            consultantPages: {
-                create: consultantPages.map((consultantPage) => ({
-                    consultantId: consultantPage.consultantId,
-                    showInfo: consultantPage.showInfo,
-            })),
-        },
-        },
-    });
+            data: {
+                salespersonId: salesId,
+                customerId: customer.id,
+                description,
+                name,
+                shortDescription,
+                passwordHash,
+                consultantPages: {
+                    create: consultantPages.map((consultantPage) => ({
+                            consultantId: consultantPage.consultantId,
+                            showInfo: consultantPage.showInfo,
+                    })),
+                },
+            },
+            omit: {
+                passwordHash: true,
+            },
+        });
     } catch (err) {
       res.status(500).json(err);
       return;
     }
-    //override password so its not returned in json
-    newOfferPage.passwordHash = "";
     res.json(newOfferPage);
 });
