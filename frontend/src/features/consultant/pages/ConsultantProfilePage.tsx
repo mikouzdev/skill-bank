@@ -6,11 +6,13 @@ import ProfessionalExperience from "../components/ProfessionalExperience/Profess
 import { useConsultantDetails } from "../hooks/useConsultantDetails";
 import { useSkills } from "../hooks/useSkills";
 import { useAuth } from "../../../app/hooks/useAuth";
+import { useCategories } from "../hooks/useCategories";
 
 export default function ConsultantProfilePage() {
   const { currentUser, isLoading } = useAuth();
   const consultantId = currentUser?.consultantId || 0;
   const { skillPool } = useSkills();
+  const { skillCategories } = useCategories();
   const { consultant, skills, employments, projects, attributes, loading } =
     useConsultantDetails(consultantId);
 
@@ -21,7 +23,7 @@ export default function ConsultantProfilePage() {
   if (loading) return <Typography>Loading...</Typography>;
 
   if (!consultant || !attributes || !skills || !employments || !projects)
-    return <Typography>Error fetching data</Typography>;
+    return <Typography>Error fetching consultant data</Typography>;
 
   return (
     <Container
@@ -34,7 +36,11 @@ export default function ConsultantProfilePage() {
     >
       <ProfileHeader data={consultant} attributes={attributes} />
       <Divider />
-      <Skills data={skills} skillData={skillPool} />
+      <Skills
+        data={skills}
+        skillData={skillPool}
+        categoryData={skillCategories}
+      />
       <Divider />
       <ProfessionalExperience data={employments} skillData={skillPool} />
       <Divider />

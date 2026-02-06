@@ -5,13 +5,17 @@ import PersonalProjects from "../components/PersonalProjects/PersonalProjectsSec
 import Skills from "../components/Skills/SkillsSection";
 import EditableExternalLinks from "../components/ExternalLinks/EditableExternalLinks";
 import ProfessionalExperience from "../components/ProfessionalExperience/ProfessionalExperienceSection";
-import { useSkills } from "../hooks/useSkills";
 import { useAuth } from "../../../app/hooks/useAuth";
+import { useSkills } from "../hooks/useSkills";
+import { useCategories } from "../hooks/useCategories";
 
 export default function ConsultantProfileSettings() {
   const { currentUser, isLoading } = useAuth();
   const consultantId = currentUser?.consultantId || 0;
+
   const { skillPool } = useSkills();
+  const { skillCategories } = useCategories();
+
   const { consultant, skills, employments, projects, attributes, loading } =
     useConsultantDetails(consultantId);
 
@@ -37,7 +41,12 @@ export default function ConsultantProfileSettings() {
       <Divider />
       <EditableExternalLinks attributes={attributes} />
       <Divider />
-      <Skills data={skills} skillData={skillPool} editable />
+      <Skills
+        data={skills}
+        skillData={skillPool}
+        categoryData={skillCategories}
+        editable
+      />
       <ProfessionalExperience
         data={employments}
         skillData={skillPool}
