@@ -44,6 +44,7 @@ export const EmploymentBodySchema = EmploymentResponseSchema.omit({
   id: true,
   consultantId: true,
   createdAt: true,
+  updatedAt: true,
 })
   .extend({
     start: z.coerce.date(),
