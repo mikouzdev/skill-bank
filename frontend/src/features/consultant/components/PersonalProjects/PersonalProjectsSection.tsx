@@ -109,16 +109,14 @@ export default function PersonalProjects({ data, skillData, editable }: Props) {
       </Stack>
       <Stack spacing={1}>
         {projects.map((item) => (
-          <>
-            <PersonalProjectItem
-              key={item.id}
-              item={item}
-              skillData={skillData}
-              editable
-              onUpdate={handleUpdate}
-              onDelete={handleDelete}
-            />
-          </>
+          <PersonalProjectItem
+            key={item.id}
+            item={item}
+            skillData={skillData}
+            editable
+            onUpdate={handleUpdate}
+            onDelete={handleDelete}
+          />
         ))}
       </Stack>
     </>

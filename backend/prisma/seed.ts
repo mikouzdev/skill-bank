@@ -212,20 +212,44 @@ async function main() {
   console.log("🧑‍💼 Customer Cuno created");
 
   // ===========================================
+  // Categories
+  // ===========================================
+
+  const frontendCategory = await prisma.skillCategory.create({
+    data: { name: "Frontend" },
+  });
+
+  console.log("🏷️ Frontend category created");
+
+  const backendCategory = await prisma.skillCategory.create({
+    data: { name: "Backend" },
+  });
+
+  console.log("🏷️ Backend category created");
+
+  // ===========================================
   // Skills
   // ===========================================
 
   await prisma.skillTag.createMany({
     data: [
-      { name: "java" },
-      { name: "csharp" },
-      { name: "python" },
-      { name: "kotlin" },
-      { name: "rust" },
+      { name: "html", categoryId: frontendCategory.id },
+      { name: "css", categoryId: frontendCategory.id },
+      { name: "react", categoryId: frontendCategory.id },
+      { name: "vue", categoryId: frontendCategory.id },
+      { name: "angular", categoryId: frontendCategory.id },
+      { name: "svelte", categoryId: frontendCategory.id },
+      { name: "java", categoryId: backendCategory.id }, //backend start
+      { name: "csharp", categoryId: backendCategory.id },
+      { name: "python", categoryId: backendCategory.id },
+      { name: "php", categoryId: backendCategory.id },
+      { name: "sql", categoryId: backendCategory.id },
+      { name: "graphql", categoryId: backendCategory.id },
       { name: "javascript" },
       { name: "typescript" },
+      { name: "kotlin" },
+      { name: "rust" },
       { name: "go" },
-      { name: "php" },
       { name: "ruby" },
       { name: "swift" },
       { name: "scala" },
@@ -235,14 +259,6 @@ async function main() {
       { name: "haskell" },
       { name: "clojure" },
       { name: "objective-c" },
-      { name: "sql" },
-      { name: "graphql" },
-      { name: "html" },
-      { name: "css" },
-      { name: "react" },
-      { name: "vue" },
-      { name: "angular" },
-      { name: "svelte" },
       { name: "docker" },
       { name: "kubernetes" },
       { name: "aws" },
@@ -305,16 +321,6 @@ async function main() {
   //================================================
 
   console.log("🛠️ Skills created");
-
-  // ===========================================
-  // Category
-  // ===========================================
-
-  await prisma.skillCategory.create({
-    data: { name: "Frontend" },
-  });
-
-  console.log("🏷️ Frontend category created");
 
   // ===========================================
   // Projects
@@ -454,7 +460,12 @@ async function main() {
 
   await prisma.salesList.createMany({
     data: [
-      { salespersonId: sales1.id, description: "Pitempi testi teksti" as const, shortDescription: "testi teksti" as const, customerId: customer1.id }
+      {
+        salespersonId: sales1.id,
+        description: "Pitempi testi teksti" as const,
+        shortDescription: "testi teksti" as const,
+        customerId: customer1.id,
+      },
     ],
   });
 
@@ -463,7 +474,15 @@ async function main() {
   //password: hashed-password
   await prisma.offerPages.createMany({
     data: [
-      { salespersonId: sales1.id, name: "testinimi" as const, description: "Pitempi testi teksti" as const, shortDescription: "testi teksti" as const, passwordHash: "$argon2i$v=19$m=16,t=2,p=1$aXNuVjNDZmlWdVdSUG9KYQ$k0KvnEBaLJHBQ9y3rHwQUQ", customerId: customer1.id }
+      {
+        salespersonId: sales1.id,
+        name: "testinimi" as const,
+        description: "Pitempi testi teksti" as const,
+        shortDescription: "testi teksti" as const,
+        passwordHash:
+          "$argon2i$v=19$m=16,t=2,p=1$aXNuVjNDZmlWdVdSUG9KYQ$k0KvnEBaLJHBQ9y3rHwQUQ",
+        customerId: customer1.id,
+      },
     ],
   });
 

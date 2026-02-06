@@ -11,30 +11,57 @@ import {
   type SelectChangeEvent,
 } from "@mui/material";
 import { useState } from "react";
-import { addSkill } from "../../api/consultants.api";
 import { Circle } from "@mui/icons-material";
 import CircleIcon from "@mui/icons-material/Circle";
 
 type SkillTagList = components["schemas"]["SkillTagList"];
-type SkillRequest = Partial<components["schemas"]["ConsultantSkill"]>;
-type ConsultantSkill = components["schemas"]["ConsultantSkill"];
+type SkillTag = components["schemas"]["SkillTag"];
+
+type SkillCategories = components["schemas"]["SkillCategories"];
+type SkillCategory = components["schemas"]["skillCategory"];
 
 type Props = {
   skillData: SkillTagList;
-  onSkillAdded?: (skill: ConsultantSkill) => void;
+  categoryData: SkillCategories;
+  onSubmit: (skill: SkillTag, profiency: number) => Promise<boolean>;
 };
 
-export default function AddSkillDialog({ skillData, onSkillAdded }: Props) {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [selected, setSelected] = useState<SkillTagList[number]>();
+export default function AddSkillDialog({
+  skillData,
+  categoryData,
+  onSubmit,
+}: Props) {
+  const [skills, setSkills] = useState<SkillTagList>(skillData || []);
+  const [selectedCategory, setSelectedCategory] = useState<SkillCategory>();
+  const [selectedSkill, setSelectedSkill] = useState<SkillTag>();
   const [profiency, setProfiency] = useState<number>(3);
+
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
   function handleChange(e: SelectChangeEvent) {
     const newSelected = skillData.find(
       (skill) => skill.name === e.target.value
     );
-    setSelected(newSelected);
+    setSelectedSkill(newSelected);
+  }
+
+  function handleCategoryChange(e: SelectChangeEvent) {
+    const newSelectedCategory = categoryData.find(
+      (category) => category.name === e.target.value
+    );
+    setSelectedCategory(newSelectedCategory);
+
+    if (newSelectedCategory) {
+      const filteredSkills = skillData.filter(
+        (skill) => skill.categoryId === newSelectedCategory.id
+      );
+      setSkills(filteredSkills);
+    } else {
+      setSkills(skillData);
+    }
+
+    setSelectedSkill(undefined);
   }
 
   function handleProfiencyChange(
@@ -46,29 +73,11 @@ export default function AddSkillDialog({ skillData, onSkillAdded }: Props) {
   }
 
   async function handleAddSkill() {
-    if (selected?.id === undefined) return;
-    try {
-      setLoading(true);
-
-      // skill payload
-      const newSkill: SkillRequest = {
-        skillName: selected.name,
-        proficiency: profiency,
-      };
-
-      // just to see the loading icon :)
-      await new Promise((res) => setTimeout(res, 400));
-
-      const response = await addSkill(newSkill);
-      onSkillAdded?.(response.data);
-      setIsOpen(false);
-    } catch (error) {
-      console.log(error);
-      // todo: change alert to a more sophisticated feedback.
-      alert("failed to add skill :-( \nskill probably already added");
-    } finally {
-      setLoading(false);
-    }
+    if (selectedSkill?.id === undefined) return;
+    setLoading(true);
+    const success = await onSubmit(selectedSkill, profiency);
+    setLoading(false);
+    if (success) setIsOpen(false);
   }
 
   return (
@@ -88,11 +97,21 @@ export default function AddSkillDialog({ skillData, onSkillAdded }: Props) {
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
         <DialogTitle>Add skill</DialogTitle>
         <Stack padding={2} spacing={2} minWidth={300}>
-          <Typography>Category (not implemented)</Typography>
-          <Select>{/* todo category select */}</Select>
+          <Typography>Category</Typography>
+          <Select
+            value={selectedCategory?.name ?? ""}
+            onChange={handleCategoryChange}
+          >
+            <MenuItem value="">None</MenuItem>
+            {categoryData.map((category) => (
+              <MenuItem value={category.name} key={category.id}>
+                {category.name}
+              </MenuItem>
+            ))}
+          </Select>
           <Typography>Skill</Typography>
-          <Select value={selected?.name ?? ""} onChange={handleChange}>
-            {skillData.map((skill) => (
+          <Select value={selectedSkill?.name ?? ""} onChange={handleChange}>
+            {skills.map((skill) => (
               <MenuItem value={skill.name} key={skill.id}>
                 {skill.name}
               </MenuItem>
