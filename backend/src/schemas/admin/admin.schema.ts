@@ -39,3 +39,5 @@ export const FullUserResponseSchema = UserResponseSchema.extend({
 export const UserIdParamsSchema = z.object({
   userId: z.coerce.number().meta({ example: "1" }),
 });
+
+export const UserBodyPartialSchema = UserBodySchema.partial().meta({ id: "UserBodyPartial" });

@@ -1,7 +1,8 @@
 import {
   AllUsersResponseSchema,
   FullUserResponseSchema,
-  UserBodySchema
+  UserBodySchema,
+  UserBodyPartialSchema
 } from "../../schemas/admin/admin.schema.js";
 
 export const adminPaths = {
@@ -79,7 +80,7 @@ export const adminPaths = {
             ],
             requestBody: {
                 required: true,
-                content: { "application/json": { schema: UserBodySchema, // Unsafe assignmet, for later could consider using zod-to-openapi https://github.com/asteasolutions/zod-to-openapi
+                content: { "application/json": { schema: UserBodyPartialSchema, // Unsafe assignmet, for later could consider using zod-to-openapi https://github.com/asteasolutions/zod-to-openapi
                 } }
             },
             responses: {
