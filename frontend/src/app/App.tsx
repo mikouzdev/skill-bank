@@ -14,6 +14,7 @@ import SkillEditingPage from "../shared/pages/SkillEditing/SkillEditingPage";
 import CustomerOffersPage from "../features/customer/pages/CustomerOffersPage";
 import { SnackbarProvider } from "../shared/components/SnackbarProvider";
 import CustomerLoginPage from "../features/customer/pages/CustomerLoginPage";
+import { Logout } from "../features/Logout/Logout";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
             {/* customer */}
             <Route path="/offers" element={<CustomerOffersPage />} />
           </Route>
+          <Route path="/logout" element={<Logout />} />
         </Routes>
       </SnackbarProvider>
     </ThemeProvider>
