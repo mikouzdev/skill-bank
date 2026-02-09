@@ -13,7 +13,7 @@ import { SidebarLayout } from "./layout/SidebarLayout";
 import SkillEditingPage from "../shared/pages/SkillEditing/SkillEditingPage";
 import CustomerOffersPage from "../features/customer/pages/CustomerOffersPage";
 import { SnackbarProvider } from "../shared/components/SnackbarProvider";
-import CustomerLoginPage from "../features/customer/pages/CustromerLoginPage";
+import CustomerLoginPage from "../features/customer/pages/CustomerLoginPage";
 
 function App() {
   return (
