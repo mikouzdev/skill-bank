@@ -192,6 +192,7 @@ offersRouter.put(
           return;
         }
       }
+      let consultantExists = false;
       if (consultantPages !== undefined && consultantPages !== null) {
         await Promise.all(
           consultantPages.map(async (consultantPage) => {
@@ -201,6 +202,14 @@ offersRouter.put(
             if (consultant === null) {
               res.status(404).json({ message: "Consultant not found" });
               return;
+            }
+            //if consultant has been found, but has already been found before, return 409
+            else if (consultantExists) {
+              res.status(409).json({ message: "Consultant offer page already exists" });
+            }
+            //if consultant has been found for the first time, set this to true
+            else {
+              consultantExists = true;
             }
           }))
       }

@@ -86,6 +86,7 @@ export const offersPaths = {
                 },
                 400: { description: "Invalid request body" },
                 404: { description: "Customer or Consultant not found" },
+                409: { description: "Consultant offer page already exists" },
                 500: { description: "Server error" },
             },
         },
