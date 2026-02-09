@@ -7,6 +7,7 @@ import {
   DeleteProjectLinkParamsSchema,
   DeleteProjectSkillParamsSchema,
   PostProjectSkillBodySchema,
+  ProjectBodyPartialSchema
 } from "../../schemas/consultants/projects.schema.js";
 import { Visibility } from "../../generated/prisma/enums.js";
 import { prisma } from "../../db/prismaClient.js";
@@ -136,7 +137,7 @@ projectsRouter.put(
     }
     const { projectId } = parsedParams.data;
 
-    const parsedBody = ProjectBodySchema.safeParse(req.body);
+    const parsedBody = ProjectBodyPartialSchema.safeParse(req.body);
     if (!parsedBody.success) {
       res.status(400).json(parsedBody.error);
       return;
@@ -170,18 +171,18 @@ projectsRouter.put(
         project = await prisma.project.update({
           where: { id: projectId, consultantId: consultantId },
           data: {
-            description,
-            name,
-            start,
+            ...(description !== undefined ? { description } : {}),
+            ...(name !== undefined ? { name } : {}),
+            ...(start !== undefined ? { start } : {}),
             ...(end !== undefined ? { end } : {}),
-            visibility,
-            projectSkills: {
+            ...(visibility !== undefined ? { visibility } : {}),
+            ...(projectSkills !== undefined ? {  projectSkills: {
               deleteMany: {}, // delete skills of the project
               // create incoming skills, ( it errors if the skill doesnt exist in SkillTag )
               create: projectSkills.map((skill) => ({
                 skillTagName: skill.skillTagName,
               })),
-            },
+            } } : {}),
           },
         });
       }

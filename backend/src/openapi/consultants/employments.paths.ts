@@ -2,8 +2,8 @@ import {
   EmploymentListResponseSchema,
   EmploymentResponseSchema,
   EmploymentCreateSchema,
-  EmploymentBodySchema,
   PostEmploymentSkillBodySchema,
+  EmploymentBodyPartialSchema,
 } from "../../schemas/consultants/employment.schema.js";
 
 export const employmentPaths = {
@@ -77,7 +77,7 @@ export const employmentPaths = {
       ],
       requestBody: {
         required: true,
-        content: { "application/json": { schema: EmploymentBodySchema } },
+        content: { "application/json": { schema: EmploymentBodyPartialSchema } },
       },
       responses: {
         200: {

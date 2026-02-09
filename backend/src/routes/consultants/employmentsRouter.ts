@@ -5,6 +5,7 @@ import {
   EmploymentBodySchema,
   EmploymentIdParamsSchema,
   PostEmploymentSkillBodySchema,
+  EmploymentBodyPartialSchema,
 } from "../../schemas/consultants/employment.schema.js";
 import { Visibility } from "../../generated/prisma/enums.js";
 import { prisma } from "../../db/prismaClient.js";
@@ -152,7 +153,7 @@ employmentsRouter.put(
     }
     const { employmentId } = parsedParams.data;
 
-    const parsedBody = EmploymentBodySchema.safeParse(req.body);
+    const parsedBody = EmploymentBodyPartialSchema.safeParse(req.body);
     if (!parsedBody.success) {
       res.status(400).json(parsedBody.error);
       return;
@@ -193,19 +194,19 @@ employmentsRouter.put(
         employment = await prisma.employment.update({
           where: { id: employmentId, consultantId: consultantId },
           data: {
-            description,
-            employer,
-            jobTitle,
-            start,
+            ...(description !== undefined ? { description } : {}),
+            ...(employer !== undefined ? { employer } : {}),
+            ...(jobTitle !== undefined ? { jobTitle } : {}),
+            ...(start !== undefined ? { start } : {}),
             ...(end !== undefined ? { end } : {}),
-            visibility,
-            employmentSkills: {
+            ...(visibility !== undefined ? { visibility } : {}),
+            ...(employmentSkills !== undefined ? { employmentSkills: {
               deleteMany: {}, // delete skills of the employment
               // create incoming skills, ( it errors if the skill doesnt exist in SkillTag )
               create: employmentSkills.map((skill) => ({
                 skillTagName: skill.skillTagName,
               })),
-            },
+            },} : {}),
           },
         });
       }

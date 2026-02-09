@@ -4,7 +4,7 @@ import { prisma } from "../../db/prismaClient.js";
 import {
   SkillIdParamsSchema,
   PostConsultantSkillBodySchema,
-  SkillProficiencyBodySchema,
+  SkillProficiencyBodyPartialSchema
 } from "../../schemas/consultants/skills.schema.js";
 import {
   authenticate,
@@ -195,7 +195,7 @@ skillsRouter.delete(
  */
 skillsRouter.put("/skills/me/:skillId", authenticate, async (req: AuthenticatedRequest, res: Response) => {
   const parsedParams = SkillIdParamsSchema.safeParse(req.params);
-  const parsedBody = SkillProficiencyBodySchema.safeParse(req.body);
+  const parsedBody = SkillProficiencyBodyPartialSchema.safeParse(req.body);
 
   if (!parsedParams.success) {
     res.status(400).json(parsedParams.error);
@@ -232,7 +232,7 @@ skillsRouter.put("/skills/me/:skillId", authenticate, async (req: AuthenticatedR
       }
       await prisma.consultantSkill.update({
         where: { id: skillId, consultantId: consultantId },
-        data: { proficiency },
+        data: { ...(proficiency !== undefined ? { proficiency } : {}), },
       });
     }
   } catch (err) {

@@ -1,5 +1,5 @@
 import {
-    GetPageSectionsResponseSchema, PageSectionBodySchema, PageSectionSchema
+    GetPageSectionsResponseSchema, PageSectionSchema, PageSectionBodyPartialSchema
 } from "../../schemas/consultants/pageSections.schema.js";
 
 
@@ -78,7 +78,7 @@ export const pageSectionsPaths = {
             ],
             requestBody: {
                 required: true,
-                content: { "application/json": { schema: PageSectionBodySchema } },
+                content: { "application/json": { schema: PageSectionBodyPartialSchema } },
             },
             responses: {
             200: {
