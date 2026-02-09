@@ -33,31 +33,37 @@ const navItems: NavItem[] = [
     path: "/me",
     icon: <Person />,
     roles: [ROLES.CONSULTANT],
-  }, // consultant
+  },
   {
     text: "Consultants",
     path: "/listConsultants",
     icon: <People />,
     roles: [ROLES.CONSULTANT, ROLES.SALESPERSON],
-  }, // consultant, sales
+  },
   {
     text: "Edit profile",
     path: "/me/edit",
     icon: <Edit />,
     roles: [ROLES.CONSULTANT],
-  }, // consultant
+  },
   { text: "Sales", path: "/sales", roles: [ROLES.SALESPERSON] }, //sales
   { text: "Admin", path: "/manage-users", roles: [ROLES.ADMIN] }, //admin
   {
     text: "Skill Editing",
     path: "/editSkills",
     roles: [ROLES.ADMIN, ROLES.SALESPERSON],
-  }, // admin, sales
+  },
   {
     text: "Offers",
     path: "/offers",
     icon: <People />,
     roles: [ROLES.CUSTOMER],
+  },
+  {
+    text: "Offers",
+    path: "/manage-offers",
+    icon: <People />,
+    roles: [ROLES.SALESPERSON],
   },
   {
     text: "Log Out",

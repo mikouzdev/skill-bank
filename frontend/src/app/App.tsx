@@ -15,6 +15,8 @@ import CustomerOffersPage from "../features/customer/pages/CustomerOffersPage";
 import { SnackbarProvider } from "../shared/components/SnackbarProvider";
 import CustomerLoginPage from "../features/customer/pages/CustomerLoginPage";
 import { Logout } from "../features/Logout/Logout";
+import SalesOffersPage from "../features/sales/pages/SalesOffersPage/SalesOffersPage";
+import SalesSingleOfferPage from "../features/sales/pages/SalesOffersPage/SalesSingleOfferPage";
 
 function App() {
   return (
@@ -28,15 +30,27 @@ function App() {
           <Route path="/loginRole" element={<LoginRolePage />} />
 
           <Route element={<SidebarLayout />}>
+            {/* consultant */}
             <Route path="/me" element={<ConsultantProfilePage />} />
             <Route path="/me/edit" element={<ConsultantProfileSettings />} />
-            <Route path="/sales" element={<ConsultantListView />} />
-            <Route path="/manage-users" element={<ManageUsersPage />} />
             <Route
               path="/listConsultants"
               element={<ConsultantListConsultants />}
             />
+
+            {/* admin */}
+            <Route path="/manage-users" element={<ManageUsersPage />} />
+
+            {/* admin & salesperson */}
             <Route path="/editSkills" element={<SkillEditingPage />} />
+
+            {/* salesperson */}
+            <Route path="/manage-offers" element={<SalesOffersPage />} />
+            <Route
+              path="manage-offers/:id"
+              element={<SalesSingleOfferPage />}
+            />
+            <Route path="/sales" element={<ConsultantListView />} />
 
             {/* customer */}
             <Route path="/offers" element={<CustomerOffersPage />} />
