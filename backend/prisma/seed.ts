@@ -179,6 +179,7 @@ async function main() {
 
   const sales1 = await prisma.salesperson.create({
     data: {
+      id: 1,
       userId: salesUser.id,
     },
   });
@@ -472,21 +473,43 @@ async function main() {
   console.log("📖 Sales lists created");
 
   //password: hashed-password
-  await prisma.offerPages.createMany({
+  const offerPage = await prisma.offerPages.create({
+    data: {
+      salespersonId: sales1.id,
+      name: "Project A" as const,
+      description: `Here is a offer for Project A. 
+        You were looking for a consultant with at least 10 years of experience of frontend technology. 
+        Here is three professional choices.` as const,
+      shortDescription: "testi teksti" as const,
+      passwordHash:
+        "$argon2i$v=19$m=16,t=2,p=1$aXNuVjNDZmlWdVdSUG9KYQ$k0KvnEBaLJHBQ9y3rHwQUQ",
+      customerId: customer1.id,
+    },
+  });
+
+  console.log("📖 Offer pages created");
+
+  await prisma.consultantPages.createMany({
     data: [
       {
-        salespersonId: sales1.id,
-        name: "testinimi" as const,
-        description: "Pitempi testi teksti" as const,
-        shortDescription: "testi teksti" as const,
-        passwordHash:
-          "$argon2i$v=19$m=16,t=2,p=1$aXNuVjNDZmlWdVdSUG9KYQ$k0KvnEBaLJHBQ9y3rHwQUQ",
-        customerId: customer1.id,
+        offerPageId: offerPage.id,
+        consultantId: consultant.id,
+        showInfo: true,
+      },
+      {
+        offerPageId: offerPage.id,
+        consultantId: consultant2.id,
+        showInfo: true,
+      },
+      {
+        offerPageId: offerPage.id,
+        consultantId: consultant3.id,
+        showInfo: true,
       },
     ],
   });
 
-  console.log("📖 Offer pages created");
+  console.log("📖 Consultants added to offer page");
 
   console.log("🎉 Seed complete!");
 }

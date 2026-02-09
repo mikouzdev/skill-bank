@@ -1,5 +1,8 @@
 import { Router, type Response } from "express";
-import { authenticate, type AuthenticatedRequest } from "../../middlewares/authentication.js";
+import {
+  authenticate,
+  type AuthenticatedRequest,
+} from "../../middlewares/authentication.js";
 import { prisma } from "../../db/prismaClient.js";
 import { SalesIdParamsSchema } from "../../schemas/sales/sales.schema.js";
 import { OfferPageBodySchema } from "../../schemas/sales/offers.schema.js";
@@ -12,7 +15,8 @@ export const offersRouter = Router();
  * @returns [offer pages]
  */
 offersRouter.get(
-  "/:salesId/offers", authenticate,
+  "/:salesId/offers",
+  authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = SalesIdParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
@@ -21,65 +25,71 @@ offersRouter.get(
     }
     const { salesId } = parsedParams.data;
     const roles = req.user?.roles ?? [];
-    
+
     let offerPages = null;
 
     //Customer should only get their own offers
-    if(roles?.includes("CUSTOMER")) {
-        const user = await prisma.user.findUnique({
-            where: { id: req.user!.id },
-            select: {
-                id: true,
-                roles: { select: { role: true } },
-                customer: { select: { id: true } },
+    if (roles?.includes("CUSTOMER")) {
+      const user = await prisma.user.findUnique({
+        where: { id: req.user!.id },
+        select: {
+          id: true,
+          roles: { select: { role: true } },
+          customer: { select: { id: true } },
+        },
+      });
+      if (user === null) {
+        res.status(404).json({ message: "User not found" });
+        return;
+      }
+      const customerId = user?.customer?.id;
+      try {
+        if (customerId !== undefined && customerId !== null) {
+          const customer = await prisma.customer.findUnique({
+            where: { id: customerId },
+          });
+          if (customer === null) {
+            res.status(404).json({ message: "Customer not found" });
+            return;
+          }
+          offerPages = await prisma.offerPages.findMany({
+            where: {
+              salespersonId: salesId,
+              customerId: customerId,
             },
-        });
-        if (user === null) {
-            res.status(404).json({ message: "User not found" });
-            return;
+            include: {
+              consultantPages: true,
+            },
+            omit: {
+              passwordHash: true,
+            },
+          });
         }
-        const customerId = user?.customer?.id;
-        try {
-            if(customerId !== undefined && customerId !== null){
-                const customer = await prisma.customer.findUnique({
-                    where: { id: customerId }
-                });
-                if (customer === null) {
-                    res.status(404).json({ message: "Customer not found" });
-                return;
-                }
-                offerPages = await prisma.offerPages.findMany({
-                    where: {
-                        salespersonId: salesId,
-                        customerId: customerId,
-                    },
-                    omit: {
-                        passwordHash: true,
-                    },
-                });
-            }
-        } catch (err) {
-            res.status(500).json(err);
-            return;
-        }
-    }
-    else {
-         try {
-            offerPages = await prisma.offerPages.findMany({
-                where: {
-                    salespersonId: salesId,
-                },
-                omit: {
-                    passwordHash: true,
-                },
-            });
-        } catch (err) {
+      } catch (err) {
         res.status(500).json(err);
         return;
-        }
+      }
+    } else {
+      try {
+        offerPages = await prisma.offerPages.findMany({
+          where: {
+            salespersonId: salesId,
+          },
+          include: {
+            consultantPages: true,
+          },
+          omit: {
+            passwordHash: true,
+          },
+        });
+      } catch (err) {
+        res.status(500).json(err);
+        return;
+      }
     }
     res.json(offerPages);
-});
+  }
+);
 
 /**
  * Add new offer page for a sales user
@@ -87,7 +97,8 @@ offersRouter.get(
  * @returns created offer page
  */
 offersRouter.post(
-  "/:salesId/offers", authenticate,
+  "/:salesId/offers",
+  authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = SalesIdParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
@@ -97,44 +108,51 @@ offersRouter.post(
     const { salesId } = parsedParams.data;
     const parsedBody = OfferPageBodySchema.safeParse(req.body);
     if (!parsedBody.success) {
-        res.status(400).json(parsedBody.error);
-        return;
+      res.status(400).json(parsedBody.error);
+      return;
     }
-    const { customerId, description, name, shortDescription, consultantPages, passwordHash
-     } = parsedBody.data;
+    const {
+      customerId,
+      description,
+      name,
+      shortDescription,
+      consultantPages,
+      passwordHash,
+    } = parsedBody.data;
 
     let newOfferPage = null;
 
     try {
-        const customer = await prisma.customer.findUnique({
-            where: { id: customerId },
-        });
-        if (customer === null) {
-            res.status(404).json({ message: "Customer not found" });
-            return;
-        }
-        newOfferPage = await prisma.offerPages.create({
-            data: {
-                salespersonId: salesId,
-                customerId: customer.id,
-                description,
-                name,
-                shortDescription,
-                passwordHash,
-                consultantPages: {
-                    create: consultantPages.map((consultantPage) => ({
-                            consultantId: consultantPage.consultantId,
-                            showInfo: consultantPage.showInfo,
-                    })),
-                },
-            },
-            omit: {
-                passwordHash: true,
-            },
-        });
+      const customer = await prisma.customer.findUnique({
+        where: { id: customerId },
+      });
+      if (customer === null) {
+        res.status(404).json({ message: "Customer not found" });
+        return;
+      }
+      newOfferPage = await prisma.offerPages.create({
+        data: {
+          salespersonId: salesId,
+          customerId: customer.id,
+          description,
+          name,
+          shortDescription,
+          passwordHash,
+          consultantPages: {
+            create: consultantPages.map((consultantPage) => ({
+              consultantId: consultantPage.consultantId,
+              showInfo: consultantPage.showInfo,
+            })),
+          },
+        },
+        omit: {
+          passwordHash: true,
+        },
+      });
     } catch (err) {
       res.status(500).json(err);
       return;
     }
     res.json(newOfferPage);
-});
+  }
+);

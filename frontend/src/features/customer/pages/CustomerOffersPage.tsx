@@ -1,31 +1,41 @@
-import { Box, Container, Stack, Typography } from "@mui/material";
-import { ConsultantCard } from "../../sales/components/ConsultantCard";
+import { Container, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { getOffers } from "../../../shared/api/offers.api";
+import type { components } from "@api-types/openapi";
+import CustomerSingleOffer from "./CustomerSingleOffer";
+
+type GetOfferPagesResponse = components["schemas"]["GetOfferPagesResponse"];
 
 export default function CustomerOffersPage() {
-  const offeredConsultants = (
-    <Stack gap={2}>
-      <ConsultantCard consultantID={1} />
-      <ConsultantCard consultantID={1} />
-      <ConsultantCard consultantID={1} />
-    </Stack>
-  );
+  const [offers, setOffers] = useState<GetOfferPagesResponse>([]);
+
+  useEffect(() => {
+    async function fetchOffers(salesId: number) {
+      try {
+        const response = await getOffers(salesId);
+        setOffers(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    void fetchOffers(1); // 1 placeholder of salesId
+  }, []);
+
+  const mappedOffers = offers.map((offer) => (
+    <CustomerSingleOffer key={offer.id} offerData={offer} />
+  ));
 
   return (
     <Container>
-      <Box
-        textAlign="center"
-        sx={{ display: "flex", justifyContent: "center", mt: 2 }}
-      >
-        <Stack width="90%">
-          <Typography variant="h5">Project A (placeholder)</Typography>
-          <Typography variant="body2" gutterBottom>
-            Offer page for Project A. You were looking for a consultant with at
-            least 10 years of experience of frontend technology. Here are three
-            professional choices.
-          </Typography>
-        </Stack>
-      </Box>
-      {offeredConsultants}
+      <Typography variant="h5" gutterBottom>
+        Offers
+      </Typography>
+      {offers.length > 0 ? (
+        mappedOffers
+      ) : (
+        <Typography>No offers available.</Typography>
+      )}
     </Container>
   );
 }
