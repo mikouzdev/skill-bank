@@ -203,6 +203,9 @@ adminRouter.put(
         include: {
           roles: true,
         },
+        omit: {
+          passwordHash: true,
+        },
       });
     } catch (err) {
       res.status(500).json(err);
