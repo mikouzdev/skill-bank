@@ -480,7 +480,7 @@ async function main() {
       description: `Here is a offer for Project A. 
         You were looking for a consultant with at least 10 years of experience of frontend technology. 
         Here is three professional choices.` as const,
-      shortDescription: "testi teksti" as const,
+      shortDescription: "short description for project a" as const,
       passwordHash:
         "$argon2i$v=19$m=16,t=2,p=1$aXNuVjNDZmlWdVdSUG9KYQ$k0KvnEBaLJHBQ9y3rHwQUQ",
       customerId: customer1.id,
@@ -488,6 +488,23 @@ async function main() {
   });
 
   console.log("📖 Offer pages created");
+
+  //password: hashed-password
+  const offerPage2 = await prisma.offerPages.create({
+    data: {
+      salespersonId: sales1.id,
+      name: "Project B" as const,
+      description: `Here is a offer for Project B. 
+        You were looking for a consultant with at least 5 years of experience of backend technology. 
+        Here is three professional choices.` as const,
+      shortDescription: "short description for project b" as const,
+      passwordHash:
+        "$argon2i$v=19$m=16,t=2,p=1$aXNuVjNDZmlWdVdSUG9KYQ$k0KvnEBaLJHBQ9y3rHwQUQ",
+      customerId: customer1.id,
+    },
+  });
+
+  console.log("📖 Offer pages 2 created");
 
   await prisma.consultantPages.createMany({
     data: [
@@ -510,6 +527,23 @@ async function main() {
   });
 
   console.log("📖 Consultants added to offer page");
+
+  await prisma.consultantPages.createMany({
+    data: [
+      {
+        offerPageId: offerPage2.id,
+        consultantId: consultant.id,
+        showInfo: true,
+      },
+      {
+        offerPageId: offerPage2.id,
+        consultantId: consultant2.id,
+        showInfo: true,
+      },
+    ],
+  });
+
+  console.log("📖 Consultants added to offer page 2");
 
   console.log("🎉 Seed complete!");
 }
