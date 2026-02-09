@@ -9,7 +9,7 @@ import {
   PatchSkillTagBodySchema,
   SkillNameParamsSchema,
 } from "../../schemas/skills/skill-tags.schema.js";
-import { PostSkillCategoryBodySchema, SkillCategoryIdParamsSchema } from "../../schemas/skills/skill-categories.schema.js"
+import { PostSkillCategoryBodySchema, SkillCategoryIdParamsSchema, PostSkillCategoryBodyPartialSchema } from "../../schemas/skills/skill-categories.schema.js"
 import { Prisma } from "../../generated/prisma/client.js";
 export const skillsRouter = Router();
 
@@ -264,7 +264,7 @@ skillsRouter.put("/categories/:categoryId", authenticate, async (req: Authentica
   }
   const { categoryId } = parsedParams.data;
 
-  const parsedBody = PostSkillCategoryBodySchema.safeParse(req.body);
+  const parsedBody = PostSkillCategoryBodyPartialSchema.safeParse(req.body);
   if (!parsedBody.success) {
     res.status(400).json(parsedBody.error);
     return;
@@ -276,14 +276,14 @@ skillsRouter.put("/categories/:categoryId", authenticate, async (req: Authentica
     category = await prisma.skillCategory.update({
       where: { id: categoryId },
       data: {
-        name,
-        skillTags: {
+        ...(name !== undefined ? { name } : {}),
+        ...(skillTags !== undefined ? { skillTags: {
           deleteMany: {}, // delete skills
             // create incoming skills, ( it errors if the skill doesnt exist in SkillTag )
           create: skillTags.map((skillTag) => ({
             name: skillTag.name,
           })),
-        }
+        } } : {}),
       },
     });
     res.status(200).json(category);

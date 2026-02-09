@@ -5,7 +5,7 @@ import {
   SkillTagSchema,
   SkillTagsSchema,
 } from "../../schemas/skills/skill-tags.schema.js";
-import { PostSkillCategoryBodySchema, skillCategorySchema, SkillCategoriesSchema } from "../../schemas/skills/skill-categories.schema.js"
+import { PostSkillCategoryBodySchema, skillCategorySchema, SkillCategoriesSchema, PostSkillCategoryBodyPartialSchema } from "../../schemas/skills/skill-categories.schema.js"
 
 export const allSkillsPaths = {
   "/skills": {
@@ -124,7 +124,7 @@ export const allSkillsPaths = {
       ],
       requestBody: {
         required: true,
-        content: { "application/json": { schema: PostSkillCategoryBodySchema } },
+        content: { "application/json": { schema: PostSkillCategoryBodyPartialSchema } },
       },
       responses: {
         200: {

@@ -3,6 +3,7 @@ import { ConsultantIdParamsSchema } from "../../schemas/consultants/consultants.
 import {
   AttributeBodySchema,
   AttributeIdParamsSchema,
+  AttributeBodyPartialSchema,
 } from "../../schemas/consultants/attributes.schema.js";
 import { Visibility } from "../../generated/prisma/enums.js";
 import { prisma } from "../../db/prismaClient.js";
@@ -175,7 +176,7 @@ attributesRouter.put(
     }
     const { attributeId } = parsedParams.data;
 
-    const parsedBody = AttributeBodySchema.safeParse(req.body);
+    const parsedBody = AttributeBodyPartialSchema.safeParse(req.body);
     if (!parsedBody.success) {
       res.status(400).json(parsedBody.error);
       return;
@@ -208,10 +209,10 @@ attributesRouter.put(
         attribute = await prisma.consultantAttribute.update({
           where: { id: attributeId, consultantId: consultantId },
           data: {
-            value,
-            label,
-            type,
-            visibility,
+            ...(value !== undefined ? { value } : {}),
+            ...(label !== undefined ? { label } : {}),
+            ...(type !== undefined ? { type } : {}),
+            ...(visibility !== undefined ? { visibility } : {}),
           },
         });
       }

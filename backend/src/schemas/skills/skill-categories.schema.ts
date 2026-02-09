@@ -20,3 +20,8 @@ export const SkillCategoriesSchema = z
 export const SkillCategoryIdParamsSchema = z.object({
   categoryId: z.coerce.number().meta({ example: "1" }),
 }).meta({ id: "SkillCategoryId" });
+
+export const PostSkillCategoryBodyPartialSchema =  PostSkillCategoryBodySchema.partial({
+  name: true,
+  skillTags: true
+}).meta({ id: "PostSkillCategoryBodyPartial" });

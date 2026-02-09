@@ -3,7 +3,7 @@ import { ConsultantIdParamsSchema } from "../../schemas/consultants/consultants.
 import {
   ConsultantIdSectionNameParamsSchema,
   SectionNameParamsSchema,
-  PageSectionBodySchema,
+  PageSectionBodyPartialSchema,
 } from "../../schemas/consultants/pageSections.schema.js";
 import { Visibility } from "../../generated/prisma/enums.js";
 import { prisma } from "../../db/prismaClient.js";
@@ -117,7 +117,7 @@ pageSectionsRouter.put(
     }
     const { sectionName } = parsedParams.data;
 
-    const parsedBody = PageSectionBodySchema.safeParse(req.body);
+    const parsedBody = PageSectionBodyPartialSchema.safeParse(req.body);
     if (!parsedBody.success) {
       res.status(400).json(parsedBody.error);
       return;
@@ -155,8 +155,8 @@ pageSectionsRouter.put(
             },
           },
           data: {
-            name,
-            visibility,
+            ...(name !== undefined ? { name } : {}),
+            ...(visibility !== undefined ? { visibility } : {}),
           },
         });
       }

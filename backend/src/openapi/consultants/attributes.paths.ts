@@ -1,5 +1,5 @@
 import {
-    GetAttributesResponseSchema, AttributeBodySchema, AttributeSchema
+    GetAttributesResponseSchema, AttributeBodySchema, AttributeSchema, AttributeBodyPartialSchema
 } from "../../schemas/consultants/attributes.schema.js";
 
 export const attributesPaths = {
@@ -80,7 +80,7 @@ export const attributesPaths = {
             ],
             requestBody: {
                 required: true,
-                content: { "application/json": { schema: AttributeBodySchema } },
+                content: { "application/json": { schema: AttributeBodyPartialSchema } },
             },
             responses: {
             200: {

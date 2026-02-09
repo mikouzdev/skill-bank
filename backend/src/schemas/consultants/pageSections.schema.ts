@@ -43,3 +43,8 @@ export const PageSectionBodySchema = PageSectionSchema.omit({
   id: true,
   consultantId: true,
 }).meta({ id: "PageSectionBody" });
+
+export const PageSectionBodyPartialSchema =  PageSectionBodySchema.partial({
+  name: true,
+  visibility: true
+}).meta({ id: "PageSectionBodyPartial" });

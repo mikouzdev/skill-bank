@@ -89,3 +89,13 @@ export const DeleteEmploymentSkillParamsSchema = z.object({
 });
 
 export type EmploymentCreateInput = z.infer<typeof EmploymentCreateSchema>;
+
+export const EmploymentBodyPartialSchema =  EmploymentBodySchema.partial({
+  start: true,
+  end: true,
+  employer: true,
+  jobTitle: true,
+  description: true,
+  visibility: true,
+  employmentSkills: true,
+}).meta({ id: "EmploymentBodyPartial" });

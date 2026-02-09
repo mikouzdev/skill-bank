@@ -27,3 +27,10 @@ export const AttributeBodySchema = AttributeSchema.omit({
 export const AttributeIdParamsSchema = z.object({
   attributeId: z.coerce.number().meta({ example: "1" }),
 }).meta({ id: "AttributeIdParams" });
+
+export const AttributeBodyPartialSchema =  AttributeBodySchema.partial({
+  value: true,
+  label: true,
+  type: true,
+  visibility: true,
+}).meta({ id: "AttributeBodyPartial" });

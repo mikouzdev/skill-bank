@@ -2,7 +2,7 @@ import {
   ConsultantSkillSchema,
   ConsultantSkillsSchema,
   PostConsultantSkillBodySchema,
-  SkillProficiencyBodySchema,
+  SkillProficiencyBodyPartialSchema
 } from "../../schemas/consultants/skills.schema.js";
 
 import { SkillTagsSchema } from "../../schemas/skills/skill-tags.schema.js";
@@ -84,7 +84,7 @@ export const skillsPaths = {
       ],
       requestBody: {
         required: true,
-        content: { "application/json": { schema: SkillProficiencyBodySchema } },
+        content: { "application/json": { schema: SkillProficiencyBodyPartialSchema } },
       },
       responses: {
         200: { description: "Update successful" },
