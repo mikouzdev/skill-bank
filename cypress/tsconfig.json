@@ -1,0 +1,9 @@
+{
+  //*** You may want to uncomment this ****//
+  //"extends": "../tsconfig.json",
+  "compilerOptions": {
+    "types": ["cypress", "node"],
+    "noEmit": true
+  },
+  "include": ["**/*.ts", "**/*.tsx"]
+}
