@@ -192,7 +192,7 @@ offersRouter.put(
           return;
         }
       }
-      let consultantExists = false;
+      let uniqueConsultants: number[] = [];
       if (consultantPages !== undefined && consultantPages !== null) {
         await Promise.all(
           consultantPages.map(async (consultantPage) => {
@@ -203,15 +203,24 @@ offersRouter.put(
               res.status(404).json({ message: "Consultant not found" });
               return;
             }
-            //if consultant has been found, but has already been found before, return 409
-            else if (consultantExists) {
-              res.status(409).json({ message: "Consultant offer page already exists" });
+            if(consultantPage.consultantId !== undefined && consultantPage.consultantId !== null) {
+              const existingConsultantPage = await prisma.consultantPages.findFirst({
+                where: { offerPageId: offerPageId, consultantId: consultantPage.consultantId },
+              });
+              if (existingConsultantPage !== null) {
+                res.status(409).json({ message: "Consultant page already exists" });
+                return;
+              }
             }
-            //if consultant has been found for the first time, set this to true
+            if(uniqueConsultants.includes(consultantPage.consultantId)){
+              res.status(409).json({ message: "Cannot add same consultant twice to the same offer page" });
+              return;
+            }
             else {
-              consultantExists = true;
+              uniqueConsultants.push(consultantPage.consultantId);
             }
-          }))
+          }
+        ))
       }
       offerPage = await prisma.offerPages.update({
         where: { id: offerPageId, salespersonId: salesId },
