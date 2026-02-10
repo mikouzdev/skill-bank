@@ -11,7 +11,7 @@ export const skillsPaths = {
   "/consultants/skills/all": {
     get: {
       summary: "Get all available skills for consultant",
-      tags: ["Consultants", "Skills"],
+      tags: ["Skills"],
       responses: {
         200: {
           description: "Retrieval successful",
@@ -26,7 +26,7 @@ export const skillsPaths = {
   "/consultants/skills/{consultantId}": {
     get: {
       summary: "Get all skills of a consultant",
-      tags: ["Consultants", "Skills"],
+      tags: ["Skills"],
       parameters: [
         {
           name: "consultantId",
@@ -51,7 +51,7 @@ export const skillsPaths = {
   "/consultants/skills/me": {
     post: {
       summary: "Create a new skill",
-      tags: ["Consultants", "Skills"],
+      tags: ["Skills"],
       requestBody: {
         required: true,
         content: {
@@ -73,7 +73,7 @@ export const skillsPaths = {
   "/consultants/skills/me/{skillId}": {
     put: {
       summary: "Update a skill",
-      tags: ["Consultants", "Skills"],
+      tags: ["Skills"],
       parameters: [
         {
           name: "skillId",
@@ -94,7 +94,7 @@ export const skillsPaths = {
     },
     delete: {
       summary: "Delete a skill",
-      tags: ["Consultants", "Skills"],
+      tags: ["Skills"],
       parameters: [
         {
           name: "skillId",

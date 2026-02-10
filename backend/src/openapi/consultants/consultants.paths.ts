@@ -101,7 +101,7 @@ export const consultantsPaths = {
   "/consultants/jsonFilter": {
     post: {
       summary: "Filter consultant by JsonFilter",
-      tags: ["Consultants", "Filter"],
+      tags: ["Consultants"],
       requestBody: {
         required: true,
         content: {
