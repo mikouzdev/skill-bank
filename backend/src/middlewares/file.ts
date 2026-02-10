@@ -10,6 +10,9 @@ export const upload = multer({
 
 export const uploadFile =
   (fieldName: string) => (req: Request, res: Response, next: NextFunction) => {
+    if (fieldName === undefined || fieldName === null) {
+      next();
+    }
     upload.single(fieldName)(req, res, (err) => {
       if (err instanceof multer.MulterError) {
         if (err.code === "LIMIT_UNEXPECTED_FILE") {

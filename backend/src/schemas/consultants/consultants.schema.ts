@@ -31,22 +31,7 @@ export const UpdateConsultantSchema = ConsultantResponseSchema.omit({
   profilePictureUrl: true,
 })
   .extend({
-    profilePicture: z.any(),
-    user: z
-      .string()
-      .transform((value, ctx) => {
-        try {
-          return JSON.parse(value) as unknown;
-        } catch {
-          ctx.issues.push({
-            code: "custom",
-            message: "Invalid JSON string",
-            input: value,
-          });
-          return z.NEVER;
-        }
-      })
-      .pipe(z.object({ name: z.string().meta({ example: "John Lee" }) })),
+    profilePicture: z.any()
   })
   .partial();
 

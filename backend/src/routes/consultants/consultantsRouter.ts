@@ -140,7 +140,7 @@ consultantsRouter.get("/:consultantId", async (req: Request, res: Response) => {
   res.json(consultant);
 });
 /**
- * Update current consultant's profile picture
+ * Update current consultant's profile
  * @route PUT /consultants/me
  * @returns confirmation message
  */
@@ -154,9 +154,25 @@ consultantsRouter.put(
       res.status(400).json(parsedBody.error);
       return;
     }
-    const { description, roleTitle } = parsedBody.data;
+    const { description, roleTitle, user } = parsedBody.data;
     const profilePicture = req.file;
     let profilePictureUrl;
+     // Get the URL of the previous image
+    let consultant = null;
+    const existingUser = await prisma.user.findUnique({
+      where: { id: req.user!.id },
+      select: {
+        id: true,
+        name: true,
+        roles: { select: { role: true } },
+        consultant: { select: { id: true } },
+      },
+    });
+    if (existingUser === null) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+    const consultantId = existingUser?.consultant?.id;
 
     if (profilePicture !== undefined) {
       let imageType;
@@ -175,32 +191,8 @@ consultantsRouter.put(
       if (!allowedTypes.includes(imageType.mime)) {
         return res.status(400).json({ message: "Unsupported image type" });
       }
-
-      // Get the URL of the previous image
-      let consultant = null;
-      const user = await prisma.user.findUnique({
-        where: { id: req.user!.id },
-        select: {
-          id: true,
-          name: true,
-          roles: { select: { role: true } },
-          consultant: { select: { id: true } },
-        },
-      });
-      if (user === null) {
-        res.status(404).json({ message: "User not found" });
-        return;
-      }
-      const consultantId = user?.consultant?.id;
       try {
         if (consultantId !== undefined && consultantId !== null) {
-          consultant = await prisma.consultant.findUnique({
-            where: { id: consultantId },
-          });
-          if (consultant === null) {
-            res.status(404).json({ message: "Consultant not found" });
-            return;
-          }
           consultant = await prisma.consultant.findUnique({
             where: { id: consultantId },
           });
@@ -235,7 +227,7 @@ consultantsRouter.put(
               profilePictureFileName,
               profilePicture.buffer
             );
-            await prisma.consultant.update({
+            consultant = await prisma.consultant.update({
               where: { id: consultantId },
               data: {
                 ...(description !== undefined ? { description } : {}),
@@ -260,6 +252,34 @@ consultantsRouter.put(
         return;
       }
     }
-    res.status(204).json();
+    else {
+      try {
+        if (consultantId !== undefined && consultantId !== null) {
+          consultant = await prisma.consultant.findUnique({
+            where: { id: consultantId },
+          });
+          if (consultant === null) {
+            res.status(404).json({ message: "Consultant not found" });
+            return;
+          }
+          consultant = await prisma.consultant.update({
+            where: { id: consultantId },
+            data: {
+              ...(description !== undefined ? { description } : {}),
+              ...(roleTitle !== undefined ? { roleTitle } : {}),
+              user: {
+                update: {
+                  ...(user?.name !== undefined ? { name: user.name } : {}),
+                },
+              },
+            },
+          });
+        }
+      } catch (err) {
+        res.status(500).json(err);
+        return;
+      }
+    }
+    res.status(204).json(consultant);
   }
 );

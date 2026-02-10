@@ -1,6 +1,7 @@
 import {
   ConsultantResponseSchema,
   AllConsultantsResponseSchema,
+  UpdateConsultantSchema,
 } from "../../schemas/consultants/consultants.schema.js";
 import { JsonFilterSchema } from "../../schemas/consultants/search.schema.js";
 
@@ -50,9 +51,26 @@ export const consultantsPaths = {
     put: {
       summary: "Change consultant's data",
       tags: ["Consultants"],
+      requestBody: {
+        required: true,
+        content: {
+          "application/json": {
+            schema: UpdateConsultantSchema,
+          },
+        },
+      },
       responses: {
-        200: {
-          description: "Data change successful",
+        204: {
+          description: "Update successful",
+          content: {
+            "application/json": { schema: ConsultantResponseSchema },
+          },
+        },
+        400: {
+          description: "Unknown file type",
+        },
+        404: {
+          description: "Consultant or user not found",
         },
         500: { description: "Internal server error" },
       },
