@@ -193,6 +193,7 @@ offersRouter.put(
         }
       }
       let uniqueConsultants: number[] = [];
+      let returnIfTrue = false;
       if (consultantPages !== undefined && consultantPages !== null) {
         await Promise.all(
           consultantPages.map(async (consultantPage) => {
@@ -201,6 +202,7 @@ offersRouter.put(
             });
             if (consultant === null) {
               res.status(404).json({ message: "Consultant not found" });
+              returnIfTrue = true;
               return;
             }
             if(consultantPage.consultantId !== undefined && consultantPage.consultantId !== null) {
@@ -209,11 +211,13 @@ offersRouter.put(
               });
               if (existingConsultantPage !== null) {
                 res.status(409).json({ message: "Consultant page already exists" });
+                returnIfTrue = true;
                 return;
               }
             }
             if(uniqueConsultants.includes(consultantPage.consultantId)){
               res.status(409).json({ message: "Cannot add same consultant twice to the same offer page" });
+              returnIfTrue = true;
               return;
             }
             else {
@@ -222,28 +226,33 @@ offersRouter.put(
           }
         ))
       }
-      offerPage = await prisma.offerPages.update({
-        where: { id: offerPageId, salespersonId: salesId },
-        data: {
-          ...(name !== undefined ? { name } : {}),
-          ...(description !== undefined ? { description } : {}),
-          ...(customerId !== undefined ? { customerId } : {}),
-          ...(passwordHash !== undefined ? { passwordHash } : {}),
-          ...(shortDescription !== undefined ? { shortDescription } : {}),
-          ...(consultantPages !== undefined ? { consultantPages: {
-            create: consultantPages.map((consultantPage) => ({
-              consultantId: consultantPage.consultantId,
-              showInfo: consultantPage.showInfo,
-            })),
-          }, } : {}),
-        },
-        include: {
-          consultantPages: true,
-        },
-        omit: {
-          passwordHash: true,
-        },
-      });
+      if (returnIfTrue) {
+        return;
+      }
+      else {
+        offerPage = await prisma.offerPages.update({
+          where: { id: offerPageId, salespersonId: salesId },
+          data: {
+            ...(name !== undefined ? { name } : {}),
+            ...(description !== undefined ? { description } : {}),
+            ...(customerId !== undefined ? { customerId } : {}),
+            ...(passwordHash !== undefined ? { passwordHash } : {}),
+            ...(shortDescription !== undefined ? { shortDescription } : {}),
+            ...(consultantPages !== undefined ? { consultantPages: {
+              create: consultantPages.map((consultantPage) => ({
+                consultantId: consultantPage.consultantId,
+                showInfo: consultantPage.showInfo,
+              })),
+            }, } : {}),
+          },
+          include: {
+            consultantPages: true,
+          },
+          omit: {
+            passwordHash: true,
+          },
+        });
+      }
     } catch (err) {
       res.status(500).json(err);
       return;
