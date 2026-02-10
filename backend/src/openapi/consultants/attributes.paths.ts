@@ -6,7 +6,7 @@ export const attributesPaths = {
     "/consultants/{consultantId}/attributes": {
         get: {
             summary: "Get all attributes of a consultant",
-            tags: ["Consultants", "Attributes"],
+            tags: ["Attributes"],
             parameters: [
                 {
                     name: "consultantId",
@@ -30,7 +30,7 @@ export const attributesPaths = {
     "/consultants/me/attributes": {
         post: {
             summary: "Create a new attribute",
-            tags: ["Consultants", "Attributes"],
+            tags: ["Attributes"],
             requestBody: {
                 required: true,
                 content: { "application/json": { schema: AttributeBodySchema } },
@@ -50,7 +50,7 @@ export const attributesPaths = {
     "/consultants/me/attributes/{attributeId}": {
         delete: {
             summary: "Delete an attribute",
-            tags: ["Consultants", "Attributes"],
+            tags: ["Attributes"],
             parameters: [
                 {
                 name: "attributeId",
@@ -69,7 +69,7 @@ export const attributesPaths = {
         },
         put: {
             summary: "Update an attribute",
-            tags: ["Consultants", "Attributes"],
+            tags: ["Attributes"],
             parameters: [
             {
                 name: "attributeId",

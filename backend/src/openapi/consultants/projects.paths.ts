@@ -13,7 +13,7 @@ export const projectsPaths = {
   "/consultants/me/projects": {
     post: {
       summary: "Create a new project",
-      tags: ["Consultants", "Projects"],
+      tags: ["Projects"],
       requestBody: {
         required: true,
         content: { "application/json": { schema: ProjectBodySchema } },
@@ -33,7 +33,7 @@ export const projectsPaths = {
   "/consultants/{consultantId}/projects": {
     get: {
       summary: "Get all projects of a consultant",
-      tags: ["Consultants", "Projects"],
+      tags: ["Projects"],
       parameters: [
         {
           name: "consultantId",
@@ -57,7 +57,7 @@ export const projectsPaths = {
   "/consultants/me/projects/{projectId}": {
     put: {
       summary: "Update a project",
-      tags: ["Consultants", "Projects"],
+      tags: ["Projects"],
       parameters: [
         {
           name: "projectId",
@@ -83,7 +83,7 @@ export const projectsPaths = {
     },
     delete: {
       summary: "Delete a project",
-      tags: ["Consultants", "Projects"],
+      tags: ["Projects"],
       parameters: [
         {
           name: "projectId",
@@ -104,7 +104,7 @@ export const projectsPaths = {
   "/consultants/me/projects/{projectId}/links": {
     post: {
       summary: "Create a new project link",
-      tags: ["Consultants", "Projects"],
+      tags: ["Projects"],
       parameters: [
         {
           name: "projectId",
@@ -132,7 +132,7 @@ export const projectsPaths = {
   "/consultants/me/projects/{projectId}/links/{linkId}": {
     delete: {
       summary: "Delete a project link",
-      tags: ["Consultants", "Projects"],
+      tags: ["Projects"],
       parameters: [
         {
           name: "projectId",
@@ -157,7 +157,7 @@ export const projectsPaths = {
   "/consultants/me/projects/{projectId}/skills": {
     post: {
       summary: "Create a new project skill",
-      tags: ["Consultants", "Projects"],
+      tags: ["Projects"],
       parameters: [
         {
           name: "projectId",
@@ -185,7 +185,7 @@ export const projectsPaths = {
   "/consultants/me/projects/{projectId}/skills/{projectSkillId}": {
     delete: {
       summary: "Delete a project skill",
-      tags: ["Consultants", "Projects"],
+      tags: ["Projects"],
       parameters: [
         {
           name: "projectId",

@@ -7,7 +7,7 @@ export const pageSectionsPaths = {
     "/consultants/{consultantId}/sections": {
         get: {
             summary: "Get all page sections of a consultant",
-            tags: ["Consultants", "Page Sections"],
+            tags: ["Page Sections"],
             parameters: [
                 {
                     name: "consultantId",
@@ -31,7 +31,7 @@ export const pageSectionsPaths = {
     "/consultants/{consultantId}/sections/{sectionName}": {
         get: {
             summary: "Get a page section of a consultant",
-            tags: ["Consultants", "Page Sections"],
+            tags: ["Page Sections"],
             parameters: [
                 {
                     name: "consultantId",
@@ -64,7 +64,7 @@ export const pageSectionsPaths = {
     "/consultants/me/sections/{sectionName}": {
         put: {
             summary: "Update a page section",
-            tags: ["Consultants", "Page Sections"],
+            tags: ["Page Sections"],
             parameters: [
                 {
                     name: "sectionName",

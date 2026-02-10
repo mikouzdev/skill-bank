@@ -6,7 +6,7 @@ export const offersPaths = {
     "/sales/{salesId}/offers": {
         get: {
             summary: "Get offer pages of a sales person",
-            tags: ["Sales", "Offer Pages"],
+            tags: ["Offer Pages"],
             parameters: [
                 {
                     name: "salesId",
@@ -29,7 +29,7 @@ export const offersPaths = {
         },
         post: {
             summary: "Create a new offer page",
-            tags: ["Sales", "Offer Pages"],
+            tags: ["Offer Pages"],
             parameters: [
                 {
                     name: "salesId",
@@ -58,7 +58,7 @@ export const offersPaths = {
     "/sales/{salesId}/offers/{offerPageId}": {
         put: {
             summary: "Update an offer page",
-            tags: ["Sales", "Offer Pages"],
+            tags: ["Offer Pages"],
             parameters: [
                 {
                     name: "salesId",
@@ -92,7 +92,7 @@ export const offersPaths = {
         },
         delete: {
             summary: "Delete an offer page",
-            tags: ["Sales", "Offer Pages"],
+            tags: ["Offer Pages"],
             parameters: [
                 {
                     name: "salesId",

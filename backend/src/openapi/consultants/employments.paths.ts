@@ -10,7 +10,7 @@ export const employmentPaths = {
   "/consultants/{consultantId}/employments": {
     get: {
       summary: "Get consultant employments",
-      tags: ["Consultants", "Employments"],
+      tags: ["Employments"],
       parameters: [
         {
           name: "consultantId",
@@ -39,7 +39,7 @@ export const employmentPaths = {
   "/consultants/me/employments": {
     post: {
       summary: "Create consultant employment",
-      tags: ["Consultants", "Employments"],
+      tags: ["Employments"],
       requestBody: {
         required: true,
         content: {
@@ -66,7 +66,7 @@ export const employmentPaths = {
   "/consultants/me/employments/{employmentId}": {
     put: {
       summary: "Edits consultant's employment",
-      tags: ["Consultants", "Employments"],
+      tags: ["Employments"],
       parameters: [
         {
           name: "employmentId",
@@ -92,7 +92,7 @@ export const employmentPaths = {
     },
     delete: {
       summary: "Deletes a consultant's employment",
-      tags: ["Consultants", "Employments"],
+      tags: ["Employments"],
       parameters: [
         {
           name: "employmentId",
@@ -110,8 +110,8 @@ export const employmentPaths = {
   },
   "/consultants/me/employments/{employmentId}/skills": {
     post: {
-      summary: "Adds a skill toconsultant's employment",
-      tags: ["Consultants", "Employments", "Skills"],
+      summary: "Adds a skill to consultant's employment",
+      tags: ["Employments"],
       parameters: [
         {
           name: "employmentId",
@@ -144,7 +144,7 @@ export const employmentPaths = {
   "/consultants/me/employments/{employmentId}/skills/{skillId}": {
     delete: {
       summary: "Delete a employment skill",
-      tags: ["Consultants", "Employments", "Skills"],
+      tags: ["Employments"],
       parameters: [
         {
           name: "employmentId",

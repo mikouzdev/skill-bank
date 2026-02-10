@@ -9,7 +9,7 @@ export const adminPaths = {
     "/admin/users": {
         get: {
             summary: "Get all users",
-            tags: ["Admin", "User"],
+            tags: ["Admin"],
             responses: {
                 "200": {
                     description: "Token received",
@@ -24,7 +24,7 @@ export const adminPaths = {
         },
         post: {
             summary: "Post new user",
-            tags: ["Admin", "User"],
+            tags: ["Admin"],
             requestBody: {
                 required: true,
                 content: {
@@ -52,7 +52,7 @@ export const adminPaths = {
     "/admin/users/{userId}": {
         delete: {
             summary: "Delete a user",
-            tags: ["Admin", "User"],
+            tags: ["Admin"],
             parameters: [
                 {
                     name: "userId",
@@ -69,7 +69,7 @@ export const adminPaths = {
         },
         put: {
             summary: "Update a user",
-            tags: ["Admin", "User"],
+            tags: ["Admin"],
             parameters: [
             {
                 name: "userId",
