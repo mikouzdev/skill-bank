@@ -92,7 +92,7 @@ export const offersPaths = {
         },
         delete: {
             summary: "Delete an offer page",
-            tags: ["Sales", "Offer Pages"],
+            tags: ["Offer Pages"],
             parameters: [
                 {
                     name: "salesId",
