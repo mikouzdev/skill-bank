@@ -5,7 +5,7 @@ import {
 } from "../../middlewares/authentication.js";
 import { prisma } from "../../db/prismaClient.js";
 import { SalesIdParamsSchema } from "../../schemas/sales/sales.schema.js";
-import { OfferPageBodySchema } from "../../schemas/sales/offers.schema.js";
+import { OfferPageBodySchema, PutOfferPageParamsSchema, OfferPageBodyPartialSchema } from "../../schemas/sales/offers.schema.js";
 
 export const offersRouter = Router();
 
@@ -156,3 +156,107 @@ offersRouter.post(
     res.json(newOfferPage);
   }
 );
+
+/**
+ * Edit offer page of a sales user
+ * @route PUT /{salesId}/offers/{offerPageId}
+ * @returns edited offer page
+ */
+offersRouter.put(
+  "/:salesId/offers/:offerPageId",
+  authenticate,
+  async (req: AuthenticatedRequest, res: Response) => {
+    const parsedParams = PutOfferPageParamsSchema.safeParse(req.params);
+    if (!parsedParams.success) {
+      res.status(400).json(parsedParams.error);
+      return;
+    }
+    const { salesId, offerPageId } = parsedParams.data;
+
+    const parsedBody = OfferPageBodyPartialSchema.safeParse(req.body);
+    if (!parsedBody.success) {
+      res.status(400).json(parsedBody.error);
+      return;
+    }
+    const { name, description, shortDescription, passwordHash, customerId, consultantPages  } = parsedBody.data;
+
+    let offerPage = null;
+
+    try {
+      if (customerId !== undefined && customerId !== null) {
+        const customer = await prisma.customer.findUnique({
+          where: { id: customerId },
+        });
+        if (customer === null) {
+          res.status(404).json({ message: "Customer not found" });
+          return;
+        }
+      }
+      let uniqueConsultants: number[] = [];
+      let returnIfTrue = false;
+      if (consultantPages !== undefined && consultantPages !== null) {
+        await Promise.all(
+          consultantPages.map(async (consultantPage) => {
+            const consultant = await prisma.consultant.findUnique({
+              where: { id: consultantPage.consultantId },
+            });
+            if (consultant === null) {
+              res.status(404).json({ message: "Consultant not found" });
+              returnIfTrue = true;
+              return;
+            }
+            if(consultantPage.consultantId !== undefined && consultantPage.consultantId !== null) {
+              const existingConsultantPage = await prisma.consultantPages.findFirst({
+                where: { offerPageId: offerPageId, consultantId: consultantPage.consultantId },
+              });
+              if (existingConsultantPage !== null) {
+                res.status(409).json({ message: "Consultant page already exists" });
+                returnIfTrue = true;
+                return;
+              }
+            }
+            if(uniqueConsultants.includes(consultantPage.consultantId)){
+              res.status(409).json({ message: "Cannot add same consultant twice to the same offer page" });
+              returnIfTrue = true;
+              return;
+            }
+            else {
+              uniqueConsultants.push(consultantPage.consultantId);
+            }
+          }
+        ))
+      }
+      if (returnIfTrue) {
+        return;
+      }
+      else {
+        offerPage = await prisma.offerPages.update({
+          where: { id: offerPageId, salespersonId: salesId },
+          data: {
+            ...(name !== undefined ? { name } : {}),
+            ...(description !== undefined ? { description } : {}),
+            ...(customerId !== undefined ? { customerId } : {}),
+            ...(passwordHash !== undefined ? { passwordHash } : {}),
+            ...(shortDescription !== undefined ? { shortDescription } : {}),
+            ...(consultantPages !== undefined ? { consultantPages: {
+              create: consultantPages.map((consultantPage) => ({
+                consultantId: consultantPage.consultantId,
+                showInfo: consultantPage.showInfo,
+              })),
+            }, } : {}),
+          },
+          include: {
+            consultantPages: true,
+          },
+          omit: {
+            passwordHash: true,
+          },
+        });
+      }
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
+
+    res.json(offerPage);
+});

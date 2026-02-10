@@ -1,5 +1,5 @@
 import {
-    GetOfferPagesResponseSchema, OfferPageBodySchema, OfferPageSchema
+    GetOfferPagesResponseSchema, OfferPageBodySchema, OfferPageSchema, OfferPageBodyPartialSchema
 } from "../../schemas/sales/offers.schema.js";
 
 export const offersPaths = {
@@ -55,4 +55,40 @@ export const offersPaths = {
             },
         },
     },
+    "/sales/{salesId}/offers/{offerPageId}": {
+        put: {
+            summary: "Update an offer page",
+            tags: ["Sales", "Offer Pages"],
+            parameters: [
+                {
+                    name: "salesId",
+                    in: "path" as const,
+                    required: true,
+                    schema: { type: "integer" as const },
+                },
+                {
+                    name: "offerPageId",
+                    in: "path" as const,
+                    required: true,
+                    schema: { type: "integer" as const },
+                },
+            ],
+            requestBody: {
+                required: true,
+                content: { "application/json": { schema: OfferPageBodyPartialSchema } },
+            },
+            responses: {
+                200: {
+                    description: "Update successful",
+                    content: {
+                    "application/json": { schema: OfferPageSchema },
+                    },
+                },
+                400: { description: "Invalid request body" },
+                404: { description: "Customer or Consultant not found" },
+                409: { description: "Consultant offer page already exists" },
+                500: { description: "Server error" },
+            },
+        },
+    }
 }
