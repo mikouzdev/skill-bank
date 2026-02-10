@@ -90,5 +90,28 @@ export const offersPaths = {
                 500: { description: "Server error" },
             },
         },
+        delete: {
+            summary: "Delete an offer page",
+            tags: ["Sales", "Offer Pages"],
+            parameters: [
+                {
+                    name: "salesId",
+                    in: "path" as const,
+                    required: true,
+                    schema: { type: "integer" as const },
+                },
+                {
+                    name: "offerPageId",
+                    in: "path" as const,
+                    required: true,
+                    schema: { type: "integer" as const },
+                },
+            ],
+            responses: {
+                204: { description: "Offer page deleted" },
+                400: { description: "Invalid request" },
+                500: { description: "Server error" },
+            },
+        },
     }
 }

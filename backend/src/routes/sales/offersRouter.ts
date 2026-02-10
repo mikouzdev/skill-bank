@@ -192,7 +192,7 @@ offersRouter.put(
           return;
         }
       }
-      let uniqueConsultants: number[] = [];
+      const uniqueConsultants: number[] = [];
       let returnIfTrue = false;
       if (consultantPages !== undefined && consultantPages !== null) {
         await Promise.all(
@@ -260,3 +260,34 @@ offersRouter.put(
 
     res.json(offerPage);
 });
+
+/**
+ * Delete an offer page of a sales user
+ * @route DELETE /{salesId}/offers/{offerPageId}
+ * @returns confirmation message
+ */
+offersRouter.delete(
+  "/:salesId/offers/:offerPageId",
+  authenticate,
+  async (req: AuthenticatedRequest, res: Response) => {
+    const parsedParams = PutOfferPageParamsSchema.safeParse(req.params);
+    if (!parsedParams.success) {
+      res.status(400).json(parsedParams.error);
+      return;
+    }
+    const { salesId, offerPageId } = parsedParams.data;
+
+    try {
+      await prisma.offerPages.delete({ 
+          where: { 
+            salespersonId: salesId,
+            id: offerPageId
+          }
+        });
+      res.status(204).json();
+      return;
+    } catch (err) {
+    res.status(500).json(err);
+    return;
+  }
+  });
