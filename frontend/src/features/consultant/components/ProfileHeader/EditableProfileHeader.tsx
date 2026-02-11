@@ -42,8 +42,8 @@ export default function EditableProfileHeader({ data }: Props) {
       const formData = new FormData();
 
       // full name
-      if (editedDetails.user) {
-        formData.append("user", JSON.stringify(editedDetails.user));
+      if (editedDetails.user.name) {
+        formData.append("user[name]", editedDetails.user.name);
       }
 
       if (editedDetails.roleTitle) {
