@@ -1,11 +1,17 @@
 import { Box, Typography, Stack } from "@mui/material";
 import PersonalProjectItem from "./PersonalProjectItem";
-import { addProjectSkill, postProjects } from "../../api/consultants.api";
+import {
+  addProjectLink,
+  addProjectSkill,
+  postProjects,
+} from "../../api/consultants.api";
 import { AddNewProject } from "./PersonalProjectAdd";
 
 import type { components } from "@api-types/openapi";
 import { useState } from "react";
 import SectionVisibilitySwitch from "../../../../shared/components/SectionVisibilitySwitch";
+
+type ProjectLink = Partial<components["schemas"]["ProjectLink"]>;
 
 type ConsultantProjectList = components["schemas"]["GetProjectsResponse"];
 type Project = Partial<components["schemas"]["GetProjectsResponse"][number]>;
@@ -22,10 +28,18 @@ type Props = {
 export default function PersonalProjects({ data, skillData, editable }: Props) {
   const [projects, setProjects] = useState<ConsultantProjectList>(data || []);
 
-  async function addProject(formData: Project, skills: ProjectSkill[]) {
+  async function addProject(
+    formData: Project,
+    skills: ProjectSkill[],
+    links: ProjectLink
+  ) {
     try {
       // post project first
-      const response = await postProjects({ ...formData, projectSkills: [] });
+      const response = await postProjects({
+        ...formData,
+        projectSkills: [],
+        projectLinks: [],
+      });
 
       // used for local state
       const addedProject: ConsultantProjectList[number] = {
@@ -43,10 +57,23 @@ export default function PersonalProjects({ data, skillData, editable }: Props) {
             projectId,
             skill.skillTagName
           );
-
+          console.log(skillResponse);
           // add skill to addedProject (for local state)
           addedProject.projectSkills.push(skillResponse.data);
         }
+      }
+
+      if (links.url && response.data?.id && links.url?.length > 0) {
+        const projectId = response.data.id;
+
+        const linkResponse = await addProjectLink(
+          projectId,
+          links.label || "My project",
+          links.url || ""
+        );
+
+        console.log("Link response: ", linkResponse);
+        addedProject.projectLinks.push(linkResponse.data);
       }
       // update local state
       setProjects((prev) => [...prev, addedProject]);
@@ -73,8 +100,8 @@ export default function PersonalProjects({ data, skillData, editable }: Props) {
       <Stack direction={"row"} gap={2}>
         <Typography variant="h5">Personal Projects</Typography>
         <AddNewProject
-          update={(formData, skills) => {
-            void addProject(formData, skills);
+          update={(formData, skills, links) => {
+            void addProject(formData, skills, links);
           }}
           skillData={skillData}
         />
@@ -98,8 +125,8 @@ export default function PersonalProjects({ data, skillData, editable }: Props) {
       <Stack direction={"row"} gap={2}>
         <Typography variant="h5">Personal Projects</Typography>
         <AddNewProject
-          update={(formData, skills) => {
-            void addProject(formData, skills);
+          update={(formData, skills, links) => {
+            void addProject(formData, skills, links);
           }}
           skillData={skillData}
         />
