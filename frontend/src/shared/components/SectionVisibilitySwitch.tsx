@@ -3,7 +3,7 @@ import { FormControlLabel, Switch } from "@mui/material";
 import { useState } from "react";
 import { updateSection } from "../../features/consultant/api/consultants.api";
 
-type SectionBody = components["schemas"]["PageSectionBody"];
+type SectionBody = components["schemas"]["PageSectionBodyPartial"];
 type SectionVisibility = SectionBody["visibility"];
 
 interface Props {
