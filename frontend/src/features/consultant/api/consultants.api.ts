@@ -8,6 +8,7 @@ type ProjectRequest = Partial<
   components["schemas"]["GetProjectsResponse"][number]
 >;
 type ProjectSkillResponse = components["schemas"]["ProjectSkillOutput"];
+type ProjectLinkResponse = components["schemas"]["ProjectLink"];
 type SkillRequest = Partial<components["schemas"]["ConsultantSkill"]>;
 type SkillResponse = components["schemas"]["ConsultantSkill"];
 type SkillTagResponse = components["schemas"]["SkillTagList"];
@@ -69,6 +70,13 @@ export const addProjectSkill = (id: number, skill: string) => {
       skillTagName: skill,
     }
   );
+};
+
+export const addProjectLink = (id: number, label: string, url: string) => {
+  return api.post<ProjectLinkResponse>(`/consultants/me/projects/${id}/links`, {
+    url,
+    label,
+  });
 };
 
 export const postWorkExperience = (formData: Employment) => {
