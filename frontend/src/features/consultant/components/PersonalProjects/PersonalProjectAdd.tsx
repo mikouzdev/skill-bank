@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   Button,
   Dialog,
@@ -14,12 +14,18 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 
 import type { components } from "@api-types/openapi";
+
 type Project = Partial<components["schemas"]["Project"]>;
 type SkillsResponse = components["schemas"]["SkillTagList"];
 type ProjectSkill = Pick<components["schemas"]["ProjectSkill"], "skillTagName">;
+type ProjectLink = Partial<components["schemas"]["ProjectLink"]>;
 
 interface Props {
-  update: (formData: Project, skills: ProjectSkill[]) => void;
+  update: (
+    formData: Project,
+    skills: ProjectSkill[],
+    links: ProjectLink
+  ) => void;
   skillData: SkillsResponse;
 }
 
@@ -34,6 +40,9 @@ export function AddNewProject({ update, skillData }: Props) {
   });
   const [addedSkills, setAddedSkills] = useState<ProjectSkill[]>([]);
 
+  const [addLabel, setAddLabel] = useState<string>("");
+  const [addUrl, setAddUrl] = useState<string>("");
+
   const handleOpen = () => setShowForm(true);
   const handleClose = () => setShowForm(false);
   const handleChange = (
@@ -43,6 +52,14 @@ export function AddNewProject({ update, skillData }: Props) {
   ) => {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleProjectLabelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAddLabel(e.target.value);
+  };
+
+  const handleProjectUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAddUrl(e.target.value);
   };
 
   const handleAddSkill = (skillName: string) => {
@@ -67,10 +84,21 @@ export function AddNewProject({ update, skillData }: Props) {
       end: formData.end ? formData.end : null,
     };
 
-    update(formPayload, addedSkills);
+    update(formPayload, addedSkills, { url: addUrl, label: addLabel });
     setShowForm(false);
   };
 
+  const isValidUrl = (value: string): boolean => {
+    try {
+      const url = new URL(value);
+      return url.protocol === "https:" || url.protocol === "http:";
+    } catch {
+      return false;
+    }
+  };
+
+  const isUrlInvalid = addUrl.trim() !== "" && !isValidUrl(addUrl);
+  const isTitleDisabled = addUrl.trim() === "" || !isValidUrl(addUrl);
   const availableSkillChips = skillData.map((skill) => {
     return (
       <Chip
@@ -214,6 +242,25 @@ export function AddNewProject({ update, skillData }: Props) {
                       InputLabelProps={{ shrink: true }}
                     />
                   </div>
+
+                  <Box>
+                    <TextField
+                      label="Project URL"
+                      name="url"
+                      value={addUrl}
+                      onChange={handleProjectUrlChange}
+                      error={isUrlInvalid}
+                      fullWidth
+                    />
+                    <TextField
+                      label="Project name"
+                      name="label"
+                      value={addLabel}
+                      onChange={handleProjectLabelChange}
+                      disabled={isTitleDisabled}
+                      fullWidth
+                    />
+                  </Box>
                   <Button
                     type="submit"
                     variant="contained"
