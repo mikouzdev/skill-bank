@@ -43,8 +43,9 @@ export const LoginPageForm = () => {
     await new Promise((res) => setTimeout(res, 500));
 
     const success = await login(form);
+
     if (success) {
-      void navigate("/me");
+      void navigate("/redirector", { replace: true });
       return;
     }
 
