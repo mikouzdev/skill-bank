@@ -512,16 +512,19 @@ async function main() {
         offerPageId: offerPage.id,
         consultantId: consultant.id,
         showInfo: true,
+        isAccepted: false,
       },
       {
         offerPageId: offerPage.id,
         consultantId: consultant2.id,
         showInfo: true,
+        isAccepted: false,
       },
       {
         offerPageId: offerPage.id,
         consultantId: consultant3.id,
         showInfo: true,
+        isAccepted: false,
       },
     ],
   });
@@ -534,11 +537,13 @@ async function main() {
         offerPageId: offerPage2.id,
         consultantId: consultant.id,
         showInfo: true,
+        isAccepted: false,
       },
       {
         offerPageId: offerPage2.id,
         consultantId: consultant2.id,
         showInfo: true,
+        isAccepted: false,
       },
     ],
   });
