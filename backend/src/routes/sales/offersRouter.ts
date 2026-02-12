@@ -136,26 +136,59 @@ offersRouter.post(
         res.status(404).json({ message: "Customer not found" });
         return;
       }
-      newOfferPage = await prisma.offerPages.create({
-        data: {
-          salespersonId: salesId,
-          customerId: customer.id,
-          description,
-          name,
-          shortDescription,
-          passwordHash,
-          consultantPages: {
-            create: consultantPages.map((consultantPage) => ({
-              consultantId: consultantPage.consultantId,
-              showInfo: consultantPage.showInfo,
-              isAccepted: consultantPage.isAccepted,
-            })),
+      const uniqueConsultants: number[] = [];
+      let returnIfTrue = false;
+      if (consultantPages !== undefined && consultantPages !== null) {
+        await Promise.all(
+          consultantPages.map(async (consultantPage) => {
+            const consultant = await prisma.consultant.findUnique({
+              where: { id: consultantPage.consultantId },
+            });
+            if (consultant === null) {
+              res.status(404).json({ message: "Consultant not found" });
+              returnIfTrue = true;
+              return;
+            }
+            if (uniqueConsultants.includes(consultantPage.consultantId)) {
+              res.status(409).json({
+                message:
+                  "Cannot add same consultant twice to the same offer page",
+              });
+              returnIfTrue = true;
+              return;
+            } else {
+              uniqueConsultants.push(consultantPage.consultantId);
+            }
+          })
+        );
+      }
+      if (returnIfTrue) {
+        return;
+      } else {
+        newOfferPage = await prisma.offerPages.create({
+          data: {
+            salespersonId: salesId,
+            customerId: customer.id,
+            description,
+            name,
+            shortDescription,
+            passwordHash,
+            consultantPages: {
+              create: consultantPages.map((consultantPage) => ({
+                consultantId: consultantPage.consultantId,
+                showInfo: consultantPage.showInfo,
+                isAccepted: consultantPage.isAccepted,
+              })),
+            },
           },
-        },
-        omit: {
-          passwordHash: true,
-        },
-      });
+          omit: {
+            passwordHash: true,
+          },
+          include: {
+            consultantPages: true,
+          }
+        });
+      }
     } catch (err) {
       res.status(500).json(err);
       return;
