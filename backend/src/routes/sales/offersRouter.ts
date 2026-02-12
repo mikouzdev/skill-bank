@@ -149,25 +149,6 @@ offersRouter.post(
               returnIfTrue = true;
               return;
             }
-            if (
-              consultantPage.consultantId !== undefined &&
-              consultantPage.consultantId !== null
-            ) {
-              const existingConsultantPage =
-                await prisma.consultantPages.findFirst({
-                  where: {
-                    offerPageId: consultantPage.offerPageId,
-                    consultantId: consultantPage.consultantId,
-                  },
-                });
-              if (existingConsultantPage !== null) {
-                res
-                  .status(409)
-                  .json({ message: "Consultant page already exists" });
-                returnIfTrue = true;
-                return;
-              }
-            }
             if (uniqueConsultants.includes(consultantPage.consultantId)) {
               res.status(409).json({
                 message:

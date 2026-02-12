@@ -109,7 +109,6 @@ salesListRouter.post(
       customerId,
       description,
       shortDescription,
-      listPosition,
       isReviewDone,
       salesListItems,
     } = parsedBody.data;
@@ -137,29 +136,10 @@ salesListRouter.post(
               returnIfTrue = true;
               return;
             }
-            if (
-              salesListItem.consultantId !== undefined &&
-              salesListItem.consultantId !== null
-            ) {
-              const existingsalesListItem =
-                await prisma.salesListItem.findFirst({
-                  where: {
-                    salesListId: salesListItem.salesListId,
-                    consultantId: salesListItem.consultantId,
-                  },
-                });
-              if (existingsalesListItem !== null) {
-                res
-                  .status(409)
-                  .json({ message: "Consultant page already exists" });
-                returnIfTrue = true;
-                return;
-              }
-            }
             if (uniqueConsultants.includes(salesListItem.consultantId)) {
               res.status(409).json({
                 message:
-                  "Cannot add same consultant twice to the same offer page",
+                  "Cannot add same consultant twice to the same sales list",
               });
               returnIfTrue = true;
               return;
@@ -177,14 +157,12 @@ salesListRouter.post(
             salespersonId: salesId,
             customerId: customer.id,
             description,
-            listPosition,
             shortDescription,
             isReviewDone,
             salesListItems: {
               create: salesListItems.map((salesListItem) => ({
                 consultantId: salesListItem.consultantId,
                 salesNote: salesListItem.salesNote,
-                listPosition: salesListItem.listPosition,
                 isAccepted: salesListItem.isAccepted,
                 isHidden: salesListItem.isHidden,
               })),

@@ -50,6 +50,7 @@ export const salesListPaths = {
                 },
                 400: { description: "Invalid request body" },
                 404: { description: "Customer or Consultant not found" },
+                409: { description: "Cannot add same consultant twice to the same sales list" },
                 500: { description: "Server error" },
             },
         },

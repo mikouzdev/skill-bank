@@ -12,6 +12,12 @@ export const SalesListItemSchema = z
   })
   .meta({ id: "SalesListItem" });
 
+export const SalesListItemBodySchema = SalesListItemSchema.omit({
+  id: true,
+  listPosition: true,
+  salesListId: true,
+}).meta({ id: "SalesListItemBody" });
+
 export const SalesListSchema = z
   .object({
     id: z.number().meta({ example: "1" }),
@@ -32,4 +38,8 @@ export const GetSalesListsResponseSchema = z
 export const SalesListBodySchema = SalesListSchema.omit({
   id: true,
   salespersonId: true,
+  listPosition: true,
+  salesListItems: true,
+}).extend({
+  salesListItems: z.array(SalesListItemBodySchema),
 }).meta({ id: "SalesListBody" });
