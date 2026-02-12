@@ -306,6 +306,7 @@ model ConsultantPages {
   offerPageId  Int
   consultantId Int
   showInfo     Boolean
+  isAccepted   Boolean
   offerPage    OfferPages @relation(fields: [offerPageId], references: [id], onDelete: Cascade)
   Consultant   Consultant @relation(fields: [consultantId], references: [id], onDelete: Cascade)
 }

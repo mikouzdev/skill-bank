@@ -241,10 +241,40 @@ export interface paths {
                 path?: never;
                 cookie?: never;
             };
-            requestBody?: never;
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /** @example I'm something of a fullstack developer myself. */
+                        description?: string;
+                        /** @example Fullstack Developer */
+                        roleTitle?: string;
+                        user?: {
+                            /** @example John Lee */
+                            name: string;
+                        };
+                        profilePicture?: unknown;
+                    };
+                };
+            };
             responses: {
-                /** @description Data change successful */
-                200: {
+                /** @description Update successful */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ConsultantResponse"];
+                    };
+                };
+                /** @description Unknown file type */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Consultant or user not found */
+                404: {
                     headers: {
                         [name: string]: unknown;
                     };
@@ -634,22 +664,7 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": {
-                        /** @example Oy Firma Ab */
-                        employer: string;
-                        /** @example Fullstack developer */
-                        jobTitle: string;
-                        /** @example Description text of the role and responsibilites */
-                        description: string;
-                        start: string;
-                        end?: string | null;
-                        employmentSkills: components["schemas"]["EmploymentSkill"][];
-                        /**
-                         * @example PUBLIC
-                         * @enum {string}
-                         */
-                        visibility: "LIMITED" | "PUBLIC";
-                    };
+                    "application/json": components["schemas"]["EmploymentBodyPartial"];
                 };
             };
             responses: {
@@ -760,7 +775,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Adds a skill toconsultant's employment */
+        /** Adds a skill to consultant's employment */
         post: {
             parameters: {
                 query?: never;
@@ -1010,20 +1025,7 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": {
-                        /** @example A small project done over a weekend. */
-                        description: string;
-                        /** @example Smol Project */
-                        name: string;
-                        start: string;
-                        end?: string | null;
-                        /**
-                         * @example PUBLIC
-                         * @enum {string}
-                         */
-                        visibility: "LIMITED" | "PUBLIC";
-                        projectSkills: components["schemas"]["ProjectSkill"][];
-                    };
+                    "application/json": components["schemas"]["ProjectBodyPartial"];
                 };
             };
             responses: {
@@ -1496,10 +1498,7 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": {
-                        /** @example 5 */
-                        proficiency: number;
-                    };
+                    "application/json": components["schemas"]["SkillProficiencyBodyPartial"];
                 };
             };
             responses: {
@@ -1668,7 +1667,7 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["UserBody"];
+                    "application/json": components["schemas"]["UserBodyPartial"];
                 };
             };
             responses: {
@@ -1863,7 +1862,7 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["PageSectionBody"];
+                    "application/json": components["schemas"]["PageSectionBodyPartial"];
                 };
             };
             responses: {
@@ -2025,7 +2024,7 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["AttributeBody"];
+                    "application/json": components["schemas"]["AttributeBodyPartial"];
                 };
             };
             responses: {
@@ -2398,7 +2397,7 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["skillCategoryBody"];
+                    "application/json": components["schemas"]["PostSkillCategoryBodyPartial"];
                 };
             };
             responses: {
@@ -2527,11 +2526,229 @@ export interface paths {
             };
         };
         put?: never;
-        post?: never;
+        /** Create a new offer page */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    salesId: number;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["OfferPageBody"];
+                };
+            };
+            responses: {
+                /** @description Creation successful */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["OfferPage"];
+                    };
+                };
+                /** @description Invalid request body */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Customer not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
+        trace?: never;
+    };
+    "/sales/{salesId}/offers/{offerPageId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Update an offer page */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    salesId: number;
+                    offerPageId: number;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["OfferPageBodyPartial"];
+                };
+            };
+            responses: {
+                /** @description Update successful */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["OfferPage"];
+                    };
+                };
+                /** @description Invalid request body */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Customer or Consultant not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Consultant offer page already exists */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        post?: never;
+        /** Delete an offer page */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    salesId: number;
+                    offerPageId: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Offer page deleted */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/sales/{salesId}/offers/{offerPageId}/consultants/{consultantPageId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update isAccepted status of a consultant page */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    salesId: number;
+                    offerPageId: number;
+                    consultantPageId: number;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["PatchConsultantPageBody"];
+                };
+            };
+            responses: {
+                /** @description Update successful */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ConsultantPageOutput"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Offer page or consultant page not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
         trace?: never;
     };
 }
@@ -2547,6 +2764,22 @@ export interface components {
             /** @example Password */
             password: string;
         };
+        EmploymentBodyPartial: {
+            /** @example Oy Firma Ab */
+            employer?: string;
+            /** @example Fullstack developer */
+            jobTitle?: string;
+            /** @example Description text of the role and responsibilites */
+            description?: string;
+            start?: string;
+            end?: string | null;
+            employmentSkills?: components["schemas"]["EmploymentSkill"][];
+            /**
+             * @example PUBLIC
+             * @enum {string}
+             */
+            visibility?: "LIMITED" | "PUBLIC";
+        };
         EmploymentSkill: {
             /** @example react */
             skillTagName: string;
@@ -2560,6 +2793,24 @@ export interface components {
             projectId: number;
             /** @example Python */
             skillTagName: string;
+        };
+        ProjectBodyPartial: {
+            /** @example A small project done over a weekend. */
+            description?: string;
+            /** @example Smol Project */
+            name?: string;
+            start?: string;
+            end?: string | null;
+            /**
+             * @example PUBLIC
+             * @enum {string}
+             */
+            visibility?: "LIMITED" | "PUBLIC";
+            projectSkills?: components["schemas"]["ProjectSkill"][];
+        };
+        SkillProficiencyBodyPartial: {
+            /** @example 5 */
+            proficiency?: number;
         };
         UserBody: {
             /** @example John Lee */
@@ -2586,17 +2837,42 @@ export interface components {
             /** @example hashedtestpassword */
             passwordHash: string;
         };
-        PageSectionBody: {
+        UserBodyPartial: {
+            /** @example John Lee */
+            name?: string;
+            /** @example testi@hotmail.com */
+            email?: string;
+            /**
+             * @example [
+             *       {
+             *         "role": "CONSULTANT"
+             *       },
+             *       {
+             *         "role": "SALESPERSON"
+             *       }
+             *     ]
+             */
+            roles: {
+                /**
+                 * @example CONSULTANT
+                 * @enum {string}
+                 */
+                role: "CONSULTANT" | "SALESPERSON" | "CUSTOMER" | "ADMIN";
+            }[];
+            /** @example hashedtestpassword */
+            passwordHash?: string;
+        };
+        PageSectionBodyPartial: {
             /**
              * @example GENERAL
              * @enum {string}
              */
-            name: "GENERAL" | "NETWORKING_LINKS" | "DESCRIPTION" | "SKILLS" | "EMPLOYMENTS" | "PROJECTS";
+            name?: "GENERAL" | "NETWORKING_LINKS" | "DESCRIPTION" | "SKILLS" | "EMPLOYMENTS" | "PROJECTS";
             /**
              * @example PUBLIC
              * @enum {string}
              */
-            visibility: "LIMITED" | "PUBLIC";
+            visibility?: "LIMITED" | "PUBLIC";
         };
         AttributeBody: {
             /** @example Example value */
@@ -2613,6 +2889,22 @@ export interface components {
              * @enum {string}
              */
             visibility: "LIMITED" | "PUBLIC";
+        };
+        AttributeBodyPartial: {
+            /** @example Example value */
+            value?: string;
+            /** @example Example value */
+            label?: string;
+            /**
+             * @example TEXT
+             * @enum {string}
+             */
+            type?: "TEXT" | "LINK";
+            /**
+             * @example PUBLIC
+             * @enum {string}
+             */
+            visibility?: "LIMITED" | "PUBLIC";
         };
         PostSkillTagBody: {
             /** @example typescript */
@@ -2632,6 +2924,64 @@ export interface components {
         PostSkillTagWithoutCategoryBody: {
             /** @example typescript */
             name: string;
+        };
+        PostSkillCategoryBodyPartial: {
+            /** @example Python */
+            name?: string;
+            skillTags?: components["schemas"]["PostSkillTagWithoutCategoryBody"][];
+        };
+        OfferPageBody: {
+            /** @example 1 */
+            customerId: number;
+            /** @example esimerkki teksti */
+            description: string | null;
+            /** @example esimerkki nimi */
+            name: string | null;
+            /** @example esimerkki teksti */
+            shortDescription: string | null;
+            consultantPages: components["schemas"]["ConsultantPage"][];
+            /** @example hashedtestpassword */
+            passwordHash: string;
+        };
+        ConsultantPage: {
+            /** @example 1 */
+            id: number;
+            /** @example 1 */
+            offerPageId: number;
+            /** @example 1 */
+            consultantId: number;
+            /** @example true */
+            showInfo: boolean;
+            /** @example true */
+            isAccepted: boolean;
+        };
+        OfferPageBodyPartial: {
+            /** @example 1 */
+            customerId?: number;
+            /** @example esimerkki teksti */
+            description?: string | null;
+            /** @example esimerkki nimi */
+            name?: string | null;
+            /** @example esimerkki teksti */
+            shortDescription?: string | null;
+            consultantPages: {
+                /** @example 1 */
+                id?: number;
+                /** @example 1 */
+                offerPageId?: number;
+                /** @example 1 */
+                consultantId: number;
+                /** @example true */
+                showInfo: boolean;
+                /** @example true */
+                isAccepted: boolean;
+            }[];
+            /** @example hashedtestpassword */
+            passwordHash?: string;
+        };
+        PatchConsultantPageBody: {
+            /** @example true */
+            isAccepted: boolean;
         };
         AuthResponse: {
             /** @example jwt.token */
@@ -2959,17 +3309,7 @@ export interface components {
             name: string | null;
             /** @example esimerkki teksti */
             shortDescription: string | null;
-            consultantPages: components["schemas"]["ConsultantPage"][];
-        };
-        ConsultantPage: {
-            /** @example 1 */
-            id: number;
-            /** @example 1 */
-            offerPageId: number;
-            /** @example 1 */
-            consultantId: number;
-            /** @example true */
-            showInfo: boolean;
+            consultantPages: components["schemas"]["ConsultantPageOutput"][];
         };
         EmploymentSkillOutput: {
             /** @example react */
@@ -2984,6 +3324,18 @@ export interface components {
             projectId: number;
             /** @example Python */
             skillTagName: string;
+        };
+        ConsultantPageOutput: {
+            /** @example 1 */
+            id: number;
+            /** @example 1 */
+            offerPageId: number;
+            /** @example 1 */
+            consultantId: number;
+            /** @example true */
+            showInfo: boolean;
+            /** @example true */
+            isAccepted: boolean;
         };
     };
     responses: never;

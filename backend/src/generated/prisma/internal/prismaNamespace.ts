@@ -2245,7 +2245,8 @@ export const ConsultantPagesScalarFieldEnum = {
   id: 'id',
   offerPageId: 'offerPageId',
   consultantId: 'consultantId',
-  showInfo: 'showInfo'
+  showInfo: 'showInfo',
+  isAccepted: 'isAccepted'
 } as const
 
 export type ConsultantPagesScalarFieldEnum = (typeof ConsultantPagesScalarFieldEnum)[keyof typeof ConsultantPagesScalarFieldEnum]

@@ -5,7 +5,13 @@ import {
 } from "../../middlewares/authentication.js";
 import { prisma } from "../../db/prismaClient.js";
 import { SalesIdParamsSchema } from "../../schemas/sales/sales.schema.js";
-import { OfferPageBodySchema, PutOfferPageParamsSchema, OfferPageBodyPartialSchema } from "../../schemas/sales/offers.schema.js";
+import {
+  OfferPageBodySchema,
+  PutOfferPageParamsSchema,
+  OfferPageBodyPartialSchema,
+  PatchConsultantPageParamsSchema,
+  PatchConsultantPageBodySchema,
+} from "../../schemas/sales/offers.schema.js";
 
 export const offersRouter = Router();
 
@@ -142,6 +148,7 @@ offersRouter.post(
             create: consultantPages.map((consultantPage) => ({
               consultantId: consultantPage.consultantId,
               showInfo: consultantPage.showInfo,
+              isAccepted: consultantPage.isAccepted,
             })),
           },
         },
@@ -178,7 +185,14 @@ offersRouter.put(
       res.status(400).json(parsedBody.error);
       return;
     }
-    const { name, description, shortDescription, passwordHash, customerId, consultantPages  } = parsedBody.data;
+    const {
+      name,
+      description,
+      shortDescription,
+      passwordHash,
+      customerId,
+      consultantPages,
+    } = parsedBody.data;
 
     let offerPage = null;
 
@@ -205,31 +219,41 @@ offersRouter.put(
               returnIfTrue = true;
               return;
             }
-            if(consultantPage.consultantId !== undefined && consultantPage.consultantId !== null) {
-              const existingConsultantPage = await prisma.consultantPages.findFirst({
-                where: { offerPageId: offerPageId, consultantId: consultantPage.consultantId },
-              });
+            if (
+              consultantPage.consultantId !== undefined &&
+              consultantPage.consultantId !== null
+            ) {
+              const existingConsultantPage =
+                await prisma.consultantPages.findFirst({
+                  where: {
+                    offerPageId: offerPageId,
+                    consultantId: consultantPage.consultantId,
+                  },
+                });
               if (existingConsultantPage !== null) {
-                res.status(409).json({ message: "Consultant page already exists" });
+                res
+                  .status(409)
+                  .json({ message: "Consultant page already exists" });
                 returnIfTrue = true;
                 return;
               }
             }
-            if(uniqueConsultants.includes(consultantPage.consultantId)){
-              res.status(409).json({ message: "Cannot add same consultant twice to the same offer page" });
+            if (uniqueConsultants.includes(consultantPage.consultantId)) {
+              res.status(409).json({
+                message:
+                  "Cannot add same consultant twice to the same offer page",
+              });
               returnIfTrue = true;
               return;
-            }
-            else {
+            } else {
               uniqueConsultants.push(consultantPage.consultantId);
             }
-          }
-        ))
+          })
+        );
       }
       if (returnIfTrue) {
         return;
-      }
-      else {
+      } else {
         offerPage = await prisma.offerPages.update({
           where: { id: offerPageId, salespersonId: salesId },
           data: {
@@ -238,12 +262,17 @@ offersRouter.put(
             ...(customerId !== undefined ? { customerId } : {}),
             ...(passwordHash !== undefined ? { passwordHash } : {}),
             ...(shortDescription !== undefined ? { shortDescription } : {}),
-            ...(consultantPages !== undefined ? { consultantPages: {
-              create: consultantPages.map((consultantPage) => ({
-                consultantId: consultantPage.consultantId,
-                showInfo: consultantPage.showInfo,
-              })),
-            }, } : {}),
+            ...(consultantPages !== undefined
+              ? {
+                  consultantPages: {
+                    create: consultantPages.map((consultantPage) => ({
+                      consultantId: consultantPage.consultantId,
+                      showInfo: consultantPage.showInfo,
+                      isAccepted: consultantPage.isAccepted,
+                    })),
+                  },
+                }
+              : {}),
           },
           include: {
             consultantPages: true,
@@ -259,7 +288,8 @@ offersRouter.put(
     }
 
     res.json(offerPage);
-});
+  }
+);
 
 /**
  * Delete an offer page of a sales user
@@ -278,16 +308,99 @@ offersRouter.delete(
     const { salesId, offerPageId } = parsedParams.data;
 
     try {
-      await prisma.offerPages.delete({ 
-          where: { 
-            salespersonId: salesId,
-            id: offerPageId
-          }
-        });
+      await prisma.offerPages.delete({
+        where: {
+          salespersonId: salesId,
+          id: offerPageId,
+        },
+      });
       res.status(204).json();
       return;
     } catch (err) {
-    res.status(500).json(err);
-    return;
+      res.status(500).json(err);
+      return;
+    }
   }
-  });
+);
+
+/**
+ * Update isAccepted status of a consultant page
+ * @route PATCH /{salesId}/offers/{offerPageId}/consultants/{consultantPageId}
+ * @returns updated consultant page
+ */
+offersRouter.patch(
+  "/:salesId/offers/:offerPageId/consultants/:consultantPageId",
+  authenticate,
+  async (req: AuthenticatedRequest, res: Response) => {
+    const parsedParams = PatchConsultantPageParamsSchema.safeParse(req.params);
+    if (!parsedParams.success) {
+      res.status(400).json(parsedParams.error);
+      return;
+    }
+    const { salesId, offerPageId, consultantPageId } = parsedParams.data;
+
+    const parsedBody = PatchConsultantPageBodySchema.safeParse(req.body);
+    if (!parsedBody.success) {
+      res.status(400).json(parsedBody.error);
+      return;
+    }
+    const { isAccepted } = parsedBody.data;
+
+    // validate that user is customer
+    if (!req.user?.roles.includes("CUSTOMER")) {
+      res.status(401).json("Unauthorized");
+      return;
+    }
+
+    // find user from db
+    const user = await prisma.user.findUnique({
+      where: { id: req.user.id },
+      select: {
+        id: true,
+        roles: { select: { role: true } },
+        customer: { select: { id: true } },
+      },
+    });
+
+    // validate that user exists
+    if (user === null) {
+      res.status(404).json("User not found");
+      return;
+    }
+
+    try {
+      const offerPage = await prisma.offerPages.findUnique({
+        where: { id: offerPageId, salespersonId: salesId },
+      });
+
+      if (offerPage === null) {
+        res.status(404).json({ message: "Offer page not found" });
+        return;
+      }
+
+      // allow to change only own offer
+      if (offerPage.customerId !== user.customer?.id) {
+        res.status(403).json("Forbidden");
+      }
+
+      const consultantPage = await prisma.consultantPages.findFirst({
+        where: { id: consultantPageId, offerPageId: offerPageId },
+      });
+
+      if (consultantPage === null) {
+        res.status(404).json({ message: "Consultant page not found" });
+        return;
+      }
+
+      const updatedConsultantPage = await prisma.consultantPages.update({
+        where: { id: consultantPageId },
+        data: { isAccepted },
+      });
+
+      res.json(updatedConsultantPage);
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
+  }
+);
