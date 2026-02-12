@@ -28,3 +28,8 @@ export const SalesListSchema = z
 export const GetSalesListsResponseSchema = z
   .array(SalesListSchema)
   .meta({ id: "GetSalesListsResponse" });
+
+export const SalesListBodySchema = SalesListSchema.omit({
+  id: true,
+  salespersonId: true,
+}).meta({ id: "SalesListBody" });

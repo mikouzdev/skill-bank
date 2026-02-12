@@ -55,7 +55,7 @@ export const offersPaths = {
           },
         },
         400: { description: "Invalid request body" },
-        404: { description: "Customer not found" },
+        404: { description: "Customer or Consultant not found" },
         500: { description: "Server error" },
       },
     },
