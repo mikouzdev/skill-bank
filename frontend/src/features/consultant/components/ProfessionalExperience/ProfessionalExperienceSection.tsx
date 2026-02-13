@@ -15,7 +15,7 @@ type Employment = Partial<components["schemas"]["EmploymentResponse"]>;
 
 type Props = {
   data: ConsultantEmploymentList;
-  skillData: SkillsResponse;
+  skillData?: SkillsResponse;
   editable?: boolean;
 };
 
@@ -80,10 +80,6 @@ export default function ProfessionalExperience({
     <Stack spacing={1} sx={{ maxWidth: 1200 }}>
       <Stack direction={"row"} spacing={2}>
         <Typography variant="h5">Professional Experience</Typography>
-        <AddNewExperience
-          update={(formData) => void AddNewWorkExperience(formData)}
-          skillData={skillData}
-        ></AddNewExperience>
       </Stack>
 
       <Stack spacing={1}>
@@ -104,10 +100,12 @@ export default function ProfessionalExperience({
     <Stack spacing={1} sx={{ maxWidth: 1200 }}>
       <Stack direction={"row"} spacing={2}>
         <Typography variant="h5">Professional Experience</Typography>
-        <AddNewExperience
-          update={(formData) => void AddNewWorkExperience(formData)}
-          skillData={skillData}
-        />
+        {skillData && (
+          <AddNewExperience
+            update={(formData) => void AddNewWorkExperience(formData)}
+            skillData={skillData}
+          />
+        )}
         <SectionVisibilitySwitch
           sectionData={{ name: "EMPLOYMENTS", visibility: "PUBLIC" }}
         />

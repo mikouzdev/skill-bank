@@ -12,7 +12,7 @@ type SkillsResponse = components["schemas"]["SkillTagList"];
 type Props = {
   item: ProjectResponse;
   editable?: boolean;
-  skillData: SkillsResponse;
+  skillData?: SkillsResponse;
   onUpdate: (project: Project) => void;
   onDelete: (id: number) => void;
 };
@@ -51,7 +51,7 @@ export default function PersonalProjectItem({
     />
   ));
 
-  const editOnlyButtons = editable && (
+  const editOnlyButtons = editable && skillData && (
     <Stack direction={"row"} spacing={1}>
       <PersonalProjectEdit
         projectData={item}
