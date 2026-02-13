@@ -17,8 +17,8 @@ type SkillTag = components["schemas"]["SkillTag"];
 type SkillRequest = Partial<components["schemas"]["ConsultantSkill"]>;
 
 type Props = {
-  skillData: SkillsResponse; // all skills
-  categoryData: SkillCategories; // skill categories
+  skillData?: SkillsResponse; // all skills
+  categoryData?: SkillCategories; // skill categories
   data: ConsultantSkill[]; // skills used by the consultant
   editable?: boolean;
 };
@@ -102,7 +102,7 @@ export default function Skills({
     <Box sx={{ p: 2 }}>
       <Stack direction={"row"} spacing={2}>
         <Typography variant="h5">Skills</Typography>
-        {skillData && categoryData && (
+        {editable && skillData && categoryData && (
           <AddSkillDialog
             skillData={skillData}
             categoryData={categoryData}

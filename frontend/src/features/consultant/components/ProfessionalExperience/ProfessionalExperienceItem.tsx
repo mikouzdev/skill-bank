@@ -11,7 +11,7 @@ type SkillsResponse = components["schemas"]["SkillTagList"];
 type Props = {
   item: ConsultantEmploymentItem;
   editable?: boolean;
-  skillData: SkillsResponse;
+  skillData?: SkillsResponse;
   onDelete: (id: number) => void;
   onUpdate: (employment: Employment) => void;
 };
@@ -25,7 +25,7 @@ export default function ProfessionalExperienceItem({
   onDelete,
   onUpdate,
 }: Props) {
-  const editOnlyButtons = editable && (
+  const editOnlyButtons = editable && skillData && (
     <Stack direction={"row"} spacing={1}>
       <ProfessionalExperienceEdit
         employmentData={item}

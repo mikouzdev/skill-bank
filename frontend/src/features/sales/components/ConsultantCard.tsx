@@ -2,6 +2,7 @@ import { Avatar, Box, Stack, Typography, Button, Paper } from "@mui/material";
 import { useConsultantDetails } from "../../consultant/hooks/useConsultantDetails";
 import SkillsBuilder from "./SkillsBuilder";
 import type { components } from "@api-types/openapi";
+import { useNavigate } from "react-router-dom";
 
 type Consultant = components["schemas"]["ConsultantResponse"];
 
@@ -18,6 +19,8 @@ export const ConsultantCard = ({
 }: Props) => {
   const { consultant, skills, employments, projects, loading } =
     useConsultantDetails(consultantID);
+
+  const navigate = useNavigate();
 
   if (loading) return <Typography>Loading...</Typography>;
   if (!employments || !consultant || !projects || !skills)
@@ -56,7 +59,11 @@ export const ConsultantCard = ({
                   Add to offer
                 </Button>
               )}
-              <Button size="small" type="submit">
+              <Button
+                size="small"
+                type="submit"
+                onClick={() => void navigate(`/consultant/${consultantID}`)}
+              >
                 View profile
               </Button>
             </Stack>
