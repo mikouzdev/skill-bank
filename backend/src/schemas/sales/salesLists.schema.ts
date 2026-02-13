@@ -64,4 +64,4 @@ export const SalesListBodyPartialSchema = SalesListBodySchema.partial({
   .extend({
     salesListItems: z.array(SalesListItemPartialSchema),
   })
-  .meta({ id: "OfferPageBodyPartial" });
+  .meta({ id: "SalesListBodyPartial" });
