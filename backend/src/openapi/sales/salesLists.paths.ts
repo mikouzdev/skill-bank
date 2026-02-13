@@ -1,5 +1,5 @@
 import {
-    GetSalesListsResponseSchema, SalesListBodySchema, SalesListSchema
+    GetSalesListsResponseSchema, SalesListBodyPartialSchema, SalesListBodySchema, SalesListSchema
 } from "../../schemas/sales/salesLists.schema.js";
 
 export const salesListPaths = {
@@ -51,6 +51,42 @@ export const salesListPaths = {
                 400: { description: "Invalid request body" },
                 404: { description: "Customer or Consultant not found" },
                 409: { description: "Cannot add same consultant twice to the same sales list" },
+                500: { description: "Server error" },
+            },
+        },
+    },
+    "/sales/{salesId}/lists/{salesListId}": {
+        put: {
+            summary: "Update a sales list",
+            tags: ["Sales Lists"],
+            parameters: [
+                {
+                    name: "salesId",
+                    in: "path" as const,
+                    required: true,
+                    schema: { type: "integer" as const },
+                },
+                {
+                    name: "salesListId",
+                    in: "path" as const,
+                    required: true,
+                    schema: { type: "integer" as const },
+                },
+            ],
+            requestBody: {
+                required: true,
+                content: { "application/json": { schema: SalesListBodyPartialSchema } },
+            },
+            responses: {
+                200: {
+                    description: "Update successful",
+                    content: {
+                    "application/json": { schema: SalesListSchema },
+                    },
+                },
+                400: { description: "Invalid request body" },
+                404: { description: "Customer or Consultant not found" },
+                409: { description: "Consultant sales list already exists" },
                 500: { description: "Server error" },
             },
         },

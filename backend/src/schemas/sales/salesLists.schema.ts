@@ -43,3 +43,25 @@ export const SalesListBodySchema = SalesListSchema.omit({
 }).extend({
   salesListItems: z.array(SalesListItemBodySchema),
 }).meta({ id: "SalesListBody" });
+
+export const PutSalesListParamsSchema = z.object({
+  salesId: z.coerce.number().meta({ example: "1" }),
+  salesListId: z.coerce.number().meta({ example: "2" }),
+});
+
+export const SalesListItemPartialSchema = SalesListItemBodySchema.partial({
+  isAccepted: true,
+  isHidden: true,
+  salesNote: true
+});
+
+export const SalesListBodyPartialSchema = SalesListBodySchema.partial({
+  customerId: true,
+  description: true,
+  shortDescription: true,
+  isReviewDone: true,
+})
+  .extend({
+    salesListItems: z.array(SalesListItemPartialSchema),
+  })
+  .meta({ id: "SalesListBodyPartial" });
