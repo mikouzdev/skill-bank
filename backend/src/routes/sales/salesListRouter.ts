@@ -281,10 +281,10 @@ salesListRouter.put(
               ? {
                   salesListItems: {
                     create: salesListItems.map((salesListItem) => ({
-                      consultantId: salesListItem.consultantId,
-                      isHidden: salesListItem.isHidden,
-                      isAccepted: salesListItem.isAccepted,
-                      salesNote: salesListItem.salesNote
+                      ...(salesListItem.consultantId !== undefined ? { consultantId: salesListItem.consultantId } : { consultantId: 0 }),
+                      ...(salesListItem.isHidden !== undefined ? { isHidden: salesListItem.isHidden } : { isHidden: false }),
+                      ...(salesListItem.isAccepted !== undefined ? { isAccepted: salesListItem.isAccepted } : { isAccepted: false }),
+                      ...(salesListItem.salesNote !== undefined ? { salesNote: salesListItem.salesNote } : { salesNote: "" }),
                     })),
                   },
                 }
