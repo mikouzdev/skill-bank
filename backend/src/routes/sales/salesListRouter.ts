@@ -276,7 +276,6 @@ salesListRouter.put(
             ...(isReviewDone !== undefined ? { isReviewDone } : {}),
             ...(description !== undefined ? { description } : {}),
             ...(customerId !== undefined ? { customerId } : {}),
-            ...(customerId !== undefined ? { customerId } : {}),
             ...(shortDescription !== undefined ? { shortDescription } : {}),
             ...(salesListItems !== undefined
               ? {
