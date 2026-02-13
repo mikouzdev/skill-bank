@@ -90,5 +90,28 @@ export const salesListPaths = {
                 500: { description: "Server error" },
             },
         },
+        delete: {
+            summary: "Delete a sales list",
+            tags: ["Sales Lists"],
+            parameters: [
+                {
+                name: "salesId",
+                in: "path" as const,
+                required: true,
+                schema: { type: "integer" as const },
+                },
+                {
+                name: "salesListId",
+                in: "path" as const,
+                required: true,
+                schema: { type: "integer" as const },
+                },
+            ],
+            responses: {
+                204: { description: "Sales list deleted" },
+                400: { description: "Invalid request" },
+                500: { description: "Server error" },
+            },
+        },
     }
 }

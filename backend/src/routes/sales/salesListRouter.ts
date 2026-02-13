@@ -303,3 +303,35 @@ salesListRouter.put(
     res.json(salesList);
   }
 );
+
+/**
+ * Delete a list of a sales user
+ * @route DELETE /{salesId}/lists/{salesListId}
+ * @returns confirmation message
+ */
+salesListRouter.delete(
+  "/:salesId/lists/:salesListId",
+  authenticate,
+  async (req: AuthenticatedRequest, res: Response) => {
+    const parsedParams = PutSalesListParamsSchema.safeParse(req.params);
+    if (!parsedParams.success) {
+      res.status(400).json(parsedParams.error);
+      return;
+    }
+    const { salesId, salesListId } = parsedParams.data;
+
+    try {
+      await prisma.salesList.delete({
+        where: {
+          salespersonId: salesId,
+          id: salesListId,
+        },
+      });
+      res.status(204).json();
+      return;
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
+  }
+);
