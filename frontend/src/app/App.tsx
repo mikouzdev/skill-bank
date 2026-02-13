@@ -19,6 +19,7 @@ import SalesOffersPage from "../features/sales/pages/SalesOffersPage/SalesOffers
 import SalesSingleOfferPage from "../features/sales/pages/SalesOffersPage/SalesSingleOfferPage";
 import { Redirector } from "../features/Login/Components/Redirector";
 import OfferCreationPage from "../features/sales/pages/OfferCreationPage/OfferCreationPage";
+import ConsultantProfileForOthers from "../shared/pages/ConsultantProfileForOthers";
 
 function App() {
   return (
@@ -39,6 +40,10 @@ function App() {
             <Route
               path="/listConsultants"
               element={<ConsultantListConsultants />}
+            />
+            <Route
+              path="/consultant/:id"
+              element={<ConsultantProfileForOthers />}
             />
 
             {/* admin */}

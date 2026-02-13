@@ -21,7 +21,7 @@ type ProjectSkill = Pick<components["schemas"]["ProjectSkill"], "skillTagName">;
 
 type Props = {
   data: ConsultantProjectList;
-  skillData: SkillsResponse;
+  skillData?: SkillsResponse;
   editable?: boolean;
 };
 
@@ -99,12 +99,6 @@ export default function PersonalProjects({ data, skillData, editable }: Props) {
     <>
       <Stack direction={"row"} gap={2}>
         <Typography variant="h5">Personal Projects</Typography>
-        <AddNewProject
-          update={(formData, skills, links) => {
-            void addProject(formData, skills, links);
-          }}
-          skillData={skillData}
-        />
       </Stack>
       <Stack spacing={1}>
         {projects.map((item) => (
@@ -124,12 +118,14 @@ export default function PersonalProjects({ data, skillData, editable }: Props) {
     <>
       <Stack direction={"row"} gap={2}>
         <Typography variant="h5">Personal Projects</Typography>
-        <AddNewProject
-          update={(formData, skills, links) => {
-            void addProject(formData, skills, links);
-          }}
-          skillData={skillData}
-        />
+        {skillData && (
+          <AddNewProject
+            update={(formData, skills, links) => {
+              void addProject(formData, skills, links);
+            }}
+            skillData={skillData}
+          />
+        )}
         <SectionVisibilitySwitch
           sectionData={{ name: "PROJECTS", visibility: "PUBLIC" }}
         />
