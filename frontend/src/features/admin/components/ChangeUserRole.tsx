@@ -19,7 +19,7 @@ type Role = "CONSULTANT" | "SALESPERSON" | "CUSTOMER" | "ADMIN";
 
 type Props = {
   user: UserResponse;
-  onSubmit: (id: number, user: UserBody) => Promise<boolean>;
+  onSubmit: (id: number, user: Partial<UserBody>) => Promise<boolean>;
 };
 
 export function ChangeUserRole({ user, onSubmit }: Props) {
@@ -46,11 +46,8 @@ export function ChangeUserRole({ user, onSubmit }: Props) {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const payload: UserBody = {
-      email: user.email,
-      name: user.name,
+    const payload: Partial<UserBody> = {
       roles: form.roles,
-      passwordHash: "",
     };
 
     setLoading(true);

@@ -66,6 +66,12 @@ const navItems: NavItem[] = [
     roles: [ROLES.SALESPERSON],
   },
   {
+    text: "Create offer",
+    path: "/manage-offers/create",
+    icon: <People />,
+    roles: [ROLES.SALESPERSON],
+  },
+  {
     text: "Log Out",
     path: "/logout",
     icon: <Logout />,

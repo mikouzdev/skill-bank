@@ -1,12 +1,21 @@
 import { Avatar, Box, Stack, Typography, Button, Paper } from "@mui/material";
 import { useConsultantDetails } from "../../consultant/hooks/useConsultantDetails";
 import SkillsBuilder from "./SkillsBuilder";
+import type { components } from "@api-types/openapi";
+
+type Consultant = components["schemas"]["ConsultantResponse"];
 
 type Props = {
   consultantID: number;
+  selectable?: boolean;
+  onSelect?: (consultant: Consultant) => void;
 };
 
-export const ConsultantCard = ({ consultantID }: Props) => {
+export const ConsultantCard = ({
+  consultantID,
+  selectable,
+  onSelect,
+}: Props) => {
   const { consultant, skills, employments, projects, loading } =
     useConsultantDetails(consultantID);
 
@@ -40,9 +49,17 @@ export const ConsultantCard = ({ consultantID }: Props) => {
           </Stack>
 
           <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-            <Button size="small" type="submit">
-              View profile
-            </Button>
+            {/* used for sales offer creation to add consultant to new offer */}
+            <Stack direction={"row"} gap={1}>
+              {selectable && (
+                <Button size="small" onClick={() => onSelect?.(consultant)}>
+                  Add to offer
+                </Button>
+              )}
+              <Button size="small" type="submit">
+                View profile
+              </Button>
+            </Stack>
           </Box>
         </Stack>
       </Paper>

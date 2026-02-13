@@ -18,6 +18,7 @@ import { Logout } from "../features/Logout/Logout";
 import SalesOffersPage from "../features/sales/pages/SalesOffersPage/SalesOffersPage";
 import SalesSingleOfferPage from "../features/sales/pages/SalesOffersPage/SalesSingleOfferPage";
 import { Redirector } from "../features/Login/Components/Redirector";
+import OfferCreationPage from "../features/sales/pages/OfferCreationPage/OfferCreationPage";
 
 function App() {
   return (
@@ -51,6 +52,10 @@ function App() {
             <Route
               path="manage-offers/:id"
               element={<SalesSingleOfferPage />}
+            />
+            <Route
+              path="/manage-offers/create"
+              element={<OfferCreationPage />}
             />
             <Route path="/sales" element={<ConsultantListView />} />
 
