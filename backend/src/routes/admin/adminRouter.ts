@@ -53,7 +53,10 @@ adminRouter.post(
       res.status(400).json(parsedBody.error);
       return;
     }
-    const { name, email, passwordHash, roles } = parsedBody.data;
+    let { name, email, passwordHash, roles } = parsedBody.data;
+
+    email = email.toLowerCase();
+
     try {
       const user = await prisma.user.findFirst({ where: { email: email } });
       if (user !== null) {
@@ -184,7 +187,11 @@ adminRouter.put(
       return;
     }
 
-    const { name, email, passwordHash, roles } = parsedBody.data;
+    let { name, email, passwordHash, roles } = parsedBody.data;
+
+    if (email !== undefined) {
+      email = email.toLowerCase();
+    }
 
     let user = null;
 

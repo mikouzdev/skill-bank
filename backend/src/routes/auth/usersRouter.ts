@@ -29,7 +29,9 @@ usersRouter.post("/login", async (req: Request, res: Response) => {
     res.status(400).json(parsedBody.error);
     return;
   }
-  const { email, password } = parsedBody.data;
+  let { email, password } = parsedBody.data;
+
+  email = email.toLowerCase();
 
   //Find user in DB
   const user = await prisma.user.findUnique({

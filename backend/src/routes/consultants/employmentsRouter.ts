@@ -34,9 +34,27 @@ employmentsRouter.get(
 
       const { consultantId } = parsedParams.data;
       const roles = req.user?.roles ?? [];
+      let isSameConsultant = false;
+      const user = await prisma.user.findUnique({
+        where: { id: req.user!.id },
+        select: {
+          id: true,
+          roles: { select: { role: true } },
+          consultant: { select: { id: true } },
+        },
+      });
+      const checkConsultantIdOfCurrentUser = user?.consultant?.id;
+      if (checkConsultantIdOfCurrentUser !== undefined && checkConsultantIdOfCurrentUser !== null) {
+        const consultant = await prisma.consultant.findUnique({
+          where: { id: consultantId },
+        });
+        if (consultant !== null) {
+          isSameConsultant = true;
+        }
+      }
       let allowedVisibilities = [Visibility.PUBLIC, Visibility.LIMITED];
-      //Sales/admin can see everyone, consult gets only public
-      if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
+      //Sales/admin can see everyone, consult gets only public UNLESS the consultant ID is same as current user's consultant ID
+      if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON") && isSameConsultant === false) {
         allowedVisibilities = [Visibility.PUBLIC];
       }
       const employments = await prisma.employment.findMany({
