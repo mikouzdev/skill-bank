@@ -44,13 +44,8 @@ employmentsRouter.get(
         },
       });
       const consultantIdOfCurrentUser = user?.consultant?.id;
-      if (consultantIdOfCurrentUser !== undefined && consultantIdOfCurrentUser !== null) {
-        const consultant = await prisma.consultant.findUnique({
-          where: { id: consultantIdOfCurrentUser },
-        });
-        if (consultant !== null && consultantIdOfCurrentUser === consultantId) {
-          isSameConsultant = true;
-        }
+      if (consultantIdOfCurrentUser !== undefined && consultantIdOfCurrentUser !== null && consultantIdOfCurrentUser === consultantId) {
+        isSameConsultant = true;
       }
       let allowedVisibilities = [Visibility.PUBLIC, Visibility.LIMITED];
       //Sales/admin can see everyone, consult gets only public UNLESS the consultant ID is same as current user's consultant ID

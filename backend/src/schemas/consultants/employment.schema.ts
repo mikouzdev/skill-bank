@@ -60,7 +60,7 @@ export const EmploymentCreateSchema = EmploymentResponseSchema.omit({
   employmentSkills: true,
 }).extend({
   visibility: z.enum(["PUBLIC", "LIMITED"]),
-  skills: z
+  employmentSkills: z
     .array(z.string())
     .min(1)
     .meta({
