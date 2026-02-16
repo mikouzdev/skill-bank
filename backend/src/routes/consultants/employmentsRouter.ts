@@ -46,7 +46,7 @@ employmentsRouter.get(
       const checkConsultantIdOfCurrentUser = user?.consultant?.id;
       if (checkConsultantIdOfCurrentUser !== undefined && checkConsultantIdOfCurrentUser !== null) {
         const consultant = await prisma.consultant.findUnique({
-          where: { id: consultantId },
+          where: { id: checkConsultantIdOfCurrentUser },
         });
         if (consultant !== null) {
           isSameConsultant = true;
