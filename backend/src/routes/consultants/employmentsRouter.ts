@@ -43,12 +43,12 @@ employmentsRouter.get(
           consultant: { select: { id: true } },
         },
       });
-      const checkConsultantIdOfCurrentUser = user?.consultant?.id;
-      if (checkConsultantIdOfCurrentUser !== undefined && checkConsultantIdOfCurrentUser !== null) {
+      const consultantIdOfCurrentUser = user?.consultant?.id;
+      if (consultantIdOfCurrentUser !== undefined && consultantIdOfCurrentUser !== null) {
         const consultant = await prisma.consultant.findUnique({
-          where: { id: checkConsultantIdOfCurrentUser },
+          where: { id: consultantIdOfCurrentUser },
         });
-        if (consultant !== null) {
+        if (consultant !== null && consultantIdOfCurrentUser === consultantId) {
           isSameConsultant = true;
         }
       }
