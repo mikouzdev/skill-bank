@@ -99,6 +99,30 @@ adminRouter.post(
                   consultantAttributes: {
                     create: [],
                   },
+                  pageSections: {
+                    create: [
+                      {
+                        name: "GENERAL" as const,
+                        visibility: "PUBLIC" as const,
+                      },
+                      {
+                        name: "NETWORKING_LINKS" as const,
+                        visibility: "PUBLIC" as const,
+                      },
+                      {
+                        name: "SKILLS" as const,
+                        visibility: "PUBLIC" as const,
+                      },
+                      {
+                        name: "EMPLOYMENTS" as const,
+                        visibility: "PUBLIC" as const,
+                      },
+                      {
+                        name: "PROJECTS" as const,
+                        visibility: "PUBLIC" as const,
+                      },
+                    ],
+                  },
                 },
               });
               break;
