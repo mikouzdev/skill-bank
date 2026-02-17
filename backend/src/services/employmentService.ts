@@ -83,7 +83,7 @@ export async function createEmploymentForConsultant(
   });
 
   await prisma.employmentSkill.createMany({
-    data: input.skills.map((skillName) => ({
+    data: input.employmentSkills.map((skillName) => ({
       employmentId: employment.id,
       skillTagName: skillName,
     })),
