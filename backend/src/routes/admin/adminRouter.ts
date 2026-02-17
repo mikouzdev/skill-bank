@@ -54,8 +54,11 @@ adminRouter.post(
       return;
     }
     const { name, email, passwordHash, roles } = parsedBody.data;
+
+    const lowerCaseEmail = email.toLowerCase();
+
     try {
-      const user = await prisma.user.findFirst({ where: { email: email } });
+      const user = await prisma.user.findFirst({ where: { email: lowerCaseEmail } });
       if (user !== null) {
         res.status(409).json({ message: "User email already in use" });
         return;
@@ -69,7 +72,7 @@ adminRouter.post(
       createdUser = await prisma.user.create({
         data: {
           name,
-          email,
+          email: lowerCaseEmail,
           passwordHash,
           roles: {
             create: roles,
@@ -185,6 +188,10 @@ adminRouter.put(
     }
 
     const { name, email, passwordHash, roles } = parsedBody.data;
+    let lowerCaseEmail;
+    if (email !== undefined) {
+      lowerCaseEmail = email.toLowerCase();
+    }
 
     let user = null;
 
@@ -192,7 +199,7 @@ adminRouter.put(
       user = await prisma.user.update({
         where: { id: userId },
         data: {
-          ...(email !== undefined ? { email } : {}),
+          ...(lowerCaseEmail !== undefined ? { email: lowerCaseEmail } : {}),
           ...(name !== undefined ? { name } : {}),
           ...(passwordHash !== undefined ? { passwordHash } : {}),
           roles: {

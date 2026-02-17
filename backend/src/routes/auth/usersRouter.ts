@@ -31,9 +31,11 @@ usersRouter.post("/login", async (req: Request, res: Response) => {
   }
   const { email, password } = parsedBody.data;
 
+  const lowerCaseEmail = email.toLowerCase();
+
   //Find user in DB
   const user = await prisma.user.findUnique({
-    where: { email },
+    where: { email: lowerCaseEmail },
   });
   if (!user) {
     res.status(401).send({ error: "Invalid email or password" });
