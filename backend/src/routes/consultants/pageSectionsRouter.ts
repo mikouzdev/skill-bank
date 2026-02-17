@@ -4,6 +4,7 @@ import {
   ConsultantIdSectionNameParamsSchema,
   SectionNameParamsSchema,
   PageSectionBodyPartialSchema,
+  CommentBodySchema,
 } from "../../schemas/consultants/pageSections.schema.js";
 import { Visibility } from "../../generated/prisma/enums.js";
 import { prisma } from "../../db/prismaClient.js";
@@ -194,3 +195,85 @@ pageSectionsRouter.put(
     res.json(pageSection);
   }
 );
+/**
+ * Post a comment on consultant page section
+ * @route POST /consultants/{consultantId}/sections/{sectionName}/comments
+ * @returns comment
+ */
+pageSectionsRouter.post(
+  "/:consultantId/sections/:sectionName/comments",
+  authenticate,
+  async (req: AuthenticatedRequest, res: Response) => {
+    const parsedParams = ConsultantIdSectionNameParamsSchema.safeParse(
+      req.params
+    );
+    if (!parsedParams.success) {
+      res.status(400).json(parsedParams.error);
+      return;
+    }
+    const { consultantId, sectionName } = parsedParams.data;
+
+    const parsedBody = CommentBodySchema.safeParse(req.body);
+    if (!parsedBody.success) {
+      res.status(400).json(parsedBody.error);
+      return;
+    }
+    const { replyToId, content } = parsedBody.data;
+
+    let comment = null;
+    const user = await prisma.user.findUnique({
+      where: { id: req.user!.id },
+      select: {
+        id: true,
+        roles: { select: { role: true } },
+        consultant: { select: { id: true } },
+      },
+    });
+    if (user === null) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+    //Unsure what should be user's "primary" role, so for now just use first role in list
+    const userRole = user.roles[0]?.role;
+    if (userRole === undefined) {
+      res.status(404).json({ message: "User role invalid" });
+      return;
+    }
+    const pageSection = await prisma.pageSection.findUnique({
+      where: {
+        consultantId_name: {
+          consultantId,
+          name: sectionName,
+        },
+      }
+    });
+    if (pageSection === null) {
+      res.status(404).json({ message: "Page section not found" });
+      return;
+    }
+    try {
+      if (consultantId !== undefined && consultantId !== null) {
+        const consultant = await prisma.consultant.findUnique({
+          where: { id: consultantId },
+        });
+        if (consultant === null) {
+          res.status(404).json({ message: "Consultant not found" });
+          return;
+        }
+        comment = await prisma.comment.create({
+          data: {
+            pageSectionId: pageSection?.id,
+            userId: user.id,
+            userRole: userRole,
+            ...(replyToId !== undefined ? { replyToId: replyToId } : {}),
+            content: content,
+          },
+        });
+      }
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
+
+    res.status(201).json(comment);
+});

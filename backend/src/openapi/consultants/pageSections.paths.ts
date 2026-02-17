@@ -1,5 +1,7 @@
 import {
-    GetPageSectionsResponseSchema, PageSectionSchema, PageSectionBodyPartialSchema
+    GetPageSectionsResponseSchema, PageSectionSchema, PageSectionBodyPartialSchema,
+    CommentBodySchema,
+    CommentSchema
 } from "../../schemas/consultants/pageSections.schema.js";
 
 
@@ -91,5 +93,48 @@ export const pageSectionsPaths = {
             500: { description: "Server error" },
             },
         },
-    }
+    },
+    "/consultants/{consultantId}/sections/{sectionName}/comments": {
+        post: {
+            summary: "Adds a comment to a consultant's page section",
+            tags: ["Comments"],
+            parameters: [
+                {
+                    name: "consultantId",
+                    in: "path" as const,
+                    required: true,
+                    schema: { type: "integer" as const },
+                },
+                {
+                    name: "sectionName",
+                    in: "path" as const,
+                    required: true,
+                    schema: { 
+                        type: "string" as const,
+                        enum: ["GENERAL", "NETWORKING_LINKS", "DESCRIPTION", "SKILLS", "EMPLOYMENTS", "PROJECTS"]
+                    },
+                },
+            ],
+            requestBody: {
+                required: true,
+                content: {
+                    "application/json": { schema: CommentBodySchema },
+                },
+            },
+            responses: {
+                201: {
+                    description: "Comment created",
+                    content: {
+                        "application/json": {
+                            schema: CommentSchema,
+                        },
+                    },
+                },
+                400: { description: "Invalid input" },
+                401: { description: "Unauthorized" },
+                404: { description: "Not found" },
+                500: { description: "Internal server error" },
+            },
+        },
+    },
 }
