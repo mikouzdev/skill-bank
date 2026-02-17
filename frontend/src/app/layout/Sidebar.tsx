@@ -7,7 +7,7 @@ import {
   ListItemIcon,
   Box,
 } from "@mui/material";
-import { Person, Edit, People, Logout } from "@mui/icons-material";
+import { Person, Edit, People, Logout, Groups } from "@mui/icons-material";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
@@ -39,6 +39,12 @@ const navItems: NavItem[] = [
     path: "/listConsultants",
     icon: <People />,
     roles: [ROLES.CONSULTANT, ROLES.SALESPERSON],
+  },
+  {
+    text: "Consultant lists",
+    path: "/salesConsultantsList",
+    icon: <Groups />,
+    roles: [ROLES.SALESPERSON],
   },
   {
     text: "Edit profile",
