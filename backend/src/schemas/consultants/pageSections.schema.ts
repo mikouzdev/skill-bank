@@ -48,3 +48,5 @@ export const PageSectionBodyPartialSchema =  PageSectionBodySchema.partial({
   name: true,
   visibility: true
 }).meta({ id: "PageSectionBodyPartial" });
+
+export const GetCommentsResponseSchema = z.array(CommentSchema);
