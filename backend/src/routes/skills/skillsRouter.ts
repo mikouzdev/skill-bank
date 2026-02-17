@@ -22,13 +22,7 @@ skillsRouter.get("/", async (req: Request, res: Response) => {
   const skills = await prisma.skillTag.findMany({
     orderBy: { name: "asc" },
   });
-  return res.json(
-    skills.map((s) => ({
-      id: s.id,
-      name: s.name,
-      categoryId: s.categoryId, // to get rid of mapping, change DB field to categoryId
-    }))
-  );
+  return res.json(skills);
 });
 
 /**
