@@ -30,9 +30,22 @@ pageSectionsRouter.get(
     }
     const { consultantId } = parsedParams.data;
     const roles = req.user?.roles ?? [];
+    let isSameConsultant = false;
+    const user = await prisma.user.findUnique({
+      where: { id: req.user!.id },
+      select: {
+        id: true,
+        roles: { select: { role: true } },
+        consultant: { select: { id: true } },
+      },
+    });
+    const consultantIdOfCurrentUser = user?.consultant?.id;
+    if (consultantIdOfCurrentUser !== undefined && consultantIdOfCurrentUser !== null && consultantIdOfCurrentUser === consultantId) {
+      isSameConsultant = true;
+    }
     let allowedVisibilities = [Visibility.PUBLIC, Visibility.LIMITED];
-    //Sales/admin can see everyone, consult gets only public
-    if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
+    //Sales/admin can see everyone, consult gets only public UNLESS the consultant ID is same as current user's consultant ID
+    if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON") && isSameConsultant === false) {
       allowedVisibilities = [Visibility.PUBLIC];
     }
     let sections = null;
@@ -65,10 +78,6 @@ pageSectionsRouter.get(
   "/:consultantId/sections/:sectionName",
   authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
-    const roles = req.user?.roles ?? [];
-    if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
-      return res.status(403).json({ error: "Unauthorized" });
-    }
     const parsedParams = ConsultantIdSectionNameParamsSchema.safeParse(
       req.params
     );
@@ -77,6 +86,23 @@ pageSectionsRouter.get(
       return;
     }
     const { consultantId, sectionName } = parsedParams.data;
+    const roles = req.user?.roles ?? [];
+    let isSameConsultant = false;
+    const user = await prisma.user.findUnique({
+      where: { id: req.user!.id },
+      select: {
+        id: true,
+        roles: { select: { role: true } },
+        consultant: { select: { id: true } },
+      },
+    });
+    const consultantIdOfCurrentUser = user?.consultant?.id;
+    if (consultantIdOfCurrentUser !== undefined && consultantIdOfCurrentUser !== null && consultantIdOfCurrentUser === consultantId) {
+      isSameConsultant = true;
+    }
+    if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON") && isSameConsultant === false) {
+      return res.status(403).json({ error: "Unauthorized" });
+    }
 
     let pageSection = null;
     try {
