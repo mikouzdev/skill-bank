@@ -1,4 +1,5 @@
-import { GetCommentsResponseSchema } from "../../schemas/consultants/pageSections.schema.js";
+import { CommentBodyPartialSchema } from "../../schemas/comments/comments.schema.js";
+import { CommentSchema, GetCommentsResponseSchema } from "../../schemas/consultants/pageSections.schema.js";
 
 
 export const CommentsPaths = {
@@ -16,5 +17,52 @@ export const CommentsPaths = {
         500: { description: "Server error" },
       },
     },
+  },
+  "/comments/{commentId}": {
+    put: {
+      summary: "Update a comment",
+      tags: ["Comments"],
+      parameters: [
+        {
+          name: "commentId",
+          in: "path" as const,
+          required: true,
+          schema: { type: "integer" as const },
+        },
+      ],
+      requestBody: {
+        required: true,
+        content: { "application/json": { schema: CommentBodyPartialSchema } },
+      },
+      responses: {
+        200: {
+          description: "Update successful",
+          content: {
+            "application/json": { schema: CommentSchema },
+          },
+        },
+        400: { description: "Invalid request body" },
+        500: { description: "Server error" },
+      },
+    },
+    delete: {
+      summary: "Delete a comment",
+      tags: ["Comments"],
+      parameters: [
+        {
+          name: "commentId",
+          in: "path" as const,
+          required: true,
+          schema: { type: "integer" as const },
+        },
+      ],
+      responses: {
+        204: {
+          description: "Deletion successful",
+        },
+        400: { description: "Invalid comment id" },
+        500: { description: "Server error" },
+      },
+    }
   }
 }
