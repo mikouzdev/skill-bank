@@ -17,6 +17,10 @@ export const createOffer = (salesId: number, payload: OfferPageBody) => {
   return api.post<OfferPage>(`/sales/${salesId}/offers`, payload);
 };
 
+export const deleteOffer = (salesId: number, offerPageId: number) => {
+  return api.delete(`/sales/${salesId}/offers/${offerPageId}`);
+};
+
 export const getSalesList = (salesId: number) => {
   return api.get<GetSalesListsResponse>(`/sales/${salesId}/lists`);
 };
