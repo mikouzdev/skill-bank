@@ -4,7 +4,10 @@ import { api } from "./api";
 type GetOfferPagesResponse = components["schemas"]["GetOfferPagesResponse"];
 type OfferPage = components["schemas"]["OfferPage"];
 type OfferPageBody = components["schemas"]["OfferPageBody"];
-type SalesList = components["schemas"]["GetSalesListsResponse"];
+
+type GetSalesListsResponse = components["schemas"]["GetSalesListsResponse"];
+type SalesList = components["schemas"]["SalesList"];
+type SalesListBody = components["schemas"]["SalesListBody"];
 
 export const getOffers = (salesId: number) => {
   return api.get<GetOfferPagesResponse>(`/sales/${salesId}/offers`);
@@ -15,5 +18,9 @@ export const createOffer = (salesId: number, payload: OfferPageBody) => {
 };
 
 export const getSalesList = (salesId: number) => {
-  return api.get<SalesList>(`/sales/${salesId}/lists`);
+  return api.get<GetSalesListsResponse>(`/sales/${salesId}/lists`);
+};
+
+export const createSalesList = (salesId: number, payload: SalesListBody) => {
+  return api.post<SalesList>(`/sales/${salesId}/lists`, payload);
 };
