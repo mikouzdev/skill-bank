@@ -47,6 +47,12 @@ const navItems: NavItem[] = [
     roles: [ROLES.SALESPERSON],
   },
   {
+    text: "Create list",
+    path: "/salesConsultantsList/create",
+    icon: <Groups />,
+    roles: [ROLES.SALESPERSON],
+  },
+  {
     text: "Edit profile",
     path: "/me/edit",
     icon: <Edit />,

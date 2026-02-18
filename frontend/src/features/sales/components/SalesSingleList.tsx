@@ -40,7 +40,11 @@ export default function SalesSingleList({ salesListData }: Props) {
         </Box>
         <Stack gap={2}>
           {salesListData.salesListItems.map((list) => (
-            <ConsultantCard key={list.id} consultantID={list.consultantId} />
+            <ConsultantCard
+              key={list.id}
+              consultantID={list.consultantId}
+              salesNote={list.salesNote}
+            />
           ))}
         </Stack>
       </Box>
