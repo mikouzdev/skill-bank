@@ -42,6 +42,8 @@ export const CommentsPaths = {
           },
         },
         400: { description: "Invalid request body" },
+        401: { description: "Unauthorized" },
+        404: { description: "Not found" },
         500: { description: "Server error" },
       },
     },
@@ -61,6 +63,8 @@ export const CommentsPaths = {
           description: "Deletion successful",
         },
         400: { description: "Invalid comment id" },
+        401: { description: "Unauthorized" },
+        404: { description: "Not found" },
         500: { description: "Server error" },
       },
     }

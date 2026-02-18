@@ -39,9 +39,27 @@ commentsRouter.put("/:commentId", authenticate, async (req: AuthenticatedRequest
     return;
   }
   const { content, replyToId } = parsedBody.data;
-
+  const roles = req.user?.roles ?? [];
   let comment = null;
   try {
+    const user = await prisma.user.findUnique({
+      where: { id: req.user!.id },
+      select: {
+        id: true,
+        roles: { select: { role: true } },
+        consultant: { select: { id: true } },
+      },
+    });
+    if (user === null) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+    comment = await prisma.comment.findUnique({
+      where: { id: commentId },
+    });
+    if (user.id !== comment?.userId && !roles?.includes("ADMIN")) {
+      return res.status(401).send("Unauthorized");
+    }
     comment = await prisma.comment.update({
       where: { id: commentId },
       data: {
@@ -70,8 +88,27 @@ commentsRouter.delete("/:commentId", authenticate, async (req: AuthenticatedRequ
     return;
   }
   const { commentId } = parsedParams.data;
-
+  const roles = req.user?.roles ?? [];
+  let comment = null;
   try {
+    const user = await prisma.user.findUnique({
+      where: { id: req.user!.id },
+      select: {
+        id: true,
+        roles: { select: { role: true } },
+        consultant: { select: { id: true } },
+      },
+    });
+    if (user === null) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+    comment = await prisma.comment.findUnique({
+      where: { id: commentId },
+    });
+    if (user.id !== comment?.userId && !roles?.includes("ADMIN")) {
+      return res.status(401).send("Unauthorized");
+    }
     await prisma.comment.delete({
       where: {
         id: commentId,
