@@ -51,6 +51,7 @@ export type CommentMinAggregateOutputType = {
   updatedAt: Date | null
   listPosition: number | null
   replyToId: number | null
+  content: string | null
 }
 
 export type CommentMaxAggregateOutputType = {
@@ -62,6 +63,7 @@ export type CommentMaxAggregateOutputType = {
   updatedAt: Date | null
   listPosition: number | null
   replyToId: number | null
+  content: string | null
 }
 
 export type CommentCountAggregateOutputType = {
@@ -73,6 +75,7 @@ export type CommentCountAggregateOutputType = {
   updatedAt: number
   listPosition: number
   replyToId: number
+  content: number
   _all: number
 }
 
@@ -102,6 +105,7 @@ export type CommentMinAggregateInputType = {
   updatedAt?: true
   listPosition?: true
   replyToId?: true
+  content?: true
 }
 
 export type CommentMaxAggregateInputType = {
@@ -113,6 +117,7 @@ export type CommentMaxAggregateInputType = {
   updatedAt?: true
   listPosition?: true
   replyToId?: true
+  content?: true
 }
 
 export type CommentCountAggregateInputType = {
@@ -124,6 +129,7 @@ export type CommentCountAggregateInputType = {
   updatedAt?: true
   listPosition?: true
   replyToId?: true
+  content?: true
   _all?: true
 }
 
@@ -221,7 +227,8 @@ export type CommentGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   listPosition: number
-  replyToId: number
+  replyToId: number | null
+  content: string
   _count: CommentCountAggregateOutputType | null
   _avg: CommentAvgAggregateOutputType | null
   _sum: CommentSumAggregateOutputType | null
@@ -255,10 +262,11 @@ export type CommentWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Comment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Comment"> | Date | string
   listPosition?: Prisma.IntFilter<"Comment"> | number
-  replyToId?: Prisma.IntFilter<"Comment"> | number
+  replyToId?: Prisma.IntNullableFilter<"Comment"> | number | null
+  content?: Prisma.StringFilter<"Comment"> | string
   pageSection?: Prisma.XOR<Prisma.PageSectionScalarRelationFilter, Prisma.PageSectionWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  directReplyTo?: Prisma.XOR<Prisma.CommentScalarRelationFilter, Prisma.CommentWhereInput>
+  directReplyTo?: Prisma.XOR<Prisma.CommentNullableScalarRelationFilter, Prisma.CommentWhereInput> | null
   directReplies?: Prisma.CommentListRelationFilter
 }
 
@@ -270,7 +278,8 @@ export type CommentOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   listPosition?: Prisma.SortOrder
-  replyToId?: Prisma.SortOrder
+  replyToId?: Prisma.SortOrderInput | Prisma.SortOrder
+  content?: Prisma.SortOrder
   pageSection?: Prisma.PageSectionOrderByWithRelationInput
   user?: Prisma.UserOrderByWithRelationInput
   directReplyTo?: Prisma.CommentOrderByWithRelationInput
@@ -289,10 +298,11 @@ export type CommentWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Comment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Comment"> | Date | string
   listPosition?: Prisma.IntFilter<"Comment"> | number
-  replyToId?: Prisma.IntFilter<"Comment"> | number
+  replyToId?: Prisma.IntNullableFilter<"Comment"> | number | null
+  content?: Prisma.StringFilter<"Comment"> | string
   pageSection?: Prisma.XOR<Prisma.PageSectionScalarRelationFilter, Prisma.PageSectionWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  directReplyTo?: Prisma.XOR<Prisma.CommentScalarRelationFilter, Prisma.CommentWhereInput>
+  directReplyTo?: Prisma.XOR<Prisma.CommentNullableScalarRelationFilter, Prisma.CommentWhereInput> | null
   directReplies?: Prisma.CommentListRelationFilter
 }, "id" | "pageSectionId_listPosition">
 
@@ -304,7 +314,8 @@ export type CommentOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   listPosition?: Prisma.SortOrder
-  replyToId?: Prisma.SortOrder
+  replyToId?: Prisma.SortOrderInput | Prisma.SortOrder
+  content?: Prisma.SortOrder
   _count?: Prisma.CommentCountOrderByAggregateInput
   _avg?: Prisma.CommentAvgOrderByAggregateInput
   _max?: Prisma.CommentMaxOrderByAggregateInput
@@ -323,7 +334,8 @@ export type CommentScalarWhereWithAggregatesInput = {
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Comment"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Comment"> | Date | string
   listPosition?: Prisma.IntWithAggregatesFilter<"Comment"> | number
-  replyToId?: Prisma.IntWithAggregatesFilter<"Comment"> | number
+  replyToId?: Prisma.IntNullableWithAggregatesFilter<"Comment"> | number | null
+  content?: Prisma.StringWithAggregatesFilter<"Comment"> | string
 }
 
 export type CommentCreateInput = {
@@ -331,9 +343,10 @@ export type CommentCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   listPosition?: number
+  content: string
   pageSection: Prisma.PageSectionCreateNestedOneWithoutCommentsInput
   user: Prisma.UserCreateNestedOneWithoutCommentsInput
-  directReplyTo: Prisma.CommentCreateNestedOneWithoutDirectRepliesInput
+  directReplyTo?: Prisma.CommentCreateNestedOneWithoutDirectRepliesInput
   directReplies?: Prisma.CommentCreateNestedManyWithoutDirectReplyToInput
 }
 
@@ -345,7 +358,8 @@ export type CommentUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   listPosition?: number
-  replyToId: number
+  replyToId?: number | null
+  content: string
   directReplies?: Prisma.CommentUncheckedCreateNestedManyWithoutDirectReplyToInput
 }
 
@@ -354,9 +368,10 @@ export type CommentUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   listPosition?: Prisma.IntFieldUpdateOperationsInput | number
+  content?: Prisma.StringFieldUpdateOperationsInput | string
   pageSection?: Prisma.PageSectionUpdateOneRequiredWithoutCommentsNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutCommentsNestedInput
-  directReplyTo?: Prisma.CommentUpdateOneRequiredWithoutDirectRepliesNestedInput
+  directReplyTo?: Prisma.CommentUpdateOneWithoutDirectRepliesNestedInput
   directReplies?: Prisma.CommentUpdateManyWithoutDirectReplyToNestedInput
 }
 
@@ -368,7 +383,8 @@ export type CommentUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   listPosition?: Prisma.IntFieldUpdateOperationsInput | number
-  replyToId?: Prisma.IntFieldUpdateOperationsInput | number
+  replyToId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  content?: Prisma.StringFieldUpdateOperationsInput | string
   directReplies?: Prisma.CommentUncheckedUpdateManyWithoutDirectReplyToNestedInput
 }
 
@@ -380,7 +396,8 @@ export type CommentCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   listPosition?: number
-  replyToId: number
+  replyToId?: number | null
+  content: string
 }
 
 export type CommentUpdateManyMutationInput = {
@@ -388,6 +405,7 @@ export type CommentUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   listPosition?: Prisma.IntFieldUpdateOperationsInput | number
+  content?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type CommentUncheckedUpdateManyInput = {
@@ -398,7 +416,8 @@ export type CommentUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   listPosition?: Prisma.IntFieldUpdateOperationsInput | number
-  replyToId?: Prisma.IntFieldUpdateOperationsInput | number
+  replyToId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  content?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type CommentListRelationFilter = {
@@ -411,9 +430,9 @@ export type CommentOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type CommentScalarRelationFilter = {
-  is?: Prisma.CommentWhereInput
-  isNot?: Prisma.CommentWhereInput
+export type CommentNullableScalarRelationFilter = {
+  is?: Prisma.CommentWhereInput | null
+  isNot?: Prisma.CommentWhereInput | null
 }
 
 export type CommentPageSectionIdListPositionCompoundUniqueInput = {
@@ -430,6 +449,7 @@ export type CommentCountOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
   listPosition?: Prisma.SortOrder
   replyToId?: Prisma.SortOrder
+  content?: Prisma.SortOrder
 }
 
 export type CommentAvgOrderByAggregateInput = {
@@ -449,6 +469,7 @@ export type CommentMaxOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
   listPosition?: Prisma.SortOrder
   replyToId?: Prisma.SortOrder
+  content?: Prisma.SortOrder
 }
 
 export type CommentMinOrderByAggregateInput = {
@@ -460,6 +481,7 @@ export type CommentMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
   listPosition?: Prisma.SortOrder
   replyToId?: Prisma.SortOrder
+  content?: Prisma.SortOrder
 }
 
 export type CommentSumOrderByAggregateInput = {
@@ -574,10 +596,12 @@ export type CommentUncheckedCreateNestedManyWithoutDirectReplyToInput = {
   connect?: Prisma.CommentWhereUniqueInput | Prisma.CommentWhereUniqueInput[]
 }
 
-export type CommentUpdateOneRequiredWithoutDirectRepliesNestedInput = {
+export type CommentUpdateOneWithoutDirectRepliesNestedInput = {
   create?: Prisma.XOR<Prisma.CommentCreateWithoutDirectRepliesInput, Prisma.CommentUncheckedCreateWithoutDirectRepliesInput>
   connectOrCreate?: Prisma.CommentCreateOrConnectWithoutDirectRepliesInput
   upsert?: Prisma.CommentUpsertWithoutDirectRepliesInput
+  disconnect?: Prisma.CommentWhereInput | boolean
+  delete?: Prisma.CommentWhereInput | boolean
   connect?: Prisma.CommentWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.CommentUpdateToOneWithWhereWithoutDirectRepliesInput, Prisma.CommentUpdateWithoutDirectRepliesInput>, Prisma.CommentUncheckedUpdateWithoutDirectRepliesInput>
 }
@@ -615,8 +639,9 @@ export type CommentCreateWithoutUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   listPosition?: number
+  content: string
   pageSection: Prisma.PageSectionCreateNestedOneWithoutCommentsInput
-  directReplyTo: Prisma.CommentCreateNestedOneWithoutDirectRepliesInput
+  directReplyTo?: Prisma.CommentCreateNestedOneWithoutDirectRepliesInput
   directReplies?: Prisma.CommentCreateNestedManyWithoutDirectReplyToInput
 }
 
@@ -627,7 +652,8 @@ export type CommentUncheckedCreateWithoutUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   listPosition?: number
-  replyToId: number
+  replyToId?: number | null
+  content: string
   directReplies?: Prisma.CommentUncheckedCreateNestedManyWithoutDirectReplyToInput
 }
 
@@ -668,7 +694,8 @@ export type CommentScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Comment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Comment"> | Date | string
   listPosition?: Prisma.IntFilter<"Comment"> | number
-  replyToId?: Prisma.IntFilter<"Comment"> | number
+  replyToId?: Prisma.IntNullableFilter<"Comment"> | number | null
+  content?: Prisma.StringFilter<"Comment"> | string
 }
 
 export type CommentCreateWithoutPageSectionInput = {
@@ -676,8 +703,9 @@ export type CommentCreateWithoutPageSectionInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   listPosition?: number
+  content: string
   user: Prisma.UserCreateNestedOneWithoutCommentsInput
-  directReplyTo: Prisma.CommentCreateNestedOneWithoutDirectRepliesInput
+  directReplyTo?: Prisma.CommentCreateNestedOneWithoutDirectRepliesInput
   directReplies?: Prisma.CommentCreateNestedManyWithoutDirectReplyToInput
 }
 
@@ -688,7 +716,8 @@ export type CommentUncheckedCreateWithoutPageSectionInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   listPosition?: number
-  replyToId: number
+  replyToId?: number | null
+  content: string
   directReplies?: Prisma.CommentUncheckedCreateNestedManyWithoutDirectReplyToInput
 }
 
@@ -723,9 +752,10 @@ export type CommentCreateWithoutDirectRepliesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   listPosition?: number
+  content: string
   pageSection: Prisma.PageSectionCreateNestedOneWithoutCommentsInput
   user: Prisma.UserCreateNestedOneWithoutCommentsInput
-  directReplyTo: Prisma.CommentCreateNestedOneWithoutDirectRepliesInput
+  directReplyTo?: Prisma.CommentCreateNestedOneWithoutDirectRepliesInput
 }
 
 export type CommentUncheckedCreateWithoutDirectRepliesInput = {
@@ -736,7 +766,8 @@ export type CommentUncheckedCreateWithoutDirectRepliesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   listPosition?: number
-  replyToId: number
+  replyToId?: number | null
+  content: string
 }
 
 export type CommentCreateOrConnectWithoutDirectRepliesInput = {
@@ -749,6 +780,7 @@ export type CommentCreateWithoutDirectReplyToInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   listPosition?: number
+  content: string
   pageSection: Prisma.PageSectionCreateNestedOneWithoutCommentsInput
   user: Prisma.UserCreateNestedOneWithoutCommentsInput
   directReplies?: Prisma.CommentCreateNestedManyWithoutDirectReplyToInput
@@ -762,6 +794,7 @@ export type CommentUncheckedCreateWithoutDirectReplyToInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   listPosition?: number
+  content: string
   directReplies?: Prisma.CommentUncheckedCreateNestedManyWithoutDirectReplyToInput
 }
 
@@ -791,9 +824,10 @@ export type CommentUpdateWithoutDirectRepliesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   listPosition?: Prisma.IntFieldUpdateOperationsInput | number
+  content?: Prisma.StringFieldUpdateOperationsInput | string
   pageSection?: Prisma.PageSectionUpdateOneRequiredWithoutCommentsNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutCommentsNestedInput
-  directReplyTo?: Prisma.CommentUpdateOneRequiredWithoutDirectRepliesNestedInput
+  directReplyTo?: Prisma.CommentUpdateOneWithoutDirectRepliesNestedInput
 }
 
 export type CommentUncheckedUpdateWithoutDirectRepliesInput = {
@@ -804,7 +838,8 @@ export type CommentUncheckedUpdateWithoutDirectRepliesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   listPosition?: Prisma.IntFieldUpdateOperationsInput | number
-  replyToId?: Prisma.IntFieldUpdateOperationsInput | number
+  replyToId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  content?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type CommentUpsertWithWhereUniqueWithoutDirectReplyToInput = {
@@ -830,7 +865,8 @@ export type CommentCreateManyUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   listPosition?: number
-  replyToId: number
+  replyToId?: number | null
+  content: string
 }
 
 export type CommentUpdateWithoutUserInput = {
@@ -838,8 +874,9 @@ export type CommentUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   listPosition?: Prisma.IntFieldUpdateOperationsInput | number
+  content?: Prisma.StringFieldUpdateOperationsInput | string
   pageSection?: Prisma.PageSectionUpdateOneRequiredWithoutCommentsNestedInput
-  directReplyTo?: Prisma.CommentUpdateOneRequiredWithoutDirectRepliesNestedInput
+  directReplyTo?: Prisma.CommentUpdateOneWithoutDirectRepliesNestedInput
   directReplies?: Prisma.CommentUpdateManyWithoutDirectReplyToNestedInput
 }
 
@@ -850,7 +887,8 @@ export type CommentUncheckedUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   listPosition?: Prisma.IntFieldUpdateOperationsInput | number
-  replyToId?: Prisma.IntFieldUpdateOperationsInput | number
+  replyToId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  content?: Prisma.StringFieldUpdateOperationsInput | string
   directReplies?: Prisma.CommentUncheckedUpdateManyWithoutDirectReplyToNestedInput
 }
 
@@ -861,7 +899,8 @@ export type CommentUncheckedUpdateManyWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   listPosition?: Prisma.IntFieldUpdateOperationsInput | number
-  replyToId?: Prisma.IntFieldUpdateOperationsInput | number
+  replyToId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  content?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type CommentCreateManyPageSectionInput = {
@@ -871,7 +910,8 @@ export type CommentCreateManyPageSectionInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   listPosition?: number
-  replyToId: number
+  replyToId?: number | null
+  content: string
 }
 
 export type CommentUpdateWithoutPageSectionInput = {
@@ -879,8 +919,9 @@ export type CommentUpdateWithoutPageSectionInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   listPosition?: Prisma.IntFieldUpdateOperationsInput | number
+  content?: Prisma.StringFieldUpdateOperationsInput | string
   user?: Prisma.UserUpdateOneRequiredWithoutCommentsNestedInput
-  directReplyTo?: Prisma.CommentUpdateOneRequiredWithoutDirectRepliesNestedInput
+  directReplyTo?: Prisma.CommentUpdateOneWithoutDirectRepliesNestedInput
   directReplies?: Prisma.CommentUpdateManyWithoutDirectReplyToNestedInput
 }
 
@@ -891,7 +932,8 @@ export type CommentUncheckedUpdateWithoutPageSectionInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   listPosition?: Prisma.IntFieldUpdateOperationsInput | number
-  replyToId?: Prisma.IntFieldUpdateOperationsInput | number
+  replyToId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  content?: Prisma.StringFieldUpdateOperationsInput | string
   directReplies?: Prisma.CommentUncheckedUpdateManyWithoutDirectReplyToNestedInput
 }
 
@@ -902,7 +944,8 @@ export type CommentUncheckedUpdateManyWithoutPageSectionInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   listPosition?: Prisma.IntFieldUpdateOperationsInput | number
-  replyToId?: Prisma.IntFieldUpdateOperationsInput | number
+  replyToId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  content?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type CommentCreateManyDirectReplyToInput = {
@@ -913,6 +956,7 @@ export type CommentCreateManyDirectReplyToInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   listPosition?: number
+  content: string
 }
 
 export type CommentUpdateWithoutDirectReplyToInput = {
@@ -920,6 +964,7 @@ export type CommentUpdateWithoutDirectReplyToInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   listPosition?: Prisma.IntFieldUpdateOperationsInput | number
+  content?: Prisma.StringFieldUpdateOperationsInput | string
   pageSection?: Prisma.PageSectionUpdateOneRequiredWithoutCommentsNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutCommentsNestedInput
   directReplies?: Prisma.CommentUpdateManyWithoutDirectReplyToNestedInput
@@ -933,6 +978,7 @@ export type CommentUncheckedUpdateWithoutDirectReplyToInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   listPosition?: Prisma.IntFieldUpdateOperationsInput | number
+  content?: Prisma.StringFieldUpdateOperationsInput | string
   directReplies?: Prisma.CommentUncheckedUpdateManyWithoutDirectReplyToNestedInput
 }
 
@@ -944,6 +990,7 @@ export type CommentUncheckedUpdateManyWithoutDirectReplyToInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   listPosition?: Prisma.IntFieldUpdateOperationsInput | number
+  content?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -986,9 +1033,10 @@ export type CommentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   updatedAt?: boolean
   listPosition?: boolean
   replyToId?: boolean
+  content?: boolean
   pageSection?: boolean | Prisma.PageSectionDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  directReplyTo?: boolean | Prisma.CommentDefaultArgs<ExtArgs>
+  directReplyTo?: boolean | Prisma.Comment$directReplyToArgs<ExtArgs>
   directReplies?: boolean | Prisma.Comment$directRepliesArgs<ExtArgs>
   _count?: boolean | Prisma.CommentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["comment"]>
@@ -1002,9 +1050,10 @@ export type CommentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   updatedAt?: boolean
   listPosition?: boolean
   replyToId?: boolean
+  content?: boolean
   pageSection?: boolean | Prisma.PageSectionDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  directReplyTo?: boolean | Prisma.CommentDefaultArgs<ExtArgs>
+  directReplyTo?: boolean | Prisma.Comment$directReplyToArgs<ExtArgs>
 }, ExtArgs["result"]["comment"]>
 
 export type CommentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1016,9 +1065,10 @@ export type CommentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   updatedAt?: boolean
   listPosition?: boolean
   replyToId?: boolean
+  content?: boolean
   pageSection?: boolean | Prisma.PageSectionDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  directReplyTo?: boolean | Prisma.CommentDefaultArgs<ExtArgs>
+  directReplyTo?: boolean | Prisma.Comment$directReplyToArgs<ExtArgs>
 }, ExtArgs["result"]["comment"]>
 
 export type CommentSelectScalar = {
@@ -1030,25 +1080,26 @@ export type CommentSelectScalar = {
   updatedAt?: boolean
   listPosition?: boolean
   replyToId?: boolean
+  content?: boolean
 }
 
-export type CommentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "pageSectionId" | "userId" | "userRole" | "createdAt" | "updatedAt" | "listPosition" | "replyToId", ExtArgs["result"]["comment"]>
+export type CommentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "pageSectionId" | "userId" | "userRole" | "createdAt" | "updatedAt" | "listPosition" | "replyToId" | "content", ExtArgs["result"]["comment"]>
 export type CommentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   pageSection?: boolean | Prisma.PageSectionDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  directReplyTo?: boolean | Prisma.CommentDefaultArgs<ExtArgs>
+  directReplyTo?: boolean | Prisma.Comment$directReplyToArgs<ExtArgs>
   directReplies?: boolean | Prisma.Comment$directRepliesArgs<ExtArgs>
   _count?: boolean | Prisma.CommentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CommentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   pageSection?: boolean | Prisma.PageSectionDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  directReplyTo?: boolean | Prisma.CommentDefaultArgs<ExtArgs>
+  directReplyTo?: boolean | Prisma.Comment$directReplyToArgs<ExtArgs>
 }
 export type CommentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   pageSection?: boolean | Prisma.PageSectionDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  directReplyTo?: boolean | Prisma.CommentDefaultArgs<ExtArgs>
+  directReplyTo?: boolean | Prisma.Comment$directReplyToArgs<ExtArgs>
 }
 
 export type $CommentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1056,7 +1107,7 @@ export type $CommentPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   objects: {
     pageSection: Prisma.$PageSectionPayload<ExtArgs>
     user: Prisma.$UserPayload<ExtArgs>
-    directReplyTo: Prisma.$CommentPayload<ExtArgs>
+    directReplyTo: Prisma.$CommentPayload<ExtArgs> | null
     directReplies: Prisma.$CommentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1070,7 +1121,8 @@ export type $CommentPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     createdAt: Date
     updatedAt: Date
     listPosition: number
-    replyToId: number
+    replyToId: number | null
+    content: string
   }, ExtArgs["result"]["comment"]>
   composites: {}
 }
@@ -1467,7 +1519,7 @@ export interface Prisma__CommentClient<T, Null = never, ExtArgs extends runtime.
   readonly [Symbol.toStringTag]: "PrismaPromise"
   pageSection<T extends Prisma.PageSectionDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PageSectionDefaultArgs<ExtArgs>>): Prisma.Prisma__PageSectionClient<runtime.Types.Result.GetResult<Prisma.$PageSectionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  directReplyTo<T extends Prisma.CommentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CommentDefaultArgs<ExtArgs>>): Prisma.Prisma__CommentClient<runtime.Types.Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  directReplyTo<T extends Prisma.Comment$directReplyToArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Comment$directReplyToArgs<ExtArgs>>): Prisma.Prisma__CommentClient<runtime.Types.Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   directReplies<T extends Prisma.Comment$directRepliesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Comment$directRepliesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1506,6 +1558,7 @@ export interface CommentFieldRefs {
   readonly updatedAt: Prisma.FieldRef<"Comment", 'DateTime'>
   readonly listPosition: Prisma.FieldRef<"Comment", 'Int'>
   readonly replyToId: Prisma.FieldRef<"Comment", 'Int'>
+  readonly content: Prisma.FieldRef<"Comment", 'String'>
 }
     
 
@@ -1899,6 +1952,25 @@ export type CommentDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Limit how many Comments to delete.
    */
   limit?: number
+}
+
+/**
+ * Comment.directReplyTo
+ */
+export type Comment$directReplyToArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Comment
+   */
+  select?: Prisma.CommentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Comment
+   */
+  omit?: Prisma.CommentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CommentInclude<ExtArgs> | null
+  where?: Prisma.CommentWhereInput
 }
 
 /**

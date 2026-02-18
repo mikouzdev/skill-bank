@@ -4,6 +4,7 @@ import { usersRouter } from "./routes/auth/usersRouter.js";
 import { adminRouter } from "./routes/admin/adminRouter.js";
 import { salesRouter } from "./routes/sales/salesRouter.js";
 import { skillsRouter } from "./routes/skills/skillsRouter.js";
+import { commentsRouter } from "./routes/comments/commentsRouter.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 
 const app = express();
@@ -17,6 +18,7 @@ app.use("/auth", usersRouter);
 app.use("/admin", adminRouter);
 app.use("/sales", salesRouter);
 app.use("/skills", skillsRouter);
+app.use("/comments", commentsRouter);
 
 app.use(errorHandler);
 

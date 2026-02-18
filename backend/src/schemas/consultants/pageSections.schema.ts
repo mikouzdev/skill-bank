@@ -19,6 +19,7 @@ export const CommentSchema = z
     updatedAt: z.date().meta({ example: "2025-12-19T14:01:24.308Z" }),
     listPosition: z.number().meta({ example: "1" }),
     replyToId: z.number().meta({ example: "1" }),
+    content: z.string().meta({ example: "testi teksti" }),
   })
   .meta({ id: "Comment" });
 
@@ -48,3 +49,18 @@ export const PageSectionBodyPartialSchema =  PageSectionBodySchema.partial({
   name: true,
   visibility: true
 }).meta({ id: "PageSectionBodyPartial" });
+
+export const GetCommentsResponseSchema = z.array(CommentSchema);
+
+export const CommentBodySchema = CommentSchema.omit({
+  id: true,
+  pageSectionId: true,
+  userId: true,
+  userRole: true,
+  createdAt: true,
+  updatedAt: true,
+  listPosition: true
+}).partial({
+  replyToId: true
+}).meta({ id: "CommentBody" });
+  

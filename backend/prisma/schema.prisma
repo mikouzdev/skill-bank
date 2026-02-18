@@ -271,11 +271,12 @@ model Comment {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   listPosition  Int      @default(autoincrement())
-  replyToId     Int
+  replyToId     Int?
+  content       String
 
   pageSection   PageSection @relation(fields: [pageSectionId], references: [id], onDelete: Cascade)
   user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  directReplyTo Comment     @relation("reply", fields: [replyToId], references: [id])
+  directReplyTo Comment?     @relation("reply", fields: [replyToId], references: [id])
   directReplies Comment[]   @relation("reply")
 
   @@unique([pageSectionId, listPosition])
