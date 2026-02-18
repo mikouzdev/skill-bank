@@ -9,12 +9,14 @@ type Consultant = components["schemas"]["ConsultantResponse"];
 type Props = {
   consultantID: number;
   selectable?: boolean;
+  salesNote?: string;
   onSelect?: (consultant: Consultant) => void;
 };
 
 export const ConsultantCard = ({
   consultantID,
   selectable,
+  salesNote,
   onSelect,
 }: Props) => {
   const { consultant, skills, employments, projects, loading } =
@@ -53,12 +55,17 @@ export const ConsultantCard = ({
 
           <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
             {/* used for sales offer creation to add consultant to new offer */}
-            <Stack direction={"row"} gap={1}>
+            <Stack direction={"row"} gap={1} alignItems={"center"}>
+              {salesNote && (
+                <Typography variant="body2">Note: {salesNote}</Typography>
+              )}
+
               {selectable && (
                 <Button size="small" onClick={() => onSelect?.(consultant)}>
-                  Add to offer
+                  Select
                 </Button>
               )}
+
               <Button
                 size="small"
                 type="submit"

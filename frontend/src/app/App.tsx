@@ -22,6 +22,7 @@ import { Redirector } from "../features/Login/Components/Redirector";
 import SalesConsultantsLists from "../features/sales/pages/SalesConsultantsLists";
 import OfferCreationPage from "../features/sales/pages/OfferCreationPage/OfferCreationPage";
 import ConsultantProfileForOthers from "../shared/pages/ConsultantProfileForOthers";
+import ListCreationPage from "../features/sales/pages/ListCreationPage/ListCreationPage";
 
 function App() {
   return (
@@ -68,6 +69,10 @@ function App() {
             <Route
               path="/salesConsultantsList"
               element={<SalesConsultantsLists />}
+            />
+            <Route
+              path="/salesConsultantsList/create"
+              element={<ListCreationPage />}
             />
 
             {/* customer */}
