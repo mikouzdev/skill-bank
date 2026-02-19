@@ -300,8 +300,8 @@ offersRouter.put(
                   consultantPages: {
                     create: consultantPages.map((consultantPage) => ({
                       consultantId: consultantPage.consultantId,
-                      showInfo: consultantPage.showInfo,
-                      isAccepted: consultantPage.isAccepted,
+                      ...(consultantPage.isAccepted !== undefined ? { isAccepted: consultantPage.isAccepted } : { isAccepted: false }),
+                      ...(consultantPage.showInfo !== undefined ? { showInfo: consultantPage.showInfo } : { showInfo: true }),
                       ...(consultantPage.customerReview !== undefined ? { customerReview: consultantPage.customerReview } : {}),
                     })),
                   },
