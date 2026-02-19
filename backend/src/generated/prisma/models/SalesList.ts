@@ -206,7 +206,7 @@ export type SalesListGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
 export type SalesListGroupByOutputType = {
   id: number
   salespersonId: number
-  customerId: number
+  customerId: number | null
   listPosition: number
   description: string
   shortDescription: string
@@ -239,20 +239,20 @@ export type SalesListWhereInput = {
   NOT?: Prisma.SalesListWhereInput | Prisma.SalesListWhereInput[]
   id?: Prisma.IntFilter<"SalesList"> | number
   salespersonId?: Prisma.IntFilter<"SalesList"> | number
-  customerId?: Prisma.IntFilter<"SalesList"> | number
+  customerId?: Prisma.IntNullableFilter<"SalesList"> | number | null
   listPosition?: Prisma.IntFilter<"SalesList"> | number
   description?: Prisma.StringFilter<"SalesList"> | string
   shortDescription?: Prisma.StringFilter<"SalesList"> | string
   isReviewDone?: Prisma.BoolFilter<"SalesList"> | boolean
   salesperson?: Prisma.XOR<Prisma.SalespersonScalarRelationFilter, Prisma.SalespersonWhereInput>
-  customer?: Prisma.XOR<Prisma.CustomerScalarRelationFilter, Prisma.CustomerWhereInput>
+  customer?: Prisma.XOR<Prisma.CustomerNullableScalarRelationFilter, Prisma.CustomerWhereInput> | null
   salesListItems?: Prisma.SalesListItemListRelationFilter
 }
 
 export type SalesListOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   salespersonId?: Prisma.SortOrder
-  customerId?: Prisma.SortOrder
+  customerId?: Prisma.SortOrderInput | Prisma.SortOrder
   listPosition?: Prisma.SortOrder
   description?: Prisma.SortOrder
   shortDescription?: Prisma.SortOrder
@@ -269,20 +269,20 @@ export type SalesListWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.SalesListWhereInput[]
   NOT?: Prisma.SalesListWhereInput | Prisma.SalesListWhereInput[]
   salespersonId?: Prisma.IntFilter<"SalesList"> | number
-  customerId?: Prisma.IntFilter<"SalesList"> | number
+  customerId?: Prisma.IntNullableFilter<"SalesList"> | number | null
   listPosition?: Prisma.IntFilter<"SalesList"> | number
   description?: Prisma.StringFilter<"SalesList"> | string
   shortDescription?: Prisma.StringFilter<"SalesList"> | string
   isReviewDone?: Prisma.BoolFilter<"SalesList"> | boolean
   salesperson?: Prisma.XOR<Prisma.SalespersonScalarRelationFilter, Prisma.SalespersonWhereInput>
-  customer?: Prisma.XOR<Prisma.CustomerScalarRelationFilter, Prisma.CustomerWhereInput>
+  customer?: Prisma.XOR<Prisma.CustomerNullableScalarRelationFilter, Prisma.CustomerWhereInput> | null
   salesListItems?: Prisma.SalesListItemListRelationFilter
 }, "id" | "salespersonId_listPosition">
 
 export type SalesListOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   salespersonId?: Prisma.SortOrder
-  customerId?: Prisma.SortOrder
+  customerId?: Prisma.SortOrderInput | Prisma.SortOrder
   listPosition?: Prisma.SortOrder
   description?: Prisma.SortOrder
   shortDescription?: Prisma.SortOrder
@@ -300,7 +300,7 @@ export type SalesListScalarWhereWithAggregatesInput = {
   NOT?: Prisma.SalesListScalarWhereWithAggregatesInput | Prisma.SalesListScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"SalesList"> | number
   salespersonId?: Prisma.IntWithAggregatesFilter<"SalesList"> | number
-  customerId?: Prisma.IntWithAggregatesFilter<"SalesList"> | number
+  customerId?: Prisma.IntNullableWithAggregatesFilter<"SalesList"> | number | null
   listPosition?: Prisma.IntWithAggregatesFilter<"SalesList"> | number
   description?: Prisma.StringWithAggregatesFilter<"SalesList"> | string
   shortDescription?: Prisma.StringWithAggregatesFilter<"SalesList"> | string
@@ -313,14 +313,14 @@ export type SalesListCreateInput = {
   shortDescription: string
   isReviewDone?: boolean
   salesperson: Prisma.SalespersonCreateNestedOneWithoutSalesListsInput
-  customer: Prisma.CustomerCreateNestedOneWithoutSalesListsInput
+  customer?: Prisma.CustomerCreateNestedOneWithoutSalesListsInput
   salesListItems?: Prisma.SalesListItemCreateNestedManyWithoutSalesListInput
 }
 
 export type SalesListUncheckedCreateInput = {
   id?: number
   salespersonId: number
-  customerId: number
+  customerId?: number | null
   listPosition?: number
   description: string
   shortDescription: string
@@ -334,14 +334,14 @@ export type SalesListUpdateInput = {
   shortDescription?: Prisma.StringFieldUpdateOperationsInput | string
   isReviewDone?: Prisma.BoolFieldUpdateOperationsInput | boolean
   salesperson?: Prisma.SalespersonUpdateOneRequiredWithoutSalesListsNestedInput
-  customer?: Prisma.CustomerUpdateOneRequiredWithoutSalesListsNestedInput
+  customer?: Prisma.CustomerUpdateOneWithoutSalesListsNestedInput
   salesListItems?: Prisma.SalesListItemUpdateManyWithoutSalesListNestedInput
 }
 
 export type SalesListUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   salespersonId?: Prisma.IntFieldUpdateOperationsInput | number
-  customerId?: Prisma.IntFieldUpdateOperationsInput | number
+  customerId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   listPosition?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
   shortDescription?: Prisma.StringFieldUpdateOperationsInput | string
@@ -352,7 +352,7 @@ export type SalesListUncheckedUpdateInput = {
 export type SalesListCreateManyInput = {
   id?: number
   salespersonId: number
-  customerId: number
+  customerId?: number | null
   listPosition?: number
   description: string
   shortDescription: string
@@ -369,7 +369,7 @@ export type SalesListUpdateManyMutationInput = {
 export type SalesListUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   salespersonId?: Prisma.IntFieldUpdateOperationsInput | number
-  customerId?: Prisma.IntFieldUpdateOperationsInput | number
+  customerId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   listPosition?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
   shortDescription?: Prisma.StringFieldUpdateOperationsInput | string
@@ -547,13 +547,13 @@ export type SalesListCreateWithoutSalespersonInput = {
   description: string
   shortDescription: string
   isReviewDone?: boolean
-  customer: Prisma.CustomerCreateNestedOneWithoutSalesListsInput
+  customer?: Prisma.CustomerCreateNestedOneWithoutSalesListsInput
   salesListItems?: Prisma.SalesListItemCreateNestedManyWithoutSalesListInput
 }
 
 export type SalesListUncheckedCreateWithoutSalespersonInput = {
   id?: number
-  customerId: number
+  customerId?: number | null
   listPosition?: number
   description: string
   shortDescription: string
@@ -593,7 +593,7 @@ export type SalesListScalarWhereInput = {
   NOT?: Prisma.SalesListScalarWhereInput | Prisma.SalesListScalarWhereInput[]
   id?: Prisma.IntFilter<"SalesList"> | number
   salespersonId?: Prisma.IntFilter<"SalesList"> | number
-  customerId?: Prisma.IntFilter<"SalesList"> | number
+  customerId?: Prisma.IntNullableFilter<"SalesList"> | number | null
   listPosition?: Prisma.IntFilter<"SalesList"> | number
   description?: Prisma.StringFilter<"SalesList"> | string
   shortDescription?: Prisma.StringFilter<"SalesList"> | string
@@ -606,13 +606,13 @@ export type SalesListCreateWithoutSalesListItemsInput = {
   shortDescription: string
   isReviewDone?: boolean
   salesperson: Prisma.SalespersonCreateNestedOneWithoutSalesListsInput
-  customer: Prisma.CustomerCreateNestedOneWithoutSalesListsInput
+  customer?: Prisma.CustomerCreateNestedOneWithoutSalesListsInput
 }
 
 export type SalesListUncheckedCreateWithoutSalesListItemsInput = {
   id?: number
   salespersonId: number
-  customerId: number
+  customerId?: number | null
   listPosition?: number
   description: string
   shortDescription: string
@@ -641,13 +641,13 @@ export type SalesListUpdateWithoutSalesListItemsInput = {
   shortDescription?: Prisma.StringFieldUpdateOperationsInput | string
   isReviewDone?: Prisma.BoolFieldUpdateOperationsInput | boolean
   salesperson?: Prisma.SalespersonUpdateOneRequiredWithoutSalesListsNestedInput
-  customer?: Prisma.CustomerUpdateOneRequiredWithoutSalesListsNestedInput
+  customer?: Prisma.CustomerUpdateOneWithoutSalesListsNestedInput
 }
 
 export type SalesListUncheckedUpdateWithoutSalesListItemsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   salespersonId?: Prisma.IntFieldUpdateOperationsInput | number
-  customerId?: Prisma.IntFieldUpdateOperationsInput | number
+  customerId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   listPosition?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
   shortDescription?: Prisma.StringFieldUpdateOperationsInput | string
@@ -701,7 +701,7 @@ export type SalesListUpdateManyWithWhereWithoutCustomerInput = {
 
 export type SalesListCreateManySalespersonInput = {
   id?: number
-  customerId: number
+  customerId?: number | null
   listPosition?: number
   description: string
   shortDescription: string
@@ -713,13 +713,13 @@ export type SalesListUpdateWithoutSalespersonInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   shortDescription?: Prisma.StringFieldUpdateOperationsInput | string
   isReviewDone?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  customer?: Prisma.CustomerUpdateOneRequiredWithoutSalesListsNestedInput
+  customer?: Prisma.CustomerUpdateOneWithoutSalesListsNestedInput
   salesListItems?: Prisma.SalesListItemUpdateManyWithoutSalesListNestedInput
 }
 
 export type SalesListUncheckedUpdateWithoutSalespersonInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  customerId?: Prisma.IntFieldUpdateOperationsInput | number
+  customerId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   listPosition?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
   shortDescription?: Prisma.StringFieldUpdateOperationsInput | string
@@ -729,7 +729,7 @@ export type SalesListUncheckedUpdateWithoutSalespersonInput = {
 
 export type SalesListUncheckedUpdateManyWithoutSalespersonInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  customerId?: Prisma.IntFieldUpdateOperationsInput | number
+  customerId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   listPosition?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
   shortDescription?: Prisma.StringFieldUpdateOperationsInput | string
@@ -813,7 +813,7 @@ export type SalesListSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   shortDescription?: boolean
   isReviewDone?: boolean
   salesperson?: boolean | Prisma.SalespersonDefaultArgs<ExtArgs>
-  customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
+  customer?: boolean | Prisma.SalesList$customerArgs<ExtArgs>
   salesListItems?: boolean | Prisma.SalesList$salesListItemsArgs<ExtArgs>
   _count?: boolean | Prisma.SalesListCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["salesList"]>
@@ -827,7 +827,7 @@ export type SalesListSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   shortDescription?: boolean
   isReviewDone?: boolean
   salesperson?: boolean | Prisma.SalespersonDefaultArgs<ExtArgs>
-  customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
+  customer?: boolean | Prisma.SalesList$customerArgs<ExtArgs>
 }, ExtArgs["result"]["salesList"]>
 
 export type SalesListSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -839,7 +839,7 @@ export type SalesListSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   shortDescription?: boolean
   isReviewDone?: boolean
   salesperson?: boolean | Prisma.SalespersonDefaultArgs<ExtArgs>
-  customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
+  customer?: boolean | Prisma.SalesList$customerArgs<ExtArgs>
 }, ExtArgs["result"]["salesList"]>
 
 export type SalesListSelectScalar = {
@@ -855,30 +855,30 @@ export type SalesListSelectScalar = {
 export type SalesListOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "salespersonId" | "customerId" | "listPosition" | "description" | "shortDescription" | "isReviewDone", ExtArgs["result"]["salesList"]>
 export type SalesListInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   salesperson?: boolean | Prisma.SalespersonDefaultArgs<ExtArgs>
-  customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
+  customer?: boolean | Prisma.SalesList$customerArgs<ExtArgs>
   salesListItems?: boolean | Prisma.SalesList$salesListItemsArgs<ExtArgs>
   _count?: boolean | Prisma.SalesListCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SalesListIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   salesperson?: boolean | Prisma.SalespersonDefaultArgs<ExtArgs>
-  customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
+  customer?: boolean | Prisma.SalesList$customerArgs<ExtArgs>
 }
 export type SalesListIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   salesperson?: boolean | Prisma.SalespersonDefaultArgs<ExtArgs>
-  customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
+  customer?: boolean | Prisma.SalesList$customerArgs<ExtArgs>
 }
 
 export type $SalesListPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "SalesList"
   objects: {
     salesperson: Prisma.$SalespersonPayload<ExtArgs>
-    customer: Prisma.$CustomerPayload<ExtArgs>
+    customer: Prisma.$CustomerPayload<ExtArgs> | null
     salesListItems: Prisma.$SalesListItemPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     salespersonId: number
-    customerId: number
+    customerId: number | null
     listPosition: number
     description: string
     shortDescription: string
@@ -1281,7 +1281,7 @@ readonly fields: SalesListFieldRefs;
 export interface Prisma__SalesListClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   salesperson<T extends Prisma.SalespersonDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SalespersonDefaultArgs<ExtArgs>>): Prisma.Prisma__SalespersonClient<runtime.Types.Result.GetResult<Prisma.$SalespersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  customer<T extends Prisma.CustomerDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CustomerDefaultArgs<ExtArgs>>): Prisma.Prisma__CustomerClient<runtime.Types.Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  customer<T extends Prisma.SalesList$customerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SalesList$customerArgs<ExtArgs>>): Prisma.Prisma__CustomerClient<runtime.Types.Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   salesListItems<T extends Prisma.SalesList$salesListItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SalesList$salesListItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SalesListItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1712,6 +1712,25 @@ export type SalesListDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Limit how many SalesLists to delete.
    */
   limit?: number
+}
+
+/**
+ * SalesList.customer
+ */
+export type SalesList$customerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Customer
+   */
+  select?: Prisma.CustomerSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Customer
+   */
+  omit?: Prisma.CustomerOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CustomerInclude<ExtArgs> | null
+  where?: Prisma.CustomerWhereInput
 }
 
 /**

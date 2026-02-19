@@ -283,11 +283,6 @@ export type CustomerNullableScalarRelationFilter = {
   isNot?: Prisma.CustomerWhereInput | null
 }
 
-export type CustomerScalarRelationFilter = {
-  is?: Prisma.CustomerWhereInput
-  isNot?: Prisma.CustomerWhereInput
-}
-
 export type CustomerCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -311,6 +306,11 @@ export type CustomerMinOrderByAggregateInput = {
 export type CustomerSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+}
+
+export type CustomerScalarRelationFilter = {
+  is?: Prisma.CustomerWhereInput
+  isNot?: Prisma.CustomerWhereInput
 }
 
 export type CustomerCreateNestedOneWithoutUserInput = {
@@ -351,10 +351,12 @@ export type CustomerCreateNestedOneWithoutSalesListsInput = {
   connect?: Prisma.CustomerWhereUniqueInput
 }
 
-export type CustomerUpdateOneRequiredWithoutSalesListsNestedInput = {
+export type CustomerUpdateOneWithoutSalesListsNestedInput = {
   create?: Prisma.XOR<Prisma.CustomerCreateWithoutSalesListsInput, Prisma.CustomerUncheckedCreateWithoutSalesListsInput>
   connectOrCreate?: Prisma.CustomerCreateOrConnectWithoutSalesListsInput
   upsert?: Prisma.CustomerUpsertWithoutSalesListsInput
+  disconnect?: Prisma.CustomerWhereInput | boolean
+  delete?: Prisma.CustomerWhereInput | boolean
   connect?: Prisma.CustomerWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.CustomerUpdateToOneWithWhereWithoutSalesListsInput, Prisma.CustomerUpdateWithoutSalesListsInput>, Prisma.CustomerUncheckedUpdateWithoutSalesListsInput>
 }

@@ -114,14 +114,15 @@ salesListRouter.post(
     } = parsedBody.data;
 
     let newSalesList = null;
-
     try {
-      const customer = await prisma.customer.findUnique({
-        where: { id: customerId },
-      });
-      if (customer === null) {
-        res.status(404).json({ message: "Customer not found" });
-        return;
+      if (customerId !== undefined) {
+          const customer = await prisma.customer.findUnique({
+          where: { id: customerId },
+        });
+        if (customer === null) {
+          res.status(404).json({ message: "Customer not found" });
+          return;
+        }
       }
       const uniqueConsultants: number[] = [];
       let returnIfTrue = false;
@@ -155,7 +156,7 @@ salesListRouter.post(
         newSalesList = await prisma.salesList.create({
           data: {
             salespersonId: salesId,
-            customerId: customer.id,
+            ...(customerId !== undefined ? { customerId } : {}),
             description,
             shortDescription,
             isReviewDone,

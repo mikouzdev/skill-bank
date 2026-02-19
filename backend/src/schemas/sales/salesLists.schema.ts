@@ -40,6 +40,8 @@ export const SalesListBodySchema = SalesListSchema.omit({
   salespersonId: true,
   listPosition: true,
   salesListItems: true,
+}).partial({
+  customerId: true
 }).extend({
   salesListItems: z.array(SalesListItemBodySchema),
 }).meta({ id: "SalesListBody" });
