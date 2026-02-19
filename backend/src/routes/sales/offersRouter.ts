@@ -302,6 +302,7 @@ offersRouter.put(
                       consultantId: consultantPage.consultantId,
                       showInfo: consultantPage.showInfo,
                       isAccepted: consultantPage.isAccepted,
+                      ...(consultantPage.customerReview !== undefined ? { customerReview: consultantPage.customerReview } : {}),
                     })),
                   },
                 }
@@ -357,7 +358,7 @@ offersRouter.delete(
 );
 
 /**
- * Update isAccepted status of a consultant page
+ * Update isAccepted status and review of a consultant page
  * @route PATCH /{salesId}/offers/{offerPageId}/consultants/{consultantPageId}
  * @returns updated consultant page
  */
@@ -377,7 +378,7 @@ offersRouter.patch(
       res.status(400).json(parsedBody.error);
       return;
     }
-    const { isAccepted } = parsedBody.data;
+    const { isAccepted, customerReview } = parsedBody.data;
 
     // validate that user is customer
     if (!req.user?.roles.includes("CUSTOMER")) {
@@ -427,7 +428,7 @@ offersRouter.patch(
 
       const updatedConsultantPage = await prisma.consultantPages.update({
         where: { id: consultantPageId },
-        data: { isAccepted },
+        data: { isAccepted, ...(customerReview !== undefined ? { customerReview } : {}),},
       });
 
       res.json(updatedConsultantPage);

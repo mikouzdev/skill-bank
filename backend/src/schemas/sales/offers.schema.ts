@@ -7,6 +7,7 @@ export const ConsultantPageSchema = z
     consultantId: z.number().meta({ example: "1" }),
     showInfo: z.boolean().meta({ example: "true" }),
     isAccepted: z.boolean().meta({ example: "true" }),
+    customerReview: z.string().nullable().meta({ example: "esimerkki teksti" }),
   })
   .meta({ id: "ConsultantPage" });
 
@@ -46,6 +47,7 @@ export const PutOfferPageParamsSchema = z.object({
 export const ConsultantPagePartialSchema = ConsultantPageSchema.partial({
   id: true,
   offerPageId: true,
+  customerReview: true,
 });
 
 export const OfferPageBodyPartialSchema = OfferPageBodySchema.partial({
@@ -69,5 +71,6 @@ export const PatchConsultantPageParamsSchema = z.object({
 export const PatchConsultantPageBodySchema = z
   .object({
     isAccepted: z.boolean().meta({ example: "true" }),
+    customerReview: z.string().nullable().meta({ example: "esimerkki teksti" }),
   })
   .meta({ id: "PatchConsultantPageBody" });
