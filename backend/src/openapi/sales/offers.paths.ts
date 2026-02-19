@@ -122,7 +122,7 @@ export const offersPaths = {
   },
   "/sales/{salesId}/offers/{offerPageId}/consultants/{consultantPageId}": {
     patch: {
-      summary: "Update isAccepted status of a consultant page",
+      summary: "Update isAccepted status and customer review of a consultant page",
       tags: ["Offer Pages"],
       parameters: [
         {
