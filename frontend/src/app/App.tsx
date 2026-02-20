@@ -23,6 +23,7 @@ import SalesConsultantsLists from "../features/sales/pages/SalesConsultantsLists
 import OfferCreationPage from "../features/sales/pages/OfferCreationPage/OfferCreationPage";
 import ConsultantProfileForOthers from "../shared/pages/ConsultantProfileForOthers";
 import ListCreationPage from "../features/sales/pages/ListCreationPage/ListCreationPage";
+import ConsultantCommentsPage from "../features/consultant/pages/ConsultantCommentsPage";
 
 function App() {
   return (
@@ -38,15 +39,27 @@ function App() {
 
           <Route element={<SidebarLayout />}>
             {/* consultant */}
-            <Route path="/me" element={<ConsultantProfilePage />} />
-            <Route path="/me/edit" element={<ConsultantProfileSettings />} />
+            <Route path="consultant/me" element={<ConsultantProfilePage />} />
             <Route
-              path="/listConsultants"
-              element={<ConsultantListConsultants />}
+              path="consultant/me/edit"
+              element={<ConsultantProfileSettings />}
             />
+            <Route
+              path="consultant/me/comments"
+              element={<ConsultantCommentsPage />}
+            />
+
             <Route
               path="/consultant/:id"
               element={<ConsultantProfileForOthers />}
+            />
+            <Route
+              path="/consultant/:id/comments"
+              element={<ConsultantCommentsPage />}
+            />
+            <Route
+              path="/listConsultants"
+              element={<ConsultantListConsultants />}
             />
 
             {/* admin */}

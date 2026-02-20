@@ -32,7 +32,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   {
     text: "My profile",
-    path: "/me",
+    path: "consultant/me",
     icon: <Person />,
     roles: [ROLES.CONSULTANT],
   },
@@ -56,7 +56,7 @@ const navItems: NavItem[] = [
   },
   {
     text: "Edit profile",
-    path: "/me/edit",
+    path: "consultant/me/edit",
     icon: <Edit />,
     roles: [ROLES.CONSULTANT],
   },
