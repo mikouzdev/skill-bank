@@ -6,6 +6,7 @@ import {
 } from "../../schemas/admin/admin.schema.js";
 import { adminOnly, authenticate } from "../../middlewares/authentication.js";
 import { prisma } from "../../db/prismaClient.js";
+import argon2 from "argon2";
 
 export const adminRouter = Router();
 
@@ -53,9 +54,11 @@ adminRouter.post(
       res.status(400).json(parsedBody.error);
       return;
     }
-    const { name, email, passwordHash, roles } = parsedBody.data;
+    const { name, email, password, roles } = parsedBody.data;
 
     const lowerCaseEmail = email.toLowerCase();
+
+    const passwordHash = await argon2.hash(password);
 
     try {
       const user = await prisma.user.findFirst({ where: { email: lowerCaseEmail } });
@@ -73,7 +76,7 @@ adminRouter.post(
         data: {
           name,
           email: lowerCaseEmail,
-          passwordHash,
+          passwordHash: passwordHash,
           roles: {
             create: roles,
           },
@@ -211,10 +214,14 @@ adminRouter.put(
       return;
     }
 
-    const { name, email, passwordHash, roles } = parsedBody.data;
+    const { name, email, password, roles } = parsedBody.data;
     let lowerCaseEmail;
     if (email !== undefined) {
       lowerCaseEmail = email.toLowerCase();
+    }
+    let passwordHash;
+    if (password !== undefined) {
+      passwordHash = await argon2.hash(password);
     }
 
     let user = null;
@@ -225,7 +232,7 @@ adminRouter.put(
         data: {
           ...(lowerCaseEmail !== undefined ? { email: lowerCaseEmail } : {}),
           ...(name !== undefined ? { name } : {}),
-          ...(passwordHash !== undefined ? { passwordHash } : {}),
+          ...(passwordHash !== undefined ? { passwordHash: passwordHash } : {}),
           roles: {
             deleteMany: {},
             create: roles,
