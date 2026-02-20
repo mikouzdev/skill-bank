@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 
 type SelectedUser = { id: number; name: string };
 type UserResponse = components["schemas"]["UserResponse"];
-type UserBody = components["schemas"]["UserBody"];
+type UserBody = components["schemas"]["UserBodyPartial"];
 
 type Props = {
   user: UserResponse;

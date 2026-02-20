@@ -28,3 +28,7 @@ export const getSalesList = (salesId: number) => {
 export const createSalesList = (salesId: number, payload: SalesListBody) => {
   return api.post<SalesList>(`/sales/${salesId}/lists`, payload);
 };
+
+export const deleteSalesList = (salesId: number, salesListId: number) => {
+  return api.delete(`/sales/${salesId}/lists/${salesListId}`);
+};

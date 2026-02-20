@@ -2,7 +2,7 @@ import { Router, type Request, type Response } from "express";
 import {
   UserBodySchema,
   UserIdParamsSchema,
-  UserBodyPartialSchema
+  UserBodyPartialSchema,
 } from "../../schemas/admin/admin.schema.js";
 import { adminOnly, authenticate } from "../../middlewares/authentication.js";
 import { prisma } from "../../db/prismaClient.js";
@@ -61,7 +61,9 @@ adminRouter.post(
     const passwordHash = await argon2.hash(password);
 
     try {
-      const user = await prisma.user.findFirst({ where: { email: lowerCaseEmail } });
+      const user = await prisma.user.findFirst({
+        where: { email: lowerCaseEmail },
+      });
       if (user !== null) {
         res.status(409).json({ message: "User email already in use" });
         return;
@@ -70,6 +72,7 @@ adminRouter.post(
       res.status(500).json(err);
       return;
     }
+
     let createdUser = null;
     try {
       createdUser = await prisma.user.create({
@@ -88,6 +91,7 @@ adminRouter.post(
           passwordHash: true,
         },
       });
+
       const userId = createdUser.id;
       await Promise.all(
         roles.map(async (role) => {

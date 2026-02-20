@@ -5,10 +5,12 @@ import { AddUserDialog } from "../components/AddUserDialog";
 import { DeleteUsersDialog } from "../components/DeleteUsersDialog";
 import { createUser, deleteUser, getUsers, updateUser } from "../api/admin.api";
 import type { components } from "@api-types/openapi";
+import { useSnackbar } from "../../../shared/components/useSnackbar";
 // import { searchConsultants } from "../../consultant/api/consultants.api";
 // import SearchBar from "../../../shared/components/Search";
 
 type UserRequest = components["schemas"]["UserBody"];
+type UserBodyPartial = components["schemas"]["UserBodyPartial"];
 type UserListResponse = components["schemas"]["AllUsersResponse"];
 
 type SelectedUser = {
@@ -17,6 +19,7 @@ type SelectedUser = {
 };
 
 export const ManageUsersPage = () => {
+  const { showSuccess, showError } = useSnackbar();
   const [users, setUsers] = useState<UserListResponse>([]);
   const [selectedUsers, setSelectedUsers] = useState<SelectedUser[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -69,11 +72,11 @@ export const ManageUsersPage = () => {
     try {
       const response = await createUser(user);
       setUsers((prev) => [...prev, response.data]);
-      alert("Succesfully created a new user");
+      showSuccess("User created succesfully.");
       return true;
     } catch (error: unknown) {
       console.log("failed to create user: ", error);
-      alert("Failed to create user, more info in console");
+      showError("Failed to create user, more info in console");
       return false;
     }
   }
@@ -95,7 +98,7 @@ export const ManageUsersPage = () => {
 
   async function handleUpdateUser(
     id: number,
-    payload: UserRequest
+    payload: UserBodyPartial
   ): Promise<boolean> {
     try {
       const response = await updateUser(id, payload);

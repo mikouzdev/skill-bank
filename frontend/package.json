@@ -7,6 +7,7 @@
     "env": "dotenvx run -f .env.example -f .env --overload",
     "dev": "pnpm run env -- vite",
     "build": "pnpm run env -- tsc -b && vite build",
+    "typecheck": "tsc -p tsconfig.app.json --noEmit",
     "lint": "eslint .",
     "preview": "pnpm run env -- vite preview"
   },

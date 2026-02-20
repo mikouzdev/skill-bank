@@ -1898,6 +1898,77 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/consultants/{consultantId}/sections/{sectionName}/comments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Adds a comment to a consultant's page section */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    consultantId: number;
+                    sectionName: "GENERAL" | "NETWORKING_LINKS" | "DESCRIPTION" | "SKILLS" | "EMPLOYMENTS" | "PROJECTS";
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["CommentBody"];
+                };
+            };
+            responses: {
+                /** @description Comment created */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Comment"];
+                    };
+                };
+                /** @description Invalid input */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/consultants/{consultantId}/attributes": {
         parameters: {
             query?: never;
@@ -2970,6 +3041,167 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/comments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all comments */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Retrieval successful */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Comment"][];
+                    };
+                };
+                /** @description Server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/comments/{commentId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Update a comment */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    commentId: number;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["CommentBodyPartial"];
+                };
+            };
+            responses: {
+                /** @description Update successful */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Comment"];
+                    };
+                };
+                /** @description Invalid request body */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        post?: never;
+        /** Delete a comment */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    commentId: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Deletion successful */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid comment id */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -3093,6 +3325,12 @@ export interface components {
              */
             visibility?: "LIMITED" | "PUBLIC";
         };
+        CommentBody: {
+            /** @example 1 */
+            replyToId?: number;
+            /** @example testi teksti */
+            content: string;
+        };
         AttributeBody: {
             /** @example Example value */
             value: string;
@@ -3204,7 +3442,7 @@ export interface components {
         };
         SalesListBody: {
             /** @example 1 */
-            customerId: number;
+            customerId?: number;
             /** @example esimerkki teksti */
             description: string;
             /** @example esimerkki teksti */
@@ -3242,6 +3480,12 @@ export interface components {
                 /** @example esimerkki teksti */
                 salesNote?: string;
             }[];
+        };
+        CommentBodyPartial: {
+            /** @example 1 */
+            replyToId?: number;
+            /** @example testi teksti */
+            content?: string;
         };
         AuthResponse: {
             /** @example jwt.token */
@@ -3505,6 +3749,8 @@ export interface components {
             listPosition: number;
             /** @example 1 */
             replyToId: number;
+            /** @example testi teksti */
+            content: string;
         };
         PageSection: {
             /** @example 1 */

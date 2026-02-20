@@ -2,6 +2,7 @@ import type { components } from "@api-types/openapi";
 import { api } from "../../../shared/api/api";
 
 type UserRequest = components["schemas"]["UserBody"];
+type UserBodyPartial = components["schemas"]["UserBodyPartial"];
 
 type UserResponse = components["schemas"]["FullUserResponse"];
 type UserListResponse = components["schemas"]["AllUsersResponse"];
@@ -18,6 +19,6 @@ export const deleteUser = (userId: number) => {
   return api.delete(`/admin/users/${userId}`);
 };
 
-export const updateUser = (userId: number, payload: UserRequest) => {
+export const updateUser = (userId: number, payload: UserBodyPartial) => {
   return api.put<UserResponse>(`/admin/users/${userId}`, payload);
 };
