@@ -54,9 +54,12 @@ adminRouter.post(
       res.status(400).json(parsedBody.error);
       return;
     }
-    const { name, email, passwordHash, roles } = parsedBody.data;
+    const { name, email, password, roles } = parsedBody.data;
 
     const lowerCaseEmail = email.toLowerCase();
+
+    const passwordHash = await argon2.hash(password);
+
     try {
       const user = await prisma.user.findFirst({
         where: { email: lowerCaseEmail },
@@ -70,22 +73,13 @@ adminRouter.post(
       return;
     }
 
-    // hash password
-    let hashedPassword = "";
-    try {
-      hashedPassword = await argon2.hash(passwordHash);
-    } catch (err) {
-      res.status(500).json(err);
-      return;
-    }
-
     let createdUser = null;
     try {
       createdUser = await prisma.user.create({
         data: {
           name,
           email: lowerCaseEmail,
-          passwordHash: hashedPassword,
+          passwordHash: passwordHash,
           roles: {
             create: roles,
           },
@@ -224,10 +218,14 @@ adminRouter.put(
       return;
     }
 
-    const { name, email, passwordHash, roles } = parsedBody.data;
+    const { name, email, password, roles } = parsedBody.data;
     let lowerCaseEmail;
     if (email !== undefined) {
       lowerCaseEmail = email.toLowerCase();
+    }
+    let passwordHash;
+    if (password !== undefined) {
+      passwordHash = await argon2.hash(password);
     }
 
     let user = null;
@@ -238,7 +236,7 @@ adminRouter.put(
         data: {
           ...(lowerCaseEmail !== undefined ? { email: lowerCaseEmail } : {}),
           ...(name !== undefined ? { name } : {}),
-          ...(passwordHash !== undefined ? { passwordHash } : {}),
+          ...(passwordHash !== undefined ? { passwordHash: passwordHash } : {}),
           roles: {
             deleteMany: {},
             create: roles,

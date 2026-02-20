@@ -35,7 +35,7 @@ export const OfferPageBodySchema = OfferPageSchema.omit({
   salespersonId: true,
 })
   .extend({
-    passwordHash: z.string().meta({ example: "hashedtestpassword" }),
+    password: z.string().meta({ example: "testpassword" }),
   })
   .meta({ id: "OfferPageBody" });
 
@@ -53,7 +53,7 @@ export const ConsultantPagePartialSchema = ConsultantPageSchema.partial({
 });
 
 export const OfferPageBodyPartialSchema = OfferPageBodySchema.partial({
-  passwordHash: true,
+  password: true,
   customerId: true,
   description: true,
   shortDescription: true,
@@ -78,3 +78,9 @@ export const PatchConsultantPageBodySchema = z
     customerReview: true
   })
   .meta({ id: "PatchConsultantPageBody" });
+
+export const OfferPagePasswordSchema = z
+  .object({
+    password: z.string().min(6).meta({ example: "Password" }),
+  })
+  .meta({ id: "OfferPagePassword" });

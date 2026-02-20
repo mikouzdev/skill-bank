@@ -11,9 +11,16 @@ import {
   OfferPageBodyPartialSchema,
   PatchConsultantPageParamsSchema,
   PatchConsultantPageBodySchema,
+  OfferPagePasswordSchema,
 } from "../../schemas/sales/offers.schema.js";
+import argon2 from "argon2";
 
 export const offersRouter = Router();
+
+const secret = process.env.SECRET;
+if (secret === undefined) {
+  throw new Error("SECRET environment variable is not set");
+}
 
 /**
  * Gets all offer pages of a sales user
@@ -34,47 +41,48 @@ offersRouter.get(
 
     let offerPages = null;
 
-    //Customer should only get their own offers
+    //Customer requires password and cant get the offer pages like this
     if (roles?.includes("CUSTOMER")) {
-      const user = await prisma.user.findUnique({
-        where: { id: req.user!.id },
-        select: {
-          id: true,
-          roles: { select: { role: true } },
-          customer: { select: { id: true } },
-        },
-      });
-      if (user === null) {
-        res.status(404).json({ message: "User not found" });
-        return;
-      }
-      const customerId = user?.customer?.id;
-      try {
-        if (customerId !== undefined && customerId !== null) {
-          const customer = await prisma.customer.findUnique({
-            where: { id: customerId },
-          });
-          if (customer === null) {
-            res.status(404).json({ message: "Customer not found" });
-            return;
-          }
-          offerPages = await prisma.offerPages.findMany({
-            where: {
-              salespersonId: salesId,
-              customerId: customerId,
-            },
-            include: {
-              consultantPages: true,
-            },
-            omit: {
-              passwordHash: true,
-            },
-          });
-        }
-      } catch (err) {
-        res.status(500).json(err);
-        return;
-      }
+      return res.status(401).send("Unauthorized");
+      // const user = await prisma.user.findUnique({
+      //   where: { id: req.user!.id },
+      //   select: {
+      //     id: true,
+      //     roles: { select: { role: true } },
+      //     customer: { select: { id: true } },
+      //   },
+      // });
+      // if (user === null) {
+      //   res.status(404).json({ message: "User not found" });
+      //   return;
+      // }
+      // const customerId = user?.customer?.id;
+      // try {
+      //   if (customerId !== undefined && customerId !== null) {
+      //     const customer = await prisma.customer.findUnique({
+      //       where: { id: customerId },
+      //     });
+      //     if (customer === null) {
+      //       res.status(404).json({ message: "Customer not found" });
+      //       return;
+      //     }
+      //     offerPages = await prisma.offerPages.findMany({
+      //       where: {
+      //         salespersonId: salesId,
+      //         customerId: customerId,
+      //       },
+      //       include: {
+      //         consultantPages: true,
+      //       },
+      //       omit: {
+      //         passwordHash: true,
+      //       },
+      //     });
+      //   }
+      // } catch (err) {
+      //   res.status(500).json(err);
+      //   return;
+      // }
     } else {
       try {
         offerPages = await prisma.offerPages.findMany({
@@ -123,10 +131,12 @@ offersRouter.post(
       name,
       shortDescription,
       consultantPages,
-      passwordHash,
+      password,
     } = parsedBody.data;
 
     let newOfferPage = null;
+
+    const passwordHash = await argon2.hash(password);
 
     try {
       const customer = await prisma.customer.findUnique({
@@ -222,12 +232,17 @@ offersRouter.put(
       name,
       description,
       shortDescription,
-      passwordHash,
+      password,
       customerId,
       consultantPages,
     } = parsedBody.data;
 
     let offerPage = null;
+
+    let passwordHash;
+    if (password !== undefined) {
+      passwordHash = await argon2.hash(password);
+    }
 
     try {
       if (customerId !== undefined && customerId !== null) {
@@ -438,3 +453,80 @@ offersRouter.patch(
     }
   }
 );
+
+/**
+ * Post a password and get an offer page (customer-only)
+ * @route POST /{salesId}/offers/{offerPageId}
+ * @returns offer page
+ */
+offersRouter.post(
+  "/:salesId/offers/:offerPageId",
+  authenticate,
+  async (req: AuthenticatedRequest, res: Response) => {
+    const parsedParams = PutOfferPageParamsSchema.safeParse(req.params);
+    if (!parsedParams.success) {
+      res.status(400).json(parsedParams.error);
+      return;
+    }
+    const { salesId, offerPageId } = parsedParams.data;
+
+    const parsedBody = OfferPagePasswordSchema.safeParse(req.body);
+    if (!parsedBody.success) {
+      res.status(400).json(parsedBody.error);
+      return;
+    }
+    const { password } = parsedBody.data;
+    const user = await prisma.user.findUnique({
+      where: { id: req.user!.id },
+      select: {
+        id: true,
+        roles: { select: { role: true } },
+        customer: { select: { id: true } },
+      },
+    });
+
+    if (user === null) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+    const customerId = user?.customer?.id;
+    let offerPage = null;
+    try {
+      if (customerId !== undefined && customerId !== null) {
+        const customer = await prisma.customer.findUnique({
+          where: { id: customerId },
+        });
+        if (customer === null) {
+          res.status(404).json({ message: "Customer not found" });
+          return;
+        }
+        offerPage = await prisma.offerPages.findUnique({
+          where: {
+            salespersonId: salesId,
+            id: offerPageId,
+          },
+          include: {
+            consultantPages: true,
+          },
+          // omit: {
+          //   passwordHash: true,
+          // },
+        });
+        if (offerPage === null) {
+          res.status(404).json({ message: "Offer page not found" });
+          return;
+        }
+        const passwordMatches = await argon2.verify(offerPage.passwordHash, password);
+        if (!passwordMatches) {
+          res.status(401).send({ error: "Invalid password" });
+          return;
+        }
+        offerPage.passwordHash = "";
+        res.json(offerPage);
+      }
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
+    
+});
