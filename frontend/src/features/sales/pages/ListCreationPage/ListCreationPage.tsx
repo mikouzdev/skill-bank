@@ -29,7 +29,6 @@ type Consultant = components["schemas"]["ConsultantResponse"];
 type SalesListBody = components["schemas"]["SalesListBody"];
 
 const emptyList: SalesListBody = {
-  customerId: 0,
   description: "",
   shortDescription: "",
   isReviewDone: false,
@@ -85,7 +84,6 @@ export default function ListCreationPage() {
 
     const newList: SalesListBody = {
       ...list,
-      customerId: Number(list.customerId),
       salesListItems: addedConsultants.map((c) => ({
         consultantId: c.id,
         isAccepted: false,
@@ -101,7 +99,7 @@ export default function ListCreationPage() {
       setAddedConsultants([]);
       showSuccess("List created succesfully!");
     } catch (error) {
-      showError("Failed to create list. Does customerID exist?");
+      showError("Failed to create list.");
       console.log(error);
     }
   }
@@ -133,17 +131,6 @@ export default function ListCreationPage() {
           name="shortDescription"
           required
           value={list.shortDescription || ""}
-          onChange={handleChange}
-        />
-
-        <TextField
-          fullWidth
-          size="small"
-          type="number"
-          label="Customer ID"
-          name="customerId"
-          required
-          value={list.customerId}
           onChange={handleChange}
         />
       </Stack>
