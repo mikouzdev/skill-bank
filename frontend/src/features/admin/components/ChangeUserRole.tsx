@@ -14,12 +14,12 @@ import {
 import type { components } from "@api-types/openapi";
 
 type UserResponse = components["schemas"]["UserResponse"];
-type UserBody = components["schemas"]["UserBody"];
+type UserBody = components["schemas"]["UserBodyPartial"];
 type Role = "CONSULTANT" | "SALESPERSON" | "CUSTOMER" | "ADMIN";
 
 type Props = {
   user: UserResponse;
-  onSubmit: (id: number, user: Partial<UserBody>) => Promise<boolean>;
+  onSubmit: (id: number, user: UserBody) => Promise<boolean>;
 };
 
 export function ChangeUserRole({ user, onSubmit }: Props) {
@@ -46,7 +46,7 @@ export function ChangeUserRole({ user, onSubmit }: Props) {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const payload: Partial<UserBody> = {
+    const payload: UserBody = {
       roles: form.roles,
     };
 

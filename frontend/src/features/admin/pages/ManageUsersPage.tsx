@@ -10,6 +10,7 @@ import { useSnackbar } from "../../../shared/components/useSnackbar";
 // import SearchBar from "../../../shared/components/Search";
 
 type UserRequest = components["schemas"]["UserBody"];
+type UserBodyPartial = components["schemas"]["UserBodyPartial"];
 type UserListResponse = components["schemas"]["AllUsersResponse"];
 
 type SelectedUser = {
@@ -97,7 +98,7 @@ export const ManageUsersPage = () => {
 
   async function handleUpdateUser(
     id: number,
-    payload: UserRequest
+    payload: UserBodyPartial
   ): Promise<boolean> {
     try {
       const response = await updateUser(id, payload);
