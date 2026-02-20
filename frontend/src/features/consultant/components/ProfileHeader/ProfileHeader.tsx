@@ -1,8 +1,18 @@
-import { Avatar, Box, IconButton, Stack, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  IconButton,
+  Stack,
+  Typography,
+} from "@mui/material";
 
+import { AccountCircle, Inbox } from "@mui/icons-material";
 import { SiGitlab, SiGithub, SiLinkedin } from "react-icons/si";
 import { MdEmail } from "react-icons/md";
 import type { components } from "@api-types/openapi";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../../app/hooks/useAuth";
 
 type Consultant = components["schemas"]["ConsultantResponse"];
 type AttributeList = components["schemas"]["GetAttributesResponse"];
@@ -10,9 +20,44 @@ type AttributeList = components["schemas"]["GetAttributesResponse"];
 type Props = {
   data: Consultant;
   attributes: AttributeList;
+  isCommentView?: boolean;
 };
 
-export default function ProfileHeader({ data, attributes }: Props) {
+export default function ProfileHeader({
+  data,
+  attributes,
+  isCommentView,
+}: Props) {
+  const navigate = useNavigate();
+  const { currentUser } = useAuth();
+
+  const isOwnProfile = currentUser?.consultantId === data.id;
+  const isAuthorized =
+    isOwnProfile ||
+    currentUser?.roles.some((r) => r === "SALESPERSON" || r === "ADMIN");
+
+  async function navigateToComments() {
+    try {
+      await navigate(
+        isOwnProfile
+          ? `/consultant/me/comments`
+          : `/consultant/${data.id}/comments`
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function navigateToProfile() {
+    try {
+      await navigate(
+        isOwnProfile ? `/consultant/me` : `/consultant/${data.id}`
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   let linkedInLink = "";
   let gitLabLink = "";
   let gitHubLink = "";
@@ -74,6 +119,22 @@ export default function ProfileHeader({ data, attributes }: Props) {
         <Typography variant="h6">{data.roleTitle}</Typography>
       </Stack>
       {iconLinkStack}
+      <Box sx={{ display: "flex", ml: "auto", alignItems: "flex-start" }}>
+        {isAuthorized && (
+          <Button
+            size="small"
+            startIcon={!isCommentView ? <Inbox /> : <AccountCircle />}
+            sx={{ px: 1 }}
+            onClick={
+              !isCommentView
+                ? () => void navigateToComments()
+                : () => void navigateToProfile()
+            }
+          >
+            {!isCommentView ? "View comments" : "View profile"}
+          </Button>
+        )}
+      </Box>
     </Box>
   );
 
@@ -100,7 +161,7 @@ export default function ProfileHeader({ data, attributes }: Props) {
     >
       {profilePicture}
 
-      <Stack spacing={1} sx={{ maxWidth: 1000 }}>
+      <Stack spacing={1} width={"100%"}>
         {headerTitle}
 
         <Typography>{data.description}</Typography>

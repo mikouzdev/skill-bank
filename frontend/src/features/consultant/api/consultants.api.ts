@@ -150,7 +150,16 @@ export const createAttribute = (payload: AttributeBody) => {
   return api.post<Attribute>("/consultants/me/attributes", payload);
 };
 
+// page sections
+
 type SectionBody = components["schemas"]["PageSectionBodyPartial"];
+type GetPageSectionsResponse = components["schemas"]["GetPageSectionsResponse"];
+
+export const getSections = (consultantId: number) => {
+  return api.get<GetPageSectionsResponse>(
+    `/consultants/${consultantId}/sections`
+  );
+};
 
 export const updateSection = (section: SectionBody) => {
   return api.put(`/consultants/me/sections/${section.name}`, section);

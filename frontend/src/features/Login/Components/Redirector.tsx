@@ -9,7 +9,7 @@ export const Redirector = () => {
   const redirect = () => {
     console.log("ulos saadaa tama tieto: ", currentUser);
     if (currentUser?.roles.includes("CONSULTANT")) {
-      void navigate("/me");
+      void navigate("/consultant/me");
       return;
     }
     if (currentUser?.roles.includes("SALESPERSON")) {
