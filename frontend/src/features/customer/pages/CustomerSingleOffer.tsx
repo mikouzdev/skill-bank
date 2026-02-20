@@ -41,6 +41,12 @@ export default function CustomerSingleOffer({ offerData }: Props) {
             <ConsultantCard
               key={consultant.id}
               consultantID={consultant.consultantId}
+              offer={{
+                id: offerData.id,
+                salesId: offerData.salespersonId,
+                consultantPageId: consultant.id,
+                isAccepted: consultant.isAccepted,
+              }}
             />
           ))}
         </Stack>
