@@ -42,6 +42,10 @@ export const TokenPayloadSchema = z.object({
   email: z.email().optional(),
 });
 
+export const RoleBodySchema = z.object({
+  role: z.enum(["CONSULTANT", "SALESPERSON", "CUSTOMER", "ADMIN"])
+});
+
 export type LoginInput = z.infer<typeof LoginSchema>;
 export type AuthResponse = z.infer<typeof AuthResponseSchema>;
 export type LogoutResponse = z.infer<typeof LogoutResponseSchema>;

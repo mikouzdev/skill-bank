@@ -2,7 +2,7 @@ import { Router, type Request, type Response } from "express";
 import argon2 from "argon2";
 import jwt from "jsonwebtoken";
 import { prisma } from "../../db/prismaClient.js";
-import { LoginSchema } from "../../schemas/auth/auth.schema.js";
+import { LoginSchema, RoleBodySchema } from "../../schemas/auth/auth.schema.js";
 import {
   authenticate,
   type AuthenticatedRequest,
@@ -129,3 +129,58 @@ usersRouter.get(
     });
   }
 );
+
+/**
+ * Change user's primary role
+ * @route POST /auth/role
+ * @returns confirmation message
+ */
+usersRouter.post("/role", authenticate, async (req: AuthenticatedRequest, res: Response) => {
+  const parsedBody = RoleBodySchema.safeParse(req.body);
+  if (!parsedBody.success) {
+    res.status(400).json(parsedBody.error);
+    return;
+  }
+  const { role } = parsedBody.data;
+  const user = await prisma.user.findUnique({
+    where: { id: req.user!.id },
+    select: {
+      id: true,
+      email: true,
+      name: true,
+      roles: { select: { role: true } },
+      consultant: { select: { id: true } },
+      salesperson: { select: { id: true } },
+      customer: { select: { id: true } },
+    },
+  });
+
+  if (!user) {
+    return res.status(401).send("Unauthorized");
+  }
+  await Promise.all(
+    user.roles.map(async (userrole) => {
+      switch (userrole.role) {
+        case "CONSULTANT":
+          if (role === "CONSULTANT") {
+            
+          }
+          break;
+        case "SALESPERSON":
+          if (user.consultant === null || user.consultant === undefined) {
+            return res.status(404).send("No consultant role found for user");
+          }
+          break;
+        case "CUSTOMER":
+          if (user.consultant === null || user.consultant === undefined) {
+            return res.status(404).send("No consultant role found for user");
+          }
+          break;
+        case "ADMIN":
+          
+          break;
+      }
+    })
+  );
+
+});
