@@ -2,7 +2,7 @@ import { Avatar, Box, Stack, Typography, Button, Paper } from "@mui/material";
 import { useConsultantDetails } from "../../consultant/hooks/useConsultantDetails";
 import SkillsBuilder from "./SkillsBuilder";
 import type { components } from "@api-types/openapi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, type To } from "react-router-dom";
 
 type Consultant = components["schemas"]["ConsultantResponse"];
 
@@ -11,6 +11,14 @@ type Props = {
   selectable?: boolean;
   salesNote?: string;
   onSelect?: (consultant: Consultant) => void;
+  offer?: OfferInfo;
+};
+
+type OfferInfo = {
+  id: number;
+  salesId: number;
+  consultantPageId: number;
+  isAccepted: boolean;
 };
 
 export const ConsultantCard = ({
@@ -18,11 +26,26 @@ export const ConsultantCard = ({
   selectable,
   salesNote,
   onSelect,
+  offer,
 }: Props) => {
   const { consultant, skills, employments, projects, loading } =
     useConsultantDetails(consultantID);
 
   const navigate = useNavigate();
+
+  // add search params to url if offerId and salesId is provided. For customer.
+  const queryLink: To = {
+    pathname: `/consultant/${consultantID}`,
+    search:
+      offer?.id && offer.salesId
+        ? `?${new URLSearchParams({
+            salesId: String(offer.salesId),
+            offerId: String(offer.id),
+            consultantPageId: String(offer.consultantPageId),
+            isAccepted: String(offer.isAccepted),
+          }).toString()}`
+        : "",
+  };
 
   if (loading) return <Typography>Loading...</Typography>;
   if (!employments || !consultant || !projects || !skills)
@@ -69,7 +92,7 @@ export const ConsultantCard = ({
               <Button
                 size="small"
                 type="submit"
-                onClick={() => void navigate(`/consultant/${consultantID}`)}
+                onClick={() => void navigate(queryLink)}
               >
                 View profile
               </Button>

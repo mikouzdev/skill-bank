@@ -6,10 +6,12 @@ import {
   ListItemText,
   ListItemIcon,
   Box,
+  Divider,
 } from "@mui/material";
 import { Person, Edit, People, Logout, Groups } from "@mui/icons-material";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import CustomerAcceptConsultant from "../../features/customer/components/CustomerAcceptConsultant";
 
 const DRAWER_WIDTH = 220;
 
@@ -96,9 +98,9 @@ export function Sidebar() {
   const location = useLocation();
   const user = useAuth();
 
-  const role = user.currentUser?.roles ?? [];
+  const roles = user.currentUser?.roles ?? [];
   const visibleItems = navItems.filter((item) => {
-    return item.roles?.some((r) => role.includes(r));
+    return item.roles?.some((r) => roles.includes(r));
   });
 
   return (
@@ -125,6 +127,9 @@ export function Sidebar() {
               </ListItemButton>
             </ListItem>
           ))}
+
+          <Divider sx={{ my: 2 }} />
+          <CustomerAcceptConsultant roles={roles} />
         </List>
       </Box>
     </Drawer>
