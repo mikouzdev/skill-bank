@@ -1,4 +1,5 @@
 import { Avatar, Box, Stack, Button, Checkbox } from "@mui/material";
+import { Link } from "react-router-dom";
 import { ChangeUserRole } from "./ChangeUserRole";
 import type { components } from "@api-types/openapi";
 import dayjs from "dayjs";
@@ -10,6 +11,7 @@ type UserBody = components["schemas"]["UserBodyPartial"];
 type Props = {
   user: UserResponse;
   selected: boolean;
+  consultantId?: number;
   onToggle: (user: SelectedUser) => void;
   onRoleChangeSubmit: (id: number, user: UserBody) => Promise<boolean>;
 };
@@ -35,6 +37,7 @@ function userCreationDate(date: string | Date) {
 export const UserCard = ({
   user,
   selected,
+  consultantId,
   onToggle,
   onRoleChangeSubmit,
 }: Props) => {
@@ -61,6 +64,7 @@ export const UserCard = ({
           </Box>
 
           {/* todo: show all roles */}
+
           <Box>{user.roles?.[0]?.role ? user.roles[0].role : "N/A"}</Box>
           <Box>{userCreationDate(user.createdAt)}</Box>
 
@@ -72,10 +76,16 @@ export const UserCard = ({
               gap: 1,
             }}
           >
+            {consultantId && (
+              <Button
+                component={Link}
+                to={`/consultant/${consultantId}`}
+                variant="contained"
+              >
+                View profile
+              </Button>
+            )}
             <ChangeUserRole user={user} onSubmit={onRoleChangeSubmit} />
-            <Button variant="contained" type="submit">
-              View profile
-            </Button>
           </Box>
         </Stack>
       </Box>
