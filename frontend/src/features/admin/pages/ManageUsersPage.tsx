@@ -6,12 +6,14 @@ import { DeleteUsersDialog } from "../components/DeleteUsersDialog";
 import { createUser, deleteUser, getUsers, updateUser } from "../api/admin.api";
 import type { components } from "@api-types/openapi";
 import { useSnackbar } from "../../../shared/components/useSnackbar";
+import { getConsultants } from "../../consultant/api/consultants.api";
 // import { searchConsultants } from "../../consultant/api/consultants.api";
 // import SearchBar from "../../../shared/components/Search";
 
 type UserRequest = components["schemas"]["UserBody"];
 type UserBodyPartial = components["schemas"]["UserBodyPartial"];
 type UserListResponse = components["schemas"]["AllUsersResponse"];
+type ConsultantProfile = components["schemas"]["ConsultantResponse"];
 
 type SelectedUser = {
   id: number;
@@ -24,6 +26,7 @@ export const ManageUsersPage = () => {
   const [selectedUsers, setSelectedUsers] = useState<SelectedUser[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  const [consultants, setConsultants] = useState<ConsultantProfile[]>([]);
   // const [search, setSearch] = useState<string>("");
 
   const toggleSelected = (user: SelectedUser) => {
@@ -40,7 +43,9 @@ export const ManageUsersPage = () => {
         setError("");
         setLoading(true);
         const response = await getUsers();
+        const consultantsResponse = await getConsultants();
         setUsers(response.data);
+        setConsultants(consultantsResponse.data);
       } catch (err) {
         console.error("Failed to load users", err);
         setError("Failed to load users");
@@ -113,6 +118,20 @@ export const ManageUsersPage = () => {
     }
   }
 
+  const getConsultantId = (user: number) => {
+    let match;
+    try {
+      match = consultants.find((c) => c.userId === user);
+      console.log(match);
+    } catch (e) {
+      console.error(e);
+    }
+
+    if (match != null) {
+      return match.id;
+    }
+  };
+
   return (
     <>
       <Paper sx={{ border: 1, margin: "16px", background: "#efefef" }}>
@@ -120,10 +139,12 @@ export const ManageUsersPage = () => {
           getText={setSearch}
           loadConsultants={() => void loadConsultants()}
         /> */}
+
         {users.map((user) => (
           <Box key={user.id} sx={{ m: 3, background: "white" }}>
             <UserCard
               user={user}
+              consultantId={getConsultantId(user.id) || undefined}
               selected={selectedUsers.some((u) => u.id === user.id)}
               onToggle={toggleSelected}
               onRoleChangeSubmit={(id, payload) =>
