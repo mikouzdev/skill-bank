@@ -8,6 +8,7 @@ import { addSkill, deleteSkill, updateSkill } from "../../api/consultants.api";
 import { useSnackbar } from "../../../../shared/components/useSnackbar";
 import { useState } from "react";
 import AddSkillDialog from "./AddSkillDialog";
+import AddCommentButton from "../../../sales/components/AddCommentButton";
 
 type ConsultantSkill = components["schemas"]["ConsultantSkill"];
 type SkillsResponse = components["schemas"]["SkillTagList"];
@@ -100,7 +101,7 @@ export default function Skills({
 
   return (
     <Box sx={{ p: 2 }}>
-      <Stack direction={"row"} spacing={2}>
+      <Stack direction={"row"} spacing={2} mb={1}>
         <Typography variant="h5">Skills</Typography>
         {editable && skillData && categoryData && (
           <AddSkillDialog
@@ -109,6 +110,7 @@ export default function Skills({
             onSubmit={handleAddSkill}
           />
         )}
+        <AddCommentButton label="Add comment" section="SKILLS" />
       </Stack>
 
       <Box
