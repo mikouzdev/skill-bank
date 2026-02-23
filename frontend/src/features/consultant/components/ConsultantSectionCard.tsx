@@ -25,7 +25,7 @@ export default function ConsultantSectionCard({
           <Box p={2}>
             <Stack direction={"row"} justifyContent={"space-between"}>
               <Typography gutterBottom>
-                {c.userRole} {c.id} commented:
+                {c.userRole} {c.userId} commented:
               </Typography>
               <Typography>{dayjs(c.updatedAt).format(DATE_FORMAT)}</Typography>
             </Stack>
