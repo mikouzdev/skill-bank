@@ -9,6 +9,7 @@ import {
 import type { components } from "@api-types/openapi";
 import { useState } from "react";
 import SectionVisibilitySwitch from "../../../../shared/components/SectionVisibilitySwitch";
+import AddCommentButton from "../../../sales/components/AddCommentButton";
 type ConsultantEmploymentList = components["schemas"]["EmploymentListResponse"];
 type SkillsResponse = components["schemas"]["SkillTagList"];
 type Employment = Partial<components["schemas"]["EmploymentResponse"]>;
@@ -80,6 +81,7 @@ export default function ProfessionalExperience({
     <Stack spacing={1} sx={{ maxWidth: 1200 }}>
       <Stack direction={"row"} spacing={2}>
         <Typography variant="h5">Professional Experience</Typography>
+        <AddCommentButton label="Add comment" section="EMPLOYMENTS" />
       </Stack>
 
       <Stack spacing={1}>

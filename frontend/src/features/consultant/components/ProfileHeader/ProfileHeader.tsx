@@ -13,6 +13,7 @@ import { MdEmail } from "react-icons/md";
 import type { components } from "@api-types/openapi";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../../app/hooks/useAuth";
+import AddCommentButton from "../../../sales/components/AddCommentButton";
 
 type Consultant = components["schemas"]["ConsultantResponse"];
 type AttributeList = components["schemas"]["GetAttributesResponse"];
@@ -119,12 +120,13 @@ export default function ProfileHeader({
         <Typography variant="h6">{data.roleTitle}</Typography>
       </Stack>
       {iconLinkStack}
-      <Box sx={{ display: "flex", ml: "auto", alignItems: "flex-start" }}>
+      <Stack ml="auto" justifyContent="flex-start" spacing={1}>
+        <AddCommentButton label="Comment profile" section="GENERAL" />
         {isAuthorized && (
           <Button
             size="small"
             startIcon={!isCommentView ? <Inbox /> : <AccountCircle />}
-            sx={{ px: 1 }}
+            sx={{ px: 2, width: "100%" }}
             onClick={
               !isCommentView
                 ? () => void navigateToComments()
@@ -134,7 +136,7 @@ export default function ProfileHeader({
             {!isCommentView ? "View comments" : "View profile"}
           </Button>
         )}
-      </Box>
+      </Stack>
     </Box>
   );
 
