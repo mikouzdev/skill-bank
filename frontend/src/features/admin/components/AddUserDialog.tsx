@@ -28,7 +28,7 @@ export function AddUserDialog({ onAddUser }: Props) {
     name: "",
     email: "",
     roles: [{ role: "CONSULTANT" }],
-    passwordHash: "",
+    password: "",
   });
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -37,7 +37,7 @@ export function AddUserDialog({ onAddUser }: Props) {
 
     setLoading(true);
 
-    if (form.passwordHash.length < 6) {
+    if (form.password.length < 6) {
       showError("Password must be at least 6 characters");
       setLoading(false);
       return;
@@ -92,9 +92,9 @@ export function AddUserDialog({ onAddUser }: Props) {
 
               <TextField
                 label="Password"
-                value={form.passwordHash}
+                value={form.password}
                 onChange={(e) =>
-                  setForm((p) => ({ ...p, passwordHash: e.target.value }))
+                  setForm((p) => ({ ...p, password: e.target.value }))
                 }
                 required
                 fullWidth

@@ -31,7 +31,7 @@ const emptyOffer: OfferPageBody = {
   name: null,
   description: null,
   shortDescription: null,
-  passwordHash: "",
+  password: "",
   consultantPages: [],
 };
 
@@ -85,6 +85,7 @@ export default function OfferCreationPage() {
         consultantId: c.id,
         showInfo: true,
         isAccepted: false,
+        customerReview: null,
       })),
     };
 
@@ -129,9 +130,9 @@ export default function OfferCreationPage() {
           size="small"
           type="text"
           label="Offer password"
-          name="passwordHash"
+          name="password"
           required
-          value={offer.passwordHash}
+          value={offer.password}
           onChange={handleChange}
         />
         <TextField
