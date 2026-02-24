@@ -2722,7 +2722,62 @@ export interface paths {
                 };
             };
         };
-        post?: never;
+        /** Post a password and get an offer page */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    salesId: number;
+                    offerPageId: number;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["OfferPagePassword"];
+                };
+            };
+            responses: {
+                /** @description Retrieval successful */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["OfferPage"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid password */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
         /** Delete an offer page */
         delete: {
             parameters: {
@@ -2777,7 +2832,7 @@ export interface paths {
         delete?: never;
         options?: never;
         head?: never;
-        /** Update isAccepted status of a consultant page */
+        /** Update isAccepted status and customer review of a consultant page */
         patch: {
             parameters: {
                 query?: never;
@@ -3285,8 +3340,8 @@ export interface components {
                  */
                 role: "CONSULTANT" | "SALESPERSON" | "CUSTOMER" | "ADMIN";
             }[];
-            /** @example hashedtestpassword */
-            passwordHash: string;
+            /** @example unhashedtestpassword */
+            password: string;
         };
         UserBodyPartial: {
             /** @example John Lee */
@@ -3310,8 +3365,8 @@ export interface components {
                  */
                 role: "CONSULTANT" | "SALESPERSON" | "CUSTOMER" | "ADMIN";
             }[];
-            /** @example hashedtestpassword */
-            passwordHash?: string;
+            /** @example unhashedtestpassword */
+            password?: string;
         };
         PageSectionBodyPartial: {
             /**
@@ -3397,8 +3452,8 @@ export interface components {
             /** @example esimerkki teksti */
             shortDescription: string | null;
             consultantPages: components["schemas"]["ConsultantPage"][];
-            /** @example hashedtestpassword */
-            passwordHash: string;
+            /** @example testpassword */
+            password: string;
         };
         ConsultantPage: {
             /** @example 1 */
@@ -3411,6 +3466,8 @@ export interface components {
             showInfo: boolean;
             /** @example true */
             isAccepted: boolean;
+            /** @example esimerkki teksti */
+            customerReview: string | null;
         };
         OfferPageBodyPartial: {
             /** @example 1 */
@@ -3429,16 +3486,24 @@ export interface components {
                 /** @example 1 */
                 consultantId: number;
                 /** @example true */
-                showInfo: boolean;
+                showInfo?: boolean;
                 /** @example true */
-                isAccepted: boolean;
+                isAccepted?: boolean;
+                /** @example esimerkki teksti */
+                customerReview?: string | null;
             }[];
-            /** @example hashedtestpassword */
-            passwordHash?: string;
+            /** @example testpassword */
+            password?: string;
+        };
+        OfferPagePassword: {
+            /** @example Password */
+            password: string;
         };
         PatchConsultantPageBody: {
             /** @example true */
             isAccepted: boolean;
+            /** @example esimerkki teksti */
+            customerReview?: string | null;
         };
         SalesListBody: {
             /** @example 1 */
@@ -3876,6 +3941,8 @@ export interface components {
             showInfo: boolean;
             /** @example true */
             isAccepted: boolean;
+            /** @example esimerkki teksti */
+            customerReview: string | null;
         };
     };
     responses: never;
