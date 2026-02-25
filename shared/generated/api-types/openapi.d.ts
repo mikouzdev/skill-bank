@@ -123,6 +123,91 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/auth/role": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update current user's primary role */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        role: "CONSULTANT" | "SALESPERSON" | "CUSTOMER" | "ADMIN";
+                    };
+                };
+            };
+            responses: {
+                /** @description Update successful */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["FullUserResponse"];
+                    };
+                };
+                /** @description Role is already primary role */
+                202: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description User only has one role */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
     "/consultants": {
         parameters: {
             query?: never;
@@ -3587,6 +3672,37 @@ export interface components {
             /** @example null */
             customerId: number | null;
         };
+        FullUserResponse: {
+            /** @example 1 */
+            id: number;
+            /** @example John Lee */
+            name: string;
+            /** @example testi@hotmail.com */
+            email: string;
+            /** @example 2025-12-19T14:01:24.308Z */
+            createdAt: string;
+            /** @example 2025-12-19T14:01:24.308Z */
+            updatedAt: string;
+            /**
+             * @example [
+             *       {
+             *         "role": "CONSULTANT"
+             *       },
+             *       {
+             *         "role": "SALESPERSON"
+             *       }
+             *     ]
+             */
+            roles: {
+                /**
+                 * @example CONSULTANT
+                 * @enum {string}
+                 */
+                role: "CONSULTANT" | "SALESPERSON" | "CUSTOMER" | "ADMIN";
+            }[];
+            /** @example hashedtestpassword */
+            passwordHash: string;
+        };
         AllConsultantsResponse: components["schemas"]["ConsultantResponse"][];
         ConsultantResponse: {
             /** @example 1 */
@@ -3745,37 +3861,6 @@ export interface components {
                  */
                 role: "CONSULTANT" | "SALESPERSON" | "CUSTOMER" | "ADMIN";
             }[];
-        };
-        FullUserResponse: {
-            /** @example 1 */
-            id: number;
-            /** @example John Lee */
-            name: string;
-            /** @example testi@hotmail.com */
-            email: string;
-            /** @example 2025-12-19T14:01:24.308Z */
-            createdAt: string;
-            /** @example 2025-12-19T14:01:24.308Z */
-            updatedAt: string;
-            /**
-             * @example [
-             *       {
-             *         "role": "CONSULTANT"
-             *       },
-             *       {
-             *         "role": "SALESPERSON"
-             *       }
-             *     ]
-             */
-            roles: {
-                /**
-                 * @example CONSULTANT
-                 * @enum {string}
-                 */
-                role: "CONSULTANT" | "SALESPERSON" | "CUSTOMER" | "ADMIN";
-            }[];
-            /** @example hashedtestpassword */
-            passwordHash: string;
         };
         GetPageSectionsResponse: {
             /** @example 1 */
