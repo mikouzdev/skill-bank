@@ -10,6 +10,9 @@ import ConsultantSectionCard from "../components/ConsultantSectionCard";
 
 type SectionList = components["schemas"]["GetPageSectionsResponse"];
 
+/**
+ * Page to view consultants comments.
+ */
 export default function ConsultantCommentsPage() {
   const [sections, setSections] = useState<SectionList>([]);
   const { currentUser, isLoading: authLoading } = useAuth();
@@ -62,7 +65,7 @@ export default function ConsultantCommentsPage() {
         <ConsultantSectionCard
           key={s.id}
           section={s}
-          replyAllowed={isOwnProfile}
+          replyAllowed={isAuthorized}
         />
       )
   );
