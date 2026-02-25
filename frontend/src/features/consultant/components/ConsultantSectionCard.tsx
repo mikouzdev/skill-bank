@@ -1,6 +1,6 @@
-import dayjs from "dayjs";
 import type { components } from "@api-types/openapi";
-import { Box, Button, Chip, Paper, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
+import CommentThread from "./CommentThread";
 
 type Section = components["schemas"]["GetPageSectionsResponse"][number];
 
@@ -9,42 +9,33 @@ type Props = {
   replyAllowed?: boolean;
 };
 
-const DATE_FORMAT = "DD/MM/YY HH:MM";
-
+/**
+ * Displays a single page section comments.
+ */
 export default function ConsultantSectionCard({
   section,
   replyAllowed,
 }: Props) {
   if (!section) return <Typography>Section data failed to load.</Typography>;
 
+  // split section comments into comments that ARENT replies, and comments that ARE replies.
+  // based on wether they have a replyToId or not.
+  const rootComments = section.comments.filter((c) => c.replyToId === null);
+  const replies = section.comments.filter((c) => c.replyToId !== null);
+
+  const sectionComments = rootComments.map((c) => (
+    <CommentThread
+      key={c.id}
+      comment={c}
+      replies={replies}
+      section={section}
+      replyAllowed={replyAllowed}
+    />
+  ));
+
   return (
-    <Stack spacing={2}>
-      {section.comments.map((c) => (
-        // comment card
-        <Paper key={c.id}>
-          <Box p={2}>
-            <Stack direction={"row"} justifyContent={"space-between"}>
-              <Typography gutterBottom>
-                {c.userRole} {c.userId} commented:
-              </Typography>
-              <Typography>{dayjs(c.updatedAt).format(DATE_FORMAT)}</Typography>
-            </Stack>
-
-            <Box>
-              <Typography gutterBottom>{c.content}</Typography>
-            </Box>
-
-            <Stack
-              direction={"row"}
-              justifyContent={"space-between"}
-              alignItems={"center"}
-            >
-              <Chip label={section.name} size="small" color="primary" />
-              {replyAllowed && <Button size="small">Reply (WIP)</Button>}
-            </Stack>
-          </Box>
-        </Paper>
-      ))}
+    <Stack spacing={2} alignItems={"flex-end"}>
+      {sectionComments}
     </Stack>
   );
 }
