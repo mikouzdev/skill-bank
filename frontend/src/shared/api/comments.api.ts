@@ -14,3 +14,7 @@ export const createComment = (
     comment
   );
 };
+
+export const deleteComment = (commentId: number) => {
+  return api.delete(`/comments/${commentId}`);
+};

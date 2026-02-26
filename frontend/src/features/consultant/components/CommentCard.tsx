@@ -1,8 +1,24 @@
 import dayjs from "dayjs";
 import type { components } from "@api-types/openapi";
-import { Box, Chip, IconButton, Paper, Stack, Typography } from "@mui/material";
-import { KeyboardArrowDown, KeyboardArrowRight } from "@mui/icons-material";
+import {
+  Box,
+  Button,
+  Chip,
+  IconButton,
+  Paper,
+  Stack,
+  Typography,
+} from "@mui/material";
+import {
+  KeyboardArrowDown,
+  KeyboardArrowRight,
+  Delete,
+} from "@mui/icons-material";
 import CommentReplyButton from "./CommentReplyButton";
+import { useAuth } from "../../../app/hooks/useAuth";
+import { deleteComment } from "../../../shared/api/comments.api";
+import { useState } from "react";
+import { useSnackbar } from "../../../shared/components/useSnackbar";
 
 const DATE_FORMAT = "DD/MM/YYYY - HH:mm";
 
@@ -17,6 +33,7 @@ type Props = {
   collapsible?: boolean;
   onCollapse?: () => void;
   isCollapsed?: boolean;
+  onCommentDeleted?: (commentId: number) => void;
 };
 
 /**
@@ -30,7 +47,27 @@ export default function CommentCard({
   collapsible,
   onCollapse,
   isCollapsed,
+  onCommentDeleted,
 }: Props) {
+  const { currentUser } = useAuth();
+  const isOwnComment = commentData.userId === currentUser?.id;
+
+  const { showSuccess, showError } = useSnackbar();
+  const [loading, setLoading] = useState<boolean>(false);
+  async function handleDeleteComment() {
+    try {
+      setLoading(true);
+      await deleteComment(commentData.id);
+      onCommentDeleted?.(commentData.id);
+      showSuccess("Comment deleted successfully.");
+    } catch (error) {
+      showError("Failed to delete comment.");
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   const sectionNameChip = !isReply ? (
     <Chip label={sectionData.name} size="small" color="primary" />
   ) : null;
@@ -44,10 +81,24 @@ export default function CommentCard({
       />
     ) : null;
 
-  const collapseRepliesButton = !isReply ? (
-    <IconButton onClick={onCollapse} aria-label="collapse replies">
-      {isCollapsed ? <KeyboardArrowRight /> : <KeyboardArrowDown />}
-    </IconButton>
+  const collapseRepliesButton =
+    !isReply && collapsible ? (
+      <IconButton onClick={onCollapse} aria-label="collapse replies">
+        {isCollapsed ? <KeyboardArrowRight /> : <KeyboardArrowDown />}
+      </IconButton>
+    ) : null;
+
+  const deleteButton = isOwnComment ? (
+    <Button
+      onClick={() => void handleDeleteComment()}
+      sx={{ px: 2 }}
+      size="small"
+      startIcon={<Delete />}
+      aria-label="delete comment"
+      loading={loading}
+    >
+      Delete
+    </Button>
   ) : null;
 
   return (
@@ -83,9 +134,16 @@ export default function CommentCard({
           alignItems={"center"}
         >
           {sectionNameChip}
-          <Stack direction={"row"} spacing={1}>
-            {collapsible ? collapseRepliesButton : null}
+          <Stack
+            direction={"row"}
+            spacing={1}
+            justifyContent={"flex-end"}
+            alignItems={"center"}
+            flex={1}
+          >
+            {collapseRepliesButton}
             {replyButton}
+            {deleteButton}
           </Stack>
         </Stack>
       </Box>
