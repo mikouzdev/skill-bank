@@ -7,6 +7,7 @@ type Section = components["schemas"]["GetPageSectionsResponse"][number];
 type Props = {
   section: Section;
   replyAllowed?: boolean;
+  onCommentDeleted?: (sectionId: number, commentId: number) => void;
 };
 
 /**
@@ -15,6 +16,7 @@ type Props = {
 export default function ConsultantSectionCard({
   section,
   replyAllowed,
+  onCommentDeleted,
 }: Props) {
   if (!section) return <Typography>Section data failed to load.</Typography>;
 
@@ -30,6 +32,7 @@ export default function ConsultantSectionCard({
       replies={replies}
       section={section}
       replyAllowed={replyAllowed}
+      onCommentDeleted={(commentId) => onCommentDeleted?.(section.id, commentId)}
     />
   ));
 

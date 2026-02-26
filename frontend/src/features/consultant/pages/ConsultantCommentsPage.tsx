@@ -59,6 +59,22 @@ export default function ConsultantCommentsPage() {
   if (!consultant || !attributes)
     return <Typography>Consultant not found.</Typography>;
 
+  // update local state of section/comments on comment deletion.
+  function handleCommentDeleted(sectionId: number, commentId: number) {
+    setSections((prev) =>
+      prev.map((section) => {
+        if (section.id !== sectionId) return section;
+
+        return {
+          ...section,
+          comments: section.comments.filter(
+            (comment) => comment.id !== commentId
+          ),
+        };
+      })
+    );
+  }
+
   const mappedSections = sections.map(
     (s) =>
       s.comments.length > 0 && (
@@ -66,6 +82,7 @@ export default function ConsultantCommentsPage() {
           key={s.id}
           section={s}
           replyAllowed={isAuthorized}
+          onCommentDeleted={handleCommentDeleted}
         />
       )
   );

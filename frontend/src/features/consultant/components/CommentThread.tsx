@@ -13,6 +13,7 @@ type Props = {
   replies: Comment[];
   section: Section;
   replyAllowed?: boolean;
+  onCommentDeleted?: (commentId: number) => void;
 };
 
 /**
@@ -23,6 +24,7 @@ export default function CommentThread({
   replies,
   section,
   replyAllowed,
+  onCommentDeleted,
 }: Props) {
   const [collapsed, setCollapsed] = useState<boolean>(false);
   const threadReplies = replies.filter((r) => r.replyToId === comment.id);
@@ -42,6 +44,7 @@ export default function CommentThread({
         collapsible={sortedReplies.length > 0}
         onCollapse={() => setCollapsed((prev) => !prev)}
         isCollapsed={collapsed}
+        onCommentDeleted={onCommentDeleted}
       />
 
       {/* replies, if there are */}
@@ -54,6 +57,7 @@ export default function CommentThread({
                 commentData={r}
                 sectionData={section}
                 isReply
+                onCommentDeleted={onCommentDeleted}
               />
             ))}
           </Stack>
