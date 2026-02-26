@@ -4,6 +4,7 @@ import { api } from "./api";
 type GetOfferPagesResponse = components["schemas"]["GetOfferPagesResponse"];
 type OfferPage = components["schemas"]["OfferPage"];
 type OfferPageBody = components["schemas"]["OfferPageBody"];
+type OfferPageBodyPartial = components["schemas"]["OfferPageBodyPartial"];
 
 type GetSalesListsResponse = components["schemas"]["GetSalesListsResponse"];
 type SalesList = components["schemas"]["SalesList"];
@@ -19,6 +20,14 @@ export const createOffer = (salesId: number, payload: OfferPageBody) => {
 
 export const deleteOffer = (salesId: number, offerPageId: number) => {
   return api.delete(`/sales/${salesId}/offers/${offerPageId}`);
+};
+
+export const updateOffer = (
+  salesId: number,
+  offerPageId: number,
+  payload: OfferPageBodyPartial
+) => {
+  return api.put(`/sales/${salesId}/offers/${offerPageId}`, payload);
 };
 
 export const getSalesList = (salesId: number) => {
