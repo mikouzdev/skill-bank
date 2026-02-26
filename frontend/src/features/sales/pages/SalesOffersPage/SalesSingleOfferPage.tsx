@@ -48,8 +48,12 @@ export default function SalesSingleOfferPage() {
   );
 
   const editButton = (
-    <Button size="small" loading={loading}>
-      Edit offer (WIP)
+    <Button
+      size="small"
+      loading={loading}
+      onClick={() => void navigate(`/manage-offers/edit/${offer.id}`)}
+    >
+      Edit offer
     </Button>
   );
 
