@@ -24,6 +24,7 @@ import OfferCreationPage from "../features/sales/pages/OfferCreationPage/OfferCr
 import ConsultantProfileForOthers from "../shared/pages/ConsultantProfileForOthers";
 import ListCreationPage from "../features/sales/pages/ListCreationPage/ListCreationPage";
 import ConsultantCommentsPage from "../features/consultant/pages/ConsultantCommentsPage";
+import OfferEditingPage from "../features/sales/pages/OfferEditingPage/OfferEditingPage";
 
 function App() {
   return (
@@ -77,6 +78,10 @@ function App() {
             <Route
               path="/manage-offers/create"
               element={<OfferCreationPage />}
+            />
+            <Route
+              path="/manage-offers/edit/:id"
+              element={<OfferEditingPage />}
             />
             <Route path="/sales" element={<ConsultantListView />} />
             <Route
