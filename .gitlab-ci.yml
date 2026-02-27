@@ -14,11 +14,21 @@ variables:
 e2e-tests:
   stage: test
   image: cypress/browsers:node-22.19.0-chrome-139.0.7258.154-1-ff-142.0.1-edge-139.0.3405.125-1
-  services: [] # Usually not needed unless testing against external DB/etc.
+  services:
+    - name: postgres:16 # or postgres:15, etc.
+      alias: db
+  variables:
+    POSTGRES_DB: test_db
+    POSTGRES_USER: test_user
+    POSTGRES_PASSWORD: test_password
   before_script:
     - npm install -g pnpm@latest
     - cd frontend && pnpm install
     - cd ../backend && pnpm install
+    - until pg_isready -h db -U ${POSTGRES_USER} -d ${POSTGRES_DB}; do sleep 1; done || true
+    - pnpm run db:migrate
+    - pnpm run db:generate
+    - pnpm run db:seed
   script:
     - pnpm run dev &
     - npx wait-on tcp:localhost:3000 --timeout 90000 --interval 1000
