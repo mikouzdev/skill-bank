@@ -1,14 +1,6 @@
 import type { components } from "@api-types/openapi";
-import {
-  Accordion,
-  AccordionSummary,
-  Box,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Container, Stack, Typography } from "@mui/material";
 import { ConsultantCard } from "../../sales/components/ConsultantCard";
-
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 type OfferPage = components["schemas"]["OfferPage"];
 
@@ -18,12 +10,7 @@ interface Props {
 
 export default function CustomerSingleOffer({ offerData }: Props) {
   return (
-    <Accordion>
-      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <Typography>
-          {offerData.name} - {offerData.shortDescription}
-        </Typography>
-      </AccordionSummary>
+    <Container>
       <Box key={offerData.id} p={4} sx={{ bgcolor: "rgba(0, 0, 0, 0.075)" }}>
         <Box
           textAlign="center"
@@ -51,6 +38,6 @@ export default function CustomerSingleOffer({ offerData }: Props) {
           ))}
         </Stack>
       </Box>
-    </Accordion>
+    </Container>
   );
 }
