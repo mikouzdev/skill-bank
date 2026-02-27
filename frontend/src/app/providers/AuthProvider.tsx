@@ -101,6 +101,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   function logout() {
     localStorage.removeItem("token");
+    sessionStorage.removeItem("customerOffer");
     setToken(null);
     setCurrentUser(undefined);
   }

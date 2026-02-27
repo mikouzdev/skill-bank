@@ -12,7 +12,12 @@ import CustomerSingleOffer from "./CustomerSingleOffer";
 type OfferPage = components["schemas"]["OfferPage"];
 
 export default function CustomerLoginPage() {
-  const [offer, setOffer] = useState<OfferPage>();
+  const offerFromStorage = () => {
+    const stored = sessionStorage.getItem("customerOffer");
+    return stored ? (JSON.parse(stored) as OfferPage) : undefined;
+  };
+
+  const [offer, setOffer] = useState<OfferPage | undefined>(offerFromStorage);
 
   const { offerLogin } = useAuth();
   const { sID, oID } = useParams();
@@ -25,6 +30,8 @@ export default function CustomerLoginPage() {
       const response = await offerLogin(salesID, offerID, { password });
       console.log(response);
       setOffer(response);
+
+      sessionStorage.setItem("customerOffer", JSON.stringify(response));
     } catch (error) {
       console.log(error);
     }
