@@ -26,7 +26,7 @@ e2e-tests:
     - apt-get update -qq && apt-get install -y postgresql-client
     - cd frontend && pnpm install
     - cd ../backend && pnpm install
-    - until pg_isready -h db -U ${POSTGRES_USER} -d ${POSTGRES_DB}; do sleep 1; done || true
+    - until pg_isready -h spankki -U ${POSTGRES_USER} -d ${POSTGRES_DB}; do sleep 1; done || true
     - pnpm run db:migrate
     - pnpm run db:generate
     - pnpm run db:seed
