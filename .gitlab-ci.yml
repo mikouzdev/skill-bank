@@ -15,12 +15,18 @@ e2e-tests:
   stage: test
   image: cypress/browsers:node-22.19.0-chrome-139.0.7258.154-1-ff-142.0.1-edge-139.0.3405.125-1
   services: [] # Usually not needed unless testing against external DB/etc.
+  before_script:
+    - npm install -g pnpm@latest
+    - cd frontend && pnpm install
+    - cd ../backend && pnpm install
   script:
-    - cd frontend
-    - npm run dev &
-    - npx wait-on http://localhost:5173
-    - npx cypress run --browser chrome
-
+    - cd backend
+    - pnpm run dev &
+    - npx wait-on http://localhost:3000 --timeout 60000 --interval 1000
+    - cd ../frontend
+    - pnpm run dev &
+    - npx wait-on http://localhost:5173 --timeout 60000 --interval 1000
+    - npx cypress run --browser chrome --config baseUrl=http://localhost:5173
   artifacts:
     when: always
     paths:
