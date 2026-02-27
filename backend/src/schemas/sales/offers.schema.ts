@@ -74,8 +74,9 @@ export const PatchConsultantPageBodySchema = z
   .object({
     isAccepted: z.boolean().meta({ example: "true" }),
     customerReview: z.string().nullable().meta({ example: "esimerkki teksti" }),
-  }).partial({
-    customerReview: true
+  })
+  .partial({
+    customerReview: true,
   })
   .meta({ id: "PatchConsultantPageBody" });
 
@@ -84,3 +85,10 @@ export const OfferPagePasswordSchema = z
     password: z.string().min(6).meta({ example: "Password" }),
   })
   .meta({ id: "OfferPagePassword" });
+
+export const OfferPageLoginResponseSchema = z
+  .object({
+    token: z.string().meta({ example: "jwt.token" }),
+    offerPage: OfferPageSchema,
+  })
+  .meta({ id: "OfferPageLoginResponseSchema" });

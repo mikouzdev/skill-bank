@@ -34,7 +34,10 @@ function App() {
       <SnackbarProvider>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/customerlogin" element={<CustomerLoginPage />} />
+          <Route
+            path="/customerlogin/:oID/:sID"
+            element={<CustomerLoginPage />}
+          />
           <Route path="/loginRole" element={<LoginRolePage />} />
           {/* <Route path="/redirector" element={<Redirector />} /> */}
 

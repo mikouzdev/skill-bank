@@ -3,14 +3,24 @@ import { useEffect, useState } from "react";
 import { Login } from "../../features/Login/api/login";
 import { AuthContext } from "../hooks/useAuth";
 import { getCurrentUser } from "../../features/Login/api/refresh";
+import { customerOfferLogin } from "../../features/customer/api/customer.api";
 
 type LoginRequest = components["schemas"]["LoginRequest"];
 type MeResponse = components["schemas"]["MeResponse"];
+
+type OfferPagePassword = components["schemas"]["OfferPagePassword"];
+type OfferPage = components["schemas"]["OfferPage"];
+
 export interface AuthContextType {
   currentUser: MeResponse | undefined;
   token: string | null;
   isLoading: boolean;
   login: (payload: LoginRequest) => Promise<boolean>;
+  offerLogin: (
+    salesId: number,
+    offerPageId: number,
+    password: OfferPagePassword
+  ) => Promise<OfferPage | undefined>;
   logout: () => void;
   refreshCurrentUser: () => Promise<void>;
 }
@@ -66,6 +76,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
+  async function offerLogin(
+    salesId: number,
+    offerPageId: number,
+    password: OfferPagePassword
+  ): Promise<OfferPage | undefined> {
+    logout();
+    try {
+      setIsLoading(true);
+      const response = await customerOfferLogin(salesId, offerPageId, password);
+      const { token, offerPage } = response.data;
+
+      localStorage.setItem("token", token);
+      setToken(token);
+
+      return offerPage;
+    } catch (error) {
+      console.log("error while loggin in to offer", error);
+      return undefined;
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   function logout() {
     localStorage.removeItem("token");
     setToken(null);
@@ -77,6 +110,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     token,
     isLoading,
     login,
+    offerLogin,
     logout,
     refreshCurrentUser,
   };

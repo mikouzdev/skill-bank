@@ -1,4 +1,4 @@
-import { Router, type Response } from "express";
+import { Router, type Request, type Response } from "express";
 import {
   authenticate,
   type AuthenticatedRequest,
@@ -14,6 +14,7 @@ import {
   OfferPagePasswordSchema,
 } from "../../schemas/sales/offers.schema.js";
 import argon2 from "argon2";
+import jwt from "jsonwebtoken";
 
 export const offersRouter = Router();
 
@@ -21,6 +22,8 @@ const secret = process.env.SECRET;
 if (secret === undefined) {
   throw new Error("SECRET environment variable is not set");
 }
+
+const options: jwt.SignOptions = { expiresIn: "1h" };
 
 /**
  * Gets all offer pages of a sales user
@@ -196,7 +199,7 @@ offersRouter.post(
           },
           include: {
             consultantPages: true,
-          }
+          },
         });
       }
     } catch (err) {
@@ -315,9 +318,15 @@ offersRouter.put(
                   consultantPages: {
                     create: consultantPages.map((consultantPage) => ({
                       consultantId: consultantPage.consultantId,
-                      ...(consultantPage.isAccepted !== undefined ? { isAccepted: consultantPage.isAccepted } : { isAccepted: false }),
-                      ...(consultantPage.showInfo !== undefined ? { showInfo: consultantPage.showInfo } : { showInfo: true }),
-                      ...(consultantPage.customerReview !== undefined ? { customerReview: consultantPage.customerReview } : {}),
+                      ...(consultantPage.isAccepted !== undefined
+                        ? { isAccepted: consultantPage.isAccepted }
+                        : { isAccepted: false }),
+                      ...(consultantPage.showInfo !== undefined
+                        ? { showInfo: consultantPage.showInfo }
+                        : { showInfo: true }),
+                      ...(consultantPage.customerReview !== undefined
+                        ? { customerReview: consultantPage.customerReview }
+                        : {}),
                     })),
                   },
                 }
@@ -443,7 +452,10 @@ offersRouter.patch(
 
       const updatedConsultantPage = await prisma.consultantPages.update({
         where: { id: consultantPageId },
-        data: { isAccepted, ...(customerReview !== undefined ? { customerReview } : {}),},
+        data: {
+          isAccepted,
+          ...(customerReview !== undefined ? { customerReview } : {}),
+        },
       });
 
       res.json(updatedConsultantPage);
@@ -461,8 +473,7 @@ offersRouter.patch(
  */
 offersRouter.post(
   "/:salesId/offers/:offerPageId",
-  authenticate,
-  async (req: AuthenticatedRequest, res: Response) => {
+  async (req: Request, res: Response) => {
     const parsedParams = PutOfferPageParamsSchema.safeParse(req.params);
     if (!parsedParams.success) {
       res.status(400).json(parsedParams.error);
@@ -476,57 +487,54 @@ offersRouter.post(
       return;
     }
     const { password } = parsedBody.data;
-    const user = await prisma.user.findUnique({
-      where: { id: req.user!.id },
-      select: {
-        id: true,
-        roles: { select: { role: true } },
-        customer: { select: { id: true } },
-      },
-    });
 
-    if (user === null) {
-      res.status(404).json({ message: "User not found" });
-      return;
-    }
-    const customerId = user?.customer?.id;
-    let offerPage = null;
     try {
-      if (customerId !== undefined && customerId !== null) {
-        const customer = await prisma.customer.findUnique({
-          where: { id: customerId },
-        });
-        if (customer === null) {
-          res.status(404).json({ message: "Customer not found" });
-          return;
-        }
-        offerPage = await prisma.offerPages.findUnique({
-          where: {
-            salespersonId: salesId,
-            id: offerPageId,
-          },
-          include: {
-            consultantPages: true,
-          },
-          // omit: {
-          //   passwordHash: true,
-          // },
-        });
-        if (offerPage === null) {
-          res.status(404).json({ message: "Offer page not found" });
-          return;
-        }
-        const passwordMatches = await argon2.verify(offerPage.passwordHash, password);
-        if (!passwordMatches) {
-          res.status(401).send({ error: "Invalid password" });
-          return;
-        }
-        offerPage.passwordHash = "";
-        res.json(offerPage);
+      // find the offer
+      const offerPage = await prisma.offerPages.findUnique({
+        where: {
+          salespersonId: salesId,
+          id: offerPageId,
+        },
+        include: {
+          consultantPages: true,
+        },
+      });
+
+      if (offerPage === null) {
+        res.status(404).json({ message: "Offer page not found" });
+        return;
       }
+
+      // find the customer
+      const customer = await prisma.customer.findUnique({
+        where: {
+          id: offerPage.customerId,
+        },
+      });
+
+      if (customer === null) {
+        res.status(404).json({ message: "Customer nto found" });
+        return;
+      }
+
+      const passwordMatches = await argon2.verify(
+        offerPage.passwordHash,
+        password
+      );
+
+      if (!passwordMatches) {
+        res.status(401).send({ error: "Invalid password" });
+        return;
+      }
+
+      offerPage.passwordHash = "";
+
+      const token = jwt.sign({ userId: customer.userId }, secret, options);
+
+      res.json({ token, offerPage });
     } catch (err) {
       res.status(500).json(err);
       return;
     }
-    
-});
+  }
+);
