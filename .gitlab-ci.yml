@@ -31,7 +31,6 @@ e2e-tests:
     - pnpm run db:generate
     - pnpm run db:seed
   script:
-    - cd backend
     - pnpm run dev &
     - npx wait-on tcp:localhost:3000 --timeout 90000 --interval 1000
     - cd ../frontend
