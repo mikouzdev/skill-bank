@@ -20,7 +20,6 @@ e2e-tests:
     - cd frontend && pnpm install
     - cd ../backend && pnpm install
   script:
-    - cd backend
     - pnpm run dev &
     - npx wait-on http://localhost:3000 --timeout 60000 --interval 1000
     - cd ../frontend
