@@ -45,7 +45,7 @@ export const LoginPageForm = () => {
     const success = await login(form);
 
     if (success) {
-      void navigate("/redirector", { replace: true });
+      void navigate("/loginRole", { replace: true });
       return;
     }
 

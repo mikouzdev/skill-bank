@@ -17,7 +17,7 @@ import CustomerLoginPage from "../features/customer/pages/CustomerLoginPage";
 import { Logout } from "../features/Logout/Logout";
 import SalesOffersPage from "../features/sales/pages/SalesOffersPage/SalesOffersPage";
 import SalesSingleOfferPage from "../features/sales/pages/SalesOffersPage/SalesSingleOfferPage";
-import { Redirector } from "../features/Login/Components/Redirector";
+//import { Redirector } from "../features/Login/Components/Redirector";
 //import { SalesConsultantsList } from "../features/sales/pages/SalesConsultantsLists";
 import SalesConsultantsLists from "../features/sales/pages/SalesConsultantsLists";
 import OfferCreationPage from "../features/sales/pages/OfferCreationPage/OfferCreationPage";
@@ -36,7 +36,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/customerlogin" element={<CustomerLoginPage />} />
           <Route path="/loginRole" element={<LoginRolePage />} />
-          <Route path="/redirector" element={<Redirector />} />
+          {/* <Route path="/redirector" element={<Redirector />} /> */}
 
           <Route element={<SidebarLayout />}>
             {/* consultant */}
