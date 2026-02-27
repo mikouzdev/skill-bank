@@ -16,9 +16,9 @@ e2e-tests:
   image: cypress/browsers:node-22.19.0-chrome-139.0.7258.154-1-ff-142.0.1-edge-139.0.3405.125-1
   services:
     - name: postgres:16 # or postgres:15, etc.
-      alias: db
+      alias: spankki
   variables:
-    POSTGRES_DB: test_db
+    POSTGRES_DB: spankki
     POSTGRES_USER: test_user
     POSTGRES_PASSWORD: test_password
   before_script:
