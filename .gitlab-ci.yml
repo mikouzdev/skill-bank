@@ -25,7 +25,7 @@ e2e-tests:
     - cd ../frontend
     - pnpm run dev &
     - npx wait-on http://localhost:5173 --timeout 60000 --interval 1000
-    - cd ../cypress
+    - cd ..
     - npx cypress run --browser chrome --config baseUrl=http://localhost:5173
   artifacts:
     when: always
