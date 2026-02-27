@@ -37,7 +37,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     // fetch only if there is a token but no user
-    if (token && !currentUser) {
+    //if (token && !currentUser) {
+    if (token) {
       void fetchCurrentUser();
     } else if (!token) {
       setIsLoading(false);

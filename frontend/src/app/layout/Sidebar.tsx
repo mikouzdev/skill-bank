@@ -97,10 +97,13 @@ export function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
   const user = useAuth();
+  const { currentUser } = useAuth();
 
   const roles = user.currentUser?.roles ?? [];
+  const activeRole = currentUser?.roles?.[0];
   const visibleItems = navItems.filter((item) => {
-    return item.roles?.some((r) => roles.includes(r));
+    //return item.roles?.some((r) => roles.includes(r));
+    return activeRole ? item.roles?.includes(activeRole) : false;
   });
 
   return (
