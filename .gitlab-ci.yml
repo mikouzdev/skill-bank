@@ -1,0 +1,30 @@
+stages:
+  - test
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}-cypress
+  paths:
+    - node_modules/
+    - .npm/
+    - cache/Cypress/ # Cypress binary cache
+
+variables:
+  CYPRESS_BASE_URL: http://localhost:5173
+
+e2e-tests:
+  stage: test
+  image: cypress/browsers:node22.12.0-chrome131-ff132
+  services: [] # Usually not needed unless testing against external DB/etc.
+  script:
+    - cd frontend
+    - npm run dev &
+    - npx wait-on http://localhost:5173
+    - npx cypress run --browser chrome
+
+  artifacts:
+    when: always
+    paths:
+      - cypress/screenshots/
+      - cypress/videos/
+      - cypress/reports/
+    expire_in: 1 week
