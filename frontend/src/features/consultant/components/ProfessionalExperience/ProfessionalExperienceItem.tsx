@@ -62,7 +62,7 @@ export default function ProfessionalExperienceItem({
           item.end ? dayjs(item.end).format(DATE_FORMAT) : ""
         }`}</Typography>
       </Stack>
-      <Box>
+      <Box border={1} sx={{ wordBreak: "break-all" }}>
         <Typography>{item.description}</Typography>
       </Box>
       <Stack direction={"row"} width={"100%"}>

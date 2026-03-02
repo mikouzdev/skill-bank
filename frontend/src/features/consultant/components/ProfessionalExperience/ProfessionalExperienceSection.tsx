@@ -78,7 +78,7 @@ export default function ProfessionalExperience({
   }
 
   const defaultSection = (
-    <Stack spacing={1} sx={{ maxWidth: 1200 }}>
+    <Stack spacing={1}>
       <Stack direction={"row"} spacing={2}>
         <Typography variant="h5">Professional Experience</Typography>
         <AddCommentButton label="Add comment" section="EMPLOYMENTS" />
@@ -99,15 +99,17 @@ export default function ProfessionalExperience({
   );
 
   const editableSection = (
-    <Stack spacing={1} sx={{ maxWidth: 1200 }}>
-      <Stack direction={"row"} spacing={2}>
-        <Typography variant="h5">Professional Experience</Typography>
-        {skillData && (
-          <AddNewExperience
-            update={(formData) => void AddNewWorkExperience(formData)}
-            skillData={skillData}
-          />
-        )}
+    <Stack spacing={1}>
+      <Stack direction={"column"} spacing={1}>
+        <Stack direction={"row"} spacing={2}>
+          <Typography variant="h5">Employments</Typography>
+          {skillData && (
+            <AddNewExperience
+              update={(formData) => void AddNewWorkExperience(formData)}
+              skillData={skillData}
+            />
+          )}
+        </Stack>
         <SectionVisibilitySwitch
           sectionData={{ name: "EMPLOYMENTS", visibility: "PUBLIC" }}
         />
@@ -132,6 +134,7 @@ export default function ProfessionalExperience({
     <Box
       sx={{
         p: 2,
+        maxWidth: "100%",
       }}
     >
       {editable ? editableSection : defaultSection}

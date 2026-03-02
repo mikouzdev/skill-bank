@@ -35,6 +35,7 @@ export default function ConsultantProfileSettings() {
         display: "flex",
         flexDirection: "column",
         gap: 1,
+        maxWidth: "100vw",
       }}
     >
       <EditableProfileHeader data={consultant} />
