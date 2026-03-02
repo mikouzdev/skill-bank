@@ -1,4 +1,12 @@
-import { Avatar, Box, Button, Stack, TextField } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Stack,
+  TextField,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 
 import type { components } from "@api-types/openapi";
 import { useState, useRef } from "react";
@@ -11,6 +19,9 @@ type Props = {
 };
 
 export default function EditableProfileHeader({ data }: Props) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const [editedDetails, setEditedDetails] = useState<Consultant>(data);
   const [profilePictureFile, setProfilePictureFile] = useState<File | null>(
     null
@@ -160,13 +171,14 @@ export default function EditableProfileHeader({ data }: Props) {
     </Box>
   );
 
-  const PROFILE_PICTURE_SIZE = 170;
+  const PROFILE_PICTURE_SIZE = isMobile ? 80 : 170;
   const profilePicture = (
     <Box
       sx={{
         display: "flex",
         alignItems: "center",
-        flexDirection: "column",
+        flexDirection: isMobile ? "row" : "column",
+        justifyContent: isMobile ? "center" : "flex-start",
         gap: 1,
       }}
     >
@@ -193,7 +205,7 @@ export default function EditableProfileHeader({ data }: Props) {
       sx={{
         p: 2,
         display: "flex",
-        flexDirection: "row",
+        flexDirection: isMobile ? "column" : "row",
         justifyContent: "center",
         gap: 3,
         width: "100%",
