@@ -1,4 +1,12 @@
-import { Box, Typography, Rating, IconButton, Stack } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Rating,
+  IconButton,
+  Stack,
+  useTheme,
+  useMediaQuery,
+} from "@mui/material";
 import Circle from "@mui/icons-material/Circle";
 import CircleIcon from "@mui/icons-material/Circle";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -32,6 +40,9 @@ export default function Skills({
 }: Props) {
   const { showError, showSuccess } = useSnackbar();
   const [skills, setSkills] = useState<ConsultantSkill[]>(data); // consultant skills
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   async function handleAddSkill(
     selectedSkill: SkillTag,
@@ -114,14 +125,25 @@ export default function Skills({
       </Stack>
 
       <Box
-        sx={{
-          display: "grid",
-          gridTemplateRows: "repeat(3, 1fr)",
-          gridAutoFlow: "column",
-          gridAutoColumns: "max-content",
-          columnGap: 4,
-          rowGap: 1,
-        }}
+        sx={
+          isMobile
+            ? {
+                display: "flex",
+                flexDirection: "column",
+                gap: 2,
+                maxHeight: 250,
+                maxWidth: "100%",
+                overflowY: "scroll",
+              }
+            : {
+                display: "grid",
+                gridTemplateRows: "repeat(3, 1fr)",
+                gridAutoFlow: "column",
+                gridAutoColumns: "max-content",
+                columnGap: 4,
+                rowGap: 1,
+              }
+        }
       >
         {skills.map((skill) => {
           return (
