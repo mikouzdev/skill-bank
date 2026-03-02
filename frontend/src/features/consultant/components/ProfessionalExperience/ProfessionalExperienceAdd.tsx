@@ -110,11 +110,11 @@ export function AddNewExperience({ update, skillData }: Props) {
         }}
         onClick={handleOpen}
       >
-        Add professional experience
+        Add position
       </Button>
 
       <Dialog open={showForm}>
-        <DialogTitle>Add professional experience</DialogTitle>
+        <DialogTitle>Add position</DialogTitle>
         {
           <div className="overlay">
             <div className="form-container">

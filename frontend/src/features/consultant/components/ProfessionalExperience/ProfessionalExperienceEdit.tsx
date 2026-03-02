@@ -177,11 +177,16 @@ export default function ProfessionalExperienceEdit({
 
   return (
     <>
-      <Button variant="contained" onClick={() => setIsOpen((prev) => !prev)}>
+      <Button
+        size="small"
+        variant="contained"
+        onClick={() => setIsOpen((prev) => !prev)}
+      >
         Edit
       </Button>
 
       <Button
+        size="small"
         variant="contained"
         color="error"
         onClick={() => void handleDeleteEmployment()}
