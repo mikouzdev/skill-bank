@@ -99,7 +99,7 @@ export default function PersonalProjects({ data, skillData, editable }: Props) {
   const defaultSection = (
     <Stack spacing={1} sx={{ maxWidth: 1200 }}>
       <Stack direction={"row"} gap={2}>
-        <Typography variant="h5">Personal Projects</Typography>
+        <Typography variant="h5">Projects</Typography>
         <AddCommentButton label="Add comment" section="PROJECTS" />
       </Stack>
       <Stack spacing={1}>
@@ -118,16 +118,18 @@ export default function PersonalProjects({ data, skillData, editable }: Props) {
 
   const editableSection = (
     <Stack spacing={1} sx={{ maxWidth: 1200 }}>
-      <Stack direction={"row"} gap={2}>
-        <Typography variant="h5">Personal Projects</Typography>
-        {skillData && (
-          <AddNewProject
-            update={(formData, skills, links) => {
-              void addProject(formData, skills, links);
-            }}
-            skillData={skillData}
-          />
-        )}
+      <Stack direction={"column"} spacing={1}>
+        <Stack direction={"row"} spacing={2}>
+          <Typography variant="h5">Projects</Typography>
+          {skillData && (
+            <AddNewProject
+              update={(formData, skills, links) => {
+                void addProject(formData, skills, links);
+              }}
+              skillData={skillData}
+            />
+          )}
+        </Stack>
         <SectionVisibilitySwitch
           sectionData={{ name: "PROJECTS", visibility: "PUBLIC" }}
         />

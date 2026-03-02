@@ -78,7 +78,7 @@ export default function PersonalProjectItem({
           item.end ? dayjs(item.end).format(DATE_FORMAT) : ""
         }`}</Typography>
       </Stack>
-      <Box>
+      <Box sx={{ wordBreak: "break-all" }}>
         <Typography>{item.description}</Typography>
       </Box>
       <Stack direction="row">
