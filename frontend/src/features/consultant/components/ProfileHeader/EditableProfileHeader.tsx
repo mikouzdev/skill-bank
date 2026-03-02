@@ -202,6 +202,7 @@ export default function EditableProfileHeader({ data }: Props) {
   return (
     <Box
       sx={{
+        mt: isMobile ? 6 : 0,
         p: 2,
         display: "flex",
         flexDirection: isMobile ? "column" : "row",
