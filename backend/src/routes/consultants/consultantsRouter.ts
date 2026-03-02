@@ -287,6 +287,6 @@ consultantsRouter.put(
         return;
       }
     }
-    res.status(204).json(consultant);
+    res.json(consultant);
   }
 );
