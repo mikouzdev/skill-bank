@@ -169,8 +169,9 @@ export default function EditableExternalLinks({ attributes }: Props) {
           display: "flex",
           flexDirection: "column",
           gap: 1,
-          width: "100%",
           padding: 2,
+          width: "100%",
+          maxWidth: "100%",
         }}
         component="form"
         onSubmit={(e) => void handleSubmit(e)}

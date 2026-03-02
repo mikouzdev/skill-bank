@@ -153,6 +153,8 @@ export default function PersonalProjects({ data, skillData, editable }: Props) {
     <Box
       sx={{
         p: 2,
+        width: "100%",
+        maxWidth: "100%",
       }}
     >
       {editable ? editableSection : defaultSection}

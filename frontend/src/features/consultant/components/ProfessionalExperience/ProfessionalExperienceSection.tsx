@@ -134,6 +134,7 @@ export default function ProfessionalExperience({
     <Box
       sx={{
         p: 2,
+        width: "100%",
         maxWidth: "100%",
       }}
     >

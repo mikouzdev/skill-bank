@@ -109,7 +109,6 @@ export default function EditableProfileHeader({ data }: Props) {
         display: "flex",
         flexDirection: "row",
         gap: 3,
-        width: "100%",
       }}
     >
       <Stack gap={2} width={"100%"}>
@@ -209,6 +208,7 @@ export default function EditableProfileHeader({ data }: Props) {
         justifyContent: "center",
         gap: 3,
         width: "100%",
+        maxWidth: "100%",
       }}
     >
       {profilePicture}

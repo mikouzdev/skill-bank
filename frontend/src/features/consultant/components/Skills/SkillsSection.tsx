@@ -111,7 +111,7 @@ export default function Skills({
   );
 
   return (
-    <Box sx={{ p: 2 }}>
+    <Box sx={{ p: 2, maxWidth: "100%" }}>
       <Stack direction={"row"} spacing={2} mb={1}>
         <Typography variant="h5">Skills</Typography>
         {editable && skillData && categoryData && (
@@ -132,6 +132,7 @@ export default function Skills({
                 flexDirection: "column",
                 gap: 2,
                 maxHeight: 250,
+                width: "100%",
                 maxWidth: "100%",
                 overflowY: "scroll",
               }
@@ -142,6 +143,9 @@ export default function Skills({
                 gridAutoColumns: "max-content",
                 columnGap: 4,
                 rowGap: 1,
+                maxWidth: "100%",
+                width: "100%",
+                overflowX: "scroll",
               }
         }
       >
