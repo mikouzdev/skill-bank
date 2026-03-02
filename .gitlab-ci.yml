@@ -6,7 +6,7 @@ cache:
   paths:
     - node_modules/
     - .npm/
-    - cache/Cypress/ # Cypress binary cache
+    - cache/Cypress/
 
 variables:
   CYPRESS_BASE_URL: http://localhost:5173
@@ -15,7 +15,7 @@ e2e-tests:
   stage: test
   image: cypress/browsers:node-22.19.0-chrome-139.0.7258.154-1-ff-142.0.1-edge-139.0.3405.125-1
   services:
-    - name: postgres:16 # or postgres:15, etc.
+    - name: postgres:18
       alias: spankki
   variables:
     POSTGRES_DB: spankki
