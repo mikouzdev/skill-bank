@@ -31,11 +31,10 @@ export default function ConsultantProfileSettings() {
   return (
     <Container
       sx={{
-        p: 2,
         display: "flex",
         flexDirection: "column",
         gap: 1,
-        maxWidth: "100vw",
+        px: 0,
       }}
     >
       <EditableProfileHeader data={consultant} />
