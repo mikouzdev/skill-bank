@@ -47,11 +47,13 @@ export default function ConsultantProfileSettings() {
         categoryData={skillCategories}
         editable
       />
+      <Divider />
       <ProfessionalExperience
         data={employments}
         skillData={skillPool}
         editable
       />
+      <Divider />
       <PersonalProjects skillData={skillPool} data={projects} editable />
     </Container>
   );
