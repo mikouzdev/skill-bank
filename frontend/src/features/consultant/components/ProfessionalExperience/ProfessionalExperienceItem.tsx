@@ -1,4 +1,12 @@
-import { Box, Typography, Stack, Chip, Paper } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Stack,
+  Chip,
+  Paper,
+  useTheme,
+  useMediaQuery,
+} from "@mui/material";
 import type { components } from "@api-types/openapi";
 import dayjs from "dayjs";
 import ProfessionalExperienceEdit from "./ProfessionalExperienceEdit";
@@ -25,6 +33,9 @@ export default function ProfessionalExperienceItem({
   onDelete,
   onUpdate,
 }: Props) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const editOnlyButtons = editable && skillData && (
     <Stack direction={"row"} spacing={1}>
       <ProfessionalExperienceEdit
@@ -65,7 +76,12 @@ export default function ProfessionalExperienceItem({
       <Box sx={{ wordBreak: "break-all" }}>
         <Typography>{item.description}</Typography>
       </Box>
-      <Stack direction={"row"} width={"100%"}>
+      <Stack
+        direction={isMobile ? "column" : "row"}
+        width={"100%"}
+        flexWrap={"wrap"}
+        border={1}
+      >
         {/* bottom left container */}
         <Stack
           flex={1}

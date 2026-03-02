@@ -1,4 +1,12 @@
-import { Box, Typography, Stack, Chip, Paper } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Stack,
+  Chip,
+  Paper,
+  useTheme,
+  useMediaQuery,
+} from "@mui/material";
 import dayjs from "dayjs";
 
 import type { components } from "@api-types/openapi";
@@ -27,6 +35,9 @@ export default function PersonalProjectItem({
   onUpdate,
   onDelete,
 }: Props) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const projectLinks = item.projectLinks.map((link, i) => (
     <Chip
       key={i}
@@ -81,7 +92,7 @@ export default function PersonalProjectItem({
       <Box sx={{ wordBreak: "break-all" }}>
         <Typography>{item.description}</Typography>
       </Box>
-      <Stack direction="row">
+      <Stack direction={isMobile ? "column" : "row"}>
         {/* bottom left container */}
         <Stack
           direction="column"
