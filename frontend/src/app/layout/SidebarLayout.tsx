@@ -6,7 +6,7 @@ export function SidebarLayout() {
   return (
     <Box sx={{ display: "flex" }}>
       <Sidebar />
-      <Box component="main" sx={{ p: 2, flexGrow: 1 }}>
+      <Box component="main" sx={{ p: 2, flexGrow: 1, minWidth: 0 }}>
         <Outlet />
       </Box>
     </Box>
