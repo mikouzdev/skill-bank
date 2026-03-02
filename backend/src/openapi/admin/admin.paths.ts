@@ -1,8 +1,8 @@
 import {
   AllUsersResponseSchema,
-  FullUserResponseSchema,
   UserBodySchema,
-  UserBodyPartialSchema
+  UserBodyPartialSchema,
+  UserResponseSchema
 } from "../../schemas/admin/admin.schema.js";
 
 export const adminPaths = {
@@ -37,7 +37,7 @@ export const adminPaths = {
                 "201": {
                     description: "User created",
                     content: {
-                        "application/json": { schema: FullUserResponseSchema },
+                        "application/json": { schema: UserResponseSchema },
                     },
                 },
                 "409": {
@@ -87,7 +87,7 @@ export const adminPaths = {
                 200: {
                     description: "Update successful",
                     content: {
-                    "application/json": { schema: FullUserResponseSchema },
+                    "application/json": { schema: UserResponseSchema },
                     },
                 },
                 400: { description: "Invalid request body" },

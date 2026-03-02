@@ -60,7 +60,7 @@ export const consultantsPaths = {
         },
       },
       responses: {
-        204: {
+        200: {
           description: "Update successful",
           content: {
             "application/json": { schema: ConsultantResponseSchema },
