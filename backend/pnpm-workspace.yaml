@@ -6,7 +6,6 @@ onlyBuiltDependencies:
   - '@prisma/client'
   - '@prisma/engines'
   - '@scarf/scarf'
-  - cypress
   - esbuild
   - prisma
 
