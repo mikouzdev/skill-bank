@@ -180,108 +180,117 @@ export default function EditableExternalLinks({ attributes }: Props) {
           <Stack direction={"column"} gap={2} width={"100%"}>
             <Stack direction={"row"} gap={2} width={"100%"} alignItems="center">
               <SiLinkedin size={ICON_SIZE} />
-              <TextField
-                name="linkedIn"
-                label="LinkedIn"
-                value={links.linkedIn}
-                variant="outlined"
-                type="text"
-                onChange={handleChange}
-                sx={{ width: "33%" }}
-                slotProps={{
-                  input: {
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        https://linkedin.com/in/
-                      </InputAdornment>
-                    ),
-                  },
-                }}
-              />
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={visibility.linkedIn}
-                    onChange={(e) =>
-                      setVisibility((prev) => ({
-                        ...prev,
-                        linkedIn: e.target.checked,
-                      }))
-                    }
-                  />
-                }
-                label="Visible to other consultants"
-              />
+              <Stack spacing={1} width={"100%"}>
+                <TextField
+                  name="linkedIn"
+                  label="LinkedIn"
+                  value={links.linkedIn}
+                  variant="outlined"
+                  type="text"
+                  onChange={handleChange}
+                  fullWidth
+                  slotProps={{
+                    input: {
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          https://linkedin.com/in/
+                        </InputAdornment>
+                      ),
+                    },
+                  }}
+                />
+                <FormControlLabel
+                  control={
+                    <Switch
+                      size="small"
+                      checked={visibility.linkedIn}
+                      onChange={(e) =>
+                        setVisibility((prev) => ({
+                          ...prev,
+                          linkedIn: e.target.checked,
+                        }))
+                      }
+                    />
+                  }
+                  label="Visible to other consultants"
+                />
+              </Stack>
             </Stack>
             <Stack direction={"row"} gap={2} width={"100%"} alignItems="center">
               <SiGithub size={ICON_SIZE} />
-              <TextField
-                name="gitHub"
-                label="Github"
-                value={links.gitHub}
-                variant="outlined"
-                type="text"
-                onChange={handleChange}
-                sx={{ width: "33%" }}
-                slotProps={{
-                  input: {
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        https://github.com/
-                      </InputAdornment>
-                    ),
-                  },
-                }}
-              />
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={visibility.gitHub}
-                    onChange={(e) =>
-                      setVisibility((prev) => ({
-                        ...prev,
-                        gitHub: e.target.checked,
-                      }))
-                    }
-                  />
-                }
-                label="Visible to other consultants"
-              />
+              <Stack spacing={1} width={"100%"}>
+                <TextField
+                  name="gitHub"
+                  label="Github"
+                  value={links.gitHub}
+                  variant="outlined"
+                  type="text"
+                  onChange={handleChange}
+                  fullWidth
+                  slotProps={{
+                    input: {
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          https://github.com/
+                        </InputAdornment>
+                      ),
+                    },
+                  }}
+                />
+                <FormControlLabel
+                  control={
+                    <Switch
+                      size="small"
+                      checked={visibility.gitHub}
+                      onChange={(e) =>
+                        setVisibility((prev) => ({
+                          ...prev,
+                          gitHub: e.target.checked,
+                        }))
+                      }
+                    />
+                  }
+                  label="Visible to other consultants"
+                />
+              </Stack>
             </Stack>
             <Stack direction={"row"} gap={2} width={"100%"} alignItems="center">
               <SiGitlab size={ICON_SIZE} />
-              <TextField
-                name="gitLab"
-                label="GitLab"
-                value={links.gitLab}
-                variant="outlined"
-                type="text"
-                onChange={handleChange}
-                sx={{ width: "33%" }}
-                slotProps={{
-                  input: {
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        https://gitlab.com/
-                      </InputAdornment>
-                    ),
-                  },
-                }}
-              />
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={visibility.gitLab}
-                    onChange={(e) =>
-                      setVisibility((prev) => ({
-                        ...prev,
-                        gitLab: e.target.checked,
-                      }))
-                    }
-                  />
-                }
-                label="Visible to other consultants"
-              />
+              <Stack spacing={1} width={"100%"}>
+                <TextField
+                  name="gitLab"
+                  label="GitLab"
+                  value={links.gitLab}
+                  variant="outlined"
+                  type="text"
+                  onChange={handleChange}
+                  fullWidth
+                  slotProps={{
+                    input: {
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          https://gitlab.com/
+                        </InputAdornment>
+                      ),
+                    },
+                  }}
+                />
+                <FormControlLabel
+                  control={
+                    <Switch
+                      size="small"
+                      checked={visibility.gitLab}
+                      onChange={(e) =>
+                        setVisibility((prev) => ({
+                          ...prev,
+                          gitLab: e.target.checked,
+                        }))
+                      }
+                    />
+                  }
+                  label="Visible to other consultants"
+                />
+              </Stack>
             </Stack>
           </Stack>
           <Box sx={{ ml: "auto" }}>
