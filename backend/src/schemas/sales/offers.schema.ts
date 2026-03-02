@@ -30,12 +30,19 @@ export const GetOfferPagesResponseSchema = z
   .array(OfferPageSchema)
   .meta({ id: "GetOfferPagesResponse" });
 
+export const ConsultantPageBodySchema = ConsultantPageSchema.omit({
+  id: true,
+  offerPageId: true,
+}).meta({ id: "ConsultantPageBody" });
+
 export const OfferPageBodySchema = OfferPageSchema.omit({
   id: true,
   salespersonId: true,
+  consultantPages: true,
 })
   .extend({
     password: z.string().meta({ example: "testpassword" }),
+    consultantPages: z.array(ConsultantPageBodySchema),
   })
   .meta({ id: "OfferPageBody" });
 

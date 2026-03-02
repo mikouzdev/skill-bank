@@ -42,7 +42,8 @@ offersRouter.get(
     let offerPages = null;
 
     //Customer requires password and cant get the offer pages like this
-    if (roles?.includes("CUSTOMER")) {
+    //Checks primary role (currently first role in array)
+    if (roles[0] === "CUSTOMER") {
       return res.status(401).send("Unauthorized");
       // const user = await prisma.user.findUnique({
       //   where: { id: req.user!.id },
@@ -188,6 +189,7 @@ offersRouter.post(
                 consultantId: consultantPage.consultantId,
                 showInfo: consultantPage.showInfo,
                 isAccepted: consultantPage.isAccepted,
+                customerReview: consultantPage.customerReview,
               })),
             },
           },
@@ -203,7 +205,7 @@ offersRouter.post(
       res.status(500).json(err);
       return;
     }
-    res.json(newOfferPage);
+    res.status(201).json(newOfferPage);
   }
 );
 
@@ -267,25 +269,25 @@ offersRouter.put(
               returnIfTrue = true;
               return;
             }
-            if (
-              consultantPage.consultantId !== undefined &&
-              consultantPage.consultantId !== null
-            ) {
-              const existingConsultantPage =
-                await prisma.consultantPages.findFirst({
-                  where: {
-                    offerPageId: offerPageId,
-                    consultantId: consultantPage.consultantId,
-                  },
-                });
-              if (existingConsultantPage !== null) {
-                res
-                  .status(409)
-                  .json({ message: "Consultant page already exists" });
-                returnIfTrue = true;
-                return;
-              }
-            }
+            // if (
+            //   consultantPage.consultantId !== undefined &&
+            //   consultantPage.consultantId !== null
+            // ) {
+            //   const existingConsultantPage =
+            //     await prisma.consultantPages.findFirst({
+            //       where: {
+            //         offerPageId: offerPageId,
+            //         consultantId: consultantPage.consultantId,
+            //       },
+            //     });
+            //   if (existingConsultantPage !== null) {
+            //     res
+            //       .status(409)
+            //       .json({ message: "Consultant page already exists" });
+            //     returnIfTrue = true;
+            //     return;
+            //   }
+            // }
             if (uniqueConsultants.includes(consultantPage.consultantId)) {
               res.status(409).json({
                 message:
@@ -313,6 +315,7 @@ offersRouter.put(
             ...(consultantPages !== undefined
               ? {
                   consultantPages: {
+                    deleteMany: {},
                     create: consultantPages.map((consultantPage) => ({
                       consultantId: consultantPage.consultantId,
                       ...(consultantPage.isAccepted !== undefined ? { isAccepted: consultantPage.isAccepted } : { isAccepted: false }),

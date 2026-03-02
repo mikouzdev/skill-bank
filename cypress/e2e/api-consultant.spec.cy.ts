@@ -36,7 +36,7 @@ context("GET /consultants", () => {
       method: "POST",
       url: "/auth/login",
       body: {
-        "email": "alice@demo.com",
+        "email": "test@demo.com",
         "password": "hashed-password"
       }
     }).then((response) => {
@@ -78,7 +78,7 @@ context("GET /consultants", () => {
       method: "GET",
       url: "/consultants/search",
       qs: {
-        parameter: "Bob"
+        parameter: "Test"
       }
     }).then((response) => {
       expect(response.status).to.eq(200);

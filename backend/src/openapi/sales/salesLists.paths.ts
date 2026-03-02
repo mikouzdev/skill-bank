@@ -42,7 +42,7 @@ export const salesListPaths = {
                 content: { "application/json": { schema: SalesListBodySchema } },
             },
             responses: {
-                200: {
+                201: {
                     description: "Creation successful",
                     content: {
                     "application/json": { schema: SalesListSchema },

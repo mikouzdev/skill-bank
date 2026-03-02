@@ -120,8 +120,7 @@ attributesRouter.post(
       res.status(500).json(err);
       return;
     }
-
-    res.json(attribute);
+    res.status(201).json(attribute);
   }
 );
 /**

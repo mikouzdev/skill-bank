@@ -49,7 +49,7 @@ export const offersPaths = {
         content: { "application/json": { schema: OfferPageBodySchema } },
       },
       responses: {
-        200: {
+        201: {
           description: "Creation successful",
           content: {
             "application/json": { schema: OfferPageSchema },

@@ -4,7 +4,7 @@ context("POST /auth/login", () => {
       method: "POST",
       url: "/auth/login",
       body: {
-        "email": "alice@demo.com",
+        "email": "test@demo.com",
         "password": "hashed-password"
       }
     }).then((response) => {
@@ -30,7 +30,7 @@ context("POST /auth/login", () => {
       method: "POST",
       url: "/auth/login",
       body: {
-        "email": "alice@demo.com",
+        "email": "test@demo.com",
         "password": "wrong-password"
       },
       failOnStatusCode: false
@@ -43,7 +43,7 @@ context("POST /auth/login", () => {
       method: "POST",
       url: "/auth/login",
       body: {
-        "email": "alisa@demo.com",
+        "email": "test@wrong.com",
         "password": "hashed-password"
       },
       failOnStatusCode: false

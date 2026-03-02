@@ -178,7 +178,7 @@ salesListRouter.post(
       res.status(500).json(err);
       return;
     }
-    res.json(newSalesList);
+    res.status(201).json(newSalesList);
   }
 );
 

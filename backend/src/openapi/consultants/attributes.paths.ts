@@ -36,7 +36,7 @@ export const attributesPaths = {
                 content: { "application/json": { schema: AttributeBodySchema } },
             },
             responses: {
-                200: {
+                201: {
                     description: "Creation successful",
                     content: {
                     "application/json": { schema: AttributeSchema },

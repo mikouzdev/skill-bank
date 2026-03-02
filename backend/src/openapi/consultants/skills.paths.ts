@@ -59,7 +59,7 @@ export const skillsPaths = {
         },
       },
       responses: {
-        200: {
+        201: {
           description: "Creation successful",
           content: {
             "application/json": { schema: ConsultantSkillSchema },

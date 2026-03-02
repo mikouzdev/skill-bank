@@ -72,8 +72,7 @@ projectsRouter.post(
       res.status(500).json(err);
       return;
     }
-
-    res.json(project);
+    res.status(201).json(project);
   }
 );
 
@@ -324,14 +323,13 @@ projectsRouter.post(
       res.status(500).json(err);
       return;
     }
-
-    res.json(projectLink);
+    res.status(201).json(projectLink);
   }
 );
 
 /**
  * Delete a link for a project for current consultant
- * @route POST /consultants/me/projects/{projectId}/links/{linkId}
+ * @route DELETE /consultants/me/projects/{projectId}/links/{linkId}
  * @returns confirmation message
  */
 projectsRouter.delete(
@@ -458,8 +456,7 @@ projectsRouter.post(
       res.status(500).json(err);
       return;
     }
-
-    res.json(projectSkill);
+    res.status(201).json(projectSkill);
   }
 );
 

@@ -4,7 +4,7 @@ context("GET admin/users", () => {
         method: "POST",
         url: "/auth/login",
         body: {
-            "email": "admin@admin.com",
+            "email": "test@demo.com",
             "password": "hashed-password"
         }
         }).then((response) => {
