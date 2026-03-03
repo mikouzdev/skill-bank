@@ -6,10 +6,17 @@ import {
   ListItemText,
   ListItemIcon,
   Box,
+  Divider,
+  useMediaQuery,
+  AppBar,
+  Toolbar,
+  Button,
+  useTheme,
 } from "@mui/material";
 import { Person, Edit, People, Logout, Groups } from "@mui/icons-material";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import CustomerAcceptConsultant from "../../features/customer/components/CustomerAcceptConsultant";
 
 const DRAWER_WIDTH = 220;
 
@@ -30,7 +37,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   {
     text: "My profile",
-    path: "/me",
+    path: "consultant/me",
     icon: <Person />,
     roles: [ROLES.CONSULTANT],
   },
@@ -54,7 +61,7 @@ const navItems: NavItem[] = [
   },
   {
     text: "Edit profile",
-    path: "/me/edit",
+    path: "consultant/me/edit",
     icon: <Edit />,
     roles: [ROLES.CONSULTANT],
   },
@@ -95,13 +102,18 @@ export function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
   const user = useAuth();
+  const { currentUser } = useAuth();
 
-  const role = user.currentUser?.roles ?? [];
+  const roles = user.currentUser?.roles ?? [];
+  const activeRole = currentUser?.roles?.[0];
   const visibleItems = navItems.filter((item) => {
-    return item.roles?.some((r) => role.includes(r));
+    return activeRole ? item.roles?.includes(activeRole) : false;
   });
 
-  return (
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const desktopSidebar = (
     <Drawer
       variant="permanent"
       sx={{
@@ -125,8 +137,33 @@ export function Sidebar() {
               </ListItemButton>
             </ListItem>
           ))}
+
+          <Divider sx={{ my: 2 }} />
+          <CustomerAcceptConsultant roles={roles} />
         </List>
       </Box>
     </Drawer>
   );
+
+  const mobileNavbar = (
+    <AppBar>
+      <Toolbar>
+        {visibleItems.map((item) => (
+          <Button
+            key={item.path}
+            onClick={() => void navigate(item.path)}
+            sx={{
+              flexDirection: "column",
+              fontSize: 11,
+            }}
+          >
+            {item.icon}
+            {item.text}
+          </Button>
+        ))}
+      </Toolbar>
+    </AppBar>
+  );
+
+  return isMobile ? mobileNavbar : desktopSidebar;
 }

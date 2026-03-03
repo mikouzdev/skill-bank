@@ -5,11 +5,15 @@ import { AddUserDialog } from "../components/AddUserDialog";
 import { DeleteUsersDialog } from "../components/DeleteUsersDialog";
 import { createUser, deleteUser, getUsers, updateUser } from "../api/admin.api";
 import type { components } from "@api-types/openapi";
+import { useSnackbar } from "../../../shared/components/useSnackbar";
+import { getConsultants } from "../../consultant/api/consultants.api";
 // import { searchConsultants } from "../../consultant/api/consultants.api";
 // import SearchBar from "../../../shared/components/Search";
 
 type UserRequest = components["schemas"]["UserBody"];
+type UserBodyPartial = components["schemas"]["UserBodyPartial"];
 type UserListResponse = components["schemas"]["AllUsersResponse"];
+type ConsultantProfile = components["schemas"]["ConsultantResponse"];
 
 type SelectedUser = {
   id: number;
@@ -17,10 +21,12 @@ type SelectedUser = {
 };
 
 export const ManageUsersPage = () => {
+  const { showSuccess, showError } = useSnackbar();
   const [users, setUsers] = useState<UserListResponse>([]);
   const [selectedUsers, setSelectedUsers] = useState<SelectedUser[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  const [consultants, setConsultants] = useState<ConsultantProfile[]>([]);
   // const [search, setSearch] = useState<string>("");
 
   const toggleSelected = (user: SelectedUser) => {
@@ -37,7 +43,9 @@ export const ManageUsersPage = () => {
         setError("");
         setLoading(true);
         const response = await getUsers();
+        const consultantsResponse = await getConsultants();
         setUsers(response.data);
+        setConsultants(consultantsResponse.data);
       } catch (err) {
         console.error("Failed to load users", err);
         setError("Failed to load users");
@@ -69,11 +77,11 @@ export const ManageUsersPage = () => {
     try {
       const response = await createUser(user);
       setUsers((prev) => [...prev, response.data]);
-      alert("Succesfully created a new user");
+      showSuccess("User created succesfully.");
       return true;
     } catch (error: unknown) {
       console.log("failed to create user: ", error);
-      alert("Failed to create user, more info in console");
+      showError("Failed to create user, more info in console");
       return false;
     }
   }
@@ -95,7 +103,7 @@ export const ManageUsersPage = () => {
 
   async function handleUpdateUser(
     id: number,
-    payload: UserRequest
+    payload: UserBodyPartial
   ): Promise<boolean> {
     try {
       const response = await updateUser(id, payload);
@@ -110,6 +118,20 @@ export const ManageUsersPage = () => {
     }
   }
 
+  const getConsultantId = (user: number) => {
+    let match;
+    try {
+      match = consultants.find((c) => c.userId === user);
+      console.log(match);
+    } catch (e) {
+      console.error(e);
+    }
+
+    if (match != null) {
+      return match.id;
+    }
+  };
+
   return (
     <>
       <Paper sx={{ border: 1, margin: "16px", background: "#efefef" }}>
@@ -117,10 +139,12 @@ export const ManageUsersPage = () => {
           getText={setSearch}
           loadConsultants={() => void loadConsultants()}
         /> */}
+
         {users.map((user) => (
           <Box key={user.id} sx={{ m: 3, background: "white" }}>
             <UserCard
               user={user}
+              consultantId={getConsultantId(user.id) || undefined}
               selected={selectedUsers.some((u) => u.id === user.id)}
               onToggle={toggleSelected}
               onRoleChangeSubmit={(id, payload) =>

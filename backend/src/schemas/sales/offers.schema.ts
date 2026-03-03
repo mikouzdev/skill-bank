@@ -7,6 +7,7 @@ export const ConsultantPageSchema = z
     consultantId: z.number().meta({ example: "1" }),
     showInfo: z.boolean().meta({ example: "true" }),
     isAccepted: z.boolean().meta({ example: "true" }),
+    customerReview: z.string().nullable().meta({ example: "esimerkki teksti" }),
   })
   .meta({ id: "ConsultantPage" });
 
@@ -34,7 +35,7 @@ export const OfferPageBodySchema = OfferPageSchema.omit({
   salespersonId: true,
 })
   .extend({
-    passwordHash: z.string().meta({ example: "hashedtestpassword" }),
+    password: z.string().meta({ example: "testpassword" }),
   })
   .meta({ id: "OfferPageBody" });
 
@@ -46,10 +47,13 @@ export const PutOfferPageParamsSchema = z.object({
 export const ConsultantPagePartialSchema = ConsultantPageSchema.partial({
   id: true,
   offerPageId: true,
+  showInfo: true,
+  isAccepted: true,
+  customerReview: true,
 });
 
 export const OfferPageBodyPartialSchema = OfferPageBodySchema.partial({
-  passwordHash: true,
+  password: true,
   customerId: true,
   description: true,
   shortDescription: true,
@@ -69,5 +73,14 @@ export const PatchConsultantPageParamsSchema = z.object({
 export const PatchConsultantPageBodySchema = z
   .object({
     isAccepted: z.boolean().meta({ example: "true" }),
+    customerReview: z.string().nullable().meta({ example: "esimerkki teksti" }),
+  }).partial({
+    customerReview: true
   })
   .meta({ id: "PatchConsultantPageBody" });
+
+export const OfferPagePasswordSchema = z
+  .object({
+    password: z.string().min(6).meta({ example: "Password" }),
+  })
+  .meta({ id: "OfferPagePassword" });

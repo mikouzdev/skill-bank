@@ -47,6 +47,7 @@ export default function SectionVisibilitySwitch({ sectionData }: Props) {
     <FormControlLabel
       control={
         <Switch
+          size="small"
           checked={section.visibility === "PUBLIC"}
           onChange={(e) => {
             void changeSectionVisibilityChange(e);

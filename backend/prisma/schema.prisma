@@ -202,14 +202,14 @@ model Salesperson {
 model SalesList {
   id               Int     @id @default(autoincrement())
   salespersonId    Int
-  customerId       Int
+  customerId       Int?
   listPosition     Int     @default(autoincrement())
   description      String
   shortDescription String
   isReviewDone     Boolean @default(false) /// Customer's review
 
   salesperson    Salesperson     @relation(fields: [salespersonId], references: [id])
-  customer       Customer        @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  customer       Customer?        @relation(fields: [customerId], references: [id], onDelete: Cascade)
   salesListItems SalesListItem[]
 
   @@unique([salespersonId, listPosition])
@@ -308,6 +308,7 @@ model ConsultantPages {
   consultantId Int
   showInfo     Boolean
   isAccepted   Boolean
+  customerReview String?
   offerPage    OfferPages @relation(fields: [offerPageId], references: [id], onDelete: Cascade)
   Consultant   Consultant @relation(fields: [consultantId], references: [id], onDelete: Cascade)
 }

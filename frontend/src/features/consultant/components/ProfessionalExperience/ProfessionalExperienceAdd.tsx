@@ -110,11 +110,11 @@ export function AddNewExperience({ update, skillData }: Props) {
         }}
         onClick={handleOpen}
       >
-        Add professional experience
+        Add position
       </Button>
 
       <Dialog open={showForm}>
-        <DialogTitle>Add professional experience</DialogTitle>
+        <DialogTitle>Add position</DialogTitle>
         {
           <div className="overlay">
             <div className="form-container">
@@ -123,7 +123,6 @@ export function AddNewExperience({ update, skillData }: Props) {
                 onSubmit={(e) => handleSubmit(e)}
                 sx={{
                   maxWidth: 9000,
-                  minWidth: 500,
                   mx: "auto",
                   p: 3,
                   borderRadius: 2,
@@ -171,7 +170,7 @@ export function AddNewExperience({ update, skillData }: Props) {
                   >
                     <MenuItem value="PUBLIC">Public</MenuItem>
                     <MenuItem value="LIMITED">Limited</MenuItem>
-                  </TextField>{" "}
+                  </TextField>
                   <b>Skills</b>
                   <Stack
                     direction="row"
@@ -200,9 +199,10 @@ export function AddNewExperience({ update, skillData }: Props) {
                   >
                     {addedSkillChips}
                   </Stack>
-                  <b>Project length:</b>
-                  <div>
+                  <b>Employment length:</b>
+                  <Stack direction={"column"} spacing={3}>
                     <TextField
+                      size="small"
                       label="Start Date"
                       type="date"
                       name="start"
@@ -213,6 +213,7 @@ export function AddNewExperience({ update, skillData }: Props) {
                     />
 
                     <TextField
+                      size="small"
                       label="End Date"
                       type="date"
                       name="end"
@@ -220,7 +221,7 @@ export function AddNewExperience({ update, skillData }: Props) {
                       onChange={handleChange}
                       InputLabelProps={{ shrink: true }}
                     />
-                  </div>
+                  </Stack>
                   <Button
                     type="submit"
                     variant="contained"

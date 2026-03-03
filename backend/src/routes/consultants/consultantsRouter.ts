@@ -34,7 +34,15 @@ export const consultantsRouter = Router();
  */
 consultantsRouter.get("/", async (req: Request, res: Response) => {
   try {
-    const consultants = await prisma.consultant.findMany();
+    const consultants = await prisma.consultant.findMany({
+      include: {
+        user: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
     res.send(consultants);
     return;
   } catch (err) {
@@ -157,7 +165,7 @@ consultantsRouter.put(
     const { description, roleTitle, user } = parsedBody.data;
     const profilePicture = req.file;
     let profilePictureUrl;
-     // Get the URL of the previous image
+    // Get the URL of the previous image
     let consultant = null;
     const existingUser = await prisma.user.findUnique({
       where: { id: req.user!.id },
@@ -251,8 +259,7 @@ consultantsRouter.put(
         res.status(500).json(err);
         return;
       }
-    }
-    else {
+    } else {
       try {
         if (consultantId !== undefined && consultantId !== null) {
           consultant = await prisma.consultant.findUnique({
@@ -280,6 +287,6 @@ consultantsRouter.put(
         return;
       }
     }
-    res.status(204).json(consultant);
+    res.json(consultant);
   }
 );

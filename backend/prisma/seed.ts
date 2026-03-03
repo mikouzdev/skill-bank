@@ -455,9 +455,120 @@ async function main() {
         name: "PROJECTS" as const,
         visibility: "PUBLIC" as const,
       },
+      {
+        consultantId: consultant2.id,
+        name: "GENERAL" as const,
+        visibility: "PUBLIC" as const,
+      },
+      {
+        consultantId: consultant2.id,
+        name: "NETWORKING_LINKS" as const,
+        visibility: "PUBLIC" as const,
+      },
+      {
+        consultantId: consultant2.id,
+        name: "SKILLS" as const,
+        visibility: "PUBLIC" as const,
+      },
+      {
+        consultantId: consultant2.id,
+        name: "EMPLOYMENTS" as const,
+        visibility: "PUBLIC" as const,
+      },
+      {
+        consultantId: consultant2.id,
+        name: "PROJECTS" as const,
+        visibility: "PUBLIC" as const,
+      },
+      {
+        consultantId: consultant3.id,
+        name: "GENERAL" as const,
+        visibility: "PUBLIC" as const,
+      },
+      {
+        consultantId: consultant3.id,
+        name: "NETWORKING_LINKS" as const,
+        visibility: "PUBLIC" as const,
+      },
+      {
+        consultantId: consultant3.id,
+        name: "SKILLS" as const,
+        visibility: "PUBLIC" as const,
+      },
+      {
+        consultantId: consultant3.id,
+        name: "EMPLOYMENTS" as const,
+        visibility: "PUBLIC" as const,
+      },
+      {
+        consultantId: consultant3.id,
+        name: "PROJECTS" as const,
+        visibility: "PUBLIC" as const,
+      },
     ],
   });
   console.log("📖 Page sections created");
+
+  // ===========================================
+  // Comments
+  // ===========================================
+  const aliceGeneralSection = await prisma.pageSection.findFirst({
+    where: {
+      consultantId: consultant.id,
+      name: "GENERAL",
+    },
+  });
+
+  const bobGeneralSection = await prisma.pageSection.findFirst({
+    where: {
+      consultantId: consultant2.id,
+      name: "GENERAL",
+    },
+  });
+
+  const aliceSkillsSection = await prisma.pageSection.findFirst({
+    where: {
+      consultantId: consultant.id,
+      name: "SKILLS",
+    },
+  });
+
+  const bobSkillsSection = await prisma.pageSection.findFirst({
+    where: {
+      consultantId: consultant2.id,
+      name: "SKILLS",
+    },
+  });
+
+  await prisma.comment.createMany({
+    data: [
+      {
+        pageSectionId: aliceGeneralSection.id,
+        userId: salesUser.id,
+        userRole: Role.SALESPERSON,
+        content: "kommentti xyz general",
+      },
+      {
+        pageSectionId: aliceSkillsSection.id,
+        userId: salesUser.id,
+        userRole: Role.SALESPERSON,
+        content: "kommentti xyz skillssit",
+      },
+      {
+        pageSectionId: bobGeneralSection.id,
+        userId: salesUser.id,
+        userRole: Role.SALESPERSON,
+        content: "ihan ok. general, abc xyz",
+      },
+      {
+        pageSectionId: bobSkillsSection.id,
+        userId: salesUser.id,
+        userRole: Role.SALESPERSON,
+        content: "cool skills bro, abc xyz",
+      },
+    ],
+  });
+  console.log("💬 Comments created");
 
   await prisma.salesList.createMany({
     data: [

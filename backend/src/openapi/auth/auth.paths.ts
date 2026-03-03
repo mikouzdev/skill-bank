@@ -1,8 +1,10 @@
+import { FullUserResponseSchema } from "../../schemas/admin/admin.schema.js";
 import {
   LoginSchema,
   AuthResponseSchema as AuthLoginResponseSchema,
   LogoutResponseSchema,
   MeResponseSchema,
+  RoleBodySchema,
 } from "../../schemas/auth/auth.schema.js";
 
 export const authPaths = {
@@ -56,4 +58,30 @@ export const authPaths = {
       },
     },
   },
+  "/auth/role": {
+    patch: {
+      summary: "Update current user's primary role",
+      tags: ["Auth"],
+      requestBody: {
+        required: true,
+        content: {
+          "application/json": { schema: RoleBodySchema },
+        },
+      },
+      responses: {
+        200: {
+          description: "Update successful",
+          content: {
+            "application/json": { schema: FullUserResponseSchema },
+          },
+        },
+        202: { description: "Role is already primary role"},
+        400: { description: "Invalid request" },
+        401: { description: "Unauthorized"},
+        404: { description: "Not found" },
+        422: { description: "User only has one role" },
+        500: { description: "Server error" },
+      },
+    },
+  }
 };

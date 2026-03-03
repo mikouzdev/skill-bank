@@ -5,6 +5,7 @@ import {
   OfferPageBodyPartialSchema,
   ConsultantPageSchema,
   PatchConsultantPageBodySchema,
+  OfferPagePasswordSchema,
 } from "../../schemas/sales/offers.schema.js";
 
 export const offersPaths = {
@@ -119,10 +120,44 @@ export const offersPaths = {
         500: { description: "Server error" },
       },
     },
+    post: {
+      summary: "Post a password and get an offer page",
+      tags: ["Offer Pages"],
+      parameters: [
+        {
+          name: "salesId",
+          in: "path" as const,
+          required: true,
+          schema: { type: "integer" as const },
+        },
+        {
+          name: "offerPageId",
+          in: "path" as const,
+          required: true,
+          schema: { type: "integer" as const },
+        },
+      ],
+      requestBody: {
+        required: true,
+        content: { "application/json": { schema: OfferPagePasswordSchema } },
+      },
+      responses: {
+        200: {
+          description: "Retrieval successful",
+          content: {
+            "application/json": { schema: OfferPageSchema },
+          },
+        },
+        400: { description: "Invalid request" },
+        401: { description: "Invalid password" },
+        404: { description: "Not found" },
+        500: { description: "Server error" },
+      },
+    }
   },
   "/sales/{salesId}/offers/{offerPageId}/consultants/{consultantPageId}": {
     patch: {
-      summary: "Update isAccepted status of a consultant page",
+      summary: "Update isAccepted status and customer review of a consultant page",
       tags: ["Offer Pages"],
       parameters: [
         {

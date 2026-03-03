@@ -13,6 +13,7 @@ import {
   Select,
 } from "@mui/material";
 import type { components } from "@api-types/openapi";
+import { useSnackbar } from "../../../shared/components/useSnackbar";
 
 type UserRequest = components["schemas"]["UserBody"];
 
@@ -21,12 +22,13 @@ type Props = {
 };
 
 export function AddUserDialog({ onAddUser }: Props) {
+  const { showError } = useSnackbar();
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState<UserRequest>({
     name: "",
     email: "",
     roles: [{ role: "CONSULTANT" }],
-    passwordHash: "",
+    password: "",
   });
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -34,6 +36,12 @@ export function AddUserDialog({ onAddUser }: Props) {
     e.preventDefault();
 
     setLoading(true);
+
+    if (form.password.length < 6) {
+      showError("Password must be at least 6 characters");
+      setLoading(false);
+      return;
+    }
 
     const success = await onAddUser(form);
     setLoading(false);
@@ -77,6 +85,16 @@ export function AddUserDialog({ onAddUser }: Props) {
                 value={form.email}
                 onChange={(e) =>
                   setForm((p) => ({ ...p, email: e.target.value }))
+                }
+                required
+                fullWidth
+              />
+
+              <TextField
+                label="Password"
+                value={form.password}
+                onChange={(e) =>
+                  setForm((p) => ({ ...p, password: e.target.value }))
                 }
                 required
                 fullWidth

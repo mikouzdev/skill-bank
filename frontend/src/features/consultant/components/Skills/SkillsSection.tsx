@@ -1,4 +1,12 @@
-import { Box, Typography, Rating, IconButton, Stack } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Rating,
+  IconButton,
+  Stack,
+  useTheme,
+  useMediaQuery,
+} from "@mui/material";
 import Circle from "@mui/icons-material/Circle";
 import CircleIcon from "@mui/icons-material/Circle";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -8,6 +16,7 @@ import { addSkill, deleteSkill, updateSkill } from "../../api/consultants.api";
 import { useSnackbar } from "../../../../shared/components/useSnackbar";
 import { useState } from "react";
 import AddSkillDialog from "./AddSkillDialog";
+import AddCommentButton from "../../../sales/components/AddCommentButton";
 
 type ConsultantSkill = components["schemas"]["ConsultantSkill"];
 type SkillsResponse = components["schemas"]["SkillTagList"];
@@ -31,6 +40,9 @@ export default function Skills({
 }: Props) {
   const { showError, showSuccess } = useSnackbar();
   const [skills, setSkills] = useState<ConsultantSkill[]>(data); // consultant skills
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   async function handleAddSkill(
     selectedSkill: SkillTag,
@@ -99,8 +111,8 @@ export default function Skills({
   );
 
   return (
-    <Box sx={{ p: 2 }}>
-      <Stack direction={"row"} spacing={2}>
+    <Box sx={{ p: 2, maxWidth: "100%" }}>
+      <Stack direction={"row"} spacing={2} mb={1}>
         <Typography variant="h5">Skills</Typography>
         {editable && skillData && categoryData && (
           <AddSkillDialog
@@ -109,17 +121,33 @@ export default function Skills({
             onSubmit={handleAddSkill}
           />
         )}
+        <AddCommentButton label="Add comment" section="SKILLS" />
       </Stack>
 
       <Box
-        sx={{
-          display: "grid",
-          gridTemplateRows: "repeat(3, 1fr)",
-          gridAutoFlow: "column",
-          gridAutoColumns: "max-content",
-          columnGap: 4,
-          rowGap: 1,
-        }}
+        sx={
+          isMobile
+            ? {
+                display: "flex",
+                flexDirection: "column",
+                gap: 2,
+                maxHeight: 250,
+                width: "100%",
+                maxWidth: "100%",
+                overflowY: "scroll",
+              }
+            : {
+                display: "grid",
+                gridTemplateRows: "repeat(3, 1fr)",
+                gridAutoFlow: "column",
+                gridAutoColumns: "max-content",
+                columnGap: 4,
+                rowGap: 1,
+                maxWidth: "100%",
+                width: "100%",
+                overflowX: "scroll",
+              }
+        }
       >
         {skills.map((skill) => {
           return (

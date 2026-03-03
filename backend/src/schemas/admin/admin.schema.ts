@@ -29,7 +29,7 @@ export const UserBodySchema = UserResponseSchema.omit({
   createdAt: true,
   id: true,
 }).extend({
-  passwordHash: z.string().meta({ example: "hashedtestpassword" }),
+  password: z.string().meta({ example: "unhashedtestpassword" }),
 }).meta({ id: "UserBody" });
 
 export const FullUserResponseSchema = UserResponseSchema.extend({
@@ -43,5 +43,5 @@ export const UserIdParamsSchema = z.object({
 export const UserBodyPartialSchema = UserBodySchema.partial({
   name: true,
   email: true,
-  passwordHash: true,
+  password: true,
 }).meta({ id: "UserBodyPartial" });

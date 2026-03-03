@@ -10,6 +10,7 @@ import { AddNewProject } from "./PersonalProjectAdd";
 import type { components } from "@api-types/openapi";
 import { useState } from "react";
 import SectionVisibilitySwitch from "../../../../shared/components/SectionVisibilitySwitch";
+import AddCommentButton from "../../../sales/components/AddCommentButton";
 
 type ProjectLink = Partial<components["schemas"]["ProjectLink"]>;
 
@@ -96,9 +97,10 @@ export default function PersonalProjects({ data, skillData, editable }: Props) {
   }
 
   const defaultSection = (
-    <>
+    <Stack spacing={1} sx={{ maxWidth: 1200 }}>
       <Stack direction={"row"} gap={2}>
-        <Typography variant="h5">Personal Projects</Typography>
+        <Typography variant="h5">Projects</Typography>
+        <AddCommentButton label="Add comment" section="PROJECTS" />
       </Stack>
       <Stack spacing={1}>
         {projects.map((item) => (
@@ -111,21 +113,23 @@ export default function PersonalProjects({ data, skillData, editable }: Props) {
           />
         ))}
       </Stack>
-    </>
+    </Stack>
   );
 
   const editableSection = (
-    <>
-      <Stack direction={"row"} gap={2}>
-        <Typography variant="h5">Personal Projects</Typography>
-        {skillData && (
-          <AddNewProject
-            update={(formData, skills, links) => {
-              void addProject(formData, skills, links);
-            }}
-            skillData={skillData}
-          />
-        )}
+    <Stack spacing={1} sx={{ maxWidth: 1200 }}>
+      <Stack direction={"column"} spacing={1}>
+        <Stack direction={"row"} spacing={2}>
+          <Typography variant="h5">Projects</Typography>
+          {skillData && (
+            <AddNewProject
+              update={(formData, skills, links) => {
+                void addProject(formData, skills, links);
+              }}
+              skillData={skillData}
+            />
+          )}
+        </Stack>
         <SectionVisibilitySwitch
           sectionData={{ name: "PROJECTS", visibility: "PUBLIC" }}
         />
@@ -142,13 +146,15 @@ export default function PersonalProjects({ data, skillData, editable }: Props) {
           />
         ))}
       </Stack>
-    </>
+    </Stack>
   );
 
   return (
     <Box
       sx={{
         p: 2,
+        width: "100%",
+        maxWidth: "100%",
       }}
     >
       {editable ? editableSection : defaultSection}

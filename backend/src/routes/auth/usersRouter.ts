@@ -2,7 +2,7 @@ import { Router, type Request, type Response } from "express";
 import argon2 from "argon2";
 import jwt from "jsonwebtoken";
 import { prisma } from "../../db/prismaClient.js";
-import { LoginSchema } from "../../schemas/auth/auth.schema.js";
+import { LoginSchema, RoleBodySchema } from "../../schemas/auth/auth.schema.js";
 import {
   authenticate,
   type AuthenticatedRequest,
@@ -129,3 +129,70 @@ usersRouter.get(
     });
   }
 );
+
+/**
+ * Change user's primary role
+ * @route PATCH /auth/role
+ * @returns confirmation message
+ */
+usersRouter.patch("/role", authenticate, async (req: AuthenticatedRequest, res: Response) => {
+  const parsedBody = RoleBodySchema.safeParse(req.body);
+  if (!parsedBody.success) {
+    res.status(400).json(parsedBody.error);
+    return;
+  }
+  const { role } = parsedBody.data;
+  const user = await prisma.user.findUnique({
+    where: { id: req.user!.id },
+    select: {
+      id: true,
+      email: true,
+      name: true,
+      roles: { select: { role: true } },
+      consultant: { select: { id: true } },
+      salesperson: { select: { id: true } },
+      customer: { select: { id: true } },
+    },
+  });
+
+  if (!user) {
+    return res.status(401).send("Unauthorized");
+  }
+
+  if (user.roles.length === 1) {
+    return res.status(422).send("User only has one role");
+  }
+
+  const currentIndex = user.roles.findIndex((userrole) => userrole.role === role);
+  if (currentIndex === 0) {
+    return res.status(202).send("Role is already primary role");
+  }
+  else if (currentIndex === -1) {
+    return res.status(404).send("User does not have the role");
+  }
+  //This should shift the role to the first position in the array
+  const newRoles = user.roles.sort(function(x,y){ return x.role == role ? -1 : y.role == role ? 1 : 0; });
+  let editedUser = null;
+  try {
+    editedUser = await prisma.user.update({
+      where: { id: req.user!.id },
+      data: {
+        roles: {
+          deleteMany: {},
+          create: newRoles,
+        },
+      },
+      include: {
+        roles: true,
+      },
+      omit: {
+        passwordHash: true,
+      },
+    });
+  } catch (err) {
+    res.status(500).json(err);
+    return;
+  }
+
+  res.json(editedUser);
+});

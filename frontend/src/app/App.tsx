@@ -17,12 +17,14 @@ import CustomerLoginPage from "../features/customer/pages/CustomerLoginPage";
 import { Logout } from "../features/Logout/Logout";
 import SalesOffersPage from "../features/sales/pages/SalesOffersPage/SalesOffersPage";
 import SalesSingleOfferPage from "../features/sales/pages/SalesOffersPage/SalesSingleOfferPage";
-import { Redirector } from "../features/Login/Components/Redirector";
+//import { Redirector } from "../features/Login/Components/Redirector";
 //import { SalesConsultantsList } from "../features/sales/pages/SalesConsultantsLists";
 import SalesConsultantsLists from "../features/sales/pages/SalesConsultantsLists";
 import OfferCreationPage from "../features/sales/pages/OfferCreationPage/OfferCreationPage";
 import ConsultantProfileForOthers from "../shared/pages/ConsultantProfileForOthers";
 import ListCreationPage from "../features/sales/pages/ListCreationPage/ListCreationPage";
+import ConsultantCommentsPage from "../features/consultant/pages/ConsultantCommentsPage";
+import OfferEditingPage from "../features/sales/pages/OfferEditingPage/OfferEditingPage";
 
 function App() {
   return (
@@ -34,19 +36,31 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/customerlogin" element={<CustomerLoginPage />} />
           <Route path="/loginRole" element={<LoginRolePage />} />
-          <Route path="/redirector" element={<Redirector />} />
+          {/* <Route path="/redirector" element={<Redirector />} /> */}
 
           <Route element={<SidebarLayout />}>
             {/* consultant */}
-            <Route path="/me" element={<ConsultantProfilePage />} />
-            <Route path="/me/edit" element={<ConsultantProfileSettings />} />
+            <Route path="consultant/me" element={<ConsultantProfilePage />} />
             <Route
-              path="/listConsultants"
-              element={<ConsultantListConsultants />}
+              path="consultant/me/edit"
+              element={<ConsultantProfileSettings />}
             />
+            <Route
+              path="consultant/me/comments"
+              element={<ConsultantCommentsPage />}
+            />
+
             <Route
               path="/consultant/:id"
               element={<ConsultantProfileForOthers />}
+            />
+            <Route
+              path="/consultant/:id/comments"
+              element={<ConsultantCommentsPage />}
+            />
+            <Route
+              path="/listConsultants"
+              element={<ConsultantListConsultants />}
             />
 
             {/* admin */}
@@ -64,6 +78,10 @@ function App() {
             <Route
               path="/manage-offers/create"
               element={<OfferCreationPage />}
+            />
+            <Route
+              path="/manage-offers/edit/:id"
+              element={<OfferEditingPage />}
             />
             <Route path="/sales" element={<ConsultantListView />} />
             <Route
