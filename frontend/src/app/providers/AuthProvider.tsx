@@ -12,6 +12,7 @@ export interface AuthContextType {
   isLoading: boolean;
   login: (payload: LoginRequest) => Promise<boolean>;
   logout: () => void;
+  refreshCurrentUser: () => Promise<void>;
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -23,26 +24,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    async function fetchCurrentUser() {
-      try {
-        const user = await getCurrentUser();
-        setCurrentUser(user.data);
-      } catch (error) {
-        console.log("failed to fetch user:", error);
-        //logout();
-      } finally {
-        setIsLoading(false);
-      }
-    }
+  async function refreshCurrentUser() {
+    if (!token) return;
 
-    // fetch only if there is a token but no user
-    if (token && !currentUser) {
-      void fetchCurrentUser();
-    } else if (!token) {
+    try {
+      const user = await getCurrentUser();
+      setCurrentUser(user.data);
+    } catch (error) {
+      console.log("failed to refresh user:", error);
+    } finally {
       setIsLoading(false);
     }
-  }, [token, currentUser]);
+  }
+
+  useEffect(() => {
+    // fetch only if there is a token but no user
+    if (token && !currentUser) {
+      void refreshCurrentUser();
+    } else if (!token) {
+      // setIsLoading(false);
+    }
+  });
 
   async function login(payload: LoginRequest) {
     logout();
@@ -54,6 +56,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       localStorage.setItem("token", token);
       setToken(token);
 
+      await refreshCurrentUser();
       return true;
     } catch (error) {
       console.log("error while loggin in", error);
@@ -75,6 +78,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     isLoading,
     login,
     logout,
+    refreshCurrentUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
