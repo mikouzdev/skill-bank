@@ -1,0 +1,42 @@
+stages:
+  - lint
+  - build_deploy
+
+lint_backend:
+  image: node:24
+  stage: lint
+  script:
+    - cd backend
+    - npm install -g pnpm
+    - pnpm install
+    - pnpm run db:generate
+    - npm run lint
+
+lint_frontend:
+  image: node:24
+  stage: lint
+  script:
+    - cd frontend
+    - npm install -g pnpm
+    - pnpm install
+    - npm run lint
+
+build_deploy_front:
+  stage: build_deploy
+  image: docker
+  services:
+    - docker:dind
+  script:
+    - docker build -f frontend/Dockerfile -t "${ACR_REPOSITORY}/spankki-frontend:latest" .
+    - docker login "$ACR_REPOSITORY" -u "$ACR_USERNAME" -p "$ACR_PASSWORD"
+    - docker push "${ACR_REPOSITORY}/spankki-frontend:latest"
+
+build_deploy_back:
+  stage: build_deploy
+  image: docker
+  services:
+    - docker:dind
+  script:
+    - docker build -f backend/Dockerfile -t "$ACR_REPOSITORY/spankki-backend:latest" .
+    - docker login "$ACR_REPOSITORY" -u "$ACR_USERNAME" -p "$ACR_PASSWORD"
+    - docker push "$ACR_REPOSITORY/spankki-backend:latest"
