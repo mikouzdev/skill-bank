@@ -39,6 +39,8 @@ export const LoginRolePageForm = () => {
   const { currentUser, refreshCurrentUser } = useAuth();
   const navigate = useNavigate();
 
+  const roles = currentUser?.roles ?? [];
+  if (roles.length <= 1) return null;
   const handleSetActiveRole = async (role: string, path: string) => {
     try {
       await updateRole(role);

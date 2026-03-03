@@ -32,6 +32,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setCurrentUser(user.data);
     } catch (error) {
       console.log("failed to refresh user:", error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -40,7 +42,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (token && !currentUser) {
       void refreshCurrentUser();
     } else if (!token) {
-      //setIsLoading(false);
+      // setIsLoading(false);
     }
   });
 
