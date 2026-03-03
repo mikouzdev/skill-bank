@@ -51,11 +51,9 @@ export const LoginRolePageForm = () => {
 
   return (
     <Paper sx={{ padding: 2 }}>
-      <Typography
-        component="h1"
-        variant="h4"
-        sx={{ textAlign: "center" }}
-      ></Typography>
+      <Typography component="h1" variant="h4" sx={{ textAlign: "center" }}>
+        Please select your role
+      </Typography>
 
       <Stack
         direction="row"
