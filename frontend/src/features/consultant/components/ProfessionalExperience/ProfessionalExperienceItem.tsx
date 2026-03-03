@@ -80,7 +80,6 @@ export default function ProfessionalExperienceItem({
         direction={isMobile ? "column" : "row"}
         width={"100%"}
         flexWrap={"wrap"}
-        border={1}
       >
         {/* bottom left container */}
         <Stack
