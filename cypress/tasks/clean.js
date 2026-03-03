@@ -1,4 +1,7 @@
-const { PrismaClient } = require('@prisma/client');
+import {
+  PrismaClient
+} from "../../backend/src/generated/prisma/client.ts";
+import { PrismaPg } from "../../backend/node_modules/@prisma/adapter-pg";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
@@ -18,4 +21,4 @@ const clean = async () => {
     return;
 };
 
-module.exports = clean;
+export default clean;
