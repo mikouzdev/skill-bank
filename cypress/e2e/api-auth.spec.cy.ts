@@ -1,27 +1,26 @@
 context("POST /auth/login", () => {
   it("logs in and gets token, then logs out", () => {
-    cy.request({
-      method: "POST",
-      url: "/auth/login",
-      body: {
-        "email": "test@demo.com",
-        "password": "hashed-password"
-      }
-    }).then((response) => {
-      expect(response.status).to.eq(200);
-      expect(response.body.token).to.not.be.null;
-      expect(response.body).to.have.property("success", true);
-      const token = response.body.token;
+    cy.fixture('user.json').then(userData => {
       cy.request({
         method: "POST",
-        url: "/auth/logout",
-        headers: {
-          Authorization: "Bearer " + token,
-        }
+        url: "/auth/login",
+        body: userData
       }).then((response) => {
         expect(response.status).to.eq(200);
-        expect(response.body.message).to.not.be.null;
+        expect(response.body.token).to.not.be.null;
         expect(response.body).to.have.property("success", true);
+        const token = response.body.token;
+        cy.request({
+          method: "POST",
+          url: "/auth/logout",
+          headers: {
+            Authorization: "Bearer " + token,
+          }
+        }).then((response) => {
+          expect(response.status).to.eq(200);
+          expect(response.body.message).to.not.be.null;
+          expect(response.body).to.have.property("success", true);
+        })
       })
     })
   })

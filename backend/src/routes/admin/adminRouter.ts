@@ -249,6 +249,70 @@ adminRouter.put(
           passwordHash: true,
         },
       });
+      await Promise.all(
+        roles.map(async (role) => {
+          switch (role.role) {
+            case "CONSULTANT":
+              await prisma.consultant.create({
+                data: {
+                  userId: userId,
+                  description: "",
+                  roleTitle: "",
+                  profilePictureUrl: "",
+                  consultantAttributes: {
+                    create: [],
+                  },
+                  pageSections: {
+                    create: [
+                      {
+                        name: "GENERAL" as const,
+                        visibility: "PUBLIC" as const,
+                      },
+                      {
+                        name: "NETWORKING_LINKS" as const,
+                        visibility: "PUBLIC" as const,
+                      },
+                      {
+                        name: "SKILLS" as const,
+                        visibility: "PUBLIC" as const,
+                      },
+                      {
+                        name: "EMPLOYMENTS" as const,
+                        visibility: "PUBLIC" as const,
+                      },
+                      {
+                        name: "PROJECTS" as const,
+                        visibility: "PUBLIC" as const,
+                      },
+                    ],
+                  },
+                },
+              });
+              break;
+            case "SALESPERSON":
+              await prisma.salesperson.create({
+                data: {
+                  userId: userId,
+                  salesLists: {
+                    create: [],
+                  },
+                },
+              });
+              break;
+            case "CUSTOMER":
+              await prisma.customer.create({
+                data: {
+                  userId: userId,
+                  salesLists: {
+                    create: [],
+                  },
+                },
+              });
+              break;
+          }
+          return;
+        })
+      );
     } catch (err) {
       res.status(500).json(err);
       return;

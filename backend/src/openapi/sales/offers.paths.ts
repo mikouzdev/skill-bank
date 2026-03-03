@@ -193,6 +193,7 @@ export const offersPaths = {
           },
         },
         400: { description: "Invalid request" },
+        403: { description: "Forbidden" },
         404: { description: "Offer page or consultant page not found" },
         500: { description: "Server error" },
       },

@@ -32,43 +32,42 @@ context("GET /consultants", () => {
     })
   })
   it("logs in as consultant edit data", () => {
-    cy.request({
-      method: "POST",
-      url: "/auth/login",
-      body: {
-        "email": "test@demo.com",
-        "password": "hashed-password"
-      }
-    }).then((response) => {
-      expect(response.status).to.eq(200);
-      expect(response.body.token).to.not.be.null;
-      expect(response.body).to.have.property("success", true);
-      const token = response.body.token;
+    cy.fixture('user.json').then(userData => {
       cy.request({
-        method: "PUT",
-        url: "/consultants/me",
-        body: {
-          "description": "I have edited my consultant data.",
-          "roleTitle": "Fullstack Developer",
-        },
-        headers: {
-          Authorization: "Bearer " + token,
-        }
+        method: "POST",
+        url: "/auth/login",
+        body: userData
       }).then((response) => {
         expect(response.status).to.eq(200);
-        expect(response.body).to.not.be.null;
-        expect(response.body).to.have.property("description", "I have edited my consultant data.");
-        expect(response.body).to.have.property("roleTitle", "Fullstack Developer");
+        expect(response.body.token).to.not.be.null;
+        expect(response.body).to.have.property("success", true);
+        const token = response.body.token;
         cy.request({
-          method: "POST",
-          url: "/auth/logout",
+          method: "PUT",
+          url: "/consultants/me",
+          body: {
+            "description": "I have edited my consultant data.",
+            "roleTitle": "Fullstack Developer",
+          },
           headers: {
             Authorization: "Bearer " + token,
           }
         }).then((response) => {
           expect(response.status).to.eq(200);
-          expect(response.body.message).to.not.be.null;
-          expect(response.body).to.have.property("success", true);
+          expect(response.body).to.not.be.null;
+          expect(response.body).to.have.property("description", "I have edited my consultant data.");
+          expect(response.body).to.have.property("roleTitle", "Fullstack Developer");
+          cy.request({
+            method: "POST",
+            url: "/auth/logout",
+            headers: {
+              Authorization: "Bearer " + token,
+            }
+          }).then((response) => {
+            expect(response.status).to.eq(200);
+            expect(response.body.message).to.not.be.null;
+            expect(response.body).to.have.property("success", true);
+          })
         })
       })
     })
