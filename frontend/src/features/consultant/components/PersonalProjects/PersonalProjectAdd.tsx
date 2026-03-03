@@ -8,7 +8,7 @@ import {
   MenuItem,
   Stack,
   Chip,
-  Typography,
+  Divider,
 } from "@mui/material";
 
 import AddIcon from "@mui/icons-material/Add";
@@ -137,144 +137,149 @@ export function AddNewProject({ update, skillData }: Props) {
       </Button>
       <Dialog open={!!showForm}>
         <DialogTitle>Add a new project</DialogTitle>
-        {
-          <div className="overlay">
-            <div className="form-container">
-              <Box
-                component="form"
-                onSubmit={handleSubmit}
-                sx={{
-                  maxWidth: 9000,
-                  minWidth: 500,
-                  mx: "auto",
-                  p: 3,
-                  borderRadius: 2,
-                  boxShadow: 3,
-                  bgcolor: "background.paper",
-                }}
-              >
-                <Stack spacing={2}>
-                  <b>Name</b>
-                  <TextField
-                    label="Name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    fullWidth
-                  />
-                  <b>Short Description</b>
-                  <TextField
-                    label=""
-                    name="Shortdescription"
-                    value="NOT IMPLEMENTED"
-                    multiline
-                    rows={2}
-                    fullWidth
-                  />
-                  <b>Description</b>
-                  <TextField
-                    label="Description"
-                    name="description"
-                    value={formData.description}
-                    onChange={handleChange}
-                    required
-                    multiline
-                    rows={4}
-                    fullWidth
-                  />
-                  <TextField
-                    select
-                    label="Visibility"
-                    name="visibility"
-                    value={formData.visibility}
-                    onChange={handleChange}
-                    fullWidth
-                  >
-                    <MenuItem value="PUBLIC">Public</MenuItem>
-                    <MenuItem value="LIMITED">Limited</MenuItem>
-                  </TextField>
-                  <Typography>Skills</Typography>
-                  <Stack
-                    direction="row"
-                    flexWrap="wrap"
-                    rowGap={1}
-                    columnGap={1}
-                    sx={{
-                      p: 1,
-                      maxHeight: 150,
-                      overflowY: "scroll",
-                    }}
-                  >
-                    {availableSkillChips}
-                  </Stack>
-                  <Typography>Added Skills</Typography>
-                  <Stack
-                    direction="row"
-                    flexWrap="wrap"
-                    rowGap={1}
-                    columnGap={1}
-                    sx={{
-                      p: 1,
-                      maxHeight: 150,
-                      overflowY: "scroll",
-                    }}
-                  >
-                    {addedSkillChips}
-                  </Stack>
-                  <b>Project length:</b>
-                  <div>
-                    <TextField
-                      label="Start Date"
-                      type="date"
-                      name="start"
-                      value={formData.start}
-                      onChange={handleChange}
-                      required
-                      InputLabelProps={{ shrink: true }}
-                    />
-                    <TextField
-                      label="End Date"
-                      type="date"
-                      name="end"
-                      value={formData.end}
-                      onChange={handleChange}
-                      InputLabelProps={{ shrink: true }}
-                    />
-                  </div>
 
-                  <Box>
-                    <TextField
-                      label="Project URL"
-                      name="url"
-                      value={addUrl}
-                      onChange={handleProjectUrlChange}
-                      error={isUrlInvalid}
-                      fullWidth
-                    />
-                    <TextField
-                      label="Project name"
-                      name="label"
-                      value={addLabel}
-                      onChange={handleProjectLabelChange}
-                      disabled={isTitleDisabled}
-                      fullWidth
-                    />
-                  </Box>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    size="large"
-                    sx={{ mt: 2 }}
-                  >
+        <div className="overlay">
+          <div className="form-container">
+            <Box
+              component="form"
+              onSubmit={handleSubmit}
+              sx={{
+                maxWidth: 9000,
+                mx: "auto",
+                p: 3,
+                borderRadius: 2,
+                boxShadow: 3,
+                bgcolor: "background.paper",
+              }}
+            >
+              <Stack spacing={2}>
+                <TextField
+                  label="Name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                  fullWidth
+                />
+
+                <TextField
+                  label=""
+                  name="Shortdescription"
+                  value="NOT IMPLEMENTED"
+                  multiline
+                  rows={2}
+                  fullWidth
+                />
+
+                <TextField
+                  label="Description"
+                  name="description"
+                  value={formData.description}
+                  onChange={handleChange}
+                  required
+                  multiline
+                  rows={4}
+                  fullWidth
+                />
+
+                <TextField
+                  select
+                  label="Visibility"
+                  name="visibility"
+                  value={formData.visibility}
+                  onChange={handleChange}
+                  fullWidth
+                >
+                  <MenuItem value="PUBLIC">Public</MenuItem>
+                  <MenuItem value="LIMITED">Limited</MenuItem>
+                </TextField>
+
+                <Divider textAlign="left">Select skills</Divider>
+                <Stack
+                  direction="row"
+                  flexWrap="wrap"
+                  rowGap={1}
+                  columnGap={1}
+                  sx={{
+                    p: 1,
+                    maxHeight: 150,
+                    overflowY: "scroll",
+                  }}
+                >
+                  {availableSkillChips}
+                </Stack>
+
+                <Divider textAlign="left">Added Skills</Divider>
+                <Stack
+                  direction="row"
+                  flexWrap="wrap"
+                  rowGap={1}
+                  columnGap={1}
+                  sx={{
+                    p: 1,
+                    maxHeight: 150,
+                    overflowY: "scroll",
+                  }}
+                >
+                  {addedSkillChips}
+                </Stack>
+
+                <Divider textAlign="left">Project length</Divider>
+                <Stack direction={"column"} spacing={3}>
+                  <TextField
+                    size="small"
+                    label="Start Date"
+                    type="date"
+                    name="start"
+                    value={formData.start}
+                    onChange={handleChange}
+                    required
+                    InputLabelProps={{ shrink: true }}
+                  />
+                  <TextField
+                    size="small"
+                    label="End Date"
+                    type="date"
+                    name="end"
+                    value={formData.end}
+                    onChange={handleChange}
+                    InputLabelProps={{ shrink: true }}
+                  />
+                </Stack>
+
+                <Divider textAlign="left">Project link</Divider>
+                <Stack direction={"column"} spacing={3}>
+                  <TextField
+                    size="small"
+                    label="Project URL"
+                    name="url"
+                    value={addUrl}
+                    onChange={handleProjectUrlChange}
+                    error={isUrlInvalid}
+                    fullWidth
+                  />
+                  <TextField
+                    size="small"
+                    label="Project name"
+                    name="label"
+                    value={addLabel}
+                    onChange={handleProjectLabelChange}
+                    disabled={isTitleDisabled}
+                    fullWidth
+                  />
+                </Stack>
+                <Stack direction={"row"} spacing={2} justifyContent={"center"}>
+                  <Button size="small" onClick={handleClose}>
+                    Cancel
+                  </Button>
+                  <Button size="small" type="submit">
                     Submit
                   </Button>
-                  <Button onClick={handleClose}>Cancel</Button>
                 </Stack>
-              </Box>
-            </div>
+              </Stack>
+            </Box>
           </div>
-        }
+        </div>
       </Dialog>
     </div>
   );

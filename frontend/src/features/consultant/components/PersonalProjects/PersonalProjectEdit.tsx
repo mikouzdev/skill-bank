@@ -187,7 +187,7 @@ export default function PersonalProjectEdit({
       </Button>
 
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
-        <DialogContent sx={{ p: 3, minWidth: 500 }}>
+        <DialogContent sx={{ p: 3 }}>
           <DialogTitle>Edit project</DialogTitle>
           <Box
             component="form"
@@ -225,26 +225,6 @@ export default function PersonalProjectEdit({
                 </Select>
               </FormControl>
               {ongoingSwitch}
-              <Stack direction={"row"} spacing={2}>
-                <TextField
-                  label="Start date"
-                  type="date"
-                  name="start"
-                  value={formData.start}
-                  onChange={handleChange}
-                  InputLabelProps={{ shrink: true }}
-                />
-                {!isOngoing && (
-                  <TextField
-                    label="End date"
-                    type="date"
-                    name="end"
-                    value={formData.end}
-                    onChange={handleChange}
-                    InputLabelProps={{ shrink: true }}
-                  />
-                )}
-              </Stack>
 
               <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
                 <Stack direction="column">
@@ -282,17 +262,36 @@ export default function PersonalProjectEdit({
                 </Stack>
               </Box>
 
-              <Stack direction={"row"} spacing={2}>
-                <Button
+              <Stack direction={"column"} spacing={3}>
+                <Divider textAlign="left">Project length</Divider>
+                <TextField
                   size="small"
-                  variant="contained"
-                  loading={loading}
-                  type="submit"
-                >
-                  Apply edits
-                </Button>
-                <Button variant="outlined" onClick={() => setIsOpen(false)}>
+                  label="Start date"
+                  type="date"
+                  name="start"
+                  value={formData.start}
+                  onChange={handleChange}
+                  InputLabelProps={{ shrink: true }}
+                />
+                {!isOngoing && (
+                  <TextField
+                    size="small"
+                    label="End date"
+                    type="date"
+                    name="end"
+                    value={formData.end}
+                    onChange={handleChange}
+                    InputLabelProps={{ shrink: true }}
+                  />
+                )}
+              </Stack>
+
+              <Stack direction={"row"} spacing={2} justifyContent={"center"}>
+                <Button size="small" onClick={() => setIsOpen(false)}>
                   Cancel
+                </Button>
+                <Button size="small" loading={loading} type="submit">
+                  Apply edits
                 </Button>
               </Stack>
             </Stack>
