@@ -1,0 +1,35 @@
+FROM node:24-alpine AS builder
+
+WORKDIR /
+
+RUN corepack enable && corepack prepare pnpm@10.27.0 --activate
+
+COPY ./backend .
+COPY /shared /shared
+COPY /.env.example ./.env
+
+RUN CI=true pnpm install --frozen-lockfile
+
+#Database setup. Run only once and only in dev.
+#RUN pnpm run env -- prisma migrate reset --force
+#RUN echo '' | pnpm run env -- prisma migrate dev
+#RUN pnpm run env -- prisma generate
+#RUN npm exec prisma db seed
+
+RUN npm run build
+
+# Production stage (static serve)
+FROM node:24-alpine
+
+COPY --from=builder /dist .
+
+COPY --from=builder /package.json ./
+COPY --from=builder /pnpm-lock.yaml ./
+COPY --from=builder /node_modules ./node_modules
+COPY --from=builder /.env.example ./.env
+
+ENV NODE_ENV=production
+
+EXPOSE 3000
+
+CMD ["node", "/index.js"]
