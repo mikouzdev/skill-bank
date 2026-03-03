@@ -252,7 +252,7 @@ adminRouter.put(
       await Promise.all(
         roles.map(async (role) => {
           switch (role.role) {
-            case "CONSULTANT":
+            case "CONSULTANT": {
               const existingConsultant = await prisma.consultant.findUnique({
                 where: { userId: userId },
               })
@@ -295,7 +295,8 @@ adminRouter.put(
                 },
               });
               break;
-            case "SALESPERSON":
+            }
+            case "SALESPERSON": {
               const existingSalesPerson = await prisma.salesperson.findUnique({
                 where: { userId: userId },
               })
@@ -311,7 +312,8 @@ adminRouter.put(
                 },
               });
               break;
-            case "CUSTOMER":
+            }
+            case "CUSTOMER": {
               const existingCustomer = await prisma.customer.findUnique({
                 where: { userId: userId },
               })
@@ -327,6 +329,7 @@ adminRouter.put(
                 },
               });
               break;
+            }
           }
           return;
         })
