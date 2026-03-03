@@ -36,12 +36,13 @@ const roleBoxSx = {
 const iconSx = { fontSize: 64 };
 
 export const LoginRolePageForm = () => {
-  const { currentUser } = useAuth();
+  const { currentUser, refreshCurrentUser } = useAuth();
   const navigate = useNavigate();
 
   const handleSetActiveRole = async (role: string, path: string) => {
     try {
       await updateRole(role);
+      await refreshCurrentUser();
     } catch (error) {
       console.error("Failed to change role:", error);
     }
@@ -50,9 +51,11 @@ export const LoginRolePageForm = () => {
 
   return (
     <Paper sx={{ padding: 2 }}>
-      <Typography component="h1" variant="h4" sx={{ textAlign: "center" }}>
-        Please select your role
-      </Typography>
+      <Typography
+        component="h1"
+        variant="h4"
+        sx={{ textAlign: "center" }}
+      ></Typography>
 
       <Stack
         direction="row"
