@@ -233,17 +233,17 @@ async function main() {
       },
     },
   });
-  const customer2 = await prisma.customer.create({
+  await prisma.customer.create({
     data: {
       userId: testUser.id,
     },
   });
-  const sales2 = await prisma.salesperson.create({
+  await prisma.salesperson.create({
     data: {
       userId: testUser.id,
     },
   });
-  const consultant4 = await prisma.consultant.create({
+  await prisma.consultant.create({
     data: {
       userId: testUser.id,
       description: "Test consultant",

@@ -11,7 +11,7 @@ context("POST /auth/login", () => {
       expect(response.status).to.eq(200);
       expect(response.body.token).to.not.be.null;
       expect(response.body).to.have.property("success", true);
-      let token = response.body.token;
+      const token = response.body.token;
       cy.request({
         method: "POST",
         url: "/auth/logout",

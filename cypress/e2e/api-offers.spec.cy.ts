@@ -11,7 +11,7 @@ context("GET /sales/1/offers", () => {
             expect(response.status).to.eq(200);
             expect(response.body.token).to.not.be.null;
             expect(response.body).to.have.property("success", true);
-            let token = response.body.token;
+            const token = response.body.token;
             cy.request({
                 method: "GET",
                 url: "/sales/1/offers",
@@ -21,7 +21,7 @@ context("GET /sales/1/offers", () => {
             }).then((response) => {
                 expect(response.status).to.eq(200);
                 expect(response.body).length.to.be.greaterThan(1)
-                response.body.forEach((element: any) => {
+                response.body.forEach((element) => {
                     expect(element).to.have.property('id')
                     expect(element).to.have.property('salespersonId')
                     expect(element).to.have.property('customerId')
@@ -39,9 +39,9 @@ context("GET /sales/1/offers", () => {
                 }).then((response) => {
                     expect(response.status).to.eq(200);
                     expect(response.body).to.not.be.null;
-                    let userId = response.body.id;
-                    let consultantId = response.body.consultantId
-                    let customerId = response.body.customerId;
+                    const userId = response.body.id;
+                    const consultantId = response.body.consultantId
+                    const customerId = response.body.customerId;
                     cy.request({
                         method: "POST",
                         url: "/sales/1/offers",

@@ -4,7 +4,7 @@ context("GET /consultants", () => {
       expect(response.status).to.eq(200)
       expect(response.body).length.to.be.greaterThan(1)
       let consultantExampleId = 0;
-      response.body.forEach((element: any) => {
+      response.body.forEach((element) => {
         expect(element).to.have.property('id')
         if (consultantExampleId === 0) {
           consultantExampleId = element.id
@@ -43,7 +43,7 @@ context("GET /consultants", () => {
       expect(response.status).to.eq(200);
       expect(response.body.token).to.not.be.null;
       expect(response.body).to.have.property("success", true);
-      let token = response.body.token;
+      const token = response.body.token;
       cy.request({
         method: "PUT",
         url: "/consultants/me",
@@ -83,7 +83,7 @@ context("GET /consultants", () => {
     }).then((response) => {
       expect(response.status).to.eq(200);
       expect(response.body).length.to.be.greaterThan(0)
-      response.body.forEach((element: any) => {
+      response.body.forEach((element) => {
         expect(element).to.have.property('id')
         expect(element).to.have.property('userId')
         expect(element).to.have.property('description')
@@ -102,7 +102,7 @@ context("GET /consultants", () => {
     }).then((response) => {
       expect(response.status).to.eq(200);
       expect(response.body).length.to.be.greaterThan(0)
-      response.body.forEach((element: any) => {
+      response.body.forEach((element) => {
         expect(element).to.have.property('id')
         expect(element).to.have.property('userId')
         expect(element).to.have.property('description')
@@ -127,7 +127,7 @@ context("GET /consultants", () => {
     }).then((response) => {
       expect(response.status).to.eq(200);
       expect(response.body).length.to.be.greaterThan(0)
-      response.body.forEach((element: any) => {
+      response.body.forEach((element) => {
         expect(element).to.have.property('id')
         expect(element).to.have.property('userId')
         expect(element).to.have.property('description')

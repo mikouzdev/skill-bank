@@ -11,7 +11,7 @@ context("GET admin/users", () => {
             expect(response.status).to.eq(200);
             expect(response.body.token).to.not.be.null;
             expect(response.body).to.have.property("success", true);
-            let token = response.body.token;
+            const token = response.body.token;
             cy.request({
                 method: "GET",
                 url: "/admin/users",
@@ -21,7 +21,7 @@ context("GET admin/users", () => {
             }).then((response) => {
                 expect(response.status).to.eq(200);
                 expect(response.body).length.to.be.greaterThan(1)
-                response.body.forEach((element: any) => {
+                response.body.forEach((element) => {
                     expect(element).to.have.property('id')
                     expect(element).to.have.property('name')
                     expect(element).to.have.property('email')
@@ -35,7 +35,7 @@ context("GET admin/users", () => {
                 body: {
                     "name": "Test User",
                     "password": "unhashedtestpassword",
-                    "email": "testi@hotmail.com",
+                    "email": "testi@testmail.com",
                     "roles": [
                         {
                             "role": "CONSULTANT"
@@ -51,9 +51,9 @@ context("GET admin/users", () => {
             }).then((response) => {
                 expect(response.status).to.eq(201);
                 expect(response.body).to.not.be.null;
-                let userId = response.body.id;
+                const userId = response.body.id;
                 expect(response.body).to.have.property("name", "Test User");
-                expect(response.body).to.have.property("email", "testi@hotmail.com");
+                expect(response.body).to.have.property("email", "testi@testmail.com");
                 expect(response.body.roles[0]).to.have.property("role", "CONSULTANT");
                 expect(response.body.roles[1]).to.have.property("role", "SALESPERSON");
                 cy.request({
