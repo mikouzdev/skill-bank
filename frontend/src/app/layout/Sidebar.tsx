@@ -7,6 +7,11 @@ import {
   ListItemIcon,
   Box,
   Divider,
+  useMediaQuery,
+  AppBar,
+  Toolbar,
+  Button,
+  useTheme,
 } from "@mui/material";
 import { Person, Edit, People, Logout, Groups } from "@mui/icons-material";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -97,13 +102,18 @@ export function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
   const user = useAuth();
+  const { currentUser } = useAuth();
 
   const roles = user.currentUser?.roles ?? [];
+  const activeRole = currentUser?.roles?.[0];
   const visibleItems = navItems.filter((item) => {
-    return item.roles?.some((r) => roles.includes(r));
+    return activeRole ? item.roles?.includes(activeRole) : false;
   });
 
-  return (
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const desktopSidebar = (
     <Drawer
       variant="permanent"
       sx={{
@@ -134,4 +144,26 @@ export function Sidebar() {
       </Box>
     </Drawer>
   );
+
+  const mobileNavbar = (
+    <AppBar>
+      <Toolbar>
+        {visibleItems.map((item) => (
+          <Button
+            key={item.path}
+            onClick={() => void navigate(item.path)}
+            sx={{
+              flexDirection: "column",
+              fontSize: 11,
+            }}
+          >
+            {item.icon}
+            {item.text}
+          </Button>
+        ))}
+      </Toolbar>
+    </AppBar>
+  );
+
+  return isMobile ? mobileNavbar : desktopSidebar;
 }

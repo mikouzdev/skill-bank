@@ -1,4 +1,4 @@
-import { Box, Paper, Stack, Typography } from "@mui/material";
+import { Box, CircularProgress, Paper, Stack, Typography } from "@mui/material";
 import {
   PersonOutline,
   GroupsOutlined,
@@ -36,12 +36,20 @@ const roleBoxSx = {
 const iconSx = { fontSize: 64 };
 
 export const LoginRolePageForm = () => {
-  const { currentUser } = useAuth();
+  const { currentUser, refreshCurrentUser } = useAuth();
   const navigate = useNavigate();
 
+  const roles = currentUser?.roles ?? [];
+  if (roles.length <= 1)
+    return (
+      <Box sx={{ display: "flex" }}>
+        <CircularProgress />
+      </Box>
+    );
   const handleSetActiveRole = async (role: string, path: string) => {
     try {
       await updateRole(role);
+      await refreshCurrentUser();
     } catch (error) {
       console.error("Failed to change role:", error);
     }

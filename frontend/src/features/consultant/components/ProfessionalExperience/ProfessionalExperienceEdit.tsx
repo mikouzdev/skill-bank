@@ -177,11 +177,16 @@ export default function ProfessionalExperienceEdit({
 
   return (
     <>
-      <Button variant="contained" onClick={() => setIsOpen((prev) => !prev)}>
+      <Button
+        size="small"
+        variant="contained"
+        onClick={() => setIsOpen((prev) => !prev)}
+      >
         Edit
       </Button>
 
       <Button
+        size="small"
         variant="contained"
         color="error"
         onClick={() => void handleDeleteEmployment()}
@@ -191,7 +196,7 @@ export default function ProfessionalExperienceEdit({
       </Button>
 
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
-        <DialogContent sx={{ p: 3, minWidth: 500 }}>
+        <DialogContent sx={{ p: 3 }}>
           <DialogTitle>Edit employment</DialogTitle>
           <Box
             component="form"
@@ -235,26 +240,6 @@ export default function ProfessionalExperienceEdit({
                 </Select>
               </FormControl>
               {ongoingSwitch}
-              <Stack direction={"row"} spacing={2}>
-                <TextField
-                  label="Start date"
-                  type="date"
-                  name="start"
-                  value={formData.start}
-                  onChange={handleChange}
-                  InputLabelProps={{ shrink: true }}
-                />
-                {!isOngoing && (
-                  <TextField
-                    label="End date"
-                    type="date"
-                    name="end"
-                    value={formData.end}
-                    onChange={handleChange}
-                    InputLabelProps={{ shrink: true }}
-                  />
-                )}
-              </Stack>
 
               <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
                 <Stack direction="column">
@@ -291,6 +276,29 @@ export default function ProfessionalExperienceEdit({
                   </Stack>
                 </Stack>
               </Box>
+
+              <Stack direction={"column"} spacing={3}>
+                <TextField
+                  size="small"
+                  label="Start date"
+                  type="date"
+                  name="start"
+                  value={formData.start}
+                  onChange={handleChange}
+                  InputLabelProps={{ shrink: true }}
+                />
+                {!isOngoing && (
+                  <TextField
+                    size="small"
+                    label="End date"
+                    type="date"
+                    name="end"
+                    value={formData.end}
+                    onChange={handleChange}
+                    InputLabelProps={{ shrink: true }}
+                  />
+                )}
+              </Stack>
 
               <Stack direction={"row"} spacing={2}>
                 <Button

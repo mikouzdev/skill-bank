@@ -31,10 +31,10 @@ export default function ConsultantProfileSettings() {
   return (
     <Container
       sx={{
-        p: 2,
         display: "flex",
         flexDirection: "column",
         gap: 1,
+        px: 0,
       }}
     >
       <EditableProfileHeader data={consultant} />
@@ -47,11 +47,13 @@ export default function ConsultantProfileSettings() {
         categoryData={skillCategories}
         editable
       />
+      <Divider />
       <ProfessionalExperience
         data={employments}
         skillData={skillPool}
         editable
       />
+      <Divider />
       <PersonalProjects skillData={skillPool} data={projects} editable />
     </Container>
   );
