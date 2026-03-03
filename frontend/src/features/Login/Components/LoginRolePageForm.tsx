@@ -1,4 +1,11 @@
-import { Box, CircularProgress, Paper, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Paper,
+  Stack,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import {
   PersonOutline,
   GroupsOutlined,
@@ -8,6 +15,7 @@ import {
 import { useAuth } from "../../../app/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { updateRole } from "../api/updateRole";
+import { theme } from "../../../styles/theme";
 
 const roleBoxSx = {
   width: 140,
@@ -38,6 +46,7 @@ const iconSx = { fontSize: 64 };
 export const LoginRolePageForm = () => {
   const { currentUser, refreshCurrentUser } = useAuth();
   const navigate = useNavigate();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const roles = currentUser?.roles ?? [];
   if (roles.length <= 1)
@@ -63,9 +72,9 @@ export const LoginRolePageForm = () => {
       </Typography>
 
       <Stack
-        direction="row"
+        direction={isMobile ? "column" : "row"}
         spacing={2}
-        sx={{ mt: 2, justifyContent: "center" }}
+        sx={{ mt: 2, justifyContent: "center", alignItems: "center" }}
       >
         {currentUser?.roles.includes("CONSULTANT") && (
           <Box
