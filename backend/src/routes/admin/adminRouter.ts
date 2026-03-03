@@ -240,7 +240,7 @@ adminRouter.put(
           roles: {
             deleteMany: {},
             create: roles,
-          },
+          }
         },
         include: {
           roles: true,
@@ -253,6 +253,12 @@ adminRouter.put(
         roles.map(async (role) => {
           switch (role.role) {
             case "CONSULTANT":
+              const existingConsultant = await prisma.consultant.findUnique({
+                where: { userId: userId },
+              })
+              if(existingConsultant !== null || existingConsultant !== undefined) {
+                break;
+              }
               await prisma.consultant.create({
                 data: {
                   userId: userId,
@@ -290,6 +296,12 @@ adminRouter.put(
               });
               break;
             case "SALESPERSON":
+              const existingSalesPerson = await prisma.salesperson.findUnique({
+                where: { userId: userId },
+              })
+              if(existingSalesPerson !== null || existingSalesPerson !== undefined) {
+                break;
+              }
               await prisma.salesperson.create({
                 data: {
                   userId: userId,
@@ -300,6 +312,12 @@ adminRouter.put(
               });
               break;
             case "CUSTOMER":
+              const existingCustomer = await prisma.customer.findUnique({
+                where: { userId: userId },
+              })
+              if(existingCustomer !== null || existingCustomer !== undefined) {
+                break;
+              }
               await prisma.customer.create({
                 data: {
                   userId: userId,
