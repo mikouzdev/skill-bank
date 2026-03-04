@@ -19,7 +19,7 @@ export const projectsPaths = {
         content: { "application/json": { schema: ProjectBodySchema } },
       },
       responses: {
-        200: {
+        201: {
           description: "Creation successful",
           content: {
             "application/json": { schema: ProjectSchema },
@@ -118,7 +118,7 @@ export const projectsPaths = {
         content: { "application/json": { schema: PostProjectLinkBodySchema } },
       },
       responses: {
-        200: {
+        201: {
           description: "Creation successful",
           content: {
             "application/json": { schema: ProjectLinkSchema },
@@ -171,7 +171,7 @@ export const projectsPaths = {
         content: { "application/json": { schema: PostProjectSkillBodySchema } },
       },
       responses: {
-        200: {
+        201: {
           description: "Creation successful",
           content: {
             "application/json": { schema: ProjectSkillSchema },

@@ -213,6 +213,56 @@ async function main() {
   console.log("🧑‍💼 Customer Cuno created");
 
   // ===========================================
+  // Test user
+  // ===========================================
+
+  // password is hashed-password
+  const testUser = await prisma.user.create({
+    data: {
+      name: "Test User",
+      email: "test@demo.com",
+      passwordHash:
+        "$argon2i$v=19$m=16,t=2,p=1$aXNuVjNDZmlWdVdSUG9KYQ$k0KvnEBaLJHBQ9y3rHwQUQ",
+      roles: {
+        create: [
+          { role: Role.ADMIN },
+          { role: Role.CUSTOMER },
+          { role: Role.CONSULTANT },
+          { role: Role.SALESPERSON }
+        ],
+      },
+    },
+  });
+  await prisma.customer.create({
+    data: {
+      userId: testUser.id,
+    },
+  });
+  await prisma.salesperson.create({
+    data: {
+      userId: testUser.id,
+    },
+  });
+  await prisma.consultant.create({
+    data: {
+      userId: testUser.id,
+      description: "Test consultant",
+      roleTitle: "Test consultant",
+      profilePictureUrl: "https://www.google.com",
+      consultantAttributes: {
+        create: [
+          {
+            label: "Test",
+            value: "https://www.google.com",
+          },
+        ],
+      },
+    },
+  });
+
+  console.log("Test User created");
+
+  // ===========================================
   // Categories
   // ===========================================
 

@@ -126,7 +126,7 @@ skillsRouter.post("/skills/me", authenticate, async (req: AuthenticatedRequest, 
         },
       });
 
-      res.status(200).json(createdSkill);
+      res.status(201).json(createdSkill);
       return;
     }
   } catch (err) {

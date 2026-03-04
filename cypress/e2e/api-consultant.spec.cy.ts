@@ -4,7 +4,7 @@ context("GET /consultants", () => {
       expect(response.status).to.eq(200)
       expect(response.body).length.to.be.greaterThan(1)
       let consultantExampleId = 0;
-      response.body.forEach((element: any) => {
+      response.body.forEach((element) => {
         expect(element).to.have.property('id')
         if (consultantExampleId === 0) {
           consultantExampleId = element.id
@@ -32,43 +32,42 @@ context("GET /consultants", () => {
     })
   })
   it("logs in as consultant edit data", () => {
-    cy.request({
-      method: "POST",
-      url: "/auth/login",
-      body: {
-        "email": "alice@demo.com",
-        "password": "hashed-password"
-      }
-    }).then((response) => {
-      expect(response.status).to.eq(200);
-      expect(response.body.token).to.not.be.null;
-      expect(response.body).to.have.property("success", true);
-      let token = response.body.token;
+    cy.fixture('user.json').then(userData => {
       cy.request({
-        method: "PUT",
-        url: "/consultants/me",
-        body: {
-          "description": "I have edited my consultant data.",
-          "roleTitle": "Fullstack Developer",
-        },
-        headers: {
-          Authorization: "Bearer " + token,
-        }
+        method: "POST",
+        url: "/auth/login",
+        body: userData
       }).then((response) => {
         expect(response.status).to.eq(200);
-        expect(response.body).to.not.be.null;
-        expect(response.body).to.have.property("description", "I have edited my consultant data.");
-        expect(response.body).to.have.property("roleTitle", "Fullstack Developer");
+        expect(response.body.token).to.not.be.null;
+        expect(response.body).to.have.property("success", true);
+        const token = response.body.token;
         cy.request({
-          method: "POST",
-          url: "/auth/logout",
+          method: "PUT",
+          url: "/consultants/me",
+          body: {
+            "description": "I have edited my consultant data.",
+            "roleTitle": "Fullstack Developer",
+          },
           headers: {
             Authorization: "Bearer " + token,
           }
         }).then((response) => {
           expect(response.status).to.eq(200);
-          expect(response.body.message).to.not.be.null;
-          expect(response.body).to.have.property("success", true);
+          expect(response.body).to.not.be.null;
+          expect(response.body).to.have.property("description", "I have edited my consultant data.");
+          expect(response.body).to.have.property("roleTitle", "Fullstack Developer");
+          cy.request({
+            method: "POST",
+            url: "/auth/logout",
+            headers: {
+              Authorization: "Bearer " + token,
+            }
+          }).then((response) => {
+            expect(response.status).to.eq(200);
+            expect(response.body.message).to.not.be.null;
+            expect(response.body).to.have.property("success", true);
+          })
         })
       })
     })
@@ -78,12 +77,12 @@ context("GET /consultants", () => {
       method: "GET",
       url: "/consultants/search",
       qs: {
-        parameter: "Bob"
+        parameter: "Test"
       }
     }).then((response) => {
       expect(response.status).to.eq(200);
       expect(response.body).length.to.be.greaterThan(0)
-      response.body.forEach((element: any) => {
+      response.body.forEach((element) => {
         expect(element).to.have.property('id')
         expect(element).to.have.property('userId')
         expect(element).to.have.property('description')
@@ -102,7 +101,7 @@ context("GET /consultants", () => {
     }).then((response) => {
       expect(response.status).to.eq(200);
       expect(response.body).length.to.be.greaterThan(0)
-      response.body.forEach((element: any) => {
+      response.body.forEach((element) => {
         expect(element).to.have.property('id')
         expect(element).to.have.property('userId')
         expect(element).to.have.property('description')
@@ -127,7 +126,7 @@ context("GET /consultants", () => {
     }).then((response) => {
       expect(response.status).to.eq(200);
       expect(response.body).length.to.be.greaterThan(0)
-      response.body.forEach((element: any) => {
+      response.body.forEach((element) => {
         expect(element).to.have.property('id')
         expect(element).to.have.property('userId')
         expect(element).to.have.property('description')

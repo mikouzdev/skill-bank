@@ -81,7 +81,7 @@ export const employmentPaths = {
       },
       responses: {
         200: {
-          description: "Creation successful",
+          description: "Edit successful",
           content: {
             "application/json": { schema: EmploymentCreateSchema },
           },
