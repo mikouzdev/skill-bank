@@ -3,7 +3,7 @@ import { z } from "zod";
 export const SkillTagSchema = z
   .object({
     id: z.number().int().meta({ example: 1 }),
-    categoryId: z.number().int().nullable().meta({ example: null }),
+    categoryId: z.number().int().nullable().meta({ example: 1 }),
     name: z.string().meta({ example: "typescript" }),
   })
   .meta({ id: "SkillTag" });

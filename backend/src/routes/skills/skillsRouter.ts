@@ -231,6 +231,9 @@ skillsRouter.post("/categories", authenticate, async (req: AuthenticatedRequest,
             })),
           }
         },
+        include: {
+          skillTags: true,
+        },
       });
       res.status(201).json(category);
       return;
@@ -278,6 +281,9 @@ skillsRouter.put("/categories/:categoryId", authenticate, async (req: Authentica
             name: skillTag.name,
           })),
         } } : {}),
+      },
+      include: {
+        skillTags: true,
       },
     });
     res.status(200).json(category);
