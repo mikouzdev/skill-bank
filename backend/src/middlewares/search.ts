@@ -54,36 +54,25 @@ export async function getConsultantsByFilter(freeText: string) {
             },
           },
         },
+        {
+          consultantSkills: {
+            some: {
+              skillName: {
+                contains: freeText,
+                mode: "insensitive",
+              },
+            },
+          },
+        },
       ],
     },
   });
 
-  const skill = await prisma.consultantSkill.findMany({
-    where: {
-      skillName: {
-        contains: freeText,
-        mode: "insensitive",
-      },
-    },
-  });
-  // This returns real UserIds like [1,2]
-  //console.log(skill.map((el) => el.consultantId));
   const consultant = await prisma.consultant.findMany({
     where: {
-      OR: [
-        {
-          // This should return consultant based on userId found in skill.
-          // But this returns only empty arrays.
-          userId: {
-            in: skill.map((el) => el.consultantId),
-          },
-        },
-        {
-          userId: {
-            in: user.map((el) => el.userId),
-          },
-        },
-      ],
+      userId: {
+        in: user.map((el) => el.userId),
+      },
     },
   });
 
