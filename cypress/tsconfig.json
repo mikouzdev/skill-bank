@@ -3,7 +3,9 @@
   //"extends": "../tsconfig.json",
   "compilerOptions": {
     "types": ["cypress", "node"],
-    "noEmit": true
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true
   },
   "include": ["**/*.ts", "**/*.tsx"]
 }

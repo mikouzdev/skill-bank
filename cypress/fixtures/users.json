@@ -1,0 +1,26 @@
+[
+  {
+    "role": "admin",
+    "email": "admin@admin.com",
+    "password": "hashed-password",
+    "shouldEndUp": "/manage-users"
+  },
+  {
+    "role": "consult",
+    "email": "alice@demo.com",
+    "password": "hashed-password",
+    "shouldEndUp": "/consultant/me"
+  },
+  {
+    "role": "sales",
+    "email": "sally@demo.com",
+    "password": "hashed-password",
+    "shouldEndUp": "/sales"
+  },
+  {
+    "role": "customer",
+    "email": "cuno@demo.com",
+    "password": "hashed-password",
+    "shouldEndUp": "/offers"
+  }
+]
