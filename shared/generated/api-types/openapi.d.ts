@@ -2830,7 +2830,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["OfferPage"];
+                        "application/json": components["schemas"]["OfferPageLoginResponseSchema"];
                     };
                 };
                 /** @description Invalid request */
@@ -3966,6 +3966,11 @@ export interface components {
             /** @example esimerkki teksti */
             shortDescription: string | null;
             consultantPages: components["schemas"]["ConsultantPageOutput"][];
+        };
+        OfferPageLoginResponseSchema: {
+            /** @example jwt.token */
+            token: string;
+            offerPage: components["schemas"]["OfferPage"];
         };
         GetSalesListsResponse: components["schemas"]["SalesList"][];
         SalesList: {

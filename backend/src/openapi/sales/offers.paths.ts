@@ -6,6 +6,7 @@ import {
   ConsultantPageSchema,
   PatchConsultantPageBodySchema,
   OfferPagePasswordSchema,
+  OfferPageLoginResponseSchema,
 } from "../../schemas/sales/offers.schema.js";
 
 export const offersPaths = {
@@ -57,7 +58,10 @@ export const offersPaths = {
         },
         400: { description: "Invalid request body" },
         404: { description: "Customer or Consultant not found" },
-        409: { description: "Cannot add same consultant twice to the same offer page" },
+        409: {
+          description:
+            "Cannot add same consultant twice to the same offer page",
+        },
         500: { description: "Server error" },
       },
     },
@@ -145,7 +149,7 @@ export const offersPaths = {
         200: {
           description: "Retrieval successful",
           content: {
-            "application/json": { schema: OfferPageSchema },
+            "application/json": { schema: OfferPageLoginResponseSchema },
           },
         },
         400: { description: "Invalid request" },
@@ -153,11 +157,12 @@ export const offersPaths = {
         404: { description: "Not found" },
         500: { description: "Server error" },
       },
-    }
+    },
   },
   "/sales/{salesId}/offers/{offerPageId}/consultants/{consultantPageId}": {
     patch: {
-      summary: "Update isAccepted status and customer review of a consultant page",
+      summary:
+        "Update isAccepted status and customer review of a consultant page",
       tags: ["Offer Pages"],
       parameters: [
         {

@@ -5,6 +5,8 @@ import {
   Button,
   Checkbox,
   Container,
+  Dialog,
+  DialogContent,
   Divider,
   List,
   ListItem,
@@ -41,6 +43,8 @@ export default function OfferCreationPage() {
   const [consultants, setConsultants] = useState<ConsultantList>([]);
   const [addedConsultants, setAddedConsultants] = useState<ConsultantList>([]);
   const [offer, setOffer] = useState<OfferPageBody>(emptyOffer);
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const [generatedLink, setGeneratedLink] = useState<string>("");
 
   useEffect(() => {
     async function fetchConsultants() {
@@ -90,7 +94,18 @@ export default function OfferCreationPage() {
     };
 
     try {
-      await createOffer(currentUser.salespersonId, newOffer);
+      const createdOffer = await createOffer(
+        currentUser.salespersonId,
+        newOffer
+      );
+
+      // get current url, example localhost:5173
+      const siteUrl = window.location.host;
+      setGeneratedLink(
+        `${siteUrl}/customerlogin/${createdOffer.data.id}/${createdOffer.data.salespersonId}`
+      );
+      setDialogOpen(true);
+
       // reset form
       setOffer(emptyOffer);
       setAddedConsultants([]);
@@ -210,34 +225,48 @@ export default function OfferCreationPage() {
     </Stack>
   );
 
+  const offerLinkDialog = (
+    <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+      <DialogContent>
+        <Stack spacing={2} alignItems={"center"}>
+          <Typography variant="h6">Link for generated offer:</Typography>
+          <Typography>{generatedLink}</Typography>
+        </Stack>
+      </DialogContent>
+    </Dialog>
+  );
+
   return (
-    <Container>
-      <Stack gap={3}>
-        <Box>
-          <Typography variant="h5" gutterBottom>
-            Create offer
-          </Typography>
-          {offerDetailsForm}
-        </Box>
+    <>
+      {offerLinkDialog}
+      <Container>
+        <Stack gap={3}>
+          <Box>
+            <Typography variant="h5" gutterBottom>
+              Create offer
+            </Typography>
+            {offerDetailsForm}
+          </Box>
 
-        <Divider />
+          <Divider />
 
-        <Box>
-          <Typography variant="h5" gutterBottom>
-            Select consultants
-          </Typography>
-          <Stack gap={3}>
-            {consultants.map((c) => (
-              <ConsultantCard
-                key={c.id}
-                consultantID={c.id}
-                selectable
-                onSelect={handleSelectConsultant}
-              />
-            ))}
-          </Stack>
-        </Box>
-      </Stack>
-    </Container>
+          <Box>
+            <Typography variant="h5" gutterBottom>
+              Select consultants
+            </Typography>
+            <Stack gap={3}>
+              {consultants.map((c) => (
+                <ConsultantCard
+                  key={c.id}
+                  consultantID={c.id}
+                  selectable
+                  onSelect={handleSelectConsultant}
+                />
+              ))}
+            </Stack>
+          </Box>
+        </Stack>
+      </Container>
+    </>
   );
 }
