@@ -38,7 +38,7 @@ export function ChangeUserRole({ user, onSubmit }: Props) {
     setForm((prev) => ({
       ...prev,
       roles: checked
-        ? [...prev.roles, { role }]
+        ? [...prev.roles, { id: 0, userId: prev.id, role }]
         : prev.roles.filter((r) => r.role !== role),
     }));
   }
