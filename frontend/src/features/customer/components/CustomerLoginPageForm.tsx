@@ -7,12 +7,23 @@ import {
   Button,
   Link,
 } from "@mui/material";
+import { useState } from "react";
 
-export const CustomerLoginPageForm = () => {
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+type Props = {
+  onSubmit: (password: string) => Promise<void>;
+};
+
+export const CustomerLoginPageForm = ({ onSubmit }: Props) => {
+  const [password, setPassword] = useState<string>("");
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    alert("Not implemented");
+    await onSubmit(password);
     return;
+  }
+
+  function handlePasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setPassword(e.target.value);
   }
 
   return (
@@ -30,12 +41,14 @@ export const CustomerLoginPageForm = () => {
         </Typography>
         <Box component="form" onSubmit={(e) => void handleSubmit(e)}>
           <TextField
+            value={password}
+            onChange={handlePasswordChange}
             type="password"
             placeholder="Password"
             fullWidth
             required
-            sx={{ mb: 2 }}
             name="password"
+            sx={{ mb: 2 }}
           />
           <Box
             sx={{
