@@ -50,7 +50,7 @@ export const offersPaths = {
         content: { "application/json": { schema: OfferPageBodySchema } },
       },
       responses: {
-        200: {
+        201: {
           description: "Creation successful",
           content: {
             "application/json": { schema: OfferPageSchema },
@@ -198,6 +198,7 @@ export const offersPaths = {
           },
         },
         400: { description: "Invalid request" },
+        403: { description: "Forbidden" },
         404: { description: "Offer page or consultant page not found" },
         500: { description: "Server error" },
       },

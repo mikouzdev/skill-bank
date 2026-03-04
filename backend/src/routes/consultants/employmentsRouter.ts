@@ -347,8 +347,7 @@ employmentsRouter.post(
       res.status(500).json(err);
       return;
     }
-
-    res.json(employmentSkill);
+    res.status(201).json(employmentSkill);
   }
 );
 

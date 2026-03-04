@@ -9,12 +9,14 @@ export const UserResponseSchema = z
     updatedAt: z.date().meta({ example: "2025-12-19T14:01:24.308Z"}),
     roles: z.array(
       z.object({
+        id: z.coerce.number().meta({ example: "1" }),
+        userId: z.coerce.number().meta({ example: "1" }),
         role: z.enum(["CONSULTANT", "SALESPERSON", "CUSTOMER", "ADMIN"]).meta({ example: "CONSULTANT" }),
     })).min(1)
     .meta({
       example: [
-        { role: "CONSULTANT" },
-        { role: "SALESPERSON" },
+        { role: "CONSULTANT", id: 1, userId: 1 },
+        { role: "SALESPERSON", id: 2, userId: 1 },
       ],
     }),
   })
@@ -28,8 +30,18 @@ export const UserBodySchema = UserResponseSchema.omit({
   updatedAt: true,
   createdAt: true,
   id: true,
+  roles: true,
 }).extend({
   password: z.string().meta({ example: "unhashedtestpassword" }),
+  roles: z.array(
+      z.object({
+        role: z.enum(["CONSULTANT", "SALESPERSON", "CUSTOMER", "ADMIN"]).meta({ example: "CONSULTANT" }),
+    })).min(1).meta({
+      example: [
+        { role: "CONSULTANT" },
+        { role: "SALESPERSON" },
+      ],
+    }),
 }).meta({ id: "UserBody" });
 
 export const FullUserResponseSchema = UserResponseSchema.extend({
