@@ -256,7 +256,7 @@ adminRouter.put(
               const existingConsultant = await prisma.consultant.findUnique({
                 where: { userId: userId },
               })
-              if(existingConsultant !== null || existingConsultant !== undefined) {
+              if(existingConsultant) {
                 break;
               }
               await prisma.consultant.create({
@@ -300,7 +300,7 @@ adminRouter.put(
               const existingSalesPerson = await prisma.salesperson.findUnique({
                 where: { userId: userId },
               })
-              if(existingSalesPerson !== null || existingSalesPerson !== undefined) {
+              if(existingSalesPerson) {
                 break;
               }
               await prisma.salesperson.create({
@@ -317,7 +317,7 @@ adminRouter.put(
               const existingCustomer = await prisma.customer.findUnique({
                 where: { userId: userId },
               })
-              if(existingCustomer !== null || existingCustomer !== undefined) {
+              if(existingCustomer) {
                 break;
               }
               await prisma.customer.create({
