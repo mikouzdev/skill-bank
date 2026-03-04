@@ -16,11 +16,5 @@
     "email": "sally@demo.com",
     "password": "hashed-password",
     "shouldEndUp": "/sales"
-  },
-  {
-    "role": "customer",
-    "email": "cuno@demo.com",
-    "password": "hashed-password",
-    "shouldEndUp": "/offers"
   }
 ]
