@@ -2,7 +2,7 @@ import app from "./app.js";
 import swaggerUi from "swagger-ui-express";
 import { openApiDoc } from "./openapi/openapi.js";
 
-const PORT = Number(process.env.PORT) || 3000;
+const PORT = Number(process.env.PORT);
 
 app.get("/openapi.json", (req, res) => {
   res.json(openApiDoc);
