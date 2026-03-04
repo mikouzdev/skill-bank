@@ -8,6 +8,8 @@ import {
   Dialog,
   DialogContent,
   Divider,
+  IconButton,
+  InputAdornment,
   List,
   ListItem,
   ListItemAvatar,
@@ -23,6 +25,7 @@ import { ConsultantCard } from "../../components/ConsultantCard";
 import { createOffer } from "../../../../shared/api/offers.api";
 import { useAuth } from "../../../../app/hooks/useAuth";
 import { useSnackbar } from "../../../../shared/components/useSnackbar";
+import { Casino } from "@mui/icons-material";
 
 type ConsultantList = components["schemas"]["AllConsultantsResponse"];
 type Consultant = components["schemas"]["ConsultantResponse"];
@@ -116,6 +119,21 @@ export default function OfferCreationPage() {
     }
   }
 
+  const generatePassword = () => {
+    const glyphs =
+      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!\"'#¤%&/()=?";
+
+    let randomPassword = "";
+    for (let i = 0; i < 8; i++) {
+      randomPassword += glyphs[Math.floor(Math.random() * glyphs.length)];
+    }
+
+    setOffer((prev) => ({
+      ...prev,
+      password: randomPassword,
+    }));
+  };
+
   const offerDetailsForm = (
     <Stack gap={3} component={"form"} onSubmit={(e) => void handleSubmit(e)}>
       <Stack direction={"row"} gap={3} justifyContent={"space-between"}>
@@ -149,6 +167,18 @@ export default function OfferCreationPage() {
           required
           value={offer.password}
           onChange={handleChange}
+          slotProps={{
+            htmlInput: { minLength: 8 },
+            input: {
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton edge="end" onClick={generatePassword}>
+                    <Casino />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            },
+          }}
         />
         <TextField
           fullWidth
