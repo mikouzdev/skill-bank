@@ -93,7 +93,7 @@ export const ManageUsersPage = () => {
         setUsers((prev) => prev.filter((user) => user.id !== selected.id));
       } catch (error) {
         console.log(`failed to delete user: ${selected.name}`, error);
-        alert("failed to delete user");
+        showError("Error while deleting user");
         return false;
       }
     }
@@ -113,7 +113,7 @@ export const ManageUsersPage = () => {
       return true;
     } catch (error) {
       console.log("failed to update user: ", error);
-      alert("failed to update user");
+      showError("Error while updating user.");
       return false;
     }
   }

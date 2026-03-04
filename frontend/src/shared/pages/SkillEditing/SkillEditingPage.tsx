@@ -17,6 +17,7 @@ import {
 } from "../../api/categories.api";
 import SkillCategoryItem from "./components/SkillCategoryItem";
 import CategoryCreationDialog from "./components/CategoryCreationDialog";
+import { useSnackbar } from "../../components/useSnackbar";
 
 type PostSkillTagBody = components["schemas"]["PostSkillTagBody"];
 type SkillTagResponse = components["schemas"]["SkillTagList"];
@@ -25,6 +26,7 @@ type SkillCategoryBody = components["schemas"]["skillCategoryBody"];
 type SkillCategories = components["schemas"]["SkillCategories"];
 
 export default function SkillEditingPage() {
+  const { showError, showSuccess } = useSnackbar();
   const { currentUser } = useAuth();
 
   const [skillTags, setSkillTags] = useState<SkillTagResponse>([]);
@@ -58,7 +60,7 @@ export default function SkillEditingPage() {
       await deleteSkillTag(skillName);
       setSkillTags(skillTags?.filter((skill) => skill.name !== skillName));
     } catch (error) {
-      alert("Failed to delete skill. Skill is probably in use.");
+      showError("Failed to delete skill. Skill is probably in use.");
       console.log(error);
     }
   }
@@ -68,7 +70,7 @@ export default function SkillEditingPage() {
       await deleteCategory(id);
       setCategories(categories.filter((c) => c.id !== id));
     } catch (error) {
-      alert("failed to delete category");
+      showError("Failed to delete category.");
       console.log(error);
     }
   }
@@ -79,17 +81,17 @@ export default function SkillEditingPage() {
     try {
       // frontend validation if skill exists already
       if (skillTags.find((skill) => skill.name === payload.name)) {
-        alert(`skill ${payload.name} already exists.`);
+        showError(`Skill ${payload.name} already exists.`);
         return false;
       }
 
       const response = await createSkillTag(payload);
       setSkillTags((prev) => [...prev, response.data]);
-      alert("new skill added: " + response.data.name);
+      showSuccess("New skill added: " + response.data.name);
       return true;
     } catch (error) {
       console.log("failed to create skill: ", error);
-      alert("failed to create new skill.");
+      showError("Failed to create new skill.");
       return false;
     }
   }
@@ -99,16 +101,17 @@ export default function SkillEditingPage() {
   ): Promise<boolean> {
     try {
       if (categories.find((c) => c.name === payload.name)) {
-        alert(`category ${payload.name} already exists`);
+        showError(`Category ${payload.name} already exists`);
         return false;
       }
 
       const response = await createCategory(payload);
       setCategories((prev) => [...prev, response.data]);
+      showSuccess("New category added: " + response.data.name);
       return true;
     } catch (error) {
       console.log("failed to create category: ", error);
-      alert("failed to create category.");
+      showError("Failed to create category.");
       return false;
     }
   }
