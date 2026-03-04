@@ -14,6 +14,7 @@ import { useState } from "react";
 import { SiGitlab, SiGithub, SiLinkedin } from "react-icons/si";
 import { createAttribute, updateAttribute } from "../../api/consultants.api";
 import SectionVisibilitySwitch from "../../../../shared/components/SectionVisibilitySwitch";
+import { useSnackbar } from "../../../../shared/components/useSnackbar";
 
 type AttributeList = components["schemas"]["GetAttributesResponse"];
 type AttributeResponse = components["schemas"]["Attribute"];
@@ -30,6 +31,8 @@ type Links = {
 };
 
 export default function EditableExternalLinks({ attributes }: Props) {
+  const { showError } = useSnackbar();
+
   const ICON_SIZE: number = 30;
 
   let linkedInLink = "";
@@ -147,7 +150,7 @@ export default function EditableExternalLinks({ attributes }: Props) {
       await Promise.all(updatePromises);
     } catch (error) {
       console.log("failed to update attributes: ", error);
-      alert("failed to update or create attributes");
+      showError("Failed to update or create attributes.");
     } finally {
       setLoading(false);
     }
