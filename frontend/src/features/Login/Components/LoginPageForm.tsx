@@ -11,10 +11,12 @@ import { useAuth } from "../../../app/hooks/useAuth";
 import { useState } from "react";
 import type { components } from "@api-types/openapi";
 import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "../../../shared/components/useSnackbar";
 
 type LoginRequest = components["schemas"]["LoginRequest"];
 
 export const LoginPageForm = () => {
+  const { showError } = useSnackbar();
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -33,7 +35,7 @@ export const LoginPageForm = () => {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!form.email || !form.password) {
-      alert("email and password are required.");
+      showError("Email and password are required.");
       return;
     }
 
@@ -51,7 +53,7 @@ export const LoginPageForm = () => {
 
     // todo: error feedback; show error message etc
     setIsLoading(false);
-    alert("log in failed");
+    showError("Failed to log in.");
   }
 
   return (
