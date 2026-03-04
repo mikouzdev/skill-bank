@@ -1,0 +1,49 @@
+stages:
+  - test
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}-cypress
+  paths:
+    - node_modules/
+    - .npm/
+    - cache/Cypress/
+
+variables:
+  CYPRESS_BASE_URL: http://localhost:5173
+
+e2e-tests:
+  stage: test
+  image: cypress/browsers:node-22.19.0-chrome-139.0.7258.154-1-ff-142.0.1-edge-139.0.3405.125-1
+  services:
+    - name: postgres:18
+      alias: spankki
+  variables:
+    POSTGRES_DB: spankki
+    POSTGRES_USER: pguser
+    POSTGRES_PASSWORD: pgpass
+  before_script:
+    - npm install -g pnpm@latest
+    - apt-get update -qq && apt-get install -y postgresql-client
+    - cd frontend && pnpm install
+    - cd ../backend && pnpm install
+    - until pg_isready -h spankki -U ${POSTGRES_USER} -d ${POSTGRES_DB}; do sleep 1; done || true
+    - pnpm run db:migrate
+    - pnpm run db:generate
+    - pnpm run db:seed
+  script:
+    - pnpm run dev &
+    - npx wait-on tcp:localhost:3000 --timeout 90000 --interval 1000
+    - cd ../frontend
+    - pnpm run dev &
+    - npx wait-on http://localhost:5173 --timeout 60000 --interval 1000
+    - cd ..
+    - pnpm add -D cypress@15.10.0
+    - npx cypress install
+    - npx cypress run --browser chrome --config baseUrl=http://localhost:5173
+  artifacts:
+    when: always
+    paths:
+      - cypress/screenshots/
+      - cypress/videos/
+      - cypress/reports/
+    expire_in: 1 week
