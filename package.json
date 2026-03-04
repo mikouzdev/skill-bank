@@ -1,18 +1,19 @@
 {
-	"dependencies": {
-		"argon2": "^0.44.0",
-		"jsonwebtoken": "^9.0.3"
-	},
-	"devDependencies": {
-		"@eslint/js": "^9.39.2",
-		"@types/jsonwebtoken": "^9.0.10",
-		"@types/node": "^25.2.2",
-		"cypress": "^15.10.0",
-		"eslint": "^9.39.2",
-		"eslint-plugin-cypress": "^5.2.1",
-		"eslint-plugin-react": "^7.37.5",
-		"globals": "^17.3.0",
-		"jiti": "^2.6.1",
-		"typescript-eslint": "^8.54.0"
-	}
+  "scripts": {
+    "env": "dotenvx run -f .env.example -f .env --overload",
+    "build": "cd frontend && pnpm run env -- tsc -b && vite build"
+  },
+  "dependencies": {
+    "argon2": "^0.44.0",
+    "jsonwebtoken": "^9.0.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "@types/jsonwebtoken": "^9.0.10",
+    "eslint": "^9.39.2",
+    "eslint-plugin-react": "^7.37.5",
+    "globals": "^17.3.0",
+    "jiti": "^2.6.1",
+    "typescript-eslint": "^8.54.0"
+  }
 }
