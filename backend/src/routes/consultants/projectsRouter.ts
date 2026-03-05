@@ -7,7 +7,7 @@ import {
   DeleteProjectLinkParamsSchema,
   DeleteProjectSkillParamsSchema,
   PostProjectSkillBodySchema,
-  ProjectBodyPartialSchema
+  ProjectBodyPartialSchema,
 } from "../../schemas/consultants/projects.schema.js";
 import { Visibility } from "../../generated/prisma/enums.js";
 import { prisma } from "../../db/prismaClient.js";
@@ -102,12 +102,20 @@ projectsRouter.get(
       },
     });
     const consultantIdOfCurrentUser = user?.consultant?.id;
-    if (consultantIdOfCurrentUser !== undefined && consultantIdOfCurrentUser !== null && consultantIdOfCurrentUser === consultantId) {
+    if (
+      consultantIdOfCurrentUser !== undefined &&
+      consultantIdOfCurrentUser !== null &&
+      consultantIdOfCurrentUser === consultantId
+    ) {
       isSameConsultant = true;
     }
     let allowedVisibilities = [Visibility.PUBLIC, Visibility.LIMITED];
     //Sales/admin can see everyone, consult gets only public UNLESS the consultant ID is same as current user's consultant ID
-    if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON") && isSameConsultant === false) {
+    if (
+      !roles?.includes("ADMIN") &&
+      !roles?.includes("SALESPERSON") &&
+      isSameConsultant === false
+    ) {
       allowedVisibilities = [Visibility.PUBLIC];
     }
     let projects = null;
@@ -188,13 +196,17 @@ projectsRouter.put(
             ...(start !== undefined ? { start } : {}),
             ...(end !== undefined ? { end } : {}),
             ...(visibility !== undefined ? { visibility } : {}),
-            ...(projectSkills !== undefined ? {  projectSkills: {
-              deleteMany: {}, // delete skills of the project
-              // create incoming skills, ( it errors if the skill doesnt exist in SkillTag )
-              create: projectSkills.map((skill) => ({
-                skillTagName: skill.skillTagName,
-              })),
-            } } : {}),
+            ...(projectSkills !== undefined
+              ? {
+                  projectSkills: {
+                    deleteMany: {}, // delete skills of the project
+                    // create incoming skills, ( it errors if the skill doesnt exist in SkillTag )
+                    create: projectSkills.map((skill) => ({
+                      skillTagName: skill.skillTagName,
+                    })),
+                  },
+                }
+              : {}),
           },
         });
       }

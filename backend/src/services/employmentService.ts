@@ -106,7 +106,6 @@ export async function createEmploymentForConsultant(
       },
     });
 
-  // TODO, create common helper mapper for GET, POST and PUT
   const mapped = {
     id: createdEmployment.id,
     employer: createdEmployment.employer,

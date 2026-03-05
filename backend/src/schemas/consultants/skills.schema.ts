@@ -29,7 +29,7 @@ export const SkillIdParamsSchema = z.object({
 
 export type ConsultantSkill = z.infer<typeof ConsultantSkillSchema>;
 
-export const SkillProficiencyBodyPartialSchema =  SkillProficiencyBodySchema.partial({
-  proficiency: true,
-}).meta({ id: "SkillProficiencyBodyPartial" });
-
+export const SkillProficiencyBodyPartialSchema =
+  SkillProficiencyBodySchema.partial({
+    proficiency: true,
+  }).meta({ id: "SkillProficiencyBodyPartial" });
