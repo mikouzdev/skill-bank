@@ -48,13 +48,31 @@ attributesRouter.get(
       isSameConsultant = true;
     }
     let allowedVisibilities = [Visibility.PUBLIC, Visibility.LIMITED];
+
+    // get page section for its visibility.
+    const pageSection = await prisma.pageSection.findFirst({
+      where: {
+        name: "NETWORKING_LINKS",
+        consultantId: consultantId,
+      },
+    });
+
+    //Sales/admin can see everyone, consult gets only public UNLESS the consultant ID is same as current user's consultant ID
+    // if other consultant
     if (
       !roles?.includes("ADMIN") &&
       !roles?.includes("SALESPERSON") &&
       isSameConsultant === false
     ) {
+      // send empty array, if page section is set to LIMITED. Only if not admin, sales, or same consultant.
+      if (pageSection?.visibility === "LIMITED") {
+        res.json([]);
+        return;
+      }
+
       allowedVisibilities = [Visibility.PUBLIC];
     }
+
     let sections = null;
     try {
       sections = await prisma.consultantAttribute.findMany({
