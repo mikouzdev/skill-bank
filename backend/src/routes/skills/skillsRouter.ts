@@ -62,7 +62,7 @@ skillsRouter.post(
     const skillTag = {
       id: skillTagRow.id,
       name: skillTagRow.name,
-      categoryId: skillTagRow.categoryId, //DB name is categoryid, in Zod categoryId
+      categoryId: skillTagRow.categoryId,
     };
 
     return res.status(201).json(skillTag);
@@ -177,7 +177,7 @@ skillsRouter.delete(
       where: { name: skillName },
     });
 
-    return res.status(200).json({ message: "Skill deleted" });
+    return res.status(204).json({ message: "Skill deleted" });
   }
 );
 

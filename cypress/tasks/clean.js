@@ -24,7 +24,13 @@ const clean = async () => {
             where: { name: "cypress" },
         });
         await prisma.skillTag.delete({
-            where: { name: "cypress" },
+            where: { name: testSkill.name },
+        });
+        const testSkill2 = await prisma.skillTag.findUnique({
+            where: { OR: [{ name: "testing" }, { name: "testing2" }] },
+        });
+        await prisma.skillTag.delete({
+            where: { name: testSkill2.name },
         });
         const testCategory = await prisma.skillCategory.findUnique({
             where: { OR: [{ name: "Test category" }, { name: "Edited test category" }] },
