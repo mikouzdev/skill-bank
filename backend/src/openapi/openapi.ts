@@ -20,7 +20,7 @@ export const openApiDoc: OpenAPIV3_1.Document = createDocument({
     version: "1.0.0",
     description: "This API is for SPankki recruiter app",
   },
-  security: [{ bearerAuth: [] }], // if no auth required, override with : security: [] at the operation level
+  security: [{ bearerAuth: [] }],
   servers: [
     { url: "http://localhost:3000", description: "Local development server" },
   ],

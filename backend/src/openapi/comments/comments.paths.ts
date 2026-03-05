@@ -1,6 +1,8 @@
 import { CommentBodyPartialSchema } from "../../schemas/comments/comments.schema.js";
-import { CommentSchema, GetCommentsResponseSchema } from "../../schemas/consultants/pageSections.schema.js";
-
+import {
+  CommentSchema,
+  GetCommentsResponseSchema,
+} from "../../schemas/consultants/pageSections.schema.js";
 
 export const CommentsPaths = {
   "/comments": {
@@ -67,6 +69,6 @@ export const CommentsPaths = {
         404: { description: "Not found" },
         500: { description: "Server error" },
       },
-    }
-  }
-}
+    },
+  },
+};

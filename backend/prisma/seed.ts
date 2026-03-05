@@ -228,7 +228,7 @@ async function main() {
           { role: Role.ADMIN },
           { role: Role.CUSTOMER },
           { role: Role.CONSULTANT },
-          { role: Role.SALESPERSON }
+          { role: Role.SALESPERSON },
         ],
       },
     },

@@ -5,7 +5,7 @@ export const CommentIdParamsSchema = z.object({
   commentId: z.coerce.number().meta({ example: "1" }),
 });
 
-export const CommentBodyPartialSchema =  CommentBodySchema.partial({
+export const CommentBodyPartialSchema = CommentBodySchema.partial({
   replyToId: true,
   content: true,
 }).meta({ id: "CommentBodyPartial" });

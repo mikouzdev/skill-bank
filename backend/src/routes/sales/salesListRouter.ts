@@ -5,7 +5,11 @@ import {
 } from "../../middlewares/authentication.js";
 import { prisma } from "../../db/prismaClient.js";
 import { SalesIdParamsSchema } from "../../schemas/sales/sales.schema.js";
-import { SalesListBodySchema, PutSalesListParamsSchema, SalesListBodyPartialSchema} from "../../schemas/sales/salesLists.schema.js";
+import {
+  SalesListBodySchema,
+  PutSalesListParamsSchema,
+  SalesListBodyPartialSchema,
+} from "../../schemas/sales/salesLists.schema.js";
 
 export const salesListRouter = Router();
 
@@ -116,7 +120,7 @@ salesListRouter.post(
     let newSalesList = null;
     try {
       if (customerId !== undefined) {
-          const customer = await prisma.customer.findUnique({
+        const customer = await prisma.customer.findUnique({
           where: { id: customerId },
         });
         if (customer === null) {
@@ -171,7 +175,7 @@ salesListRouter.post(
           },
           include: {
             salesListItems: true,
-          }
+          },
         });
       }
     } catch (err) {
@@ -208,7 +212,7 @@ salesListRouter.put(
       customerId,
       shortDescription,
       isReviewDone,
-      salesListItems
+      salesListItems,
     } = parsedBody.data;
 
     let salesList = null;
@@ -282,10 +286,18 @@ salesListRouter.put(
               ? {
                   salesListItems: {
                     create: salesListItems.map((salesListItem) => ({
-                      ...(salesListItem.consultantId !== undefined ? { consultantId: salesListItem.consultantId } : { consultantId: 0 }),
-                      ...(salesListItem.isHidden !== undefined ? { isHidden: salesListItem.isHidden } : { isHidden: false }),
-                      ...(salesListItem.isAccepted !== undefined ? { isAccepted: salesListItem.isAccepted } : { isAccepted: false }),
-                      ...(salesListItem.salesNote !== undefined ? { salesNote: salesListItem.salesNote } : { salesNote: "" }),
+                      ...(salesListItem.consultantId !== undefined
+                        ? { consultantId: salesListItem.consultantId }
+                        : { consultantId: 0 }),
+                      ...(salesListItem.isHidden !== undefined
+                        ? { isHidden: salesListItem.isHidden }
+                        : { isHidden: false }),
+                      ...(salesListItem.isAccepted !== undefined
+                        ? { isAccepted: salesListItem.isAccepted }
+                        : { isAccepted: false }),
+                      ...(salesListItem.salesNote !== undefined
+                        ? { salesNote: salesListItem.salesNote }
+                        : { salesNote: "" }),
                     })),
                   },
                 }

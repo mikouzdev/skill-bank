@@ -40,11 +40,14 @@ export const SalesListBodySchema = SalesListSchema.omit({
   salespersonId: true,
   listPosition: true,
   salesListItems: true,
-}).partial({
-  customerId: true
-}).extend({
-  salesListItems: z.array(SalesListItemBodySchema),
-}).meta({ id: "SalesListBody" });
+})
+  .partial({
+    customerId: true,
+  })
+  .extend({
+    salesListItems: z.array(SalesListItemBodySchema),
+  })
+  .meta({ id: "SalesListBody" });
 
 export const PutSalesListParamsSchema = z.object({
   salesId: z.coerce.number().meta({ example: "1" }),
@@ -54,7 +57,7 @@ export const PutSalesListParamsSchema = z.object({
 export const SalesListItemPartialSchema = SalesListItemBodySchema.partial({
   isAccepted: true,
   isHidden: true,
-  salesNote: true
+  salesNote: true,
 });
 
 export const SalesListBodyPartialSchema = SalesListBodySchema.partial({

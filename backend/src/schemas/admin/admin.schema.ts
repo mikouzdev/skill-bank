@@ -5,20 +5,25 @@ export const UserResponseSchema = z
     id: z.coerce.number().meta({ example: "1" }),
     name: z.string().meta({ example: "John Lee" }),
     email: z.string().meta({ example: "testi@hotmail.com" }),
-    createdAt: z.date().meta({ example: "2025-12-19T14:01:24.308Z"}),
-    updatedAt: z.date().meta({ example: "2025-12-19T14:01:24.308Z"}),
-    roles: z.array(
-      z.object({
-        id: z.coerce.number().meta({ example: "1" }),
-        userId: z.coerce.number().meta({ example: "1" }),
-        role: z.enum(["CONSULTANT", "SALESPERSON", "CUSTOMER", "ADMIN"]).meta({ example: "CONSULTANT" }),
-    })).min(1)
-    .meta({
-      example: [
-        { role: "CONSULTANT", id: 1, userId: 1 },
-        { role: "SALESPERSON", id: 2, userId: 1 },
-      ],
-    }),
+    createdAt: z.date().meta({ example: "2025-12-19T14:01:24.308Z" }),
+    updatedAt: z.date().meta({ example: "2025-12-19T14:01:24.308Z" }),
+    roles: z
+      .array(
+        z.object({
+          id: z.coerce.number().meta({ example: "1" }),
+          userId: z.coerce.number().meta({ example: "1" }),
+          role: z
+            .enum(["CONSULTANT", "SALESPERSON", "CUSTOMER", "ADMIN"])
+            .meta({ example: "CONSULTANT" }),
+        })
+      )
+      .min(1)
+      .meta({
+        example: [
+          { role: "CONSULTANT", id: 1, userId: 1 },
+          { role: "SALESPERSON", id: 2, userId: 1 },
+        ],
+      }),
   })
   .meta({ id: "UserResponse" });
 
@@ -31,18 +36,23 @@ export const UserBodySchema = UserResponseSchema.omit({
   createdAt: true,
   id: true,
   roles: true,
-}).extend({
-  password: z.string().meta({ example: "unhashedtestpassword" }),
-  roles: z.array(
-      z.object({
-        role: z.enum(["CONSULTANT", "SALESPERSON", "CUSTOMER", "ADMIN"]).meta({ example: "CONSULTANT" }),
-    })).min(1).meta({
-      example: [
-        { role: "CONSULTANT" },
-        { role: "SALESPERSON" },
-      ],
-    }),
-}).meta({ id: "UserBody" });
+})
+  .extend({
+    password: z.string().meta({ example: "unhashedtestpassword" }),
+    roles: z
+      .array(
+        z.object({
+          role: z
+            .enum(["CONSULTANT", "SALESPERSON", "CUSTOMER", "ADMIN"])
+            .meta({ example: "CONSULTANT" }),
+        })
+      )
+      .min(1)
+      .meta({
+        example: [{ role: "CONSULTANT" }, { role: "SALESPERSON" }],
+      }),
+  })
+  .meta({ id: "UserBody" });
 
 export const FullUserResponseSchema = UserResponseSchema.extend({
   passwordHash: z.string().meta({ example: "hashedtestpassword" }),
