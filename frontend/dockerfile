@@ -1,0 +1,26 @@
+FROM node:24-alpine AS builder
+
+WORKDIR /
+
+RUN corepack enable && corepack prepare pnpm@10.27.0 --activate
+
+COPY ./frontend .
+COPY /shared /shared
+
+RUN CI=true pnpm install --frozen-lockfile
+
+
+RUN npm run build
+
+FROM node:24-alpine
+
+RUN npm install -g serve
+
+ENV VITE_BACKEND_PORT=8080 
+ENV VITE_BACKEND_HOST=https://spankkiserver-etfjdve9dtc3bafx.northeurope-01.azurewebsites.net/
+
+COPY --from=builder /dist ./dist
+
+EXPOSE 8080
+
+CMD ["serve", "-s", "dist", "-l", "8080", "--no-port-switching"]
