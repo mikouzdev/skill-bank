@@ -6,7 +6,7 @@ import {
   ProjectLinkSchema,
   ProjectSkillSchema,
   PostProjectSkillBodySchema,
-  ProjectBodyPartialSchema
+  ProjectBodyPartialSchema,
 } from "../../schemas/consultants/projects.schema.js";
 
 export const projectsPaths = {

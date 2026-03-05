@@ -48,45 +48,6 @@ offersRouter.get(
     //Checks primary role (currently first role in array)
     if (roles[0] === "CUSTOMER") {
       return res.status(401).send("Unauthorized");
-      // const user = await prisma.user.findUnique({
-      //   where: { id: req.user!.id },
-      //   select: {
-      //     id: true,
-      //     roles: { select: { role: true } },
-      //     customer: { select: { id: true } },
-      //   },
-      // });
-      // if (user === null) {
-      //   res.status(404).json({ message: "User not found" });
-      //   return;
-      // }
-      // const customerId = user?.customer?.id;
-      // try {
-      //   if (customerId !== undefined && customerId !== null) {
-      //     const customer = await prisma.customer.findUnique({
-      //       where: { id: customerId },
-      //     });
-      //     if (customer === null) {
-      //       res.status(404).json({ message: "Customer not found" });
-      //       return;
-      //     }
-      //     offerPages = await prisma.offerPages.findMany({
-      //       where: {
-      //         salespersonId: salesId,
-      //         customerId: customerId,
-      //       },
-      //       include: {
-      //         consultantPages: true,
-      //       },
-      //       omit: {
-      //         passwordHash: true,
-      //       },
-      //     });
-      //   }
-      // } catch (err) {
-      //   res.status(500).json(err);
-      //   return;
-      // }
     } else {
       try {
         offerPages = await prisma.offerPages.findMany({
@@ -272,25 +233,6 @@ offersRouter.put(
               returnIfTrue = true;
               return;
             }
-            // if (
-            //   consultantPage.consultantId !== undefined &&
-            //   consultantPage.consultantId !== null
-            // ) {
-            //   const existingConsultantPage =
-            //     await prisma.consultantPages.findFirst({
-            //       where: {
-            //         offerPageId: offerPageId,
-            //         consultantId: consultantPage.consultantId,
-            //       },
-            //     });
-            //   if (existingConsultantPage !== null) {
-            //     res
-            //       .status(409)
-            //       .json({ message: "Consultant page already exists" });
-            //     returnIfTrue = true;
-            //     return;
-            //   }
-            // }
             if (uniqueConsultants.includes(consultantPage.consultantId)) {
               res.status(409).json({
                 message:

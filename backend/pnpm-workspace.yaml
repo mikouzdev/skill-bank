@@ -3,9 +3,9 @@ minimumReleaseAge: 10080
 nodeLinker: hoisted
 
 onlyBuiltDependencies:
-  - '@prisma/client'
-  - '@prisma/engines'
-  - '@scarf/scarf'
+  - "@prisma/client"
+  - "@prisma/engines"
+  - "@scarf/scarf"
   - esbuild
   - prisma
 

@@ -240,7 +240,7 @@ adminRouter.put(
           roles: {
             deleteMany: {},
             create: roles,
-          }
+          },
         },
         include: {
           roles: true,
@@ -255,8 +255,8 @@ adminRouter.put(
             case "CONSULTANT": {
               const existingConsultant = await prisma.consultant.findUnique({
                 where: { userId: userId },
-              })
-              if(existingConsultant) {
+              });
+              if (existingConsultant) {
                 break;
               }
               await prisma.consultant.create({
@@ -299,8 +299,8 @@ adminRouter.put(
             case "SALESPERSON": {
               const existingSalesPerson = await prisma.salesperson.findUnique({
                 where: { userId: userId },
-              })
-              if(existingSalesPerson) {
+              });
+              if (existingSalesPerson) {
                 break;
               }
               await prisma.salesperson.create({
@@ -316,8 +316,8 @@ adminRouter.put(
             case "CUSTOMER": {
               const existingCustomer = await prisma.customer.findUnique({
                 where: { userId: userId },
-              })
-              if(existingCustomer) {
+              });
+              if (existingCustomer) {
                 break;
               }
               await prisma.customer.create({

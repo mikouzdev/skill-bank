@@ -209,7 +209,7 @@ model SalesList {
   isReviewDone     Boolean @default(false) /// Customer's review
 
   salesperson    Salesperson     @relation(fields: [salespersonId], references: [id])
-  customer       Customer?        @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  customer       Customer?       @relation(fields: [customerId], references: [id], onDelete: Cascade)
   salesListItems SalesListItem[]
 
   @@unique([salespersonId, listPosition])
@@ -276,7 +276,7 @@ model Comment {
 
   pageSection   PageSection @relation(fields: [pageSectionId], references: [id], onDelete: Cascade)
   user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  directReplyTo Comment?     @relation("reply", fields: [replyToId], references: [id])
+  directReplyTo Comment?    @relation("reply", fields: [replyToId], references: [id])
   directReplies Comment[]   @relation("reply")
 
   @@unique([pageSectionId, listPosition])
@@ -303,12 +303,12 @@ model OfferPages {
 }
 
 model ConsultantPages {
-  id           Int        @id @default(autoincrement())
-  offerPageId  Int
-  consultantId Int
-  showInfo     Boolean
-  isAccepted   Boolean
+  id             Int        @id @default(autoincrement())
+  offerPageId    Int
+  consultantId   Int
+  showInfo       Boolean
+  isAccepted     Boolean
   customerReview String?
-  offerPage    OfferPages @relation(fields: [offerPageId], references: [id], onDelete: Cascade)
-  Consultant   Consultant @relation(fields: [consultantId], references: [id], onDelete: Cascade)
+  offerPage      OfferPages @relation(fields: [offerPageId], references: [id], onDelete: Cascade)
+  Consultant     Consultant @relation(fields: [consultantId], references: [id], onDelete: Cascade)
 }

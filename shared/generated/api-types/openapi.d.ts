@@ -753,7 +753,7 @@ export interface paths {
                 };
             };
             responses: {
-                /** @description Creation successful */
+                /** @description Edit successful */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -1008,7 +1008,7 @@ export interface paths {
             };
             responses: {
                 /** @description Creation successful */
-                200: {
+                201: {
                     headers: {
                         [name: string]: unknown;
                     };
@@ -1211,7 +1211,7 @@ export interface paths {
             };
             responses: {
                 /** @description Creation successful */
-                200: {
+                201: {
                     headers: {
                         [name: string]: unknown;
                     };
@@ -1321,7 +1321,7 @@ export interface paths {
             };
             responses: {
                 /** @description Creation successful */
-                200: {
+                201: {
                     headers: {
                         [name: string]: unknown;
                     };
@@ -1533,7 +1533,7 @@ export interface paths {
             };
             responses: {
                 /** @description Creation successful */
-                200: {
+                201: {
                     headers: {
                         [name: string]: unknown;
                     };
@@ -2130,7 +2130,7 @@ export interface paths {
             };
             responses: {
                 /** @description Creation successful */
-                200: {
+                201: {
                     headers: {
                         [name: string]: unknown;
                     };
@@ -2699,7 +2699,7 @@ export interface paths {
             };
             responses: {
                 /** @description Creation successful */
-                200: {
+                201: {
                     headers: {
                         [name: string]: unknown;
                     };
@@ -2941,11 +2941,18 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["ConsultantPageOutput"];
+                        "application/json": components["schemas"]["ConsultantPage"];
                     };
                 };
                 /** @description Invalid request */
                 400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
                     headers: {
                         [name: string]: unknown;
                     };
@@ -3031,7 +3038,7 @@ export interface paths {
             };
             responses: {
                 /** @description Creation successful */
-                200: {
+                201: {
                     headers: {
                         [name: string]: unknown;
                     };
@@ -3408,6 +3415,8 @@ export interface components {
             name: string;
             /** @example testi@hotmail.com */
             email: string;
+            /** @example unhashedtestpassword */
+            password: string;
             /**
              * @example [
              *       {
@@ -3425,14 +3434,14 @@ export interface components {
                  */
                 role: "CONSULTANT" | "SALESPERSON" | "CUSTOMER" | "ADMIN";
             }[];
-            /** @example unhashedtestpassword */
-            password: string;
         };
         UserBodyPartial: {
             /** @example John Lee */
             name?: string;
             /** @example testi@hotmail.com */
             email?: string;
+            /** @example unhashedtestpassword */
+            password?: string;
             /**
              * @example [
              *       {
@@ -3450,8 +3459,6 @@ export interface components {
                  */
                 role: "CONSULTANT" | "SALESPERSON" | "CUSTOMER" | "ADMIN";
             }[];
-            /** @example unhashedtestpassword */
-            password?: string;
         };
         PageSectionBodyPartial: {
             /**
@@ -3536,15 +3543,11 @@ export interface components {
             name: string | null;
             /** @example esimerkki teksti */
             shortDescription: string | null;
-            consultantPages: components["schemas"]["ConsultantPage"][];
             /** @example testpassword */
             password: string;
+            consultantPages: components["schemas"]["ConsultantPageBody"][];
         };
-        ConsultantPage: {
-            /** @example 1 */
-            id: number;
-            /** @example 1 */
-            offerPageId: number;
+        ConsultantPageBody: {
             /** @example 1 */
             consultantId: number;
             /** @example true */
@@ -3563,6 +3566,8 @@ export interface components {
             name?: string | null;
             /** @example esimerkki teksti */
             shortDescription?: string | null;
+            /** @example testpassword */
+            password?: string;
             consultantPages: {
                 /** @example 1 */
                 id?: number;
@@ -3577,8 +3582,6 @@ export interface components {
                 /** @example esimerkki teksti */
                 customerReview?: string | null;
             }[];
-            /** @example testpassword */
-            password?: string;
         };
         OfferPagePassword: {
             /** @example Password */
@@ -3686,14 +3689,22 @@ export interface components {
             /**
              * @example [
              *       {
-             *         "role": "CONSULTANT"
+             *         "role": "CONSULTANT",
+             *         "id": 1,
+             *         "userId": 1
              *       },
              *       {
-             *         "role": "SALESPERSON"
+             *         "role": "SALESPERSON",
+             *         "id": 2,
+             *         "userId": 1
              *       }
              *     ]
              */
             roles: {
+                /** @example 1 */
+                id: number;
+                /** @example 1 */
+                userId: number;
                 /**
                  * @example CONSULTANT
                  * @enum {string}
@@ -3847,14 +3858,22 @@ export interface components {
             /**
              * @example [
              *       {
-             *         "role": "CONSULTANT"
+             *         "role": "CONSULTANT",
+             *         "id": 1,
+             *         "userId": 1
              *       },
              *       {
-             *         "role": "SALESPERSON"
+             *         "role": "SALESPERSON",
+             *         "id": 2,
+             *         "userId": 1
              *       }
              *     ]
              */
             roles: {
+                /** @example 1 */
+                id: number;
+                /** @example 1 */
+                userId: number;
                 /**
                  * @example CONSULTANT
                  * @enum {string}
@@ -3965,7 +3984,21 @@ export interface components {
             name: string | null;
             /** @example esimerkki teksti */
             shortDescription: string | null;
-            consultantPages: components["schemas"]["ConsultantPageOutput"][];
+            consultantPages: components["schemas"]["ConsultantPage"][];
+        };
+        ConsultantPage: {
+            /** @example 1 */
+            id: number;
+            /** @example 1 */
+            offerPageId: number;
+            /** @example 1 */
+            consultantId: number;
+            /** @example true */
+            showInfo: boolean;
+            /** @example true */
+            isAccepted: boolean;
+            /** @example esimerkki teksti */
+            customerReview: string | null;
         };
         OfferPageLoginResponseSchema: {
             /** @example jwt.token */
@@ -4019,20 +4052,6 @@ export interface components {
             projectId: number;
             /** @example Python */
             skillTagName: string;
-        };
-        ConsultantPageOutput: {
-            /** @example 1 */
-            id: number;
-            /** @example 1 */
-            offerPageId: number;
-            /** @example 1 */
-            consultantId: number;
-            /** @example true */
-            showInfo: boolean;
-            /** @example true */
-            isAccepted: boolean;
-            /** @example esimerkki teksti */
-            customerReview: string | null;
         };
     };
     responses: never;

@@ -30,7 +30,6 @@ export const consultantsPaths = {
           name: "consultantId",
           in: "path" as const,
           required: true,
-          // TODO: use ConsultantIdParamsSchema
           schema: { type: "integer" as const },
         },
       ],

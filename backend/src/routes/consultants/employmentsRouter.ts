@@ -44,12 +44,20 @@ employmentsRouter.get(
         },
       });
       const consultantIdOfCurrentUser = user?.consultant?.id;
-      if (consultantIdOfCurrentUser !== undefined && consultantIdOfCurrentUser !== null && consultantIdOfCurrentUser === consultantId) {
+      if (
+        consultantIdOfCurrentUser !== undefined &&
+        consultantIdOfCurrentUser !== null &&
+        consultantIdOfCurrentUser === consultantId
+      ) {
         isSameConsultant = true;
       }
       let allowedVisibilities = [Visibility.PUBLIC, Visibility.LIMITED];
       //Sales/admin can see everyone, consult gets only public UNLESS the consultant ID is same as current user's consultant ID
-      if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON") && isSameConsultant === false) {
+      if (
+        !roles?.includes("ADMIN") &&
+        !roles?.includes("SALESPERSON") &&
+        isSameConsultant === false
+      ) {
         allowedVisibilities = [Visibility.PUBLIC];
       }
       const employments = await prisma.employment.findMany({
@@ -83,8 +91,6 @@ employmentsRouter.post(
   "/me/employments",
   authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
-    console.log("Found consultant");
-
     const parsedBody = EmploymentBodySchema.safeParse(req.body);
 
     if (!parsedBody.success) {
@@ -213,13 +219,17 @@ employmentsRouter.put(
             ...(start !== undefined ? { start } : {}),
             ...(end !== undefined ? { end } : {}),
             ...(visibility !== undefined ? { visibility } : {}),
-            ...(employmentSkills !== undefined ? { employmentSkills: {
-              deleteMany: {}, // delete skills of the employment
-              // create incoming skills, ( it errors if the skill doesnt exist in SkillTag )
-              create: employmentSkills.map((skill) => ({
-                skillTagName: skill.skillTagName,
-              })),
-            },} : {}),
+            ...(employmentSkills !== undefined
+              ? {
+                  employmentSkills: {
+                    deleteMany: {}, // delete skills of the employment
+                    // create incoming skills, ( it errors if the skill doesnt exist in SkillTag )
+                    create: employmentSkills.map((skill) => ({
+                      skillTagName: skill.skillTagName,
+                    })),
+                  },
+                }
+              : {}),
           },
         });
       }

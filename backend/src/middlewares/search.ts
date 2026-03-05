@@ -107,8 +107,6 @@ export async function getConsultantsByJsonFilter(jsonFilter: JsonFilter) {
     where: proficiencyFilter,
   });
 
-  console.log(skills);
-
   const getProfessionExperienceLength = await prisma.employment.findMany();
 
   const filterByLength = (experienceLength: Employment[]) => {

@@ -82,11 +82,11 @@ export const PostProjectSkillBodySchema = ProjectSkillSchema.pick({
   skillTagName: true,
 });
 
-export const ProjectBodyPartialSchema =  ProjectBodySchema.partial({
+export const ProjectBodyPartialSchema = ProjectBodySchema.partial({
   start: true,
   end: true,
   projectSkills: true,
   description: true,
   name: true,
-  visibility: true
+  visibility: true,
 }).meta({ id: "ProjectBodyPartial" });

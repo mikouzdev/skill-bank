@@ -31,7 +31,7 @@ export const UpdateConsultantSchema = ConsultantResponseSchema.omit({
   profilePictureUrl: true,
 })
   .extend({
-    profilePicture: z.any()
+    profilePicture: z.any(),
   })
   .partial();
 
