@@ -4,7 +4,6 @@ export const EmploymentSkillSchema = z
   .object({
     skillTagName: z.string().meta({ example: "react" }),
     employmentId: z.number().int().meta({ example: 1 }),
-    //category: z.string().nullable().meta({ example: "frontend" }),
   })
   .meta({ id: "EmploymentSkill" });
 
@@ -90,7 +89,7 @@ export const DeleteEmploymentSkillParamsSchema = z.object({
 
 export type EmploymentCreateInput = z.infer<typeof EmploymentCreateSchema>;
 
-export const EmploymentBodyPartialSchema =  EmploymentBodySchema.partial({
+export const EmploymentBodyPartialSchema = EmploymentBodySchema.partial({
   start: true,
   end: true,
   employer: true,

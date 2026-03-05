@@ -44,7 +44,7 @@ export const employmentPaths = {
         required: true,
         content: {
           "application/json": {
-            schema: EmploymentCreateSchema, // Unsafe assignmet, for later could consider using zod-to-openapi https://github.com/asteasolutions/zod-to-openapi
+            schema: EmploymentCreateSchema,
           },
         },
       },
@@ -77,7 +77,9 @@ export const employmentPaths = {
       ],
       requestBody: {
         required: true,
-        content: { "application/json": { schema: EmploymentBodyPartialSchema } },
+        content: {
+          "application/json": { schema: EmploymentBodyPartialSchema },
+        },
       },
       responses: {
         200: {

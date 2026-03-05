@@ -24,11 +24,13 @@ export const AttributeBodySchema = AttributeSchema.omit({
   updatedAt: true,
 }).meta({ id: "AttributeBody" });
 
-export const AttributeIdParamsSchema = z.object({
-  attributeId: z.coerce.number().meta({ example: "1" }),
-}).meta({ id: "AttributeIdParams" });
+export const AttributeIdParamsSchema = z
+  .object({
+    attributeId: z.coerce.number().meta({ example: "1" }),
+  })
+  .meta({ id: "AttributeIdParams" });
 
-export const AttributeBodyPartialSchema =  AttributeBodySchema.partial({
+export const AttributeBodyPartialSchema = AttributeBodySchema.partial({
   value: true,
   label: true,
   type: true,

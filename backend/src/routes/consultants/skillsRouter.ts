@@ -4,11 +4,11 @@ import { prisma } from "../../db/prismaClient.js";
 import {
   SkillIdParamsSchema,
   PostConsultantSkillBodySchema,
-  SkillProficiencyBodyPartialSchema
+  SkillProficiencyBodyPartialSchema,
 } from "../../schemas/consultants/skills.schema.js";
 import {
   authenticate,
-  type AuthenticatedRequest
+  type AuthenticatedRequest,
 } from "../../middlewares/authentication.js";
 
 export const skillsRouter = Router();
@@ -66,81 +66,88 @@ skillsRouter.get(
  * @route : POST /consultants/skills/me
  * @body : {skill: string, proficiency: number}
  */
-skillsRouter.post("/skills/me", authenticate, async (req: AuthenticatedRequest, res: Response) => {
-  const parsedBody = PostConsultantSkillBodySchema.safeParse(req.body);
-  if (!parsedBody.success) {
-    res.status(400).json(parsedBody.error);
-    return;
-  }
-  const { skillName, proficiency } = parsedBody.data;
-  const user = await prisma.user.findUnique({
-    where: { id: req.user!.id },
-    select: {
-      id: true,
-      roles: { select: { role: true } },
-      consultant: { select: { id: true } },
-    },
-  });
-  if (user === null) {
-    res.status(404).json({ message: "User not found" });
-    return;
-  }
-  const consultantId = user?.consultant?.id;
-  try {
-    if(consultantId !== undefined && consultantId !== null){
-      const consultant = await prisma.consultant.findUnique({
-        where: { id: consultantId }
-      });
-      if (consultant === null) {
-        res.status(404).json({ message: "Consultant not found" });
-        return;
-      }
-      // make sure the skill exists in skilltags
-      const skillExists = await prisma.skillTag.findFirst({
-        where: { name: skillName },
-      });
-      if (!skillExists) {
-        res.status(404).json(`skill ${skillName} doesnt exist in the skill pool`);
-        return;
-      }
-
-      // check if consultant already has this skill
-      const consultantHasSkill = await prisma.consultantSkill.findFirst({
-        where: {
-          consultantId: consultantId,
-          skillName: skillName,
-        },
-      });
-
-      if (consultantHasSkill) {
-        res.status(400).json(`consultant already has skill ${skillName}`);
-        return;
-      }
-
-      // add the skill to the consultant
-      const createdSkill = await prisma.consultantSkill.create({
-        data: {
-          skillName,
-          proficiency: proficiency,
-          consultantId: consultantId,
-        },
-      });
-
-      res.status(201).json(createdSkill);
+skillsRouter.post(
+  "/skills/me",
+  authenticate,
+  async (req: AuthenticatedRequest, res: Response) => {
+    const parsedBody = PostConsultantSkillBodySchema.safeParse(req.body);
+    if (!parsedBody.success) {
+      res.status(400).json(parsedBody.error);
       return;
     }
-  } catch (err) {
-    res.status(500).json(err);
-    return;
+    const { skillName, proficiency } = parsedBody.data;
+    const user = await prisma.user.findUnique({
+      where: { id: req.user!.id },
+      select: {
+        id: true,
+        roles: { select: { role: true } },
+        consultant: { select: { id: true } },
+      },
+    });
+    if (user === null) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+    const consultantId = user?.consultant?.id;
+    try {
+      if (consultantId !== undefined && consultantId !== null) {
+        const consultant = await prisma.consultant.findUnique({
+          where: { id: consultantId },
+        });
+        if (consultant === null) {
+          res.status(404).json({ message: "Consultant not found" });
+          return;
+        }
+        // make sure the skill exists in skilltags
+        const skillExists = await prisma.skillTag.findFirst({
+          where: { name: skillName },
+        });
+        if (!skillExists) {
+          res
+            .status(404)
+            .json(`skill ${skillName} doesnt exist in the skill pool`);
+          return;
+        }
+
+        // check if consultant already has this skill
+        const consultantHasSkill = await prisma.consultantSkill.findFirst({
+          where: {
+            consultantId: consultantId,
+            skillName: skillName,
+          },
+        });
+
+        if (consultantHasSkill) {
+          res.status(400).json(`consultant already has skill ${skillName}`);
+          return;
+        }
+
+        // add the skill to the consultant
+        const createdSkill = await prisma.consultantSkill.create({
+          data: {
+            skillName,
+            proficiency: proficiency,
+            consultantId: consultantId,
+          },
+        });
+
+        res.status(201).json(createdSkill);
+        return;
+      }
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
   }
-});
+);
 
 /**
  * Deletes a skill by ID
  * @route DELETE /consultants/skills/me/{skillId}
  */
 skillsRouter.delete(
-  "/skills/me/:skillId", authenticate,
+  "/skills/me/:skillId",
+  authenticate,
   async (req: AuthenticatedRequest, res: Response) => {
     const parsedParams = SkillIdParamsSchema.safeParse(req.params);
 
@@ -164,19 +171,19 @@ skillsRouter.delete(
     }
     const consultantId = user?.consultant?.id;
     try {
-      if(consultantId !== undefined && consultantId !== null){
+      if (consultantId !== undefined && consultantId !== null) {
         const consultant = await prisma.consultant.findUnique({
-          where: { id: consultantId }
+          where: { id: consultantId },
         });
         if (consultant === null) {
           res.status(404).json({ message: "Consultant not found" });
           return;
         }
-        await prisma.consultantSkill.delete({ 
-          where: { 
-            id: skillId, 
-            consultantId: consultantId
-          }
+        await prisma.consultantSkill.delete({
+          where: {
+            id: skillId,
+            consultantId: consultantId,
+          },
         });
       }
     } catch (err) {
@@ -193,52 +200,56 @@ skillsRouter.delete(
  * @body {proficiency: {skill's proficiency}}
  * @route PUT /consultants/skills/me/{skillId}
  */
-skillsRouter.put("/skills/me/:skillId", authenticate, async (req: AuthenticatedRequest, res: Response) => {
-  const parsedParams = SkillIdParamsSchema.safeParse(req.params);
-  const parsedBody = SkillProficiencyBodyPartialSchema.safeParse(req.body);
+skillsRouter.put(
+  "/skills/me/:skillId",
+  authenticate,
+  async (req: AuthenticatedRequest, res: Response) => {
+    const parsedParams = SkillIdParamsSchema.safeParse(req.params);
+    const parsedBody = SkillProficiencyBodyPartialSchema.safeParse(req.body);
 
-  if (!parsedParams.success) {
-    res.status(400).json(parsedParams.error);
-    return;
-  }
-  if (!parsedBody.success) {
-    res.status(400).json(parsedBody.error);
-    return;
-  }
-
-  const { skillId } = parsedParams.data;
-  const { proficiency } = parsedBody.data;
-  const user = await prisma.user.findUnique({
-    where: { id: req.user!.id },
-    select: {
-      id: true,
-      roles: { select: { role: true } },
-      consultant: { select: { id: true } },
-    },
-  });
-  if (user === null) {
-    res.status(404).json({ message: "User not found" });
-    return;
-  }
-  const consultantId = user?.consultant?.id;
-  try {
-    if(consultantId !== undefined && consultantId !== null){
-      const consultant = await prisma.consultant.findUnique({
-        where: { id: consultantId }
-      });
-      if (consultant === null) {
-        res.status(404).json({ message: "Consultant not found" });
-        return;
-      }
-      await prisma.consultantSkill.update({
-        where: { id: skillId, consultantId: consultantId },
-        data: { ...(proficiency !== undefined ? { proficiency } : {}), },
-      });
+    if (!parsedParams.success) {
+      res.status(400).json(parsedParams.error);
+      return;
     }
-  } catch (err) {
-    res.status(500).json(err);
-    return;
-  }
+    if (!parsedBody.success) {
+      res.status(400).json(parsedBody.error);
+      return;
+    }
 
-  res.json();
-});
+    const { skillId } = parsedParams.data;
+    const { proficiency } = parsedBody.data;
+    const user = await prisma.user.findUnique({
+      where: { id: req.user!.id },
+      select: {
+        id: true,
+        roles: { select: { role: true } },
+        consultant: { select: { id: true } },
+      },
+    });
+    if (user === null) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+    const consultantId = user?.consultant?.id;
+    try {
+      if (consultantId !== undefined && consultantId !== null) {
+        const consultant = await prisma.consultant.findUnique({
+          where: { id: consultantId },
+        });
+        if (consultant === null) {
+          res.status(404).json({ message: "Consultant not found" });
+          return;
+        }
+        await prisma.consultantSkill.update({
+          where: { id: skillId, consultantId: consultantId },
+          data: { ...(proficiency !== undefined ? { proficiency } : {}) },
+        });
+      }
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
+
+    res.json();
+  }
+);

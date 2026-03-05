@@ -9,7 +9,11 @@ import {
   PatchSkillTagBodySchema,
   SkillNameParamsSchema,
 } from "../../schemas/skills/skill-tags.schema.js";
-import { PostSkillCategoryBodySchema, SkillCategoryIdParamsSchema, PostSkillCategoryBodyPartialSchema } from "../../schemas/skills/skill-categories.schema.js"
+import {
+  PostSkillCategoryBodySchema,
+  SkillCategoryIdParamsSchema,
+  PostSkillCategoryBodyPartialSchema,
+} from "../../schemas/skills/skill-categories.schema.js";
 import { Prisma } from "../../generated/prisma/client.js";
 export const skillsRouter = Router();
 
@@ -186,50 +190,56 @@ skillsRouter.delete(
  * @route GET /skills/categories
  * @returns [skill categories]
  */
-skillsRouter.get("/categories", authenticate, async (req: AuthenticatedRequest, res: Response) => {
-  try {
-    const categories = await prisma.skillCategory.findMany({
+skillsRouter.get(
+  "/categories",
+  authenticate,
+  async (req: AuthenticatedRequest, res: Response) => {
+    try {
+      const categories = await prisma.skillCategory.findMany({
         include: {
           skillTags: true,
         },
-      }
-    );
-    res.send(categories);
-    return;
-  } catch (err) {
-    res.status(500).json(err);
-    return;
+      });
+      res.send(categories);
+      return;
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
   }
-});
+);
 
 /**
  * Add new skill category in the database
  * @route POST /skills/categories
  * @returns created skill category
  */
-skillsRouter.post("/categories", authenticate, async (req: AuthenticatedRequest, res: Response) => {
-  const roles = req.user?.roles ?? [];
-  if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
-    return res.status(403).json({ error: "Unauthorized" });
-  }
-  const parsedBody = PostSkillCategoryBodySchema.safeParse(req.body);
-  if (!parsedBody.success) {
-    return res
-      .status(400)
-      .json({ error: "Invalid body", details: parsedBody.error });
-  }
-  const { name, skillTags } = parsedBody.data;
+skillsRouter.post(
+  "/categories",
+  authenticate,
+  async (req: AuthenticatedRequest, res: Response) => {
+    const roles = req.user?.roles ?? [];
+    if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
+      return res.status(403).json({ error: "Unauthorized" });
+    }
+    const parsedBody = PostSkillCategoryBodySchema.safeParse(req.body);
+    if (!parsedBody.success) {
+      return res
+        .status(400)
+        .json({ error: "Invalid body", details: parsedBody.error });
+    }
+    const { name, skillTags } = parsedBody.data;
 
-  let category = null;
-  try {
-    category = await prisma.skillCategory.create({
+    let category = null;
+    try {
+      category = await prisma.skillCategory.create({
         data: {
           name,
           skillTags: {
             create: skillTags.map((skillTag) => ({
-              name: skillTag.name
+              name: skillTag.name,
             })),
-          }
+          },
         },
         include: {
           skillTags: true,
@@ -238,89 +248,100 @@ skillsRouter.post("/categories", authenticate, async (req: AuthenticatedRequest,
       res.status(201).json(category);
       return;
     } catch (err) {
-    res.status(500).json(err);
-    return;
+      res.status(500).json(err);
+      return;
+    }
   }
-
-});
+);
 
 /**
  * Edit skill category in the database
  * @route PUT /skills/categories/{categoryId}
  * @returns edited skill category
  */
-skillsRouter.put("/categories/:categoryId", authenticate, async (req: AuthenticatedRequest, res: Response) => {
-  const roles = req.user?.roles ?? [];
-  if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
-    return res.status(403).json({ error: "Unauthorized" });
-  }
-  const parsedParams = SkillCategoryIdParamsSchema.safeParse(req.params);
-  if (!parsedParams.success) {
-    res.status(400).json(parsedParams.error);
-    return;
-  }
-  const { categoryId } = parsedParams.data;
+skillsRouter.put(
+  "/categories/:categoryId",
+  authenticate,
+  async (req: AuthenticatedRequest, res: Response) => {
+    const roles = req.user?.roles ?? [];
+    if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
+      return res.status(403).json({ error: "Unauthorized" });
+    }
+    const parsedParams = SkillCategoryIdParamsSchema.safeParse(req.params);
+    if (!parsedParams.success) {
+      res.status(400).json(parsedParams.error);
+      return;
+    }
+    const { categoryId } = parsedParams.data;
 
-  const parsedBody = PostSkillCategoryBodyPartialSchema.safeParse(req.body);
-  if (!parsedBody.success) {
-    res.status(400).json(parsedBody.error);
-    return;
+    const parsedBody = PostSkillCategoryBodyPartialSchema.safeParse(req.body);
+    if (!parsedBody.success) {
+      res.status(400).json(parsedBody.error);
+      return;
+    }
+    const { name, skillTags } = parsedBody.data;
+    let category = null;
+    try {
+      category = await prisma.skillCategory.update({
+        where: { id: categoryId },
+        data: {
+          ...(name !== undefined ? { name } : {}),
+          ...(skillTags !== undefined
+            ? {
+                skillTags: {
+                  deleteMany: {}, // delete skills
+                  // create incoming skills, ( it errors if the skill doesnt exist in SkillTag )
+                  create: skillTags.map((skillTag) => ({
+                    name: skillTag.name,
+                  })),
+                },
+              }
+            : {}),
+        },
+        include: {
+          skillTags: true,
+        },
+      });
+      res.status(200).json(category);
+      return;
+    } catch (err) {
+      res.status(500).json(err);
+      return;
+    }
   }
-  const { name, skillTags } = parsedBody.data;
-
-  let category = null;
-  try {
-    category = await prisma.skillCategory.update({
-      where: { id: categoryId },
-      data: {
-        ...(name !== undefined ? { name } : {}),
-        ...(skillTags !== undefined ? { skillTags: {
-          deleteMany: {}, // delete skills
-            // create incoming skills, ( it errors if the skill doesnt exist in SkillTag )
-          create: skillTags.map((skillTag) => ({
-            name: skillTag.name,
-          })),
-        } } : {}),
-      },
-      include: {
-        skillTags: true,
-      },
-    });
-    res.status(200).json(category);
-    return;
-  } catch (err) {
-    res.status(500).json(err);
-    return;
-  }
-});
+);
 
 /**
  * Delete skill category in the database
  * @route DELETE /skills/categories/{categoryId}
  * @returns confirmation of deletion
  */
-skillsRouter.delete("/categories/:categoryId", authenticate, async (req: AuthenticatedRequest, res: Response) => {
-  const roles = req.user?.roles ?? [];
-  if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
-    return res.status(403).json({ error: "Unauthorized" });
-  }
-  const parsedParams = SkillCategoryIdParamsSchema.safeParse(req.params);
-  if (!parsedParams.success) {
-    res.status(400).json(parsedParams.error);
-    return;
-  }
-  const { categoryId } = parsedParams.data;
+skillsRouter.delete(
+  "/categories/:categoryId",
+  authenticate,
+  async (req: AuthenticatedRequest, res: Response) => {
+    const roles = req.user?.roles ?? [];
+    if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON")) {
+      return res.status(403).json({ error: "Unauthorized" });
+    }
+    const parsedParams = SkillCategoryIdParamsSchema.safeParse(req.params);
+    if (!parsedParams.success) {
+      res.status(400).json(parsedParams.error);
+      return;
+    }
+    const { categoryId } = parsedParams.data;
 
-  try {
-      await prisma.skillCategory.delete({ 
-          where: { 
-            id: categoryId
-          }
-        });
+    try {
+      await prisma.skillCategory.delete({
+        where: {
+          id: categoryId,
+        },
+      });
       res.status(204).json();
       return;
     } catch (err) {
-    res.status(500).json(err);
-    return;
+      res.status(500).json(err);
+      return;
+    }
   }
-});
+);

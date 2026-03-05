@@ -20,10 +20,10 @@ export const PostSkillTagBodySchema = z
   .meta({ id: "PostSkillTagBody" });
 
 export const PostSkillTagWithoutCategoryBodySchema = z
-.object({
-  name: z.string().min(1).meta({ example: "typescript" }),
-})
-.meta({ id: "PostSkillTagWithoutCategoryBody" });
+  .object({
+    name: z.string().min(1).meta({ example: "typescript" }),
+  })
+  .meta({ id: "PostSkillTagWithoutCategoryBody" });
 
 export const PatchSkillTagBodySchema = z
   .object({

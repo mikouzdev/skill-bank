@@ -75,13 +75,13 @@ export const authPaths = {
             "application/json": { schema: FullUserResponseSchema },
           },
         },
-        202: { description: "Role is already primary role"},
+        202: { description: "Role is already primary role" },
         400: { description: "Invalid request" },
-        401: { description: "Unauthorized"},
+        401: { description: "Unauthorized" },
         404: { description: "Not found" },
         422: { description: "User only has one role" },
         500: { description: "Server error" },
       },
     },
-  }
+  },
 };

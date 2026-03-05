@@ -41,12 +41,19 @@ pageSectionsRouter.get(
       },
     });
     const consultantIdOfCurrentUser = user?.consultant?.id;
-    if (consultantIdOfCurrentUser !== undefined && consultantIdOfCurrentUser !== null && consultantIdOfCurrentUser === consultantId) {
+    if (
+      consultantIdOfCurrentUser !== undefined &&
+      consultantIdOfCurrentUser !== null &&
+      consultantIdOfCurrentUser === consultantId
+    ) {
       isSameConsultant = true;
     }
     let allowedVisibilities = [Visibility.PUBLIC, Visibility.LIMITED];
-    //Sales/admin can see everyone, consult gets only public UNLESS the consultant ID is same as current user's consultant ID
-    if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON") && isSameConsultant === false) {
+    if (
+      !roles?.includes("ADMIN") &&
+      !roles?.includes("SALESPERSON") &&
+      isSameConsultant === false
+    ) {
       allowedVisibilities = [Visibility.PUBLIC];
     }
     let sections = null;
@@ -98,10 +105,18 @@ pageSectionsRouter.get(
       },
     });
     const consultantIdOfCurrentUser = user?.consultant?.id;
-    if (consultantIdOfCurrentUser !== undefined && consultantIdOfCurrentUser !== null && consultantIdOfCurrentUser === consultantId) {
+    if (
+      consultantIdOfCurrentUser !== undefined &&
+      consultantIdOfCurrentUser !== null &&
+      consultantIdOfCurrentUser === consultantId
+    ) {
       isSameConsultant = true;
     }
-    if (!roles?.includes("ADMIN") && !roles?.includes("SALESPERSON") && isSameConsultant === false) {
+    if (
+      !roles?.includes("ADMIN") &&
+      !roles?.includes("SALESPERSON") &&
+      isSameConsultant === false
+    ) {
       return res.status(403).json({ error: "Unauthorized" });
     }
 
@@ -245,7 +260,7 @@ pageSectionsRouter.post(
           consultantId,
           name: sectionName,
         },
-      }
+      },
     });
     if (pageSection === null) {
       res.status(404).json({ message: "Page section not found" });
@@ -276,4 +291,5 @@ pageSectionsRouter.post(
     }
 
     res.status(201).json(comment);
-});
+  }
+);
