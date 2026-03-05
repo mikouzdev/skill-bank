@@ -343,7 +343,7 @@ export interface paths {
             };
             responses: {
                 /** @description Update successful */
-                204: {
+                200: {
                     headers: {
                         [name: string]: unknown;
                     };
@@ -1707,7 +1707,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["FullUserResponse"];
+                        "application/json": components["schemas"]["UserResponse"];
                     };
                 };
                 /** @description User email already in use */
@@ -1762,7 +1762,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["FullUserResponse"];
+                        "application/json": components["schemas"]["UserResponse"];
                     };
                 };
                 /** @description Invalid request body */

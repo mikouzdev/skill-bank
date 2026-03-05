@@ -74,12 +74,6 @@ const navItems: NavItem[] = [
   },
   {
     text: "Offers",
-    path: "/offers",
-    icon: <People />,
-    roles: [ROLES.CUSTOMER],
-  },
-  {
-    text: "Offers",
     path: "/manage-offers",
     icon: <People />,
     roles: [ROLES.SALESPERSON],
@@ -89,6 +83,12 @@ const navItems: NavItem[] = [
     path: "/manage-offers/create",
     icon: <People />,
     roles: [ROLES.SALESPERSON],
+  },
+  {
+    text: "View offer",
+    path: "/customerOffer",
+    icon: <People />,
+    roles: [ROLES.CUSTOMER],
   },
   {
     text: "Log Out",
