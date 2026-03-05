@@ -11,6 +11,7 @@ import {
 import type { components } from "@api-types/openapi";
 import { useState, useRef } from "react";
 import { updateProfile } from "../../api/consultants.api";
+import { useSnackbar } from "../../../../shared/components/useSnackbar";
 
 type Consultant = components["schemas"]["ConsultantResponse"];
 
@@ -19,6 +20,8 @@ type Props = {
 };
 
 export default function EditableProfileHeader({ data }: Props) {
+  const { showError } = useSnackbar();
+
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -75,7 +78,7 @@ export default function EditableProfileHeader({ data }: Props) {
       await updateProfile(formData);
     } catch (error) {
       console.error("Failed to update profile details", error);
-      alert("error while trying to update profile.");
+      showError("Error while trying to update profile.");
     } finally {
       setLoading(false);
     }
