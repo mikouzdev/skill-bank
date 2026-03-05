@@ -11,7 +11,6 @@ import { ManageUsersPage } from "../features/admin/pages/ManageUsersPage";
 import { ConsultantListConsultants } from "../features/consultant/pages/ConsultantListConsultants";
 import { SidebarLayout } from "./layout/SidebarLayout";
 import SkillEditingPage from "../shared/pages/SkillEditing/SkillEditingPage";
-import CustomerOffersPage from "../features/customer/pages/CustomerOffersPage";
 import { SnackbarProvider } from "../shared/components/SnackbarProvider";
 import CustomerLoginPage from "../features/customer/pages/CustomerLoginPage";
 import { Logout } from "../features/Logout/Logout";
@@ -25,6 +24,7 @@ import ConsultantProfileForOthers from "../shared/pages/ConsultantProfileForOthe
 import ListCreationPage from "../features/sales/pages/ListCreationPage/ListCreationPage";
 import ConsultantCommentsPage from "../features/consultant/pages/ConsultantCommentsPage";
 import OfferEditingPage from "../features/sales/pages/OfferEditingPage/OfferEditingPage";
+import CustomerSingleOffer from "../features/customer/pages/CustomerSingleOffer";
 
 function App() {
   return (
@@ -34,12 +34,7 @@ function App() {
       <SnackbarProvider>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
-          <Route
-            path="/customerlogin/:oID/:sID"
-            element={<CustomerLoginPage />}
-          />
           <Route path="/loginRole" element={<LoginRolePage />} />
-          {/* <Route path="/redirector" element={<Redirector />} /> */}
 
           <Route element={<SidebarLayout />}>
             {/* consultant */}
@@ -97,7 +92,11 @@ function App() {
             />
 
             {/* customer */}
-            <Route path="/offers" element={<CustomerOffersPage />} />
+            <Route
+              path="/customerlogin/:oID/:sID"
+              element={<CustomerLoginPage />}
+            />
+            <Route path="/customerOffer/" element={<CustomerSingleOffer />} />
           </Route>
           <Route path="/logout" element={<Logout />} />
         </Routes>

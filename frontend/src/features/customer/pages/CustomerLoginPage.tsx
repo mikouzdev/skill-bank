@@ -3,15 +3,16 @@ import { CenterFloatingForm } from "../../../styles/formsTheme";
 import { CustomerLoginPageForm } from "../components/CustomerLoginPageForm";
 import { formsTheme } from "../../../styles/theme";
 import { Typography } from "@mui/material";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../../app/hooks/useAuth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { components } from "@api-types/openapi";
-import CustomerSingleOffer from "./CustomerSingleOffer";
 
 type OfferPage = components["schemas"]["OfferPage"];
 
 export default function CustomerLoginPage() {
+  const navigate = useNavigate();
+
   const offerFromStorage = () => {
     const stored = sessionStorage.getItem("customerOffer");
     return stored ? (JSON.parse(stored) as OfferPage) : undefined;
@@ -24,11 +25,16 @@ export default function CustomerLoginPage() {
   const salesID = Number(sID) || undefined;
   const offerID = Number(oID) || undefined;
 
+  useEffect(() => {
+    if (offer) {
+      void navigate("/customerOffer", { replace: true });
+    }
+  }, [offer, navigate]);
+
   async function handleCustomerLogin(password: string) {
     try {
       if (salesID === undefined || offerID === undefined) return;
       const response = await offerLogin(salesID, offerID, { password });
-      console.log(response);
       setOffer(response);
 
       sessionStorage.setItem("customerOffer", JSON.stringify(response));
@@ -39,8 +45,6 @@ export default function CustomerLoginPage() {
 
   if (offerID === undefined || salesID === undefined)
     return <Typography>Missing offer parameters in URL</Typography>;
-
-  if (offer) return <CustomerSingleOffer offerData={offer} />;
 
   return (
     <ThemeProvider theme={formsTheme}>
