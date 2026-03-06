@@ -40,8 +40,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const user = await getCurrentUser();
       setCurrentUser(user.data);
-    } catch (error) {
-      console.log("failed to refresh user:", error);
+    } catch {
+      // logout if fails to refresh user, (token expired)
+      logout();
     } finally {
       setIsLoading(false);
     }
