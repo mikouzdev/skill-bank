@@ -1,4 +1,7 @@
 context("GET /skills", () => {
+//   beforeEach(() => {
+//     cy.task('cleanSkills');
+//   })
   it("gets a list of skills", () => {
     cy.request("GET", "/skills").then((response) => {
       expect(response.status).to.eq(200);
@@ -100,6 +103,15 @@ context("GET /skills", () => {
                         }).then((response) => {
                             expect(response.status).to.eq(200);
                             expect(response.body).to.have.property("name", "Edited test category");
+                        })
+                        cy.request({
+                            method: "DELETE",
+                            url: "/skills/testing",
+                            headers: {
+                                Authorization: "Bearer " + token,
+                            }
+                        }).then((response) => {
+                            expect(response.status).to.eq(204);
                         })
                         cy.request({
                             method: "DELETE",
