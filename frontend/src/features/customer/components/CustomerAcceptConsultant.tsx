@@ -1,5 +1,5 @@
 import type { components } from "@api-types/openapi";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { setAccepted } from "../api/customer.api";
 import { Button, ListItem } from "@mui/material";
@@ -15,6 +15,7 @@ type Props = {
 export default function CustomerAcceptConsultant({ roles }: Props) {
   const { showSuccess, showError } = useSnackbar();
 
+  const [loading, setLoading] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const salesId = Number(searchParams.get("salesId"));
   const offerId = Number(searchParams.get("offerId"));
@@ -60,6 +61,8 @@ export default function CustomerAcceptConsultant({ roles }: Props) {
     if (!isValidCustomer()) return;
 
     try {
+      setLoading(true);
+
       const response = await setAccepted(salesId, offerId, consultantPageId, {
         isAccepted: !isAccepted,
       });
@@ -83,6 +86,8 @@ export default function CustomerAcceptConsultant({ roles }: Props) {
     } catch (error) {
       console.log(error);
       showError("Failed to change accepted status.");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -91,6 +96,7 @@ export default function CustomerAcceptConsultant({ roles }: Props) {
     isValidCustomer() && (
       <ListItem sx={{ display: "flex", justifyContent: "center" }}>
         <Button
+          loading={loading}
           size="small"
           sx={{ px: 2 }}
           onClick={() => void setConsultantAcceptStatus()}
