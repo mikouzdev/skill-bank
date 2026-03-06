@@ -6,7 +6,7 @@
     "shouldEndUp": "/manage-users"
   },
   {
-    "role": "consult",
+    "role": "consultant",
     "email": "alice@demo.com",
     "password": "hashed-password",
     "shouldEndUp": "/consultant/me"
