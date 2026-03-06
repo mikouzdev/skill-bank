@@ -1,4 +1,4 @@
-describe("Consultant personal projects", () => {
+describe("Consultant personal info", () => {
   //const fullName = "Alice Consultant";
   const fullNameChanged = "Malice Constitution";
   //const title = "Senior Backend Engineer";
@@ -23,7 +23,7 @@ describe("Consultant personal projects", () => {
     cy.visit("http://localhost:5173/logout");
   });
 
-  it("checks that the full name has been changed", () => {
+  it("changes the name and checks it's changed", () => {
     cy.visit("http://localhost:5173/consultant/me/edit");
 
     cy.contains("label", "Full name")
@@ -38,6 +38,54 @@ describe("Consultant personal projects", () => {
       .clear()
       .type(titleChanged);
 
-    cy.get('[data-cy="description"]').clear().type(descriptionChanged);
+    //cy.get('', "Descrition").clear().type(descriptionChanged);
+
+    cy.contains("label", "Description")
+      .should("be.visible")
+      .invoke("attr", "for")
+      .should("match", /\S+/)
+      .then((id) => {
+        cy.get(`#${id}`).should("exist").clear().type(descriptionChanged);
+      });
+
+    cy.contains("button", "apply edits", { matchCase: false })
+      .should("exist")
+      .should("be.visible")
+      .then(($card) => {
+        $card[0].style.outline = "3px solid red";
+      })
+      .as("applyEdits");
+
+    // cy.wait(1000);
+    // cy.get("@applyEdits").click();
+    // cy.wait(1000);
+
+    cy.get("@applyEdits")
+      .find('[role="progressbar"]', { timeout: 10000 })
+      .should("not.exist");
+
+    cy.visit("http://localhost:5173/consultant/me");
+
+    //give some time to the page to load.
+    cy.wait(1000);
+
+    cy.contains(fullNameChanged, { timeout: 10000 })
+      .should("be.visible")
+      .then(($card) => {
+        $card[0].style.outline = "3px solid red"; // acceptable linter error, Should faild at "be.visible"
+      });
+
+    cy.contains(titleChanged, { timeout: 10000 })
+      .should("be.visible")
+      .then(($card) => {
+        $card[0].style.outline = "3px solid red"; // acceptable linter error, Should faild at "be.visible"
+      });
+
+    cy.contains(descriptionChanged, { timeout: 10000 })
+      .should("be.visible")
+      .then(($card) => {
+        $card[0].style.outline = "3px solid red"; // acceptable linter error, Should faild at "be.visible"
+      });
+    cy.pause();
   });
 });
