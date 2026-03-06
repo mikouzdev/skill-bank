@@ -39,17 +39,24 @@ export default function EditableExternalLinks({ attributes }: Props) {
   let gitLabLink = "";
   let gitHubLink = "";
 
+  let linkedInIsPublic = false;
+  let gitLabIsPublic = false;
+  let gitHubIsPublic = false;
+
   for (const attribute of attributes) {
     if (attribute.type === "LINK") {
       if (attribute.value.startsWith("https://linkedin.com/in")) {
         linkedInLink = attribute.value;
         linkedInLink = linkedInLink.split("/").filter(Boolean).pop() || "";
+        linkedInIsPublic = attribute.visibility === "PUBLIC" ? true : false;
       } else if (attribute.value.startsWith("https://github.com")) {
         gitHubLink = attribute.value;
         gitHubLink = gitHubLink.split("/").filter(Boolean).pop() || "";
+        gitLabIsPublic = attribute.visibility === "PUBLIC" ? true : false;
       } else if (attribute.value.startsWith("https://gitlab.com")) {
         gitLabLink = attribute.value;
         gitLabLink = gitLabLink.split("/").filter(Boolean).pop() || "";
+        gitHubIsPublic = attribute.visibility === "PUBLIC" ? true : false;
       }
     }
   }
@@ -61,9 +68,9 @@ export default function EditableExternalLinks({ attributes }: Props) {
   });
 
   const [visibility, setVisibility] = useState({
-    linkedIn: true,
-    gitHub: true,
-    gitLab: true,
+    linkedIn: linkedInIsPublic,
+    gitHub: gitLabIsPublic,
+    gitLab: gitHubIsPublic,
   });
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -93,26 +100,25 @@ export default function EditableExternalLinks({ attributes }: Props) {
     const gitHubAt = attributes.find((att) => att.label === "GitHub");
     const gitLabAt = attributes.find((att) => att.label === "GitLab");
 
-    // todo: add LIMITED (consultant cant fetch own LIMITED links yet)
     const linkedInPayload: AttributeBody = {
       label: linkedInAt?.label || "LinkedIn",
       value: "https://linkedin.com/in/" + links.linkedIn,
       type: "LINK",
-      visibility: visibility.linkedIn ? "PUBLIC" : "PUBLIC",
+      visibility: visibility.linkedIn ? "PUBLIC" : "LIMITED",
     };
 
     const gitHubPayload: AttributeBody = {
       label: gitHubAt?.label || "GitHub",
       value: "https://github.com/" + links.gitHub,
       type: "LINK",
-      visibility: visibility.gitHub ? "PUBLIC" : "PUBLIC",
+      visibility: visibility.gitHub ? "PUBLIC" : "LIMITED",
     };
 
     const gitLabPayload: AttributeBody = {
       label: gitLabAt?.label || "GitLab",
       value: "https://gitlab.com/" + links.gitLab,
       type: "LINK",
-      visibility: visibility.gitLab ? "PUBLIC" : "PUBLIC",
+      visibility: visibility.gitLab ? "PUBLIC" : "LIMITED",
     };
 
     try {
