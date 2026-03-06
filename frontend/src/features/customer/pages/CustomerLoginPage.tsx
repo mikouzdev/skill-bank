@@ -15,6 +15,7 @@ export default function CustomerLoginPage() {
 
   const offerFromStorage = () => {
     const stored = sessionStorage.getItem("customerOffer");
+    if (!stored) return;
     return stored ? (JSON.parse(stored) as OfferPage) : undefined;
   };
 
