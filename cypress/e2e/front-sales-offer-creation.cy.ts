@@ -76,6 +76,7 @@ describe("Consultant personal projects", () => {
     // check for snackbar alert
     cy.get(".MuiSnackbar-root > .MuiPaper-root").should("be.visible").should("contain", "Offer created succesfully");
 
+    // get generated offer link
     cy.get(".MuiDialogContent-root > .MuiStack-root > .MuiTypography-body1")
       .should("be.visible")
       .invoke("text")
