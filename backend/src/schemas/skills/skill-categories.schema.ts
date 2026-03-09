@@ -7,7 +7,7 @@ import {
 export const skillCategorySchema = z
   .object({
     id: z.number().meta({ example: "1" }),
-    name: z.string().meta({ example: "Python" }),
+    name: z.string().meta({ example: "Backend" }),
     skillTags: z.array(SkillTagSchema),
   })
   .meta({ id: "skillCategory" });
