@@ -17,6 +17,7 @@ export const adminPaths = {
             "application/json": { schema: AllUsersResponseSchema },
           },
         },
+        403: { descriptiom: "Prisma error" },
         "500": {
           description: "Server error",
         },
@@ -40,6 +41,7 @@ export const adminPaths = {
             "application/json": { schema: UserResponseSchema },
           },
         },
+        403: { descriptiom: "Prisma error" },
         "409": {
           description: "User email already in use",
         },
@@ -64,6 +66,7 @@ export const adminPaths = {
       responses: {
         204: { description: "Deletion successful" },
         400: { description: "Invalid request" },
+        403: { descriptiom: "Prisma error" },
         500: { description: "Server error" },
       },
     },
@@ -94,6 +97,7 @@ export const adminPaths = {
           },
         },
         400: { description: "Invalid request body" },
+        403: { descriptiom: "Prisma error" },
         500: { description: "Server error" },
       },
     },
