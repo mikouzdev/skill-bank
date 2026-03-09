@@ -7,6 +7,7 @@ import {
   authenticate,
   type AuthenticatedRequest,
 } from "../../middlewares/authentication.js";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/client";
 
 export const usersRouter = Router();
 
@@ -196,6 +197,16 @@ usersRouter.patch(
         },
       });
     } catch (err) {
+      if (err instanceof PrismaClientKnownRequestError) {
+        if (err.code === "P1000") {
+          return res
+            .status(503)
+            .json({ error: "Database authentication failed" });
+        }
+        if (err.code === "P1001") {
+          return res.status(503).json({ error: "Database server unreachable" });
+        }
+      }
       res.status(500).json(err);
       return;
     }

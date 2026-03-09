@@ -41,6 +41,7 @@ export const consultantsPaths = {
           },
         },
         400: { description: "Invalid consultant id" },
+        403: { descriptiom: "Prisma error" },
         404: { description: "Consultant with that id was not found" },
         500: { description: "Internal server error" },
       },
@@ -68,6 +69,8 @@ export const consultantsPaths = {
         400: {
           description: "Unknown file type",
         },
+        403: { descriptiom: "Prisma error" },
+
         404: {
           description: "Consultant or user not found",
         },
@@ -91,6 +94,8 @@ export const consultantsPaths = {
         200: {
           description: "Some consultant found",
         },
+        403: { descriptiom: "Prisma error" },
+
         500: { description: "Internal server error" },
       },
     },
@@ -111,6 +116,8 @@ export const consultantsPaths = {
         200: {
           description: "Some consultant found",
         },
+        403: { descriptiom: "Prisma error" },
+
         500: { description: "Internal server error" },
       },
     },
@@ -132,6 +139,7 @@ export const consultantsPaths = {
           description: "Some consultant found",
           content: { "application/json": { schema: ConsultantResponseSchema } },
         },
+        403: { descriptiom: "Prisma error" },
         500: { description: "Internal server error" },
       },
     },
