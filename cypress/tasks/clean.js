@@ -14,8 +14,20 @@ const clean = async () => {
         await prisma.user.delete({
             where: { email: "testi@gmail.com" },
         });
+        const testSalesList = await prisma.salesList.findUnique({
+            where: { shortDescription: "test short description" },
+        });
+        await prisma.salesList.delete({
+            where: { id: testSalesList.id },
+        });
+        const testOfferPage = await prisma.offerPages.findUnique({
+            where: { shortDescription: "test short description" },
+        });
+        await prisma.offerPages.delete({
+            where: { id: testOfferPage.id },
+        });
     } catch (err) {
-        res.status(500).json(err);
+        console.log(err);
         return;
     }
     return;

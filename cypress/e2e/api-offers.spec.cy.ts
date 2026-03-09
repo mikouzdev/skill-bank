@@ -63,7 +63,7 @@ context("GET /sales/1/offers", () => {
                         }).then((response) => {
                             expect(response.status).to.eq(201);
                             expect(response.body).to.not.be.null;
-                            let offerId = response.body.id;
+                            const offerId = response.body.id;
                             expect(response.body).to.have.property("name", "test name");
                             expect(response.body).to.have.property("description", "test description");
                             expect(response.body).to.have.property("shortDescription", "test short description");
@@ -141,13 +141,8 @@ context("GET /sales/1/offers", () => {
                     }).then((response) => {
                         expect(response.status).to.eq(200);
                         expect(response.body).to.not.be.null;
-                        expect(response.body).to.have.property("id");
-                        expect(response.body).to.have.property("salespersonId");
-                        expect(response.body).to.have.property("customerId");
-                        expect(response.body).to.have.property("description");
-                        expect(response.body).to.have.property("name");
-                        expect(response.body).to.have.property("shortDescription");
-                        expect(response.body).to.have.property("consultantPages");
+                        expect(response.body).to.have.property("token");
+                        expect(response.body).to.have.property("offerPage");
                     })
                     cy.request({
                         method: "POST",
