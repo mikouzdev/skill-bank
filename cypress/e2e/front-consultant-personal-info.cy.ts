@@ -57,8 +57,8 @@ describe("Consultant personal info", () => {
       .as("applyEdits");
 
     // cy.wait(1000);
-    // cy.get("@applyEdits").click();
-    // cy.wait(1000);
+    cy.get("@applyEdits").click();
+    //cy.wait(1000);
 
     cy.get("@applyEdits")
       .find('[role="progressbar"]', { timeout: 10000 })
@@ -86,6 +86,104 @@ describe("Consultant personal info", () => {
       .then(($card) => {
         $card[0].style.outline = "3px solid red"; // acceptable linter error, Should faild at "be.visible"
       });
-    cy.pause();
+
+    cy.wait(500); //cy.pause();
+  });
+
+  it("Adds a new skill and checks it's been created", () => {
+    cy.visit("http://localhost:5173/consultant/me/edit");
+
+    cy.wait(1000);
+
+    cy.contains("button", "add skill", { matchCase: false })
+      .should("exist")
+      .should("be.visible")
+      .then(($button) => {
+        $button[0].style.outline = "3px solid red";
+      })
+      .as("addSkill");
+
+    //cy.pause();
+    cy.wait(1000);
+    cy.get("@addSkill").click();
+    cy.wait(1000);
+
+    cy.get('[role="dialog"]', { timeout: 4000 })
+      .should("be.visible")
+      .scrollIntoView(); // remove when in pipeline;
+
+    cy.get('[role="dialog"]', { timeout: 4000 })
+      .should("be.visible")
+      .within(() => {
+        //cy.contains("button", "Add Skill").click();
+
+        cy.contains("Category").next().click();
+        cy.contains("Category")
+          .parent()
+          .within(() => {
+            cy.press(Cypress.Keyboard.Keys.DOWN);
+            cy.press(Cypress.Keyboard.Keys.ENTER);
+          });
+
+        cy.contains("Skill").next().click();
+        cy.contains("Skill")
+          .parent()
+          .within(() => {
+            cy.press(Cypress.Keyboard.Keys.DOWN);
+            cy.press(Cypress.Keyboard.Keys.ENTER);
+          });
+
+        cy.get('input[name="hover-feedback"][value="5"]').check({
+          force: true,
+        });
+
+        cy.contains("button", "add skill", { matchCase: false }).click();
+        cy.wait(500);
+
+        cy.visit("http://localhost:5173/consultant/me");
+        cy.wait(1000);
+
+        cy.contains("css").scrollIntoView();
+        cy.contains("css").then(($css) => {
+          $css[0].style.outline = "3px solid red";
+        });
+
+        // cy.contains("css", { timeout: 10000 })
+        //   .should("exist")
+        //   .then(($css) => {
+        //     $css[0].style.color = "red"; // acceptable linter error, Should faild at "be.visible"
+        //   });
+        cy.wait(500);
+      });
+  });
+  it("shows the new skill and deletes it", () => {
+    cy.visit("http://localhost:5173/consultant/me/edit");
+    cy.contains("css").should("be.visible");
+
+    cy.contains("css")
+      .closest("div")
+      .parent()
+      .find("button")
+      .first()
+      .scrollIntoView()
+      .click();
+    cy.wait(500);
+  });
+
+  it("checks that external links visibility works as assumed", () => {
+    cy.visit("http://localhost:5173/consultant/me/edit");
+    cy.contains("label", "GitLab")
+      .closest("form")
+      .within(() => {
+        cy.get('input[type="checkbox"]').uncheck({ force: true });
+        cy.contains("button", "apply edits", { matchCase: false })
+          .then(($button) => {
+            $button[0].style.outline = "3px solid red";
+          })
+          .as("button");
+        cy.pause();
+        cy.get("@button").click();
+        cy.wait(1000);
+      });
   });
 });
