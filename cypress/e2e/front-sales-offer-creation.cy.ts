@@ -4,14 +4,22 @@ describe("Consultant personal projects", () => {
   const offerShortDescription = "my offer short description";
   const offerPassword = "12345678";
 
-  const customerId = "1"; // set before running test
-
   beforeEach(() => {
     cy.visit("http://localhost:5173/login");
 
-    cy.get('input[type="email"]').type("sally@demo.com");
+    cy.get('input[type="email"]').type("test@demo.com");
     cy.get('input[type="password"]').type("hashed-password", { log: true });
+
     cy.contains("button", "sign in", { matchCase: false }).click();
+
+    cy.intercept("GET", "/auth/me", (req) => {
+      // to not respond with: 304 Not Modified
+      delete req.headers["if-none-match"];
+      delete req.headers["if-modified-since"];
+    }).as("getAuthMe");
+
+    cy.url().should("include", "/login");
+    cy.get(".MuiStack-root > :nth-child(2)").should("be.visible").click();
 
     cy.contains("Create offer", { matchCase: false, timeout: 10000 }).should("be.visible");
   });
@@ -24,6 +32,17 @@ describe("Consultant personal projects", () => {
     cy.visit("http://localhost:5173/manage-offers/create");
 
     cy.url().should("include", "create");
+
+    cy.wait("@getAuthMe").then(({ response }) => {
+      expect(response.statusCode).to.eq(200);
+      expect(response.body).to.have.property("customerId");
+
+      const customerId = String(response.body.customerId);
+
+      // offer customer id
+      cy.get('input[name="customerId"]').should("be.visible").clear().type(customerId);
+      cy.get('input[name="customerId"]').should("be.visible").should("have.value", customerId);
+    });
 
     // offer name
     cy.get('input[name="name"]').should("be.visible").type(offerName);
@@ -45,10 +64,6 @@ describe("Consultant personal projects", () => {
     // random password button
     cy.get(".MuiInputAdornment-root > .MuiButtonBase-root").should("be.visible").click();
     cy.get('input[name="password"]').invoke("val").its("length").should("be.at.least", 8);
-
-    // offer customer id
-    cy.get('input[name="customerId"]').should("be.visible").clear().type(customerId);
-    cy.get('input[name="customerId"]').should("be.visible").should("have.value", customerId);
 
     cy.contains("button", "Create offer", { matchCase: false }).click();
     cy.wait(1000);
