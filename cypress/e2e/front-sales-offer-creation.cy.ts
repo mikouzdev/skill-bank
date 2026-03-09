@@ -4,7 +4,13 @@ describe("Consultant personal projects", () => {
   const offerShortDescription = "my offer short description";
   const offerPassword = "12345678";
 
-  beforeEach(() => {
+  let offerLink = "";
+
+  afterEach(() => {
+    cy.visit("http://localhost:5173/logout");
+  });
+
+  const loginAsSalesperson = () => {
     cy.visit("http://localhost:5173/login");
 
     cy.get('input[type="email"]').type("test@demo.com");
@@ -22,13 +28,11 @@ describe("Consultant personal projects", () => {
     cy.get(".MuiStack-root > :nth-child(2)").should("be.visible").click();
 
     cy.contains("Create offer", { matchCase: false, timeout: 10000 }).should("be.visible");
-  });
-
-  afterEach(() => {
-    cy.visit("http://localhost:5173/logout");
-  });
+  };
 
   it("creates a new offer", () => {
+    loginAsSalesperson();
+
     cy.visit("http://localhost:5173/manage-offers/create");
 
     cy.url().should("include", "create");
@@ -56,13 +60,14 @@ describe("Consultant personal projects", () => {
     cy.get('input[name="shortDescription"]').should("be.visible").type(offerShortDescription);
     cy.get('input[name="shortDescription"]').should("be.visible").should("have.value", offerShortDescription);
 
+    // random password button
+    cy.get(".MuiInputAdornment-root > .MuiButtonBase-root").should("be.visible").click();
+    cy.get('input[name="password"]').invoke("val").its("length").should("be.at.least", 8);
+    cy.get('input[name="password"]').clear();
+
     // offer password
     cy.get('input[name="password"]').should("be.visible").type(offerPassword);
     cy.get('input[name="password"]').should("be.visible").should("have.value", offerPassword);
-    cy.get('input[name="password"]').invoke("val").its("length").should("be.at.least", 8);
-
-    // random password button
-    cy.get(".MuiInputAdornment-root > .MuiButtonBase-root").should("be.visible").click();
     cy.get('input[name="password"]').invoke("val").its("length").should("be.at.least", 8);
 
     cy.contains("button", "Create offer", { matchCase: false }).click();
@@ -70,5 +75,24 @@ describe("Consultant personal projects", () => {
 
     // check for snackbar alert
     cy.get(".MuiSnackbar-root > .MuiPaper-root").should("be.visible").should("contain", "Offer created succesfully");
+
+    cy.get(".MuiDialogContent-root > .MuiStack-root > .MuiTypography-body1")
+      .should("be.visible")
+      .invoke("text")
+      .then((link) => {
+        offerLink = link;
+      });
+  });
+
+  it("logs into offer page", () => {
+    cy.visit(offerLink);
+
+    cy.get('[name="password"]').should("be.visible").type(offerPassword);
+    cy.get('[name="password"]').should("be.visible").should("have.value", offerPassword);
+
+    cy.contains("button", "Sign in", { matchCase: false }).click();
+
+    cy.url().should("include", "/customerOffer");
+    cy.wait(1000);
   });
 });
