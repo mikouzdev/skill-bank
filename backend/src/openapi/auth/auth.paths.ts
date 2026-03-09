@@ -81,6 +81,7 @@ export const authPaths = {
         404: { description: "Not found" },
         422: { description: "User only has one role" },
         500: { description: "Server error" },
+        503: { description: "Prisma error" },
       },
     },
   },
