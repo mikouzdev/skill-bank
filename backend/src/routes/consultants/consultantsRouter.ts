@@ -17,6 +17,7 @@ import {
   type AuthenticatedRequest,
 } from "../../middlewares/authentication.js";
 import { JsonFilterSchema } from "../../schemas/consultants/search.schema.js";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/client";
 
 // TODO: Check all env variables in a single place
 const PROFILE_PICTURE_PREFIX =
@@ -46,6 +47,20 @@ consultantsRouter.get("/", async (req: Request, res: Response) => {
     res.send(consultants);
     return;
   } catch (err) {
+    if (err instanceof PrismaClientKnownRequestError) {
+      if (err.code === "P1000") {
+        return res
+          .status(503)
+          .json({ error: "Database authentication failed" });
+      }
+      if (err.code === "P1001") {
+        return res.status(503).json({ error: "Database server unreachable" });
+      }
+
+      return res
+        .status(503)
+        .json({ error: "Database initialization/connection failed" });
+    }
     res.status(500).json(err);
     return;
   }
@@ -65,6 +80,20 @@ consultantsRouter.get("/search", async (req: Request, res: Response) => {
     res.send(foundConsultants.map((el) => el));
     return;
   } catch (err) {
+    if (err instanceof PrismaClientKnownRequestError) {
+      if (err.code === "P1000") {
+        return res
+          .status(503)
+          .json({ error: "Database authentication failed" });
+      }
+      if (err.code === "P1001") {
+        return res.status(503).json({ error: "Database server unreachable" });
+      }
+
+      return res
+        .status(503)
+        .json({ error: "Database initialization/connection failed" });
+    }
     res.status(500).json(err);
     return;
   }
@@ -83,6 +112,20 @@ consultantsRouter.get("/filter", async (req: Request, res: Response) => {
 
     return;
   } catch (err) {
+    if (err instanceof PrismaClientKnownRequestError) {
+      if (err.code === "P1000") {
+        return res
+          .status(503)
+          .json({ error: "Database authentication failed" });
+      }
+      if (err.code === "P1001") {
+        return res.status(503).json({ error: "Database server unreachable" });
+      }
+
+      return res
+        .status(503)
+        .json({ error: "Database initialization/connection failed" });
+    }
     res.status(500).json(err);
     return;
   }
@@ -106,6 +149,25 @@ consultantsRouter.post("/jsonFilter", async (req: Request, res: Response) => {
 
     return;
   } catch (err) {
+    if (err instanceof PrismaClientKnownRequestError) {
+      if (err.code === "P1000") {
+        return res
+          .status(503)
+          .json({ error: "Database authentication failed" });
+      }
+      if (err.code === "P1001") {
+        return res.status(503).json({ error: "Database server unreachable" });
+      }
+      if (err.code === "P2003") {
+        return res
+          .status(400)
+          .json({ error: "Invalid reference (related record missing)" });
+      }
+
+      return res
+        .status(503)
+        .json({ error: "Database initialization/connection failed" });
+    }
     res.status(500).json(err);
     return;
   }
@@ -138,6 +200,23 @@ consultantsRouter.get("/:consultantId", async (req: Request, res: Response) => {
     });
   } catch (err) {
     res.status(500).json(err);
+    if (err instanceof PrismaClientKnownRequestError) {
+      if (err.code === "P1000") {
+        return res
+          .status(503)
+          .json({ error: "Database authentication failed" });
+      }
+      if (err.code === "P1001") {
+        return res.status(503).json({ error: "Database server unreachable" });
+      }
+      if (err.code === "P2025") {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      return res
+        .status(503)
+        .json({ error: "Database initialization/connection failed" });
+    }
     return;
   }
 
@@ -283,6 +362,30 @@ consultantsRouter.put(
           });
         }
       } catch (err) {
+        if (err instanceof PrismaClientKnownRequestError) {
+          if (err.code === "P1000") {
+            return res
+              .status(503)
+              .json({ error: "Database authentication failed" });
+          }
+          if (err.code === "P1001") {
+            return res
+              .status(503)
+              .json({ error: "Database server unreachable" });
+          }
+          if (err.code === "P2002") {
+            return res
+              .status(409)
+              .json({ error: `Duplicate entry: already exists` });
+          }
+          if (err.code === "P2025") {
+            return res.status(404).json({ error: "User not found" });
+          }
+
+          return res
+            .status(503)
+            .json({ error: "Database initialization/connection failed" });
+        }
         res.status(500).json(err);
         return;
       }
