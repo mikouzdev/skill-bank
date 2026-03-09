@@ -238,11 +238,11 @@ async function main() {
       userId: testUser.id,
     },
   });
-  await prisma.salesperson.create({
+  /*await prisma.salesperson.create({
     data: {
       userId: testUser.id,
     },
-  });
+  });*/
   await prisma.consultant.create({
     data: {
       userId: testUser.id,
