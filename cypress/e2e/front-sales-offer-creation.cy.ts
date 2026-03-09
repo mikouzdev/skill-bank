@@ -71,7 +71,6 @@ describe("Consultant personal projects", () => {
     cy.get('input[name="password"]').invoke("val").its("length").should("be.at.least", 8);
 
     cy.contains("button", "Create offer", { matchCase: false }).click();
-    cy.wait(1000);
 
     // check for snackbar alert
     cy.get(".MuiSnackbar-root > .MuiPaper-root").should("be.visible").should("contain", "Offer created succesfully");
@@ -94,6 +93,5 @@ describe("Consultant personal projects", () => {
     cy.contains("button", "Sign in", { matchCase: false }).click();
 
     cy.url().should("include", "/customerOffer");
-    cy.wait(1000);
   });
 });
