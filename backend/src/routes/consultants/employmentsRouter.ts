@@ -13,6 +13,7 @@ import {
   authenticate,
   type AuthenticatedRequest,
 } from "../../middlewares/authentication.js";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/client";
 
 export const employmentsRouter = Router();
 
@@ -73,8 +74,21 @@ employmentsRouter.get(
       });
 
       res.status(200).json(employments);
-    } catch (error) {
-      console.error("Failed at: GET /:consultantId/employments", error);
+    } catch (err) {
+      if (err instanceof PrismaClientKnownRequestError) {
+        if (err.code === "P1000") {
+          return res
+            .status(503)
+            .json({ error: "Database authentication failed" });
+        }
+        if (err.code === "P1001") {
+          return res.status(503).json({ error: "Database server unreachable" });
+        }
+
+        return res
+          .status(503)
+          .json({ error: "Database initialization/connection failed" });
+      }
       res.status(500).json({
         message: "Internal server error",
       });
@@ -148,6 +162,26 @@ employmentsRouter.post(
         });
       }
     } catch (err) {
+      if (err instanceof PrismaClientKnownRequestError) {
+        if (err.code === "P1000") {
+          return res
+            .status(503)
+            .json({ error: "Database authentication failed" });
+        }
+        if (err.code === "P1001") {
+          return res.status(503).json({ error: "Database server unreachable" });
+        }
+        if (err.code === "P2002") {
+          return res
+            .status(409)
+            .json({ error: `Duplicate entry: already exists` });
+        }
+        if (err.code === "P2003") {
+          return res
+            .status(400)
+            .json({ error: "Invalid reference (related record missing)" });
+        }
+      }
       res.status(500).json(err);
       return;
     }
@@ -234,6 +268,28 @@ employmentsRouter.put(
         });
       }
     } catch (err) {
+      if (err instanceof PrismaClientKnownRequestError) {
+        if (err.code === "P1000") {
+          return res
+            .status(503)
+            .json({ error: "Database authentication failed" });
+        }
+        if (err.code === "P1001") {
+          return res.status(503).json({ error: "Database server unreachable" });
+        }
+        if (err.code === "P2002") {
+          return res
+            .status(409)
+            .json({ error: `Duplicate entry: already exists` });
+        }
+        if (err.code === "P2025") {
+          return res.status(404).json({ error: "Employment not found" });
+        }
+
+        return res
+          .status(503)
+          .json({ error: "Database initialization/connection failed" });
+      }
       res.status(500).json(err);
       return;
     }
@@ -285,6 +341,16 @@ employmentsRouter.delete(
       }
     } catch (err) {
       res.status(500).json(err);
+      if (err instanceof PrismaClientKnownRequestError) {
+        if (err.code === "P2025") {
+          return res.status(404).json({ error: "Employment not found" });
+        }
+        if (err.code === "P2003") {
+          return res
+            .status(409)
+            .json({ error: "Cannot delete – record is referenced elsewhere" });
+        }
+      }
       return;
     }
 
@@ -354,6 +420,30 @@ employmentsRouter.post(
         });
       }
     } catch (err) {
+      if (err instanceof PrismaClientKnownRequestError) {
+        if (err.code === "P1000") {
+          return res
+            .status(503)
+            .json({ error: "Database authentication failed" });
+        }
+        if (err.code === "P1001") {
+          return res.status(503).json({ error: "Database server unreachable" });
+        }
+        if (err.code === "P2002") {
+          return res
+            .status(409)
+            .json({ error: `Duplicate entry: already exists` });
+        }
+        if (err.code === "P2003") {
+          return res
+            .status(400)
+            .json({ error: "Invalid reference (related record missing)" });
+        }
+
+        return res
+          .status(503)
+          .json({ error: "Database initialization/connection failed" });
+      }
       res.status(500).json(err);
       return;
     }
@@ -412,8 +502,17 @@ employmentsRouter.delete(
         });
       }
     } catch (err) {
-      res.status(500).json(err);
-      return;
+      if (err instanceof PrismaClientKnownRequestError) {
+        if (err.code === "P2025") {
+          return res.status(404).json({ error: "User not found" });
+        }
+        if (err.code === "P2003") {
+          return res
+            .status(409)
+            .json({ error: "Cannot delete – record is referenced elsewhere" });
+        }
+      }
+      return res.status(500).json({ error: "Delete failed" });
     }
 
     res.status(204).send();
