@@ -240,25 +240,6 @@ salesListRouter.put(
               returnIfTrue = true;
               return;
             }
-            if (
-              salesListItem.consultantId !== undefined &&
-              salesListItem.consultantId !== null
-            ) {
-              const existingSalesListItem =
-                await prisma.salesListItem.findFirst({
-                  where: {
-                    salesListId: salesListId,
-                    consultantId: salesListItem.consultantId,
-                  },
-                });
-              if (existingSalesListItem !== null) {
-                res
-                  .status(409)
-                  .json({ message: "Sales list item already exists" });
-                returnIfTrue = true;
-                return;
-              }
-            }
             if (uniqueConsultants.includes(salesListItem.consultantId)) {
               res.status(409).json({
                 message:
@@ -285,6 +266,7 @@ salesListRouter.put(
             ...(salesListItems !== undefined
               ? {
                   salesListItems: {
+                    deleteMany: {},
                     create: salesListItems.map((salesListItem) => ({
                       ...(salesListItem.consultantId !== undefined
                         ? { consultantId: salesListItem.consultantId }
