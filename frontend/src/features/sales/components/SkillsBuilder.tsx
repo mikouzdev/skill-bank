@@ -2,7 +2,8 @@ import { Box, Typography, Rating } from "@mui/material";
 import Circle from "@mui/icons-material/Circle";
 import CircleIcon from "@mui/icons-material/Circle";
 
-import { type SkillsResponse } from "../../consultant/types/types";
+import type { components } from "@api-types/openapi";
+type SkillsResponse = components["schemas"]["ConsultantSkill"][];
 
 type Props = {
   data: SkillsResponse;

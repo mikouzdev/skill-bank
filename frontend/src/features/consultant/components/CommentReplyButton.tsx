@@ -16,7 +16,6 @@ import { useSnackbar } from "../../../shared/components/useSnackbar";
 type SectionName = components["schemas"]["PageSection"]["name"];
 type CommentBody = components["schemas"]["CommentBody"];
 
-// components["schemas"]["GetPageSectionsResponse"][number]["comments"][number];
 type Props = {
   sectionName: SectionName;
   commentId: number;
