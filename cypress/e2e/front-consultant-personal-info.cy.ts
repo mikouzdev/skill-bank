@@ -78,7 +78,7 @@ describe("Consultant personal info", () => {
 
     cy.contains(titleChanged, { timeout: 10000 })
       .should("be.visible")
-      .as("tittle");
+      .as("title");
     cy.get("@title").then(($card) => {
       $card[0].style.outline = "3px solid red"; // acceptable linter error, Should faild at "be.visible"
     });
@@ -146,16 +146,8 @@ describe("Consultant personal info", () => {
         cy.visit("http://localhost:5173/consultant/me");
         cy.wait(1000);
 
-        cy.contains("css").scrollIntoView();
-        cy.contains("css").then(($css) => {
-          $css[0].style.outline = "3px solid red";
-        });
+        cy.contains("css", { matchCase: false }).should("be.visible");
 
-        // cy.contains("css", { timeout: 10000 })
-        //   .should("exist")
-        //   .then(($css) => {
-        //     $css[0].style.color = "red"; // acceptable linter error, Should faild at "be.visible"
-        //   });
         cy.wait(500);
       });
   });
