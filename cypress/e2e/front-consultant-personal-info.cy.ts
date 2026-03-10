@@ -181,7 +181,7 @@ describe("Consultant personal info", () => {
             $button[0].style.outline = "3px solid red";
           })
           .as("button");
-        cy.pause();
+        //cy.pause();
         cy.get("@button").click();
         cy.wait(1000);
       });
