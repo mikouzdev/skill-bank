@@ -71,21 +71,24 @@ describe("Consultant personal info", () => {
 
     cy.contains(fullNameChanged, { timeout: 10000 })
       .should("be.visible")
-      .then(($card) => {
-        $card[0].style.outline = "3px solid red"; // acceptable linter error, Should faild at "be.visible"
-      });
+      .as("name");
+    cy.get("@name").then(($card) => {
+      $card[0].style.outline = "3px solid red"; // acceptable linter error, Should faild at "be.visible"
+    });
 
     cy.contains(titleChanged, { timeout: 10000 })
       .should("be.visible")
-      .then(($card) => {
-        $card[0].style.outline = "3px solid red"; // acceptable linter error, Should faild at "be.visible"
-      });
+      .as("tittle");
+    cy.get("@title").then(($card) => {
+      $card[0].style.outline = "3px solid red"; // acceptable linter error, Should faild at "be.visible"
+    });
 
     cy.contains(descriptionChanged, { timeout: 10000 })
       .should("be.visible")
-      .then(($card) => {
-        $card[0].style.outline = "3px solid red"; // acceptable linter error, Should faild at "be.visible"
-      });
+      .as("description");
+    cy.get("@description").then(($card) => {
+      $card[0].style.outline = "3px solid red"; // acceptable linter error, Should faild at "be.visible"
+    });
 
     cy.wait(500); //cy.pause();
   });
