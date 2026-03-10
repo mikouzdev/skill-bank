@@ -179,7 +179,6 @@ async function main() {
 
   const sales1 = await prisma.salesperson.create({
     data: {
-      id: 1,
       userId: salesUser.id,
     },
   });
@@ -233,11 +232,20 @@ async function main() {
       },
     },
   });
+
   await prisma.customer.create({
     data: {
       userId: testUser.id,
     },
   });
+
+  // needed for e2e tests
+  await prisma.salesperson.create({
+    data: {
+      userId: testUser.id,
+    },
+  });
+
   await prisma.consultant.create({
     data: {
       userId: testUser.id,

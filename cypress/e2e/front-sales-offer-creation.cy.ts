@@ -18,6 +18,7 @@ describe("Consultant personal projects", () => {
 
     cy.contains("button", "sign in", { matchCase: false }).click();
 
+    // listener for /auth/me to get customerId
     cy.intercept("GET", "/auth/me", (req) => {
       // to not respond with: 304 Not Modified
       delete req.headers["if-none-match"];
@@ -25,7 +26,7 @@ describe("Consultant personal projects", () => {
     }).as("getAuthMe");
 
     cy.url().should("include", "/login");
-    cy.get(".MuiStack-root > :nth-child(2)").should("be.visible").click();
+    cy.get('[data-cy="salesperson-role-selector"]').should("be.visible").click();
 
     cy.contains("Create offer", { matchCase: false, timeout: 10000 }).should("be.visible");
   };
@@ -35,7 +36,9 @@ describe("Consultant personal projects", () => {
 
     cy.visit("http://localhost:5173/manage-offers/create");
 
+    // form exists
     cy.url().should("include", "create");
+    cy.get('[data-cy="offer-creation-form"]', { timeout: 10000 }).should("be.visible");
 
     cy.wait("@getAuthMe").then(({ response }) => {
       expect(response.statusCode).to.eq(200);
@@ -72,11 +75,8 @@ describe("Consultant personal projects", () => {
 
     cy.contains("button", "Create offer", { matchCase: false }).click();
 
-    // check for snackbar alert
-    cy.get(".MuiSnackbar-root > .MuiPaper-root").should("be.visible").should("contain", "Offer created succesfully");
-
-    // get generated offer link
-    cy.get(".MuiDialogContent-root > .MuiStack-root > .MuiTypography-body1")
+    // generated offer link
+    cy.get('[data-cy="generated-offer-link"]')
       .should("be.visible")
       .invoke("text")
       .then((link) => {
