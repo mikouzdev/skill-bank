@@ -1,4 +1,13 @@
-import { Avatar, Box, Stack, Typography, Button, Paper } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Stack,
+  Typography,
+  Button,
+  Paper,
+  Chip,
+} from "@mui/material";
+import CheckIcon from "@mui/icons-material/Check";
 import { useConsultantDetails } from "../../consultant/hooks/useConsultantDetails";
 import SkillsBuilder from "./SkillsBuilder";
 import type { components } from "@api-types/openapi";
@@ -76,7 +85,24 @@ export const ConsultantCard = ({
             <SkillsBuilder data={skills} />
           </Stack>
 
-          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
+            {/* consultant is accepted status chip */}
+            {offer?.isAccepted ? (
+              <Stack mr={"auto"} justifyContent={"center"}>
+                <Chip
+                  size="small"
+                  label="Accepted"
+                  color="success"
+                  icon={<CheckIcon sx={{ fontSize: 20 }} />}
+                />
+              </Stack>
+            ) : null}
+
             {/* used for sales offer creation to add consultant to new offer */}
             <Stack direction={"row"} gap={1} alignItems={"center"}>
               {salesNote && (
