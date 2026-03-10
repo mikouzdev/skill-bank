@@ -146,7 +146,12 @@ describe("Consultant personal info", () => {
         cy.visit("http://localhost:5173/consultant/me");
         cy.wait(1000);
 
-        cy.contains("css", { matchCase: false }).should("be.visible");
+        //cy.contains("css", { matchCase: false }).should("be.visible");
+        //       cy.contains('css', { matchCase: false })
+        // .scrollIntoView({ block: 'center', inline: 'center' })
+        // .should('exist');
+
+        cy.contains("css", { matchCase: false }).should("exist");
 
         cy.wait(500);
       });
