@@ -1,10 +1,6 @@
 describe("Consultant personal info", () => {
-  //const fullName = "Alice Consultant";
   const fullNameChanged = "Malice Constitution";
-  //const title = "Senior Backend Engineer";
   const titleChanged = "Junior World Autocrat";
-
-  //   const description = "";
   const descriptionChanged = "Charming supreme ruler";
 
   beforeEach(() => {
@@ -38,8 +34,6 @@ describe("Consultant personal info", () => {
       .clear()
       .type(titleChanged);
 
-    //cy.get('', "Descrition").clear().type(descriptionChanged);
-
     cy.contains("label", "Description")
       .should("be.visible")
       .invoke("attr", "for")
@@ -56,9 +50,7 @@ describe("Consultant personal info", () => {
       })
       .as("applyEdits");
 
-    // cy.wait(1000);
     cy.get("@applyEdits").click();
-    //cy.wait(1000);
 
     cy.get("@applyEdits")
       .find('[role="progressbar"]', { timeout: 10000 })
@@ -73,24 +65,24 @@ describe("Consultant personal info", () => {
       .should("be.visible")
       .as("name");
     cy.get("@name").then(($card) => {
-      $card[0].style.outline = "3px solid red"; // acceptable linter error, Should faild at "be.visible"
+      $card[0].style.outline = "3px solid red";
     });
 
     cy.contains(titleChanged, { timeout: 10000 })
       .should("be.visible")
       .as("title");
     cy.get("@title").then(($card) => {
-      $card[0].style.outline = "3px solid red"; // acceptable linter error, Should faild at "be.visible"
+      $card[0].style.outline = "3px solid red";
     });
 
     cy.contains(descriptionChanged, { timeout: 10000 })
       .should("be.visible")
       .as("description");
     cy.get("@description").then(($card) => {
-      $card[0].style.outline = "3px solid red"; // acceptable linter error, Should faild at "be.visible"
+      $card[0].style.outline = "3px solid red";
     });
 
-    cy.wait(500); //cy.pause();
+    cy.wait(500);
   });
 
   it("Adds a new skill and checks it's been created", () => {
@@ -106,7 +98,6 @@ describe("Consultant personal info", () => {
       })
       .as("addSkill");
 
-    //cy.pause();
     cy.wait(1000);
     cy.get("@addSkill").click();
     cy.wait(1000);
@@ -118,8 +109,6 @@ describe("Consultant personal info", () => {
     cy.get('[role="dialog"]', { timeout: 4000 })
       .should("be.visible")
       .within(() => {
-        //cy.contains("button", "Add Skill").click();
-
         cy.contains("Category").next().click();
         cy.contains("Category")
           .parent()
@@ -142,20 +131,21 @@ describe("Consultant personal info", () => {
 
         cy.contains("button", "add skill", { matchCase: false }).click();
         cy.wait(500);
-
-        cy.visit("http://localhost:5173/consultant/me");
-        cy.wait(1000);
-
-        //cy.contains("css", { matchCase: false }).should("be.visible");
-        //       cy.contains('css', { matchCase: false })
-        // .scrollIntoView({ block: 'center', inline: 'center' })
-        // .should('exist');
-
-        cy.contains("css", { matchCase: false }).should("exist");
-
-        cy.wait(500);
       });
+
+    cy.visit("http://localhost:5173/consultant/me");
+    cy.wait(1000);
+
+    cy.contains("css", { timeout: 10000, matchCase: false })
+      .should("be.visible")
+      .as("name");
+    cy.get("@name").then(($card) => {
+      $card[0].style.outline = "3px solid red";
+    });
+
+    cy.wait(500);
   });
+
   it("shows the new skill and deletes it", () => {
     cy.visit("http://localhost:5173/consultant/me/edit");
     cy.contains("css").should("be.visible");
@@ -168,22 +158,6 @@ describe("Consultant personal info", () => {
       .scrollIntoView()
       .click();
     cy.wait(500);
-  });
-
-  it("checks that external links visibility works as assumed", () => {
-    cy.visit("http://localhost:5173/consultant/me/edit");
-    cy.contains("label", "GitLab")
-      .closest("form")
-      .within(() => {
-        cy.get('input[type="checkbox"]').uncheck({ force: true });
-        cy.contains("button", "apply edits", { matchCase: false })
-          .then(($button) => {
-            $button[0].style.outline = "3px solid red";
-          })
-          .as("button");
-        //cy.pause();
-        cy.get("@button").click();
-        cy.wait(1000);
-      });
+    cy.contains("css").should("not.exist");
   });
 });
