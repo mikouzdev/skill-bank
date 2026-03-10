@@ -78,6 +78,7 @@ export const LoginRolePageForm = () => {
       >
         {currentUser?.roles.includes("CONSULTANT") && (
           <Box
+            data-cy="consultant-role-selector"
             sx={roleBoxSx}
             onClick={() =>
               void handleSetActiveRole("CONSULTANT", "/consultant/me")
@@ -90,6 +91,7 @@ export const LoginRolePageForm = () => {
 
         {currentUser?.roles.includes("SALESPERSON") && (
           <Box
+            data-cy="salesperson-role-selector"
             sx={roleBoxSx}
             onClick={() => void handleSetActiveRole("SALESPERSON", "/sales")}
           >
@@ -100,6 +102,7 @@ export const LoginRolePageForm = () => {
 
         {currentUser?.roles.includes("ADMIN") && (
           <Box
+            data-cy="admin-role-selector"
             sx={roleBoxSx}
             onClick={() => void handleSetActiveRole("ADMIN", "/manage-users")}
           >
