@@ -1,7 +1,4 @@
 context("GET /skills", () => {
-//   beforeEach(() => {
-//     cy.task('cleanSkills');
-//   })
   it("gets a list of skills", () => {
     cy.request("GET", "/skills").then((response) => {
       expect(response.status).to.eq(200);

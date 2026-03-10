@@ -6,7 +6,7 @@ import { defineConfig } from "eslint/config";
 import pluginCypress from "eslint-plugin-cypress";
 
 export default defineConfig([
-  { files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"], plugins: { js, cypress: pluginCypress }, extends: ["js/recommended"], languageOptions: { globals: globals.browser } },
+  { files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"], plugins: { js, cypress: pluginCypress }, extends: ["js/recommended"], languageOptions: { globals: globals.browser },},
   tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
 ]);
