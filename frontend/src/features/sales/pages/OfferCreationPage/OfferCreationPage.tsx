@@ -135,7 +135,12 @@ export default function OfferCreationPage() {
   };
 
   const offerDetailsForm = (
-    <Stack gap={3} component={"form"} onSubmit={(e) => void handleSubmit(e)}>
+    <Stack
+      gap={3}
+      component={"form"}
+      onSubmit={(e) => void handleSubmit(e)}
+      data-cy="offer-creation-form"
+    >
       <Stack direction={"row"} gap={3} justifyContent={"space-between"}>
         <TextField
           fullWidth
@@ -260,7 +265,9 @@ export default function OfferCreationPage() {
       <DialogContent>
         <Stack spacing={2} alignItems={"center"}>
           <Typography variant="h6">Link for generated offer:</Typography>
-          <Typography>{generatedLink}</Typography>
+          <Typography data-cy="generated-offer-link">
+            {generatedLink}
+          </Typography>
         </Stack>
       </DialogContent>
     </Dialog>
