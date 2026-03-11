@@ -90,12 +90,11 @@ export default function AddCommentButton({ label, section }: Props) {
       </Button>
 
       <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>
-          <Typography align="center">
-            Add comment to profile section: <br />
-            <b>{section}</b>
-          </Typography>
+        <DialogTitle sx={{ textAlign: "center" }}>
+          <Typography>Add comment to profile section:</Typography>
+          <Typography fontWeight={700}>{section}</Typography>
         </DialogTitle>
+
         <DialogContent>
           <Stack
             spacing={2}

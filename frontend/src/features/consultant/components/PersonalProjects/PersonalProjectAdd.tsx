@@ -123,7 +123,7 @@ export function AddNewProject({ update, skillData }: Props) {
   });
 
   return (
-    <div>
+    <>
       <Button
         style={{
           backgroundColor: "white",
@@ -138,8 +138,8 @@ export function AddNewProject({ update, skillData }: Props) {
       <Dialog open={!!showForm}>
         <DialogTitle>Add a new project</DialogTitle>
 
-        <div className="overlay">
-          <div className="form-container">
+        <Box className="overlay">
+          <Box className="form-container">
             <Box
               component="form"
               onSubmit={handleSubmit}
@@ -278,10 +278,10 @@ export function AddNewProject({ update, skillData }: Props) {
                 </Stack>
               </Stack>
             </Box>
-          </div>
-        </div>
+          </Box>
+        </Box>
       </Dialog>
-    </div>
+    </>
   );
 }
 
