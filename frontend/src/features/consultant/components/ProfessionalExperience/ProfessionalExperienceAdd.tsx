@@ -100,7 +100,7 @@ export function AddNewExperience({ update, skillData }: Props) {
   });
 
   return (
-    <div>
+    <>
       <Button
         data-cy="add-position-button"
         style={{
@@ -117,8 +117,8 @@ export function AddNewExperience({ update, skillData }: Props) {
       <Dialog open={showForm}>
         <DialogTitle>Add position</DialogTitle>
         {
-          <div className="overlay">
-            <div className="form-container">
+          <Box className="overlay">
+            <Box className="form-container">
               <Box
                 data-cy="add-employment-form"
                 component="form"
@@ -238,11 +238,11 @@ export function AddNewExperience({ update, skillData }: Props) {
                   <Button onClick={handleClose}>Cancel</Button>
                 </Stack>
               </Box>
-            </div>
-          </div>
-        }{" "}
+            </Box>
+          </Box>
+        }
       </Dialog>
-    </div>
+    </>
   );
 }
 
