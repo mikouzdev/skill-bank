@@ -9,7 +9,6 @@ export const LoginRolePage = () => {
   const { currentUser } = useAuth();
 
   const redirect = () => {
-    console.log("ulos saadaa tama tieto: ", currentUser);
     if (currentUser?.roles.includes("CONSULTANT")) {
       void navigate("/consultant/me");
       return;
@@ -33,14 +32,12 @@ export const LoginRolePage = () => {
 
   useEffect(() => {
     if (currentUser?.roles.length === 1) {
-      console.log("Current user lenth === ", currentUser?.roles.length);
       redirect();
       return;
     }
 
     //this should never happen.
     if (currentUser?.roles.length === 0) {
-      console.log("This should never happen: ", currentUser?.roles.length);
       void navigate("/");
       return;
     }

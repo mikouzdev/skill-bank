@@ -42,12 +42,6 @@ export const FilterViewForm = () => {
   };
 
   const handleSubmit = () => {
-    const payload = {
-      filter_skills: skillRules,
-      keywords: keywords,
-    };
-
-    console.log("submit payload:", payload);
     setOpen(false);
   };
 
@@ -115,7 +109,6 @@ export const FilterViewForm = () => {
               type="submit"
               variant="contained"
               onClick={() => {
-                console.log("Sending following request: ");
                 handleSubmit();
                 setOpen(false);
               }}
