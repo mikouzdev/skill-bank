@@ -5,7 +5,6 @@ import {
   TextField,
   Typography,
   Button,
-  Link,
 } from "@mui/material";
 import { useState } from "react";
 
@@ -59,8 +58,6 @@ export const CustomerLoginPageForm = ({ onSubmit }: Props) => {
             }}
           >
             <Button type="submit">Sign in</Button>
-
-            <Link>Resend password?</Link>
           </Box>
         </Box>
       </Paper>

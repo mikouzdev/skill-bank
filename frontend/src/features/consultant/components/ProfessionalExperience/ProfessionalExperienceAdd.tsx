@@ -133,7 +133,6 @@ export function AddNewExperience({ update, skillData }: Props) {
                 }}
               >
                 <Stack spacing={2}>
-                  <b>Company name</b>
                   <TextField
                     label="Name"
                     name="employer"
@@ -142,7 +141,7 @@ export function AddNewExperience({ update, skillData }: Props) {
                     required
                     fullWidth
                   />
-                  <b>Job Title</b>
+
                   <TextField
                     label="Job Title"
                     name="jobTitle"
@@ -151,7 +150,7 @@ export function AddNewExperience({ update, skillData }: Props) {
                     required
                     fullWidth
                   />
-                  <b>Description</b>
+
                   <TextField
                     label="Description"
                     name="description"
@@ -173,7 +172,7 @@ export function AddNewExperience({ update, skillData }: Props) {
                     <MenuItem value="PUBLIC">Public</MenuItem>
                     <MenuItem value="LIMITED">Limited</MenuItem>
                   </TextField>
-                  <b>Skills</b>
+
                   <Stack
                     data-cy="available-skill-chips"
                     direction="row"
@@ -203,7 +202,7 @@ export function AddNewExperience({ update, skillData }: Props) {
                   >
                     {addedSkillChips}
                   </Stack>
-                  <b>Employment length:</b>
+
                   <Stack direction={"column"} spacing={3}>
                     <TextField
                       size="small"
@@ -240,7 +239,7 @@ export function AddNewExperience({ update, skillData }: Props) {
               </Box>
             </div>
           </div>
-        }{" "}
+        }
       </Dialog>
     </div>
   );
