@@ -115,7 +115,7 @@ export default function ProfessionalExperience({
         />
       </Stack>
 
-      <Stack spacing={1}>
+      <Stack spacing={1} data-cy="employment-list">
         {employments.map((item) => (
           <ProfessionalExperienceItem
             key={item.id}
