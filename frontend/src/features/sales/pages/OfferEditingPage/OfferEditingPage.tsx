@@ -17,7 +17,6 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { getConsultants } from "../../../consultant/api/consultants.api";
-// import { ConsultantCard } from "../../components/ConsultantCard";
 import { useAuth } from "../../../../app/hooks/useAuth";
 import { useSnackbar } from "../../../../shared/components/useSnackbar";
 import { useOffers } from "../../../../shared/hooks/useOffers";
@@ -25,7 +24,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { updateOffer } from "../../../../shared/api/offers.api";
 
 type ConsultantList = components["schemas"]["AllConsultantsResponse"];
-// type Consultant = components["schemas"]["ConsultantResponse"];
 type OfferPageBodyPartial = components["schemas"]["OfferPageBodyPartial"];
 
 // TODO: add ability to add/remove selected consultants

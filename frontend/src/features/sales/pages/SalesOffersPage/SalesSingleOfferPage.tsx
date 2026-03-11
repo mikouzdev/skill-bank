@@ -65,7 +65,6 @@ export default function SalesSingleOfferPage() {
     <Container>
       <Stack gap={2}>
         <Stack direction={"row"} gap={1} justifyContent={"flex-end"}>
-          {/* todo: abilities to edit offer */}
           {editButton}
           {deleteButton}
         </Stack>

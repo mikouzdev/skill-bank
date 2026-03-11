@@ -117,7 +117,6 @@ export const FilterViewForm = () => {
                 setOpen(false);
               }}
             >
-              {" "}
               Apply filters
             </Button>
           </DialogActions>

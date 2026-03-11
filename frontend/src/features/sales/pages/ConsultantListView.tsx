@@ -7,7 +7,6 @@ import {
   getConsultants,
 } from "../../consultant/api/consultants.api";
 import SearchBar from "../../../shared/components/Search";
-import { ThrowErrorMessage } from "../../../shared/components/ThrowErrorMessage";
 
 export const ConsultantListView = () => {
   const [ids, setIds] = useState<number[]>([]);
@@ -43,7 +42,7 @@ export const ConsultantListView = () => {
           getText={setSearch}
           loadConsultants={() => void loadConsultants()}
         />
-        <ThrowErrorMessage />
+
         <FilterViewForm />
         {ids.map((id) => (
           <Box key={id} sx={{ m: 3, border: 1, background: "white" }}>
