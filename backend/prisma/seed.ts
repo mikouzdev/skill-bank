@@ -246,7 +246,7 @@ async function main() {
     },
   });
 
-  await prisma.consultant.create({
+  const consultant4 = await prisma.consultant.create({
     data: {
       userId: testUser.id,
       description: "Test consultant",
@@ -555,6 +555,31 @@ async function main() {
       },
       {
         consultantId: consultant3.id,
+        name: "PROJECTS" as const,
+        visibility: "PUBLIC" as const,
+      },
+      {
+        consultantId: consultant4.id,
+        name: "GENERAL" as const,
+        visibility: "PUBLIC" as const,
+      },
+      {
+        consultantId: consultant4.id,
+        name: "NETWORKING_LINKS" as const,
+        visibility: "PUBLIC" as const,
+      },
+      {
+        consultantId: consultant4.id,
+        name: "SKILLS" as const,
+        visibility: "PUBLIC" as const,
+      },
+      {
+        consultantId: consultant4.id,
+        name: "EMPLOYMENTS" as const,
+        visibility: "PUBLIC" as const,
+      },
+      {
+        consultantId: consultant4.id,
         name: "PROJECTS" as const,
         visibility: "PUBLIC" as const,
       },
