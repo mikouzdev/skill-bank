@@ -102,6 +102,7 @@ export function AddNewExperience({ update, skillData }: Props) {
   return (
     <div>
       <Button
+        data-cy="add-position-button"
         style={{
           backgroundColor: "white",
           color: "black",
@@ -119,6 +120,7 @@ export function AddNewExperience({ update, skillData }: Props) {
           <div className="overlay">
             <div className="form-container">
               <Box
+                data-cy="add-employment-form"
                 component="form"
                 onSubmit={(e) => handleSubmit(e)}
                 sx={{
@@ -173,6 +175,7 @@ export function AddNewExperience({ update, skillData }: Props) {
                   </TextField>
                   <b>Skills</b>
                   <Stack
+                    data-cy="available-skill-chips"
                     direction="row"
                     flexWrap="wrap"
                     rowGap={1}
@@ -187,6 +190,7 @@ export function AddNewExperience({ update, skillData }: Props) {
                   </Stack>
                   <Typography>Added Skills</Typography>
                   <Stack
+                    data-cy="added-skill-chips"
                     direction="row"
                     flexWrap="wrap"
                     rowGap={1}
@@ -223,6 +227,7 @@ export function AddNewExperience({ update, skillData }: Props) {
                     />
                   </Stack>
                   <Button
+                    data-cy="employment-submit-button"
                     type="submit"
                     variant="contained"
                     size="large"
