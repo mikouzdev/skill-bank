@@ -68,7 +68,6 @@ export const FilterViewForm = () => {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            //console.log("submit payload:", skillRules, keywords);  //For debugging
             handleSubmit();
             setOpen(false);
           }}
@@ -121,7 +120,6 @@ export const FilterViewForm = () => {
                 setOpen(false);
               }}
             >
-              {" "}
               Apply filters
             </Button>
           </DialogActions>

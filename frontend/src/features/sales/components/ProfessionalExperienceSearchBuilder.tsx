@@ -18,7 +18,7 @@ export type SkillFilterRule = {
 };
 
 type SkillSearchBuilderProps = {
-  onAddRule: (rule: Omit<SkillFilterRule, "id">) => void; //(rule: SkillFilterRule) => void;
+  onAddRule: (rule: Omit<SkillFilterRule, "id">) => void;
 };
 
 export const ProfessionalExperienceSearchBuilder = ({
