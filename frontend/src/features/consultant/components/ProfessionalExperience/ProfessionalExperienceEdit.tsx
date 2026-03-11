@@ -186,6 +186,7 @@ export default function ProfessionalExperienceEdit({
       </Button>
 
       <Button
+        data-cy="employment-delete-button"
         size="small"
         variant="contained"
         color="error"

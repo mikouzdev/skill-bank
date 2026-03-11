@@ -9,7 +9,7 @@ const newEmploymentStart = "2003-03-03";
 const newEmploymentEnd = "2004-03-03";
 
 describe("Consultant employments", () => {
-  before(() => {
+  beforeEach(() => {
     cy.visit("http://localhost:5173/login");
 
     cy.get('input[type="email"]').type("alice@demo.com");
@@ -19,7 +19,7 @@ describe("Consultant employments", () => {
     cy.contains("Edit profile", { matchCase: false, timeout: 10000 }).should("be.visible");
   });
 
-  after(() => {
+  afterEach(() => {
     cy.visit("http://localhost:5173/logout");
   });
 
@@ -81,6 +81,37 @@ describe("Consultant employments", () => {
         });
 
         cy.get('[data-cy="employment-list"]').children().should("have.length.greaterThan", previousLength);
+      });
+  });
+
+  it("deletes employment", () => {
+    // listener for delete request
+    cy.intercept("DELETE", "/consultants/me/employments/*", (req) => {
+      // to not respond with: 304 Not Modified
+      delete req.headers["if-none-match"];
+      delete req.headers["if-modified-since"];
+    }).as("employmentDelete");
+
+    cy.visit("http://localhost:5173/consultant/me/edit");
+
+    // click last employments delete button
+    cy.get('[data-cy="employment-list"]')
+      .children()
+      .its("length")
+      .then((previousLength) => {
+        cy.get('[data-cy="employment-list"]')
+          .children()
+          .last()
+          .find('[data-cy="employment-delete-button"]')
+          .should("be.visible")
+          .click();
+
+        cy.wait("@employmentDelete").then((response) => {
+          expect(response.response.statusCode).to.eq(204);
+        });
+
+        // employment list length shrunk
+        cy.get('[data-cy="employment-list"]').children().should("have.length.lessThan", previousLength);
       });
   });
 });
