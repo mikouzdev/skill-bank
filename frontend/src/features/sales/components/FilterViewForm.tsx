@@ -42,10 +42,6 @@ export const FilterViewForm = () => {
   };
 
   const handleSubmit = () => {
-    const payload = {
-      filter_skills: skillRules,
-      keywords: keywords,
-    };
     setOpen(false);
   };
 
