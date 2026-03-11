@@ -7,7 +7,6 @@ export const Redirector = () => {
   const { currentUser } = useAuth();
 
   const redirect = () => {
-    console.log("ulos saadaa tama tieto: ", currentUser);
     if (currentUser?.roles.includes("CONSULTANT")) {
       void navigate("/consultant/me");
       return;
