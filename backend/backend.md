@@ -34,7 +34,8 @@ backend
 │   ├── openapi/
 │   ├── routes/
 │   ├── schemas/
-│   ├── types/
+│   ├── services/
+│   ├── storage/
 │   ├── app.ts
 │   └── index.ts
 └── ...
