@@ -1,9 +1,9 @@
 # Cypress test suite
 
 :warning:
-**Runnin any of the tests will reseed the main database.**
+**Running any of the tests will reseed the main database.**
 
-This project uses Cypress as its test environment. All the tests have been written in E2E including API tests.
+This project uses Cypress as its test environment. All the tests have been written in E2E including API tests. There are no unit tests.
 
 You may want to study `cypress/support/e2e.ts` file for seeding before running any of the tests.
 
@@ -19,40 +19,46 @@ Before running the Cypress test suite, make sure that:
 
 The tests cover some of the most pivotal use cases for the consultant and customer paths. There are no tests for admin and a few for the sales. The API tests are well covered.
 
-## Cypress verision information
+## Cypress version information
 
 All the tests are tested with the following Cypress configuration:
 
 - Cypress package version: `15.10.0`
 - Cypress binary version: `15.10.0`
 - Electron version: `37.6.0`
-- Bundled Node version:
-- `22.19.0`
+- Bundled Node version: `22.19.0`
 
-## Installing Cypress.
+## Installing Cypress
 
 This project uses pnpm.
 
-Run command `pnpm add --save-dev cypress`. See more detailed installation instructions @[Official cypress installation guide](https://docs.cypress.io/app/get-started/install-cypress)
+Run command
 
-If you are using eslint it is highly recommended to add Cypress eslint rules: `pnpm add -D eslint-plugin-cypress`.
+- `pnpm add --save-dev cypress`\
+  See more detailed installation instructions [@Official cypress installation guide](https://docs.cypress.io/app/get-started/install-cypress)
+
+If you are using eslint it is highly recommended to add Cypress eslint rules:
+
+- `pnpm add -D eslint-plugin-cypress`.
 
 ## Running Cypress
 
-There is no separate testing database.
+This project does not use a separate test database.
+
+On GitLab pipeline tests are run automatically in a headless mode.
 
 To manually start cypress use command `pnpm exec cypress open`.
-To run cypress in headless patch mode use `pnpm cypress run`.
+To run cypress in headless patch mode use `pnpm exec cypress run`.
 While all the current tests are headless compatible and should be testable, it is recommended to use the manual runs for the tests starting with a prefex `front`. There is more visual debug information available when running in visual mode.
 
 Note: Before running the test suite see that the backend is not sleeping, this may cause a false fail. A usual indicator for false fail is that the test `api-admin.spec.cy.ts` fails while other dependants of it do not. Consider the first test as a flaky one.
 
-## Folder structure.
+## Folder structure
 
-The project uses the recommended Cypress folder structure and should be self mandatory. Note: The `support` folder holds the database seeding script.
+The project follows the standard Cypress folder structure and should be easy to navigate. Note: The `support` folder holds the database seeding script.
 
 ```
-C:.
+cypress/
 ├───e2e
 ├───fixtures
 ├───screenshots
@@ -61,5 +67,5 @@ C:.
 
 ## Conventions
 
-There aren't any special conventions except with the tests' naming. Test starting with `api` test apis and tests starting with `front` test frontend.
-Cypress data and test attributes are sparse.
+There aren't any special conventions except with the tests' naming. Tests starting with `api` are API-focused tests and tests starting with `front` are frontend-focused tests.
+Cypress data and test attributes are used sparsely.
