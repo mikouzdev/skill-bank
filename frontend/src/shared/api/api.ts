@@ -1,7 +1,8 @@
 import axios from "axios";
 
 export const api = axios.create({
-  //   baseURL: "http://localhost:3000/api", // todo: use VITE_API_URL instead
+  baseURL:
+    "https://spankkiserver-etfjdve9dtc3bafx.northeurope-01.azurewebsites.net", // todo: use VITE_API_URL instead
   withCredentials: false,
 });
 
