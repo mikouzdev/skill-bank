@@ -72,3 +72,9 @@ The frontend of this project uses a feature-based architecture, meaning the logi
 │       └── pages
 └── ...
 ```
+
+### Important package.json scripts
+
+- `pnpm run dev`: Runs the frontend in development mode.
+- `pnpm run lint`: Uses eslint to lint the frontend directory.
+- `pnpm run typecheck`: Stricter type validation, compiles the frontend without emitting output files.
