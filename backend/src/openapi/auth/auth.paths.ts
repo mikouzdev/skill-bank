@@ -1,4 +1,4 @@
-import { FullUserResponseSchema } from "../../schemas/admin/admin.schema.js";
+import { UserResponseSchema } from "../../schemas/admin/admin.schema.js";
 import {
   LoginSchema,
   AuthResponseSchema as AuthLoginResponseSchema,
@@ -72,7 +72,7 @@ export const authPaths = {
         200: {
           description: "Update successful",
           content: {
-            "application/json": { schema: FullUserResponseSchema },
+            "application/json": { schema: UserResponseSchema },
           },
         },
         202: { description: "Role is already primary role" },
