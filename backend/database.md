@@ -41,7 +41,7 @@ All docker containers are located in the Containers tab. Images tab has all the 
 
 #### To run from Docker desktop
 
-Press the Start button from Containers tab
+Press the start button from Containers tab
 
 #### To stop 
 
