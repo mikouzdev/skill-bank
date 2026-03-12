@@ -2,9 +2,12 @@
 
 ## Deploy
 
-Deploy to Azure from branch Azure_deployment. You can use versioned branches to update development branch and cherry pick to Azure_deployment when needed. You can also rebase development to Azure_deployment for instant pipeline update (and save Gitlab free CI/CD credits).
+Deploy to Azure from the `Azure_deployment` branch.
 
-CI/CD yaml is live on branch Azure_deployment to save the free credits.
+You can use versioned branches to update the development branch and cherry-pick changes to `Azure_deployment` when needed.  
+Alternatively, you can rebase the development branch onto `Azure_deployment` for an instant pipeline update (and to save GitLab free CI/CD credits).
+
+The CI/CD YAML file is intentionally kept only on the `Azure_deployment` branch to preserve free pipeline minutes.
 
 ## Name
 
@@ -12,52 +15,79 @@ Spankki
 
 ## Description
 
-Spankki is an abbreviation of Skill-Pankki which is informationsystem which contains skills information bank for a consulting company. Bank contains salespeople, consultants and offers for customers.
+Spankki is short for **Skill-Pankki** — a skill information system (skills bank) for a consulting company.
 
-## Installation
+The system contains information about:
 
-To install Spankki to Azure you need to create two Azure web services and Azure postgresql database. You might have to have to add client's ip to your server's cors settings in backend's app.ts file. You can use example in Azure_deployment branch.
+- salespeople
+- consultants
+- customer offers
 
-1. You also need two dockerfiles for each client and server. Examples are found also in Azure_deployment branch.
-2. In Azure client you need to setup DATABASE_URL which points to your Azure's database.
-3. You need to setup CI/CD variables which corresponds to the Azures values.
-4. Note that first time you need to run database setup commands as well. In .gitlab-ci.yml have all the commands to push the image to Azure registy (and lint the code before hand.).
+## Installation (Azure)
 
-## Test
+To deploy Spankki to Azure, you need to create:
 
-Testing is implemented with Cypress and run in Testpipeline using Gitlab's CI/CD pipeline.
+- two Azure Web Apps (one for client, one for server)
+- one Azure PostgreSQL database
+
+You may need to add the client's IP address to the CORS settings in the backend's `app.ts` file (example available in the `Azure_deployment` branch).
+
+Steps:
+
+1. Create two Dockerfiles — one for the client and one for the server.  
+   Examples are available in the `Azure_deployment` branch.
+
+2. In the Azure **client** Web App, set the environment variable:  
+   `DATABASE_URL` → connection string to your Azure PostgreSQL database
+
+3. Set up the required CI/CD variables in GitLab that match your Azure resource values.
+
+4. **Important**: The first deployment requires running database setup / migration commands.  
+   All necessary commands (including pushing images to Azure Container Registry and linting) are defined in `.gitlab-ci.yml`.
+
+## Testing
+
+End-to-end testing is implemented with **Cypress** and runs automatically in the test pipeline using GitLab CI/CD.
 
 ## Usage
 
-Each user of the bank can login and view certain portions of the bank. Users may have multiple roles to choose their role for the session.
+Users log in to Spankki and can view different parts of the system depending on their role(s).  
+A user may have multiple roles and can choose which one to use for the current session.
 
-# Consultant
+### Consultant
 
-Consultant can login and view and edit their own profile. Consultant may also view public information on profiles of other consultants. Consultants may also recieve and reply from comments sent by salesperson.
+- View and edit their own profile
+- View public information of other consultants' profiles
+- Receive and reply to comments from salespeople
 
-# Salesperson
+### Salesperson
 
-Salesperson can login and view all information of consultant profiles. Salesperson can create an offer and sent it to a customer to view. Offers may contain a consultant profile for customer to analyze. Sales can set
+- View all information from consultant profiles
+- Create offers and send them to customers
+- Include selected consultant profiles in offers for customers to review
 
-# Admin
+### Admin
 
-Admins can manage users and skill tags for consultants.
+- Manage users
+- Manage skill tags for consultants
 
-# Customer
+### Customer
 
-Customers can login through an unique link sent to them by salesperson. Customers have a password to access an offer made by a salesperson. Customer may view and analyse consultants suggested by the sales person.
+- Log in via a unique link sent by a salesperson
+- Use a password to access a specific offer
+- View and analyze the consultant(s) suggested for their project
 
 ## Support
 
-Contact the person who sent this repo.
+Contact the person who shared this repository with you.
 
-## Authors and acknowledgment
+## Authors & Acknowledgments
 
-Juola Daniel, backend and backend testing.
-Kortelainen Miko, frontend and ui/ux design.
-Koivurova Ville, frontend and frontend testing.
-Rantanen Nuutti, project design, fullstack, ci/cd and devops.
+- **Juola Daniel** — Backend & backend testing
+- **Kortelainen Miko** — Frontend & UI/UX design
+- **Koivurova Ville** — Frontend & frontend testing
+- **Rantanen Nuutti** — Project design, full-stack development, CI/CD & DevOps
 
-## Project status
+## Project Status
 
-Project has been concluded since course has ended.
+The project has been concluded as the course has ended.
