@@ -1,11 +1,19 @@
 # Cypress test suite
 
 :warning:
-**Runnin any of the tests will reseed the main database**
+**Runnin any of the tests will reseed the main database.**
 
 This project uses Cypress as its test environment. All the tests have been written in E2E including API tests.
 
-You may configure the `cypress/support/e2e.ts` file to your licking.
+You may want to study `cypress/support/e2e.ts` file for seeding before running any of the tests.
+
+## Prerequisites
+
+Before running the Cypress test suite, make sure that:
+
+- the backend server is running
+- the database connection is working
+- the backend is fully awake and not in sleep mode
 
 ## Coverage
 
@@ -41,7 +49,7 @@ Note: Before running the test suite see that the backend is not sleeping, this m
 
 ## Folder structure.
 
-The project uses the recommended Cypress structure and should be self mandatory. Note: The support folder holds the database seeding script.
+The project uses the recommended Cypress folder structure and should be self mandatory. Note: The `support` folder holds the database seeding script.
 
 ```
 C:.
