@@ -26,9 +26,13 @@ describe("Consultant personal projects", () => {
     }).as("getAuthMe");
 
     cy.url().should("include", "/login");
-    cy.get('[data-cy="salesperson-role-selector"]').should("be.visible").click();
+    cy.get('[data-cy="salesperson-role-selector"]')
+      .should("be.visible")
+      .click();
 
-    cy.contains("Create offer", { matchCase: false, timeout: 10000 }).should("be.visible");
+    cy.contains("Create offer", { matchCase: false, timeout: 10000 }).should(
+      "be.visible",
+    );
   };
 
   it("creates a new offer", () => {
@@ -38,7 +42,9 @@ describe("Consultant personal projects", () => {
 
     // form exists
     cy.url().should("include", "create");
-    cy.get('[data-cy="offer-creation-form"]', { timeout: 10000 }).should("be.visible");
+    cy.get('[data-cy="offer-creation-form"]', { timeout: 10000 }).should(
+      "be.visible",
+    );
 
     cy.wait("@getAuthMe").then(({ response }) => {
       expect(response.statusCode).to.eq(200);
@@ -47,31 +53,56 @@ describe("Consultant personal projects", () => {
       const customerId = String(response.body.customerId);
 
       // offer customer id
-      cy.get('input[name="customerId"]').should("be.visible").clear().type(customerId);
-      cy.get('input[name="customerId"]').should("be.visible").should("have.value", customerId);
+      cy.get('input[name="customerId"]')
+        .should("be.visible")
+        .clear()
+        .type(customerId);
+      cy.get('input[name="customerId"]')
+        .should("be.visible")
+        .should("have.value", customerId);
     });
 
     // offer name
     cy.get('input[name="name"]').should("be.visible").type(offerName);
-    cy.get('input[name="name"]').should("be.visible").should("have.value", offerName);
+    cy.get('input[name="name"]')
+      .should("be.visible")
+      .should("have.value", offerName);
 
     // offer description
-    cy.get('textarea[name="description"]').should("be.visible").type(offerDescription);
-    cy.get('textarea[name="description"]').should("be.visible").should("have.value", offerDescription);
+    cy.get('textarea[name="description"]')
+      .should("be.visible")
+      .type(offerDescription);
+    cy.get('textarea[name="description"]')
+      .should("be.visible")
+      .should("have.value", offerDescription);
 
     // offer short description
-    cy.get('input[name="shortDescription"]').should("be.visible").type(offerShortDescription);
-    cy.get('input[name="shortDescription"]').should("be.visible").should("have.value", offerShortDescription);
+    cy.get('input[name="shortDescription"]')
+      .should("be.visible")
+      .type(offerShortDescription);
+    cy.get('input[name="shortDescription"]')
+      .should("be.visible")
+      .should("have.value", offerShortDescription);
 
     // random password button
-    cy.get(".MuiInputAdornment-root > .MuiButtonBase-root").should("be.visible").click();
-    cy.get('input[name="password"]').invoke("val").its("length").should("be.at.least", 8);
+    cy.get(".MuiInputAdornment-root > .MuiButtonBase-root")
+      .should("be.visible")
+      .click();
+    cy.get('input[name="password"]')
+      .invoke("val")
+      .its("length")
+      .should("be.at.least", 8);
     cy.get('input[name="password"]').clear();
 
     // offer password
     cy.get('input[name="password"]').should("be.visible").type(offerPassword);
-    cy.get('input[name="password"]').should("be.visible").should("have.value", offerPassword);
-    cy.get('input[name="password"]').invoke("val").its("length").should("be.at.least", 8);
+    cy.get('input[name="password"]')
+      .should("be.visible")
+      .should("have.value", offerPassword);
+    cy.get('input[name="password"]')
+      .invoke("val")
+      .its("length")
+      .should("be.at.least", 8);
 
     cy.contains("button", "Create offer", { matchCase: false }).click();
 
@@ -88,7 +119,9 @@ describe("Consultant personal projects", () => {
     cy.visit(offerLink);
 
     cy.get('[name="password"]').should("be.visible").type(offerPassword);
-    cy.get('[name="password"]').should("be.visible").should("have.value", offerPassword);
+    cy.get('[name="password"]')
+      .should("be.visible")
+      .should("have.value", offerPassword);
 
     cy.contains("button", "Sign in", { matchCase: false }).click();
 
