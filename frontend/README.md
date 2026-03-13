@@ -45,7 +45,7 @@
 
 ## Authentication
 
-User authentication in this project is done by using a JWT (JSON Web Token), which is signed by the backend with a secret, and stored in the browsers local storage after logging in. The token is send in a authorization header with every request, to allow accessing authenticated endpoints. (see [api.ts](./src/shared/api/api.ts))
+User authentication in this project is done by using a JWT (JSON Web Token), which is signed by the backend with a secret, and stored in the browsers local storage after logging in. The token is sent in a authorization header with every request, to allow accessing authenticated endpoints. (see [api.ts](./src/shared/api/api.ts))
 
 ## Folder structure
 
@@ -73,7 +73,11 @@ The frontend of this project uses a feature-based architecture, meaning the logi
 └── ...
 ```
 
-### Important package.json scripts
+## Routing
+
+The frontend uses **react-router-dom** for routing and the routes are declared in [App.tsx](/frontend/src/app/App.tsx). Most routes are navigable via the sidebar, and the sidebar displays allowed routes based on the logged in users role. (see [Sidebar.tsx](/frontend/src/app/layout/Sidebar.tsx))
+
+## Important package.json scripts
 
 - `pnpm run dev`: Runs the frontend in development mode.
 - `pnpm run lint`: Uses eslint to lint the frontend directory.
