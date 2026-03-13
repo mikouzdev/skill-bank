@@ -21,7 +21,7 @@ The tests cover some of the most pivotal use cases for the consultant and custom
 
 ## Cypress version information
 
-All the tests are tested with the following Cypress configuration:
+The tests have been run with the following Cypress configuration:
 
 - Cypress package version: `15.10.0`
 - Cypress binary version: `15.10.0`
@@ -45,13 +45,13 @@ If you are using eslint it is highly recommended to add Cypress eslint rules:
 
 This project does not use a separate test database.
 
-On GitLab pipeline tests are run automatically in a headless mode.
+In GitLab pipeline tests are run automatically in a headless mode.
 
-To manually start cypress use command `pnpm exec cypress open`.
-To run cypress in headless patch mode use `pnpm exec cypress run`.
-While all the current tests are headless compatible and should be testable, it is recommended to use the manual runs for the tests starting with a prefex `front`. There is more visual debug information available when running in visual mode.
+To start Cypress in interactive mode, use command `pnpm exec cypress open`.
+To run Cypress in headless mode use `pnpm exec cypress run`.
+While all the current tests are headless compatible and should be testable, it is recommended to use interactive mode for the tests starting with the prefix `front`. There is more visual debug information available when running in visual mode.
 
-Note: Before running the test suite see that the backend is not sleeping, this may cause a false fail. A usual indicator for false fail is that the test `api-admin.spec.cy.ts` fails while other dependants of it do not. Consider the first test as a flaky one.
+Note: Before running the test suite see that the backend is not sleeping, this may cause a false failure. A usual indicator for false failure is that the test `api-admin.spec.cy.ts` fails while other tests that depend on it do not. Consider the first test as a flaky one.
 
 ## Folder structure
 
