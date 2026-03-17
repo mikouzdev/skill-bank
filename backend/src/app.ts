@@ -13,12 +13,12 @@ app.use(express.urlencoded({ extended: false }));
 
 // TODO: move profile pictures to Azure blob storage
 app.use("/static", express.static("uploads/profile_pictures"));
-app.use("/consultants", consultantsRootRouter);
-app.use("/auth", usersRouter);
-app.use("/admin", adminRouter);
-app.use("/sales", salesRouter);
-app.use("/skills", skillsRouter);
-app.use("/comments", commentsRouter);
+app.use("/api/consultants", consultantsRootRouter);
+app.use("/api/auth", usersRouter);
+app.use("/api/admin", adminRouter);
+app.use("/api/sales", salesRouter);
+app.use("/api/skills", skillsRouter);
+app.use("/api/comments", commentsRouter);
 
 app.use(errorHandler);
 

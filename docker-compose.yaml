@@ -6,7 +6,6 @@ services:
     container_name: spankki-db
     restart: always
     env_file:
-      - .env.example
       - .env
     ports:
       - "5432:5432"
@@ -18,7 +17,6 @@ services:
     container_name: spankki-pgadmin
     restart: always
     env_file:
-      - .env.example
       - .env
     ports:
       - "5050:80"
