@@ -21,9 +21,10 @@ A full-stack skill bank app done as a group project.
 - Docker
 - Azure
 
-## What can the user do?
+## Usage
 
-See [frontend README.md](/frontend/README.md)
+See [frontend README](/frontend/README.md)
+See [backend README](/backend/backend.md)
 
 ## Authors & Acknowledgments
 
